@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel ="icon" href="public\images\logo-303mei.jpg">
+    <title>Clientes</title>
+</head>
+<body>
+    <header>
+        <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+        <nav>
+            <ul class="barra">
+                <li><a href="index.html">Tableros</a></li>
+                <li><a href="ordenes.html">Ordenes</a></li>
+                <li><a href="turnos.html">Turnos</a></li>
+                <li><a href="presupuestos.html">Presupuestos</a></li>
+                <li><a href="clientes.html">Clientes</a></li>
+                <li><a href="vehiculos.html">Vehículos</a></li>
+                <li><a href="repuestos.html">Repuestos</a></li>
+            </ul>
+        </nav>
+        <p>Bienvenido, </p>
+        <a href="login.html">Salir</a>
+    </header>
+    <main class = "contenido">
+        <section class = "contenedor">
+            <h2 class="titContenedor">Nuevo cliente</h2>
+            <form>
+                <div class="formulario">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre">
+                </div>
+                <div class="formulario">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" placeholder="Apellido">
+                </div>
+                <div class="formulario">
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="Teléfono">
+                </div>
+                <div class="formulario">
+                    <label for="idDoc">DNI / CUIT</label>
+                <input type = "text" id="idDoc" placeholder="DNI / CUIT">
+                </div>
+                <button type = "submit">Guardar</button>
+            </form>
+        </section>
+        <section class = "contenedor">
+            <h2 class="titContenedor">Clientes</h2>
+            <input type="" class="input-busqueda" placeholder="Buscar por DNI / CUIT">
+            <div class = "formatoTabla">
+                <table class = "datosTabla">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Apellido</th>
+                            <th>Teléfono</th>
+                            <th>DNI / CUIT</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "idTabla">
+                        <tr>
+                            <td colspan="7" class="sinDatos">Todavía no hay vehículos cargados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    </main>
+</body>
+</html>

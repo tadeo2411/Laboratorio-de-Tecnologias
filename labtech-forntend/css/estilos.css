@@ -220,6 +220,25 @@ input, select, textarea {
   text-align: center;
 }
 
+.separadorSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 93%;
+  gap:20px;
+}
+
+.contenedorSection {
+  background-color: #ffffff; /* Fondo blanco */
+  border: 1px solid #e0e0e0; /* Borde gris clarito */
+  border-radius: 8px; /* Redondea las puntas de la caja */
+  padding: 24px; /* Espacio interno para que el contenido respire */
+  margin-bottom: 24px; /* Separa este contenedor del que sigue abajo */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Una sombrita muy sutil abajo */
+  flex: 1;
+}
+
 /* .estado-vacio: El mensaje cuando no hay nada cargado en la tabla */
 .sinDatos {
   color: #888; /* Gris clarito */
@@ -228,6 +247,29 @@ input, select, textarea {
 .formatoTabla {
   overflow-x: auto;
   width: 100%;
+}
+textarea {
+    resize: none;
+    min-height: 100%; /* Altura mínima para que no se vea demasiado pequeño */
+    min-width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  }
+footer {
+    background-color: #ffffff;
+    color: black;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+footer h4 {
+    margin: 0 0 10px 0;
+    font-size: 20px;
+}
+
+footer h5 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: normal;
 }
 
 @media (max-width: 768px) {

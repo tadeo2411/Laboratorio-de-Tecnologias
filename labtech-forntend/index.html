@@ -26,45 +26,41 @@
     <p>Bienvenido, </p>
  <a href="login.html">Salir</a>
 </header>
-<main>
-    <section>
-        <div><p class="sectionTitle">En el taller ahora</p> <a>Ver todas →</a></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>VEHICULO</th>
-                    <th>ESTADO</th>
-                    <th>DESDE</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Juan Pérez</td>
-                    <td>Toyota Corolla</td>
-                    <td>En proceso</td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Ana García</td>
-                    <td>Honda Civic</td>
-                    <td>Pendiente</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section>
-        <div><p class="sectionTitle">Turnos de hoy</p> <a>Agenda →</a></div>
-        <div><p>No hay turnos para hoy.</p></div>
-    </section>
-
-    <section>
-        <div><p class="sectionTitle">Hay que reponer</p> <a>Repuestos →</a></div>
-        <div><p>No falta ningún repuesto.</p></div>
-    </section>
-    </main>
+<main class = "contenido">
+    <section class="contenedor">
+                <div>
+                    <h2 class="titContenedor">En el taller ahora</h2>
+                </div>
+                <div class="formatoTabla">
+                    <table class="datosTabla">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>VEHÍCULO</th>
+                                <th>ESTADO</th>
+                                <th>DESDE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="7" class="sinDatos">Todavía no hay vehículos cargados.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <div class="separadorSection">
+            <section class = "contenedorSection">
+                <h2 class="titContenedor">Turnos de hoy</h2>
+                <p class="sinDatos">No hay turnos para hoy.</p>
+            </section>  
+            <section class = "contenedorSection">
+                <h2 class="titContenedor">Hay que reponer</h2>
+                <p class="sinDatos">No hace falta ningún repuesto.</p>
+            </section>
+            </div>
+            
+</main>
 <footer>
     <h4>Contacto</h4>
     <h5>Telefono: 2664 34-4135</h5>

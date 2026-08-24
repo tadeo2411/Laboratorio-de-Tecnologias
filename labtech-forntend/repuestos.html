@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel ="icon" href="public\images\logo-303mei.jpg">
+    <title>Repuestos</title>
+</head>
+<body>
+    <header>
+    <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+    <nav>
+        <ul class="barra">
+            <li><a href="index.html">Tableros</a></li>
+            <li><a href="ordenes.html">Ordenes</a></li>
+            <li><a href="turnos.html">Turnos</a></li>
+            <li><a href="presupuestos.html">Presupuestos</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+            <li><a href="vehiculos.html">Vehículos</a></li>
+            <li><a href="repuestos.html">Repuestos</a></li>
+        </ul>
+    </nav>
+    <p>Bienvenido, </p>
+<a href="login.html">Salir</a>
+</header>
+<main class="contenido">
+    <section class="contenedor">
+        <h2 class="titContenedor">Nuevo repuesto</h2>
+        <form>
+            <div class="grilla">
+                <div class="formulario">
+                    <label>Codigo</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Nombre</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Precio de costo</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Precio de venta</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Stock</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Stock</label>
+                    <input type="text">
+                </div>
+                <div class="formulario">
+                    <label>Stock mínimo</label>
+                    <input type="text">
+                </div>
+                <div class="formulario anchoCompleto">
+                    <label>Descripción</label>
+                    <textarea></textarea>
+                </div>
+            </div>
+            <div class="botonGuardar">
+            <button type="submit" class="btnGuardar">Guardar</button>
+            </div>
+        </form>
+        
+    </section>
+    <section class="contenedor">
+        <div>
+            <h2 class="titContenedor">Vehículos</h2>
+            <input type="text" class="input-busqueda" placeholder="Buscar por patente, marca o modelo...">
+        </div>
+        <div class="formatoTabla">
+            <table class="datosTabla">
+                <thead>
+                    <tr>
+                        <th></th>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Precio de costo</th>
+                            <th>Precio de venta</th>
+                            <th>Stock</th>
+                            <th>Stock mínimo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6" class="sinDatos">Todavía no hay vehículos cargados.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presupuestos</title>
-    <link rel="stylesheet" href="css\estilos.css">
-    <link rel ="icon" href="public\images\logo-303mei.jpg">
+    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="icon" href="public/images/logo-303mei.jpg">
 </head>
 <body>
     <header>
-    <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+    <img src="public/images/logo-303mei.jpg" alt="Logo" height="100px" width="100px">
     <nav>
-        <ul class="barra">
+        <ul class ="barra">
             <li><a href="index.html">Tableros</a></li>
             <li><a href="ordenes.html">Ordenes</a></li>
             <li><a href="turnos.html">Turnos</a></li>
@@ -21,31 +21,33 @@
             <li><a href="repuestos.html">Repuestos</a></li>
         </ul>
     </nav>
+    <div>
     <p>Bienvenido, </p>
- <a href="login.html">Salir</a>
+    </div>
+<a href="login.html">Salir</a>
 </header>
-    <main>
-        <section class = "tarjeta">
-            <h2>Nuevo Presupuesto</h2>
-            <div>
-                <form id = "formulario">
-                    <div class = "form">
+    <main class = "contenido">
+        <section class = "contenedor">
+            <h2 class="titContenedor">Nuevo presupuesto</h2>
+            <form class="grilla grilla-presupuesto">
+                <div class = "formulario">
                     <label for = "idOrden">Orden de trabajo:</label>
                     <select name = "Orden de trabajo" id = "idOrden">
                         <option value = "">Elegir</option>
                     </select>
-                    </div>
-                    <div>
-                        <label for="idObs">Observaciones</label>
-                        <textarea name="Observaciones" id="idObs" cols="30" rows="5"></textarea>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="formulario">
+                    <label for="idObs">Observaciones</label>
+                    <textarea name="Observaciones" id="idObs" cols="30" rows="5"></textarea>
+                </div>
+                <button type="submit" class="btnGuardar">Guardar presupuesto</button>
+            </form>
         </section>
-        <div class = "tarjeta">
-            <h2>Presupuestos</h2>
-            <div>
-                <table>
+        <section class="contenedor">
+            <h2 class="titContenedor">Presupuestos</h2>
+            <input type="search" class="input-busqueda" placeholder="Buscar por número o estado">
+            <div class="formatoTabla">
+                <table class="datosTabla">
                     <thead>
                         <tr>
                             <th>Numero</th>
@@ -54,12 +56,15 @@
                             <th>Total</th>
                         </tr>
                     </thead>
-                    <tbody id = "idTabla"> 
+                    <tbody id="idTabla">
+                        <tr>
+                            <td colspan="4" class="sinDatos">Todavía no hay presupuestos cargados.</td>
+                        </tr>
                     </tbody>
                 </table>
             
             </div>
-        </div>
+        </section>
     </main>
 </body>
 </html>

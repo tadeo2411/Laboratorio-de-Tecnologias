@@ -75,10 +75,15 @@ footer {
 
 .contenido{
   background-color: #f4f6f8;
-  padding: 30px;
-  min-height: 100vh; /* Asegura que como mínimo ocupe todo el alto de la pantalla */
+  padding: 20px 30px 30px;
+  min-height: calc(100vh - 51px);
   font-family: Arial, sans-serif;
+  /* main estaba centrando las secciones verticalmente: esto las deja debajo del header. */
+  justify-content: flex-start;
+  align-items: stretch;
+  box-sizing: border-box;
 }
+
 
 
 /* =========================================
@@ -93,8 +98,20 @@ footer {
   padding: 24px; /* Espacio interno para que el contenido respire */
   margin-bottom: 24px; /* Separa este contenedor del que sigue abajo */
   box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Una sombrita muy sutil abajo */
-  width: 93%; /* Asegura que ocupe todo el ancho disponible */
-  
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Formularios con pocos campos: dos columnas, también en Clientes y Presupuestos. */
+.grilla-clientes,
+.grilla-presupuesto {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grilla-clientes .btnGuardar,
+.grilla-presupuesto .btnGuardar {
+  grid-column: 1 / -1;
+  justify-self: start;
 }
 
 /* .titulo-contenedor: El título de la caja (ej: "Nuevo vehículo") */
@@ -127,6 +144,24 @@ footer {
     margin-bottom: 1rem;
     min-width: 0; /* ESTA ES LA MAGIA: obliga al contenedor a achicarse */
     width: 100%;
+}
+
+.textos{
+  textarea {
+    width: 100%;
+    /* Obliga al motor a incluir el padding y el border dentro del 100% del width */
+    box-sizing: border-box; 
+
+    border : .01rem solid ;
+
+    max-width: 100%; 
+    
+    resize: vertical; /*solo deja crecer de forma vertical
+    
+    /* Asegura que el texto largo sin espacios no rompa el ancho interno */
+    overflow-wrap: break-word;
+
+  }
 }
 
 /* .ancho-completo: Se usa para el Dueño o las Observaciones que ocupan toda la fila sola. */
@@ -163,7 +198,8 @@ input, select, textarea {
     border-radius: 4px;
     font-family: inherit;
     font-size: 1rem;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
     max-width: 100%; /* Evita que el input sea más grande que su caja */
 }
 
@@ -282,7 +318,7 @@ footer h5 {
     justify-content: center;
     gap: 15px; 
   }
-  .grilla-formulario {
+  .grilla {
     grid-template-columns: repeat(2, 1fr);
   }
 }

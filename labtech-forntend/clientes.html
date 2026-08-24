@@ -27,7 +27,7 @@
     <main class = "contenido">
         <section class = "contenedor">
             <h2 class="titContenedor">Nuevo cliente</h2>
-            <form>
+            <form class="grilla grilla-clientes">
                 <div class="formulario">
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" placeholder="Nombre">
@@ -44,12 +44,12 @@
                     <label for="idDoc">DNI / CUIT</label>
                 <input type = "text" id="idDoc" placeholder="DNI / CUIT">
                 </div>
-                <button type = "submit">Guardar</button>
+                <button type="submit" class="btnGuardar">Guardar</button>
             </form>
         </section>
         <section class = "contenedor">
             <h2 class="titContenedor">Clientes</h2>
-            <input type="" class="input-busqueda" placeholder="Buscar por DNI / CUIT">
+            <input type="search" class="input-busqueda" placeholder="Buscar por DNI / CUIT">
             <div class = "formatoTabla">
                 <table class = "datosTabla">
                     <thead>
@@ -62,11 +62,12 @@
                     </thead>
                     <tbody id = "idTabla">
                         <tr>
-                            <td colspan="7" class="sinDatos">Todavía no hay vehículos cargados.</td>
+                            <td colspan="4" class="sinDatos">Todavía no hay clientes cargados.</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+        </section>
     </main>
 </body>
 </html>

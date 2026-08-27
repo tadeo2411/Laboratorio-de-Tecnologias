@@ -184,7 +184,7 @@ input[type="text"], select, textarea, .input-busqueda {
   border-radius: 6px; /* Bordes un poco redondeados */
   font-family: inherit; /* Usa la misma letra que el resto de la página */
   font-size: 1rem;
-  outline: none; /* Saca el borde feo que traen los navegadores por defecto al hacer clic */
+  outline: none; /* Saca el borde feo que traen los navegadores por defecto al hacer clic */ 
 }
 
 /* Esto cambia el color del borde a azul cuando hacés clic adentro del input para escribir */

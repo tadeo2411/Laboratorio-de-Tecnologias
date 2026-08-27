@@ -12,8 +12,13 @@
     
 <header>
     <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+    
+    <!-- Botón que solo aparecerá en móviles -->
+    <button class="btn-menu" id="btnMenu">↓ Tablero</button>
+
     <nav>
-        <ul class="barra">
+        <!-- Agregamos un id para controlarlo con JavaScript -->
+        <ul class="barra" id="menuNavegacion">
             <li><a href="index.html">Tableros</a></li>
             <li><a href="ordenes.html">Ordenes</a></li>
             <li><a href="turnos.html">Turnos</a></li>
@@ -23,8 +28,12 @@
             <li><a href="repuestos.html">Repuestos</a></li>
         </ul>
     </nav>
-    <p>Bienvenido, </p>
- <a href="login.html">Salir</a>
+
+    <!-- Agrupamos el usuario para mejor control responsivo -->
+    <div class="usuario-info">
+        <p>Bienvenido, </p>
+        <a href="login.html">Salir</a>
+    </div>
 </header>
 <main class = "contenido">
     <section class="contenedor">
@@ -66,5 +75,14 @@
     <h5>Telefono: 2664 34-4135</h5>
 </footer>
 </body>
+<script>
+    // Seleccionamos el botón y el menú
+    const btnMenu = document.getElementById('btnMenu');
+    const menuNavegacion = document.getElementById('menuNavegacion');
 
+    // Cuando el usuario haga clic en el botón, alternamos la clase "mostrar"
+    btnMenu.addEventListener('click', function() {
+        menuNavegacion.classList.toggle('mostrar');
+    });
+</script>
 </html>

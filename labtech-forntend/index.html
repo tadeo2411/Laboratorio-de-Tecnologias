@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel ="icon" href="public\images\logo-303mei.jpg">
     <link rel="stylesheet" href="css/estilos.css">
+    <script src="js\navBar-collapse.js" defer></script>
     <title>303 Mecánica e Inyección</title>
 </head>
 
@@ -12,19 +13,25 @@
     
 <header>
     <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+    
+    <!-- Botón que solo aparecerá en móviles -->
+    <button class="btn-menu" id="btnMenu">↓ Tablero</button>
+
     <nav>
-        <ul class="barra">
+        <!-- Agregamos un id para controlarlo con JavaScript -->
+        <ul class="barra" id="menuNavegacion">
             <li><a href="index.html">Tableros</a></li>
-            <li><a href="ordenes.html">Ordenes</a></li>
-            <li><a href="turnos.html">Turnos</a></li>
-            <li><a href="presupuestos.html">Presupuestos</a></li>
-            <li><a href="clientes.html">Clientes</a></li>
-            <li><a href="vehiculos.html">Vehículos</a></li>
-            <li><a href="repuestos.html">Repuestos</a></li>
+            <li><a href="ordenes.html" class ="hoverNavBar">Ordenes</a></li>
+            <li ><a href="turnos.html" class ="hoverNavBar">Turnos</a></li>
+            <li ><a href="presupuestos.html" class ="hoverNavBar">Presupuestos</a></li>
+            <li ><a href="clientes.html" class ="hoverNavBar">Clientes</a></li>
+            <li ><a href="vehiculos.html" class ="hoverNavBar">Vehículos</a></li>
+            <li ><a href="repuestos.html" class ="hoverNavBar">Repuestos</a></li>
+
         </ul>
     </nav>
-    <p>Bienvenido, </p>
- <a href="login.html">Salir</a>
+
+
 </header>
 <main class = "contenido">
     <section class="contenedor">

@@ -5,27 +5,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/estilos.css">
+    <link rel ="icon" href="public\images\logo-303mei.jpg">
+    <script src="js\navBar-collapse.js" defer></script>
     <title>303 Mecánica e Inyección</title>
 </head>
 
 <body>
 
     <header>
-        <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
-        <nav>
-            <ul class="barra">
-                <li><a href="index.html">Tableros</a></li>
-                <li><a href="ordenes.html">Ordenes</a></li>
-                <li><a href="turnos.html">Turnos</a></li>
-                <li><a href="presupuestos.html">Presupuestos</a></li>
-                <li><a href="clientes.html">Clientes</a></li>
-                <li><a href="vehiculos.html">Vehículos</a></li>
-                <li><a href="repuestos.html">Repuestos</a></li>
-            </ul>
-        </nav>
-        <p>Bienvenido, </p>
-        <a href="login.html">Salir</a>
-    </header>
+    <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
+    
+    <!-- Botón que solo aparecerá en móviles -->
+    <button class="btn-menu" id="btnMenu">↓ Turnos</button>
+
+    <nav>
+        <!-- Agregamos un id para controlarlo con JavaScript -->
+        <ul class="barra" id="menuNavegacion">
+            <li><a href="index.html" class ="hoverNavBar">Tableros</a></li>
+            <li><a href="ordenes.html" class ="hoverNavBar">Ordenes</a></li>
+            <li><a href="turnos.html" class ="hoverNavBar">Turnos</a></li>
+            <li><a href="presupuestos.html" class ="hoverNavBar">Presupuestos</a></li>
+            <li><a href="clientes.html" class ="hoverNavBar">Clientes</a></li>
+            <li><a href="vehiculos.html" class ="hoverNavBar">Vehículos</a></li>
+            <li><a href="repuestos.html" class ="hoverNavBar">Repuestos</a></li>
+        </ul>
+    </nav>
+</header>
     <main class="contenido">
         <section class="contenedor">
             <h2 class="titContenedor">Nuevo turno</h2>
@@ -65,8 +70,7 @@
 <footer>
     <h4>Contacto</h4>
     <h5>Telefono: 2664 34-4135</h5>
-</footer>|
+</footer>
 </body>
-
 
 </html>

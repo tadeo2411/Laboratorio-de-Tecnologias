@@ -1,0 +1,133 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(16, 16, 17);
+}
+
+ul {
+    margin: 0 auto;
+    padding: 0;
+}
+
+header {
+    position:absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    color: white;
+    padding: 10px;
+    z-index: 10;
+}
+
+#logo {
+    width: 122px;
+    height: 50px;
+    object-fit: cover;
+}
+
+#logoContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../public/images/img_fondo1.jpg");
+    background-size:cover;
+    background-position: top;
+    background-repeat: no-repeat;
+
+    animation: aparecer 1.2s  ease-out forwards;
+}
+
+#navContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navContainer nav{
+    flex: 1;
+}
+
+#navContainer nav ul{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    
+}
+
+#loginContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginContainer button{
+    margin: 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: rgb(31, 233, 31);
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+nav ul li {
+    display: flex;
+    flex-direction: column;
+}
+
+nav ul li a {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: rgb(31, 233, 31);
+    transition: 200ms;
+}
+
+.nav-underline {
+    height: 2px;
+    width: 100%;
+    background-color: rgb(31, 233, 31);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+nav ul li:hover .nav-underline {
+    transform: scaleX(1);
+}
+
+footer {
+    height: 40vh;
+    background-image: url("../public/images/img_fondoFooter.jpg");
+    background-size: 100% 100%;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

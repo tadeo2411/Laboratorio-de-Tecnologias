@@ -11,14 +11,10 @@
 <body>
     
 <header>
-    <img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px">
-    
-    <!-- Botón que solo aparecerá en móviles -->
-    <button class="btn-menu" id="btnMenu">↓ Tablero</button>
-
     <nav>
-        <!-- Agregamos un id para controlarlo con JavaScript -->
-        <ul class="barra" id="menuNavegacion">
+        <button class="btn-menu" id="btnMenu">↓ Tablero</button>
+        <ul class="barra">
+            <li><img src="public\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px"></li>
             <li><a href="index.html">Tableros</a></li>
             <li><a href="ordenes.html">Ordenes</a></li>
             <li><a href="turnos.html">Turnos</a></li>
@@ -28,12 +24,6 @@
             <li><a href="repuestos.html">Repuestos</a></li>
         </ul>
     </nav>
-
-    <!-- Agrupamos el usuario para mejor control responsivo -->
-    <div class="usuario-info">
-        <p>Bienvenido, </p>
-        <a href="login.html">Salir</a>
-    </div>
 </header>
 <main class = "contenido">
     <section class="contenedor">

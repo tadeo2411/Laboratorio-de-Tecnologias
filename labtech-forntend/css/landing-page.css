@@ -11,13 +11,14 @@ ul {
 }
 
 header {
-    position:absolute;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     color: white;
+    background-color: rgb(4, 4, 4);
     padding: 10px;
-    z-index: 10;
+    gap: 5px;
+    border-bottom: 1px rgb(44, 44, 44) solid;
 }
 
 #logo {
@@ -38,12 +39,8 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url("../public/images/img_fondo1.jpg");
-    background-size:cover;
-    background-position: top;
-    background-repeat: no-repeat;
 
-    animation: aparecer 1.2s  ease-out forwards;
+    animation: aparecer 1.2s ease-out forwards;
 }
 
 #navContainer {
@@ -53,15 +50,17 @@ section {
     align-items: center;
 }
 
-#navContainer nav{
+#navContainer>nav {
     flex: 1;
 }
 
-#navContainer nav ul{
+#navContainer>nav>ul {
     display: flex;
-    flex-direction: row;
-    justify-content:space-between;
-    
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20%;
+    gap: 7px;
+
 }
 
 #loginContainer {
@@ -71,30 +70,31 @@ section {
     align-items: center;
 }
 
-#loginContainer button{
+#loginContainer>button {
     margin: 0;
     padding: 10px;
     border-radius: 10px;
     border: none;
-    background: rgb(31, 233, 31);
+    background: rgb(19, 194, 19);
     cursor: pointer;
     font-weight: bold;
     color: white;
 }
 
-nav ul li {
+nav>ul>li {
     display: flex;
     flex-direction: column;
 }
 
-nav ul li a {
+nav>ul>li>a {
     color: white;
     cursor: pointer;
     text-align: center;
     text-decoration: none;
+    font-weight: bold;
 }
 
-nav ul li a:hover {
+nav>ul>li>a:hover {
     color: rgb(31, 233, 31);
     transition: 200ms;
 }
@@ -108,8 +108,51 @@ nav ul li a:hover {
     transition: transform 0.3s ease;
 }
 
-nav ul li:hover .nav-underline {
+nav>ul>li:hover .nav-underline {
     transform: scaleX(1);
+}
+
+.section1 {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    align-items: baseline;
+}
+
+.section1>div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.section1>div>p {
+    color: rgb(238, 238, 238);
+    text-align: center;
+}
+
+.text1 {
+    font-size: clamp(32px, 2.5vw, 2.5vw);
+    color: rgb(238, 238, 238);
+    font-weight: bold;
+    text-align: center;
+}
+
+.text2 {
+    font-size: clamp(32px, 2.5vw, 2.5vw);
+    color: rgb(19, 235, 19);
+    font-weight: bold;
+    text-align: center;
+}
+
+.section1>img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% center;
+    z-index: -10;
 }
 
 footer {
@@ -118,6 +161,68 @@ footer {
     background-size: 100% 100%;
     background-position: top;
     background-repeat: no-repeat;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+}
+
+.infoSection1 {
+    display: flex;
+    flex-direction: row;
+    color: white;
+    max-height: 100px;
+    gap: 20px;
+}
+
+.infoSection1>img {
+    object-fit: cover;
+    aspect-ratio: 1;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
+}
+
+.infoSection1 p {
+    font-size: 13px;
+}
+
+@media (min-width: 751px) {
+    header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        color: white;
+        padding: 10px;
+        z-index: 10;
+    }
+
+    #navContainer > nav > ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .section1 {
+        display: flex;
+        position: relative;
+        overflow: hidden;
+
+        align-items: center;
+
+    }
+
+    .section1 > div {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-left: 30px;
+        align-items: baseline;
+        margin-top: 0px;
+    }
+
 }
 
 @keyframes aparecer {

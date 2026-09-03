@@ -290,3 +290,59 @@ footer {
 #pregunta1{
     list-style-type: none;
 }
+
+/* CSS Servicios (Tadeo) */
+
+#servicios {
+    background-color: #111111; /* Fondo muy oscuro, casi negro */
+    color: #ffffff;
+}
+
+.titulo-servicios {
+    color: rgb(31, 233, 31); /* El verde neón del footer */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+}
+
+.subtitulo-servicios {
+    color: #aaaaaa;
+    font-size: 1.2rem;
+}
+
+/* Diseño de cada tarjeta */
+.service-card {
+    background-color: #1a1a1a; /* Gris oscuro para la tarjeta */
+    border: 1px solid #333333; /* Borde sutil */
+    border-radius: 10px;
+    transition: all 0.3s ease; /* Suaviza la animación al pasar el mouse */
+    cursor: default;
+}
+
+/* Efecto Hover (cuando pasas el mouse por encima) */
+.service-card:hover {
+    transform: translateY(-8px); /* Eleva la tarjeta hacia arriba */
+    border-color: rgb(31, 233, 31); /* Pinta el borde de verde */
+    box-shadow: 0 10px 20px rgba(31, 233, 31, 0.15); /* Sombra verde */
+}
+
+/* Estilo para el contenedor del icono/emoji */
+.service-icon {
+    font-size: 2.5rem; /* Tamaño del icono */
+    margin-bottom: 15px;
+    background-color: rgba(31, 233, 31, 0.1); /* Fondo verde transparente */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%; /* Círculo perfecto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(31, 233, 31, 0.3);
+}
+
+.service-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 0;
+}

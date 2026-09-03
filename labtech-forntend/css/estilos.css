@@ -337,6 +337,16 @@ footer h5 {
 }
 
 /* =========================================
+   ESTILOS DE ACORDEÓN
+   ========================================= */
+.acordeonCuerpo {
+    padding: 15px;
+    font-size: 0.9rem;
+    color: #bd1c1c;
+    border-top: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+}
+/* =========================================
    DISEÑO RESPONSIVO (MEDIA QUERIES)
    ========================================= */
 @media (max-width: 900px) {

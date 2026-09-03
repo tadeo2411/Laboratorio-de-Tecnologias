@@ -1,0 +1,292 @@
+html,
+
+:root {
+    --colorFondo: rgb(48, 48, 49);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(16, 16, 17);
+}
+
+ul {
+    margin: 0 auto;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(4, 4, 4);
+    padding: 10px;
+    gap: 5px;
+    border-bottom: 1px rgb(44, 44, 44) solid;
+}
+
+#logo {
+    width: 122px;
+    height: 50px;
+    object-fit: cover;
+}
+
+#logoContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+section {
+    min-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    animation: aparecer 1.2s ease-out forwards;
+}
+
+#navContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#navContainer>nav {
+    flex: 1;
+}
+
+#navContainer>nav>ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20%;
+    gap: 7px;
+
+}
+
+#loginContainer {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#loginContainer>button {
+    margin: 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: rgb(19, 194, 19);
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+nav>ul>li {
+    display: flex;
+    flex-direction: column;
+}
+
+nav>ul>li>a {
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+nav>ul>li>a:hover {
+    color: rgb(31, 233, 31);
+    transition: 200ms;
+}
+
+.nav-underline {
+    height: 2px;
+    width: 100%;
+    background-color: rgb(31, 233, 31);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+nav>ul>li:hover .nav-underline {
+    transform: scaleX(1);
+}
+
+.section1 {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    align-items: baseline;
+}
+
+.section1>div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.section1>div>p {
+    color: rgb(238, 238, 238);
+    text-align: center;
+}
+
+.text1 {
+    font-size: clamp(32px, 2.5vw, 2.5vw);
+    color: rgb(238, 238, 238);
+    font-weight: bold;
+    text-align: center;
+}
+
+.text2 {
+    font-size: clamp(32px, 2.5vw, 2.5vw);
+    color: rgb(19, 235, 19);
+    font-weight: bold;
+    text-align: center;
+}
+
+.section1>img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% center;
+    z-index: -10;
+}
+
+footer {
+    height: 40vh;
+    background-image: url("../public/images/img_fondoFooter.jpg");
+    background-size: 100% 100%;
+    background-position: top;
+    background-repeat: no-repeat;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    gap: 20px;
+}
+
+.infoSection1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: white;
+    gap: 20px;
+}
+
+.infoSection1>img {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    object-fit: contain;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
+}
+
+.infoSection1 p {
+    font-size: 13px;
+}
+
+@media (min-width: 751px) {
+    header {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        color: white;
+        padding: 10px;
+        z-index: 10;
+    }
+
+    #navContainer > nav > ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .section1 {
+        display: flex;
+        position: relative;
+        overflow: hidden;
+
+        align-items: center;
+
+    }
+
+    .section1 > div {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        margin-left: 30px;
+        align-items: baseline;
+        margin-top: 0px;
+    }
+
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 750px) {
+    .section1 > img {
+        opacity: 0.2;
+        object-position: 38% center;
+    }
+
+    .section1 {
+        background:
+            linear-gradient(
+                to bottom,
+                rgba(16, 16, 17, 0.75),
+                rgb(16, 16, 17)
+            );
+    }
+}
+
+#faq .accordion {
+    width: min(90%, 800px);
+}
+
+.accordion-item{
+    background-color: var(--colorFondo);
+    color: white;
+
+}
+
+.accordion-button{
+    background-color: var(--colorFondo);
+    color: white;
+    border: 1px solid
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #202020;
+    color: rgb(74, 220, 74);
+    box-shadow: none;
+}
+
+/* Cambia el color de la flecha */
+.accordion-button::after {
+    filter: invert(1);
+}
+
+#pregunta1{
+    list-style-type: none;
+}

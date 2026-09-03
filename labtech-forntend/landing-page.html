@@ -11,6 +11,7 @@
                 integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
                 crossorigin="anonymous"
                 >
+    <script src="js/navBar-collapse.js" defer></script>
     <link rel="stylesheet" href="css/landing-page.css">
     <title>303 Mecánica e Inyección</title>
 </head>
@@ -18,35 +19,35 @@
 <body>
     <!-- HEADER -->
     <header>
-        <div id="logoContainer">
-            <img id="logo" src="./public/images/logo-303mei.jpg" />
+        <div id="logo-container">
+            <img id="logo" src="./public/images/logo-303mei.jpg" alt="303 Mecánica e Inyección" />
         </div>
-        <div id="navContainer">
-            <nav>
-                <ul>
-                    <li><a href="#">Inicio</a>
-                        <div class="nav-underline"></div>
+        <button class="btn-menu" id="btnMenu" ></button>
+        <div id= "nav-container"></div>
+            <nav class = " " id="menuNavegacion">
+                <ul class="barra" id="menuNavegacion">
+                    <li><a href = "#inicio">Inicio</a>
+                        
                     </li>
-                    <li><a>Servicios</a>
-
-                        <div class="nav-underline"></div>
+                    <li><a href="#servicios">Servicios</a>
+                        
                     </li>
-                    <li><a>Nosotros</a>
-                        <div class="nav-underline"></div>
+                    <li><a href= "#formularioContacto">Nosotros</a>
+                        
                     </li>
-                    <li><a>Contacto</a>
-                        <div class="nav-underline"></div>
+                    <li><a href = "#footer">Contacto</a>
+                        
                     </li>
                 </ul>
             </nav>
-        </div>
-        <div id="loginContainer">
-            <button>Login</button>
-        </div>
+        
+        
+            <button class="login-button" type="button">Login</button>
+        
     </header>
     <!-- MAIN -->
     <main>
-        <section class="section1">
+        <section class="section1" id = "inicio">
             <img src="./public/images/img_fondo1.png" />
             <div>
                 <span class="text1">CUIDAMOS TU AUTO</span>
@@ -78,11 +79,11 @@
             </div>
         </section>
 <!-- SECCIÓN SERVICIOS / GALERÍA -->
-<section id="servicios" class="py-5">
+<section id= "servicios" class="py-5">
     <div class="container">
         
         <div class="text-center mb-5">
-            <h2 class="titulo-servicios">Nuestros Servicios</h2>
+            <h2 class="titulo-servicios" id = "servicios">Nuestros Servicios</h2>
             <p class="subtitulo-servicios">Especialistas en inyección, mecánica integral y potenciación.</p>
         </div>
 
@@ -237,14 +238,14 @@
 
     </main>
     
-    <section id ="formularioContacto">
+    <section class="container" id ="formularioContacto">
         <form class="row g-3">
         <div class="col-md-6">
             <label for="inputEmail4" class="form-label">Nombre completo</label>
             <input type="text" class="form-control" id="inputEmail4" required>
         </div>
         <div class="col-md-6">
-            <label for="inputPassword4" class="form-label"></label>
+            <label for="inputPassword4" class="form-label">hola</label>
             <input type="" class="form-control" id="inputPassword4">
         </div>
         <div class="col-4">
@@ -341,7 +342,7 @@
             </div>
         </div>
     </section>
-    <footer style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <footer style="display: flex; flex-direction: column; justify-content: center; align-items: center;" id = "footer">
         <img id="logo" src="./public/images/logo-303mei.jpg" />
         <p style="color: rgb(31, 233, 31); font-size: 30px; font-weight: bold;">¿Por qué elegirnos?</p>
     </footer>

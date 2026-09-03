@@ -229,27 +229,6 @@ label {
     color: #333;
 }
 
-<<<<<<< HEAD
-
-
-/* Le da estilo general a todos los campos donde el usuario escribe o elige algo */
-input[type="text"], select, textarea, .input-busqueda {
-  padding: 10px; /* Espacio interno para que el texto no quede pegado al borde */
-  border: 1px solid #ccc; /* Borde gris */
-  border-radius: 6px; /* Bordes un poco redondeados */
-  font-family: inherit; /* Usa la misma letra que el resto de la página */
-  font-size: 1rem;
-  outline: none; /* Saca el borde feo que traen los navegadores por defecto al hacer clic */ 
-}
-
-/* Esto cambia el color del borde a azul cuando hacés clic adentro del input para escribir */
-input[type="text"]:focus, select:focus, textarea:focus, .input-busqueda:focus {
-  border-color: #1a56a6; 
-  
-}
-
-=======
->>>>>>> 1032e432804286d1bb6ba92fbfe8e5dbba5faa85
 input, select, textarea {
     padding: 0.8rem;
     border: 1px solid #ccc;

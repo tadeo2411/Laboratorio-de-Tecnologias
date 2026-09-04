@@ -18,35 +18,27 @@
 
 <body>
     <!-- HEADER -->
-    <header>
+    <header class = "header-contenido">
+        
         <div id="logo-container">
             <img id="logo" src="./public/images/logo-303mei.jpg" alt="303 Mecánica e Inyección" />
         </div>
-        <button class="btn-menu" id="btnMenu" ></button>
-        <div id= "nav-container"></div>
-            <nav class = " " id="menuNavegacion">
-                <ul class="barra" id="menuNavegacion">
-                    <li><a href = "#inicio">Inicio</a>
-                        
-                    </li>
-                    <li><a href="#servicios">Servicios</a>
-                        
-                    </li>
-                    <li><a href= "#formularioContacto">Nosotros</a>
-                        
-                    </li>
-                    <li><a href = "#footer">Contacto</a>
-                        
-                    </li>
+
+        <div id= "nav-container">
+            <nav class = "barra">
+                <ul class = "menu-horizontal">
+                    <li><a href = "#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href= "#formularioContacto">Nosotros</a></li>
+                    <li><a href = "#footer">Contacto</a></li>
                 </ul>
             </nav>
-        
-        
-            <button class="login-button" type="button">Login</button>
-        
+        </div>
+
     </header>
     <!-- MAIN -->
     <main>
+        
         <section class="section1" id = "inicio">
             <img src="./public/images/img_fondo1.png" />
             <div>
@@ -342,7 +334,9 @@
             </div>
         </div>
     </section>
+    
     <footer style="display: flex; flex-direction: column; justify-content: center; align-items: center;" id = "footer">
+
         <img id="logo" src="./public/images/logo-303mei.jpg" />
         <p style="color: rgb(31, 233, 31); font-size: 30px; font-weight: bold;">¿Por qué elegirnos?</p>
     </footer>

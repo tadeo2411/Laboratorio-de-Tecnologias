@@ -15,15 +15,53 @@ body {
 }
 
 header {
+        width: 100%;
+        display: absolute;
+        flex-direction: row;
+        color: white;
+        padding: 10px;
+        z-index: 10;
+        position: fixed; 
+        background-color: var(--colorFondo);   
+    }
+
+.header-contenido{
     width: 100%;
     display: flex;
-    flex-direction: column;
-    color: white;
-    background-color:var(--colorFondo);
-    padding: 10px;
-    gap: 5px;
-    border-bottom: 1px rgb(44, 44, 44) solid;
-    position: absolute;
+    align-items: center;
+}
+
+#logo-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+#nav-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+header nav {
+    justify-self: center;
+}
+
+
+
+header.nav-oculto {
+    transform: translateY(-100%);
+}
+
+.barra {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 ul {
@@ -31,7 +69,13 @@ ul {
     padding: 0;
 }
 
-
+.menu-horizontal{
+  list-style: none;
+  display: flex;
+  gap: 3rem; /* Espacio entre los enlaces */
+  margin: 0;
+  padding: 0;    
+}
 
 #logo {
     width: 122px;
@@ -60,6 +104,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 #navContainer>nav {
@@ -169,7 +214,7 @@ nav>ul>li:hover .nav-underline {
 
 footer {
     height: 40vh;
-    background-image: url("../public/images/img_fondoFooter.jpg");
+    background-image: url("../public/images/img_fondoFooter.png");
     background-size: 100% 100%;
     background-position: top;
     background-repeat: no-repeat;
@@ -205,11 +250,13 @@ footer {
 @media (min-width: 751px) {
     header {
         width: 100%;
-        display: flex;
+        display: absolute;
         flex-direction: row;
         color: white;
         padding: 10px;
         z-index: 10;
+        position: fixed; 
+        background-color: var(--colorFondo);   
     }
 
     #navContainer > nav > ul {
@@ -359,4 +406,13 @@ footer {
     font-size: 0.9rem;
     color: #cecece;
 
+}
+
+#footerImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: -10;
+    position: absolute;
 }

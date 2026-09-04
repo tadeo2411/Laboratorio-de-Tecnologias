@@ -17,9 +17,8 @@ body {
 header {
         width: 100%;
         display: absolute;
-        flex-direction: row;
         color: white;
-        padding: 10px;
+        padding: 5px;
         z-index: 10;
         position: fixed; 
         background-color: var(--colorFondo);   
@@ -57,7 +56,7 @@ header.nav-oculto {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 32px;
+    gap: 10rem;
 
     margin: 0;
     padding: 0;
@@ -72,15 +71,26 @@ ul {
 .menu-horizontal{
   list-style: none;
   display: flex;
-  gap: 3rem; /* Espacio entre los enlaces */
+  gap: 1rem; /* Espacio entre los enlaces */
   margin: 0;
   padding: 0;    
 }
 
 #logo {
-    width: 122px;
-    height: 50px;
-    object-fit: cover;
+    width: 6rem;
+    height: 2rem;
+    object-fit: fill;
+}
+
+.btn-menu {
+    display: none;
+    background-color: transparent;
+    border: 1px solid rgb(31, 233, 31);
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: white;
+    cursor: pointer;
+    font-size: .9rem;
 }
 
 #logoContainer {
@@ -299,6 +309,43 @@ footer {
 }
 
 @media (max-width: 750px) {
+    .btn-menu {
+        display: block;
+        margin-left: auto;
+    }
+
+    #nav-container {
+        flex: 0;
+    }
+
+    .menu-horizontal {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--colorFondo);
+        border-bottom: 1px solid rgb(31, 233, 31);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
+        z-index: 10;
+    }
+
+    .menu-horizontal.mostrar {
+        display: flex;
+    }
+
+    .menu-horizontal li {
+        width: 100%;
+        border-top: 1px solid rgba(255, 255, 255, .12);
+    }
+
+    .menu-horizontal a {
+        display: block;
+        padding: 15px;
+    }
+
     .section1 > img {
         opacity: 0.2;
         object-position: 38% center;

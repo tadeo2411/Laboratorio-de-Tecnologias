@@ -1,7 +1,7 @@
 html,
 
 :root {
-    --colorFondo: rgb(38, 38, 39);
+    --colorFondo: rgb(30, 30, 31);
 }
 
 body {
@@ -18,7 +18,7 @@ header {
         width: 100%;
         display: absolute;
         color: white;
-        padding: 5px;
+        padding: 2px;
         z-index: 10;
         position: fixed; 
         background-color: var(--colorFondo);   
@@ -64,27 +64,28 @@ header.nav-oculto {
 }
 
 ul {
-    margin: 0 auto;
+    margin: 0 ;
     padding: 0;
 }
 
 .menu-horizontal{
   list-style: none;
   display: flex;
-  gap: 1rem; /* Espacio entre los enlaces */
+  gap: 5rem; /* Espacio entre los enlaces */
   margin: 0;
   padding: 0;    
 }
 
 #logo {
     width: 6rem;
-    height: 2rem;
+    height: 3rem;
     object-fit: fill;
 }
 
 .btn-menu {
     display: none;
     background-color: transparent;
+    margin: revert;
     border: 1px solid rgb(31, 233, 31);
     border-radius: 4px;
     padding: 8px 12px;
@@ -220,6 +221,8 @@ nav>ul>li:hover .nav-underline {
     object-fit: cover;
     object-position: 30% center;
     z-index: -10;
+    -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);    
 }
 
 footer {
@@ -338,7 +341,6 @@ footer {
 
     .menu-horizontal li {
         width: 100%;
-        border-top: 1px solid rgba(255, 255, 255, .12);
     }
 
     .menu-horizontal a {
@@ -368,8 +370,11 @@ footer {
 .accordion-item{
     background-color: var(--colorFondo);
     color: white;
+    
 
 }
+
+
 
 .accordion-button{
     background-color: var(--colorFondo);
@@ -396,8 +401,8 @@ footer {
 /* CSS Servicios (Tadeo) */
 
 #servicios {
-    background-color: #111111; /* Fondo muy oscuro, casi negro */
-    color: #ffffff;
+    background-color: var(--colorFondo); /*posiblemente lo cambiemos para 
+    color: #ffffff;                                     notar la división de secciones*/    
 }
 
 .titulo-servicios {

@@ -10,21 +10,21 @@ body {
     background-color: var(--colorFondo);
 }
 
-.navList{
+.navList {
     opacity: 1;
 }
 
 header {
-        width: 100%;
-        display: absolute;
-        color: white;
-        padding: 2px;
-        z-index: 10;
-        position: fixed; 
-        background-color: var(--colorFondo);   
-    }
+    width: 100%;
+    display: absolute;
+    color: white;
+    padding: 2px;
+    z-index: 10;
+    position: fixed;
+    background-color: var(--colorFondo);
+}
 
-.header-contenido{
+.header-contenido {
     width: 100%;
     display: flex;
     align-items: center;
@@ -64,16 +64,17 @@ header.nav-oculto {
 }
 
 ul {
-    margin: 0 ;
+    margin: 0;
     padding: 0;
 }
 
-.menu-horizontal{
-  list-style: none;
-  display: flex;
-  gap: 5rem; /* Espacio entre los enlaces */
-  margin: 0;
-  padding: 0;    
+.menu-horizontal {
+    list-style: none;
+    display: flex;
+    gap: 5rem;
+    /* Espacio entre los enlaces */
+    margin: 0;
+    padding: 0;
 }
 
 #logo {
@@ -115,7 +116,7 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 #navContainer>nav {
@@ -222,15 +223,68 @@ nav>ul>li:hover .nav-underline {
     object-position: 30% center;
     z-index: -10;
     -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);    
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
 }
 
 footer {
-    height: 40vh;
     background-image: url("../public/images/img_fondoFooter.png");
     background-size: 100% 100%;
     background-position: top;
     background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 40px 0 0 0;
+}
+
+footer>div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+footer>div>span {
+    color: rgb(6, 231, 6);
+    font-weight: bold;
+}
+
+.infoContacto {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    justify-content: baseline;
+    align-items: center;
+    color: white;
+    width: 200px;
+    gap: 10px;
+    font-weight: 500;
+    
+}
+
+.infoContacto>img {
+    height: 50px;
+    width: 50px;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
+    object-fit: contain;
+}
+
+.copyright {
+    width: 100%;
+    height: 30px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #101011;
+    color: #fff;
+
+    font-size: 14px;
+    box-sizing: border-box;
 }
 
 .infoContainer {
@@ -268,11 +322,11 @@ footer {
         color: white;
         padding: 10px;
         z-index: 10;
-        position: fixed; 
-        background-color: var(--colorFondo);   
+        position: fixed;
+        background-color: var(--colorFondo);
     }
 
-    #navContainer > nav > ul {
+    #navContainer>nav>ul {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -288,7 +342,7 @@ footer {
 
     }
 
-    .section1 > div {
+    .section1>div {
         display: flex;
         flex-direction: column;
         flex: 1;
@@ -348,18 +402,16 @@ footer {
         padding: 15px;
     }
 
-    .section1 > img {
+    .section1>img {
         opacity: 0.2;
         object-position: 38% center;
     }
 
     .section1 {
         background:
-            linear-gradient(
-                to bottom,
+            linear-gradient(to bottom,
                 rgba(16, 16, 17, 0.75),
-                rgb(16, 16, 17)
-            );
+                rgb(16, 16, 17));
     }
 }
 
@@ -367,16 +419,16 @@ footer {
     width: min(90%, 800px);
 }
 
-.accordion-item{
+.accordion-item {
     background-color: var(--colorFondo);
     color: white;
-    
+
 
 }
 
 
 
-.accordion-button{
+.accordion-button {
     background-color: var(--colorFondo);
     color: white;
     border: 1px thin;
@@ -394,19 +446,21 @@ footer {
     filter: invert(1);
 }
 
-#pregunta1{
+#pregunta1 {
     list-style-type: none;
 }
 
 /* CSS Servicios (Tadeo) */
 
 #servicios {
-    background-color: var(--colorFondo); /*posiblemente lo cambiemos para 
-    color: #ffffff;                                     notar la división de secciones*/    
+    background-color: var(--colorFondo);
+    /*posiblemente lo cambiemos para 
+    color: #ffffff;                                     notar la división de secciones*/
 }
 
 .titulo-servicios {
-    color: rgb(31, 233, 31); /* El verde neón del footer */
+    color: rgb(31, 233, 31);
+    /* El verde neón del footer */
     font-weight: bold;
     text-transform: uppercase;
     font-size: 2.5rem;
@@ -419,28 +473,37 @@ footer {
 
 /* Diseño de cada tarjeta */
 .service-card {
-    background-color: #1a1a1a; /* Gris oscuro para la tarjeta */
-    border: 1px solid #333333; /* Borde sutil */
+    background-color: #1a1a1a;
+    /* Gris oscuro para la tarjeta */
+    border: 1px solid #333333;
+    /* Borde sutil */
     border-radius: 10px;
-    transition: all 0.3s ease; /* Suaviza la animación al pasar el mouse */
+    transition: all 0.3s ease;
+    /* Suaviza la animación al pasar el mouse */
     cursor: default;
 }
 
 /* Efecto Hover (cuando pasas el mouse por encima) */
 .service-card:hover {
-    transform: translateY(-8px); /* Eleva la tarjeta hacia arriba */
-    border-color: rgb(31, 233, 31); /* Pinta el borde de verde */
-    box-shadow: 0 10px 20px rgba(31, 233, 31, 0.15); /* Sombra verde */
+    transform: translateY(-8px);
+    /* Eleva la tarjeta hacia arriba */
+    border-color: rgb(31, 233, 31);
+    /* Pinta el borde de verde */
+    box-shadow: 0 10px 20px rgba(31, 233, 31, 0.15);
+    /* Sombra verde */
 }
 
 /* Estilo para el contenedor del icono/emoji */
 .service-icon {
-    font-size: 2.5rem; /* Tamaño del icono */
+    font-size: 2.5rem;
+    /* Tamaño del icono */
     margin-bottom: 15px;
-    background-color: rgba(31, 233, 31, 0.1); /* Fondo verde transparente */
+    background-color: rgba(31, 233, 31, 0.1);
+    /* Fondo verde transparente */
     width: 70px;
     height: 70px;
-    border-radius: 50%; /* Círculo perfecto */
+    border-radius: 50%;
+    /* Círculo perfecto */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -460,7 +523,7 @@ footer {
 
 }
 
-#footerImg{
+#footerImg {
     width: 100%;
     height: 100%;
     object-fit: cover;

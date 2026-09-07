@@ -3,7 +3,7 @@ const menuNavegacion = document.getElementById('menuNavegacion');
 
 if (btnMenu && menuNavegacion) {
     const actualizarBoton = (estaAbierto) => {
-        btnMenu.textContent = estaAbierto ? 'Cerrar' : 'Menú';
+        btnMenu.innerHTML = estaAbierto ? '&times;' : '&#9776;';
         btnMenu.setAttribute('aria-expanded', String(estaAbierto));
     };
 
@@ -18,5 +18,12 @@ if (btnMenu && menuNavegacion) {
             menuNavegacion.classList.remove('mostrar');
             actualizarBoton(false);
         });
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 750) {
+            menuNavegacion.classList.remove('mostrar');
+            actualizarBoton(false);
+        }
     });
 }

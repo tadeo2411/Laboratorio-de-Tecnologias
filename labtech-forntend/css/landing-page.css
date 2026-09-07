@@ -450,17 +450,15 @@ footer>div>span {
     list-style-type: none;
 }
 
-/* CSS Servicios (Tadeo) */
+/*Galeria de servicios (tadeo)*/
 
 #servicios {
-    background-color: var(--colorFondo);
-    /*posiblemente lo cambiemos para 
-    color: #ffffff;                                     notar la división de secciones*/
+    background-color: #0a0a0a; /* Fondo ultra oscuro */
+    color: #ffffff;
 }
 
 .titulo-servicios {
-    color: rgb(31, 233, 31);
-    /* El verde neón del footer */
+    color: rgb(31, 233, 31); /* Verde neón */
     font-weight: bold;
     text-transform: uppercase;
     font-size: 2.5rem;
@@ -468,66 +466,89 @@ footer>div>span {
 
 .subtitulo-servicios {
     color: #aaaaaa;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
-/* Diseño de cada tarjeta */
 .service-card {
-    background-color: #1a1a1a;
-    /* Gris oscuro para la tarjeta */
-    border: 1px solid #333333;
-    /* Borde sutil */
-    border-radius: 10px;
+    background-color: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
     transition: all 0.3s ease;
-    /* Suaviza la animación al pasar el mouse */
-    cursor: default;
 }
 
-/* Efecto Hover (cuando pasas el mouse por encima) */
 .service-card:hover {
-    transform: translateY(-8px);
-    /* Eleva la tarjeta hacia arriba */
+    transform: translateY(-5px);
     border-color: rgb(31, 233, 31);
-    /* Pinta el borde de verde */
-    box-shadow: 0 10px 20px rgba(31, 233, 31, 0.15);
-    /* Sombra verde */
+    box-shadow: 0 8px 20px rgba(31, 233, 31, 0.15);
 }
 
-/* Estilo para el contenedor del icono/emoji */
 .service-icon {
-    font-size: 2.5rem;
-    /* Tamaño del icono */
-    margin-bottom: 15px;
-    background-color: rgba(31, 233, 31, 0.1);
-    /* Fondo verde transparente */
-    width: 70px;
-    height: 70px;
+    font-size: 2.2rem;
+    width: 65px;
+    height: 65px;
+    background-color: rgba(31, 233, 31, 0.08);
     border-radius: 50%;
-    /* Círculo perfecto */
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid rgba(31, 233, 31, 0.3);
+    border: 1px solid rgba(31, 233, 31, 0.2);
 }
 
 .service-title {
     font-size: 1rem;
     font-weight: 600;
     color: #e0e0e0;
-    margin: 0;
+    margin-bottom: 10px;
 }
 
-.fromLabel {
-    font-size: 0.9rem;
-    color: #cecece;
-
+.ver-mas-txt {
+    font-size: 0.8rem;
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+    opacity: 0.7;
+    transition: opacity 0.3s;
 }
 
-#footerImg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: -10;
-    position: absolute;
+.service-card:hover .ver-mas-txt {
+    opacity: 1;
+}
+
+.modal-oscuro {
+    background-color: #161616;
+    color: #fff;
+    border: 1px solid rgb(31, 233, 31);
+    box-shadow: 0 0 30px rgba(31, 233, 31, 0.2);
+}
+
+.modal-title {
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+}
+
+.modal-destacado {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #eaeaea;
+    margin-bottom: 10px;
+}
+
+.modal-body p {
+    color: #b0b0b0;
+}
+
+.btn-whatsapp {
+    background-color: #25D366;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1ebe57;
+    color: #ffffff;
+    transform: scale(1.02);
 }

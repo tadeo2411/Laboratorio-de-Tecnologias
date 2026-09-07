@@ -1,18 +1,17 @@
 html,
 
 :root {
-    --colorFondo: rgb(48, 48, 49);
+    --colorFondo: rgb(38, 38, 39);
 }
 
 body {
     margin: 0;
     padding: 0;
-    background-color: rgb(16, 16, 17);
+    background-color: var(--colorFondo);
 }
 
-ul {
-    margin: 0 auto;
-    padding: 0;
+.navList{
+    opacity: 1;
 }
 
 header {
@@ -20,11 +19,19 @@ header {
     display: flex;
     flex-direction: column;
     color: white;
-    background-color: rgb(4, 4, 4);
+    background-color:var(--colorFondo);
     padding: 10px;
     gap: 5px;
     border-bottom: 1px rgb(44, 44, 44) solid;
+    position: absolute;
 }
+
+ul {
+    margin: 0 auto;
+    padding: 0;
+}
+
+
 
 #logo {
     width: 122px;
@@ -273,7 +280,8 @@ footer {
 .accordion-button{
     background-color: var(--colorFondo);
     color: white;
-    border: 1px solid
+    border: 1px thin;
+
 }
 
 .accordion-button:not(.collapsed) {
@@ -345,4 +353,10 @@ footer {
     font-weight: 600;
     color: #e0e0e0;
     margin: 0;
+}
+
+.fromLabel {
+    font-size: 0.9rem;
+    color: #cecece;
+
 }

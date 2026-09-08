@@ -1,7 +1,9 @@
 html,
 
 :root {
-    --colorFondo: rgb(30, 30, 31);
+    --colorFondo: rgb(23, 23, 25);
+    --colorFondoFaq: rgb(18, 26, 15);
+    --colorBoton : rgb(61, 189, 61);
 }
 
 body {
@@ -18,10 +20,10 @@ header {
     width: 100%;
     display: absolute;
     color: white;
-    padding: 2px;
     z-index: 10;
     position: fixed;
     background-color: var(--colorFondo);
+    font-size: .8rem;
 }
 
 .header-contenido {
@@ -53,14 +55,10 @@ header.nav-oculto {
 }
 
 .barra {
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10rem;
-
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    width: 100%;
 }
 
 ul {
@@ -69,12 +67,14 @@ ul {
 }
 
 .menu-horizontal {
+    position: relative;
     list-style: none;
     display: flex;
     gap: 5rem;
+    justify-content: center;
+    align-items: center;
     /* Espacio entre los enlaces */
-    margin: 0;
-    padding: 0;
+    width: 100%;
 }
 
 #logo {
@@ -128,8 +128,6 @@ section {
     flex-direction: column;
     justify-content: space-between;
     width: 20%;
-    gap: 7px;
-
 }
 
 #loginContainer {
@@ -177,8 +175,31 @@ nav>ul>li>a:hover {
     transition: transform 0.3s ease;
 }
 
+
+
 nav>ul>li:hover .nav-underline {
     transform: scaleX(1);
+}
+
+.item-turno {
+    position: absolute;
+    right: 1rem;
+    color: rgb(0, 0, 0);
+    background-color:var(--colorBoton);    
+    border-radius: 3px;
+    border: .1rem solid var(--colorBoton);
+    margin-left:auto
+}
+.item-turno>a {
+    color: rgb(18, 16, 16);
+    text-decoration: none;
+    padding: .1rem
+}
+
+.item-turno>a:hover {
+    background-color: var(--colorFondo);
+    color: var(--colorBoton); ;
+    transition : all 0.3s ease;
 }
 
 .section1 {
@@ -320,7 +341,7 @@ footer>div>span {
         display: absolute;
         flex-direction: row;
         color: white;
-        padding: 10px;
+        padding: 2px;
         z-index: 10;
         position: fixed;
         background-color: var(--colorFondo);
@@ -366,6 +387,10 @@ footer>div>span {
 }
 
 @media (max-width: 750px) {
+    .header-contenido{  
+        padding: .5rem;
+
+    }
     .btn-menu {
         display: block;
         margin-left: auto;
@@ -373,6 +398,16 @@ footer>div>span {
 
     #nav-container {
         flex: 0;
+    }
+
+    .barra{
+        position:static;
+    }
+
+    .item-turno{
+        position : static;
+        right: auto;
+        margin-left : 0;
     }
 
     .menu-horizontal {
@@ -388,6 +423,8 @@ footer>div>span {
         box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
         z-index: 10;
     }
+
+    
 
     .menu-horizontal.mostrar {
         display: flex;
@@ -411,7 +448,15 @@ footer>div>span {
         background:
             linear-gradient(to bottom,
                 rgba(16, 16, 17, 0.75),
-                rgb(16, 16, 17));
+                var(--colorFondoFaq) 100%);
+    }
+
+    #logo-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin-top: .5px;
     }
 }
 
@@ -420,7 +465,7 @@ footer>div>span {
 }
 
 .accordion-item {
-    background-color: var(--colorFondo);
+    background-color: var(--colorFondoFaq);
     color: white;
 
 
@@ -432,11 +477,14 @@ footer>div>span {
     background-color: var(--colorFondo);
     color: white;
     border: 1px thin;
+}
 
+.accordion-button:hover {
+    background-color: rgb(7, 41, 7);
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: #202020;
+    background-color: var(--colorFondoFaq);
     color: rgb(74, 220, 74);
     box-shadow: none;
 }
@@ -536,19 +584,3 @@ footer>div>span {
     color: #b0b0b0;
 }
 
-.btn-whatsapp {
-    background-color: #25D366;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 1.1rem;
-    padding: 12px;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-
-.btn-whatsapp:hover {
-    background-color: #1ebe57;
-    color: #ffffff;
-    transform: scale(1.02);
-}

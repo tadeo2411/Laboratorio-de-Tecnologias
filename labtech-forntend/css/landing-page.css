@@ -494,9 +494,9 @@ footer>div>span {
     filter: invert(1);
 }
 
-#pregunta1 {
-    list-style-type: none;
-}
+/*modifico los colores de los bordes de las preguntas frecuentes*/
+
+
 
 /*Galeria de servicios (tadeo)*/
 

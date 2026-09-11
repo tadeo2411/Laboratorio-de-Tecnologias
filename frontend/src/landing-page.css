@@ -23,7 +23,7 @@ header {
     z-index: 10;
     position: fixed;
     background-color: var(--colorFondo);
-    font-size: .8rem;
+    font-size: 1rem;
 }
 
 .header-contenido {
@@ -246,6 +246,18 @@ nav>ul>li:hover .nav-underline {
     -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
 }
+#ubicacionTexto{
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+#ubicacionMapa{
+    
+    height: 30rem;
+    border: 0;
+    border-radius: 10px;
+}
 
 footer {
     background-image: url("../public/images/img_fondoFooter.png");
@@ -341,7 +353,7 @@ footer>div>span {
         display: absolute;
         flex-direction: row;
         color: white;
-        padding: 2px;
+        padding: .5rem;
         z-index: 10;
         position: fixed;
         background-color: var(--colorFondo);

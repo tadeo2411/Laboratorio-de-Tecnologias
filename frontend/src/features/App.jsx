@@ -1,6 +1,6 @@
 import './App.css'
 import Footer from './Footer'
-import NavBarLanding from './NavBarLanding'
+import NavBarLanding from '../shared/NavBarLanding/NavBarLanding'
 import ServiceCard from './ServiceCard'
 import Faq from './Faq'
 

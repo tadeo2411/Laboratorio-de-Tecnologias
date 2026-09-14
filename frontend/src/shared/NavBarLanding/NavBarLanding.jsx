@@ -18,7 +18,7 @@ function NavBarLanding() {
     }, [])
 
     const cerrarMenu = () => setMenuAbierto(false)
-
+//podría haberlo hecho con import pero no me dejaba
     return (
         <>
             <header>

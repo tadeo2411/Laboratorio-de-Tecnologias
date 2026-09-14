@@ -472,8 +472,17 @@ footer>div>span {
     }
 }
 
+#faq {
+    align-items: flex;
+}
+
+#faq > .row{
+    width: 80%;
+    align-items: flex-start;
+}
+
 #faq .accordion {
-    width: min(90%, 800px);
+    width: 100%;
 }
 
 .accordion-item {
@@ -482,8 +491,6 @@ footer>div>span {
 
 
 }
-
-
 
 .accordion-button {
     background-color: var(--colorFondo);
@@ -499,6 +506,7 @@ footer>div>span {
     background-color: var(--colorFondoFaq);
     color: rgb(74, 220, 74);
     box-shadow: none;
+    
 }
 
 /* Cambia el color de la flecha */

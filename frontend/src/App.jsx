@@ -2,7 +2,7 @@ import './App.css'
 import Footer from './Footer'
 import NavBarLanding from './NavBarLanding'
 import ServiceCard from './ServiceCard'
-
+import Faq from './Faq'
 
 function App() {
 
@@ -25,21 +25,21 @@ function App() {
             <p>Calidad, confianza y experiencia para mantenerlo siempre en las mejores condiciones.</p>
             <div className="infoContainer">
               <div className="infoSection1">
-                <img src="../public/images/img_security.png" />
+                <img src="images/img_security.png" />
                 <div>
                   <p style={{ fontWeight: "bold" }}>TRABAJO GARANTIZADDO</p>
                   <p>Calidad y confianza</p>
                 </div>
               </div>
               <div className="infoSection1">
-                <img src="../public/images/img_technology.png" />
+                <img src="images/img_technology.png" />
                 <div>
                   <p style={{ fontWeight: "bold" }}>TECNOLOGÍA AVANZADA</p>
                   <p>Equipamiento de última generación</p>
                 </div>
               </div>
               <div className="infoSection1">
-                <img src="../public/images/img_potenciar.png" />
+                <img src="images/img_potenciar.png" />
                 <div>
                   <p style={{ fontWeight: "bold" }}>RENDIMIENTO REAL</p>
                   <p>Potenciamos tu auto al máximo</p>
@@ -83,7 +83,9 @@ function App() {
       </main >
 
 
-
+  
+     <Faq />
+  
 
 
 

@@ -4,18 +4,18 @@ function Footer() {
     return (
         <footer id="footer">
             <div>
-                <img id="logo" src="./public/images/logo-303mei.jpg" />
+                <img id="logo" src="images/logo-303mei.jpg" />
                 <span>CONTACTO</span>
                 <div className="infoContacto">
-                    <img src="./public/images/img_whatsapp.png" />
+                    <img src="images/img_whatsapp.png" />
                     <span>+11 123456789</span>
                 </div>
                 <div className="infoContacto">
-                    <img src="./public/images/img_mail.png" />
+                    <img src="images/img_mail.png" />
                     <span>correo@gmail.com</span>
                 </div>
                 <div className="infoContacto">
-                    <img src="./public/images/img_location.png" />
+                    <img src="images/img_location.png" />
                     <span>San Luis</span>
                 </div>
             </div>

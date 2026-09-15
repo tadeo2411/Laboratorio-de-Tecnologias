@@ -1,21 +1,9 @@
 import { useEffect, useState } from 'react'
+import './navBarLanding.css'
 
 function NavBarLanding() {
     const [menuAbierto, setMenuAbierto] = useState(false)
 
-    useEffect(() => {
-        const cerrarEnEscritorio = () => {
-            if (window.innerWidth > 750) {
-                setMenuAbierto(false)
-            }
-        }
-
-        window.addEventListener('resize', cerrarEnEscritorio)
-
-        return () => {
-            window.removeEventListener('resize', cerrarEnEscritorio)
-        }
-    }, [])
 
     const cerrarMenu = () => setMenuAbierto(false)
 //podría haberlo hecho con import pero no me dejaba

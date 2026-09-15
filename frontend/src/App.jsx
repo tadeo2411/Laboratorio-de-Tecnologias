@@ -1,5 +1,5 @@
-import './App.css'
-import Footer from './features/Footer'
+import './features/App.css'
+import Footer from './shared/components/layout/FooterLanding/Footer'
 import NavBarLanding from './shared/components/layout/NavBarLanding/NavBarLanding'
 import ServiceCard from './features/ServiceCard'
 import Faq from './features/Faq'

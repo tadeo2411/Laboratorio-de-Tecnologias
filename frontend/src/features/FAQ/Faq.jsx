@@ -1,3 +1,4 @@
+import './faq.css'
 function Faq(){
         return(
     <section id = 'faq'>

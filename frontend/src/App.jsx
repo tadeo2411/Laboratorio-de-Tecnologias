@@ -1,8 +1,8 @@
 import './App.css'
-import Footer from './Footer'
-import NavBarLanding from '../shared/NavBarLanding/NavBarLanding'
-import ServiceCard from './ServiceCard'
-import Faq from './Faq'
+import Footer from './features/Footer'
+import NavBarLanding from './shared/components/layout/NavBarLanding/NavBarLanding'
+import ServiceCard from './features/ServiceCard'
+import Faq from './features/Faq'
 
 function App() {
 
@@ -84,7 +84,7 @@ function App() {
 
 
   
-     <Faq />
+    <Faq />
   
 
 

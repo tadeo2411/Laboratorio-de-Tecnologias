@@ -1,4 +1,5 @@
-import './features/App.css'
+//import './features/App.css'
+import './features/section1.css'
 import Footer from './shared/components/layout/FooterLanding/Footer'
 import NavBarLanding from './shared/components/layout/NavBarLanding/NavBarLanding'
 import ServiceCard from './features/ServiceCard'
@@ -18,7 +19,6 @@ function App() {
         <section className="section1" id="inicio">
           <img src="../public/images/img_fondo1.png" />
           <div>
-            <br></br>
             <span className="text1">CUIDAMOS TU AUTO</span>
             <span className="text2">POR DENTRO Y POR FUERA</span>
 

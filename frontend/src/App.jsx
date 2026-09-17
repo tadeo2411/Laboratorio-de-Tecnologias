@@ -3,7 +3,7 @@ import './features/section1.css'
 import Footer from './shared/components/layout/FooterLanding/Footer'
 import NavBarLanding from './shared/components/layout/NavBarLanding/NavBarLanding'
 import ServiceCard from './features/ServiceCard'
-import Faq from './features/FAQ/Faq'
+import Faq from './features/home/FAQ/Faq'
 
 function App() {
 

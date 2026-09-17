@@ -215,47 +215,6 @@ footer>div>span {
     
 }
 
-#faq {
-    align-items: flex;
-}
-
-#faq > .row{
-    width: 80%;
-    align-items: flex-start;
-}
-
-#faq .accordion {
-    width: 100%;
-}
-
-.accordion-item {
-    background-color: var(--colorFondoFaq);
-    color: white;
-
-
-}
-
-.accordion-button {
-    background-color: var(--colorFondo);
-    color: white;
-    border: 1px thin;
-}
-
-.accordion-button:hover {
-    background-color: rgb(7, 41, 7);
-}
-
-.accordion-button:not(.collapsed) {
-    background-color: var(--colorFondoFaq);
-    color: rgb(74, 220, 74);
-    box-shadow: none;
-    
-}
-
-/* Cambia el color de la flecha */
-.accordion-button::after {
-    filter: invert(1);
-}
 
 /*modifico los colores de los bordes de las preguntas frecuentes*/
 

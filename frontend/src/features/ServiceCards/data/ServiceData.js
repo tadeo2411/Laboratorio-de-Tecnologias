@@ -15,5 +15,5 @@ export const serviciosData = [
     {id: 14, icono: "🚀", titulo: "Potenciacion.", destacada: "Optimizacion del rendimiento del motor.", detalle: "Mejoras orientadas a aumentar la potencia, respuesta y eficiencia."},
     {id: 15, icono: "🏁", titulo: "Chip tuning.", destacada: "Optimizacion electronica de los parametros de la ECU.", detalle: "Ajuste de potencia, respuesta y comportamiento del motor."},
     {id: 16, icono: "💻", titulo: "Inyecciones programables.", destacada: "Instalacion y configuracion de sistemas de inyeccion programables.", detalle: "Ajuste de parametros para optimizar el funcionamiento y rendimiento del motor."}
-   
+
 ]

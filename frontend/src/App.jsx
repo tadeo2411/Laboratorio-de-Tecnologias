@@ -2,7 +2,7 @@
 import './features/section1.css'
 import Footer from './shared/components/layout/FooterLanding/Footer'
 import NavBarLanding from './shared/components/layout/NavBarLanding/NavBarLanding'
-import ServiceCard from './features/ServiceCard'
+import ServiceSection from './features/ServiceCards/ServiceSection'
 import Faq from './features/home/FAQ/Faq'
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
       {/*  LO HACEMOS COMPONENTE?  */}
       <main>
         <section className="section1" id="inicio">
-          <img src="../public/images/img_fondo1.png" />
+          <img src="/images/img_fondo1.png" />
           <div>
             <span className="text1">CUIDAMOS TU AUTO</span>
             <span className="text2">POR DENTRO Y POR FUERA</span>
@@ -51,32 +51,8 @@ function App() {
 
 
         <section id="servicios" className="py-5">
-          <div className="container">
-
-            <div className="text-center mb-5">
-              <h2 className="titulo-servicios">Nuestros Servicios</h2>
-              <p className="subtitulo-servicios">Especialistas en inyección, mecánica integral y potenciación.</p>
-            </div>
-
-            <div className="row g-4">
-              <ServiceCard title="Electricidad" icono="⚡" target="#modal1" />
-              <ServiceCard title="Batería" icono="🔋" target="#modal2" />
-              <ServiceCard title="Cambio de aceite" icono="🛢️" target="#modal3" />
-              <ServiceCard title="Filtros A/A y ventilación" icono="💨" target="#modal4" />
-              <ServiceCard title="Diagnóstico de automóviles" icono="💻" target="#modal5" />
-              <ServiceCard title="Frenos" icono="🛑" target="#modal6" />
-              <ServiceCard title="Dirección y suspensión" icono="🔧" target="#modal7" />
-              <ServiceCard title="Aire acondicionado" icono="❄️" target="#modal8" />
-              <ServiceCard title="Autos automáticos" icono="⚙️" target="#modal9" />
-              <ServiceCard title="Mecánica diésel" icono="🛻" target="#modal10" />
-              <ServiceCard title="Servicio y rep. de frenos" icono="🛠️" target="#modal11" />
-              <ServiceCard title="Sistemas de transmisión" icono="🔄" target="#modal12" />
-              <ServiceCard title="Anulación DPF/EGR" icono="⚠️" target="#modal13" />
-              <ServiceCard title="Potenciación de motores" icono="🚀" target="#modal14" />
-              <ServiceCard title="Chip Tuning" icono="🏁" target="#modal15" />
-              <ServiceCard title="Inyecciones programables" icono="💻" target="#modal16" />
-            </div>
-          </div>
+        
+          <ServiceSection />
 
         </section >
 

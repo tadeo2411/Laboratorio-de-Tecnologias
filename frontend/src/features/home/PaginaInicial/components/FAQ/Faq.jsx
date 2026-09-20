@@ -1,5 +1,5 @@
 import './faq.css'
-import '../../../index.css'
+import '../../../../../styles/vbles.css'
 function Faq(){
         return(
     <section id = 'faq'>

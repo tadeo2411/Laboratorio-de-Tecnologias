@@ -29,6 +29,6 @@ function ServiceSection(){
         />
       ))}
     </section>
-       );
+    );
 }
 export default ServiceSection;

@@ -4,7 +4,7 @@ function Footer() {
     return (
         <footer id="footer">
             <div>
-                <img id="logo" src="images/logo-303mei.jpg" />
+                <img id="logoFooter" src="images/logo-303mei.jpg" />
                 <span>CONTACTO</span>
                 <div className="infoContacto">
                     <img src="images/img_whatsapp.png" />

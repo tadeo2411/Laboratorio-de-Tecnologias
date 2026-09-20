@@ -12,7 +12,7 @@ function ServiceSection(){
           </p>
         </div>
 
-        <div className="row g-4">
+        <div>
           {serviciosData.map((servicio) => (
             <ServiceCard
               key={servicio.id}

@@ -15,3 +15,6 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# Documentación local de cambios de las tarjetas de servicios
+frontend/src/features/home/PaginaInicial/components/ServiceCards/cambioc.md

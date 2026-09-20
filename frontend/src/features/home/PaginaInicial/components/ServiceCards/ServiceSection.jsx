@@ -1,33 +1,39 @@
+import { useState } from "react"
 import { serviciosData } from "./data/ServiceData"
 import ServiceCard from "./components/ServiceCard"
 import ServiceModal from "./components/ServiceModal"
+import "./serviceCard.css"
+
 function ServiceSection(){
+    const [servicioSeleccionado, setServicioSeleccionado] = useState(null)
+
     return(
-    <section id="servicios" className="py-5">
-      <div className="container">
-        <div className="text-center mb-5">
+    <section id="servicios">
+      <div className="services-container">
+        <div className="services-heading">
           <h2 className="titulo-servicios">Nuestros Servicios</h2>
           <p className="subtitulo-servicios">
             Especialistas en inyección, mecánica integral y potenciación.
           </p>
         </div>
 
-        <div>
+        <div className="services-grid">
           {serviciosData.map((servicio) => (
             <ServiceCard
               key={servicio.id}
               servicio={servicio}
+              onSelect={setServicioSeleccionado}
             />
           ))}
         </div>
       </div>
 
-      {serviciosData.map((servicio) => (
+      {servicioSeleccionado && (
         <ServiceModal
-          key={servicio.id}
-          servicio={servicio}
+          servicio={servicioSeleccionado}
+          onClose={() => setServicioSeleccionado(null)}
         />
-      ))}
+      )}
     </section>
     );
 }

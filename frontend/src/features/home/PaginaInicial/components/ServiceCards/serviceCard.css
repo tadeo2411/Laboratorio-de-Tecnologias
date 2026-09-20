@@ -1,0 +1,195 @@
+#servicios {
+    display: block;
+    min-height: auto;
+    padding: 4rem 1.25rem;
+    background-color: #0a0a0a;
+    color: #ffffff;
+}
+
+.services-container {
+    width: min(100%, 1400px);
+    margin: 0 auto;
+}
+
+.services-heading {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.titulo-servicios {
+    color: rgb(31, 233, 31); /* Verde neón */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+}
+
+.subtitulo-servicios {
+    color: #aaaaaa;
+    font-size: 1.1rem;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.service-card {
+    display: flex;
+    min-height: 185px;
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgb(31, 233, 31);
+    box-shadow: 0 8px 20px rgba(31, 233, 31, 0.15);
+}
+
+.service-card:focus-visible {
+    outline: 3px solid #1fe91f;
+    outline-offset: 3px;
+}
+
+.service-icon {
+    font-size: 2.2rem;
+    width: 65px;
+    height: 65px;
+    background-color: rgba(31, 233, 31, 0.08);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(31, 233, 31, 0.2);
+}
+
+.service-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 1rem 0;
+}
+
+.ver-mas-txt {
+    font-size: 0.8rem;
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.service-card:hover .ver-mas-txt {
+    opacity: 1;
+}
+
+.service-modal-backdrop {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background-color: rgba(0, 0, 0, 0.72);
+}
+
+.service-modal {
+    width: min(100%, 540px);
+}
+
+.modal-oscuro {
+    background-color: #161616;
+    color: #fff;
+    border: 1px solid rgb(31, 233, 31);
+    box-shadow: 0 0 30px rgba(31, 233, 31, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modal-header,
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+}
+
+.modal-body {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.modal-close {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.btn-whatsapp {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    background-color: #1fe91f;
+    color: #0a0a0a;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+.modal-title {
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+}
+
+.modal-destacado {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #eaeaea;
+    margin-bottom: 10px;
+}
+
+.modal-body p {
+    color: #b0b0b0;
+}
+
+@media (max-width: 1023px) {
+    .services-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    #servicios {
+        padding-block: 3rem;
+    }
+
+    .titulo-servicios {
+        font-size: 2rem;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .service-card {
+        min-height: 165px;
+    }
+}
+
+@media (max-width: 420px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}

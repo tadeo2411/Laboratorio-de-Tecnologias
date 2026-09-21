@@ -1,5 +1,5 @@
 import './faq.css'
-import '../../../../../styles/vbles.css'
+
 function Faq(){
         return(
     <section id = 'faq'>
@@ -9,7 +9,7 @@ function Faq(){
                 <span className = 'textosFaq' >ANTES DE TRAER TU AUTO:<br /></span>
                 <h2 id = 'faqTitulo'>Preguntas Frecuentes</h2>
                 <span id = 'faqTexto'>Si no encontrás lo que buscás, contactános. Podemos asesorarte, orientandote según el modelo y la falla que tenga tu auto. <br /></span>
-                <a href = 'https://wa.me/5492664344135?' className='textosFaq' id ='enlaceWsp'>Hacer una consulta</a>
+                <a href = 'https://wa.me/5492664344135?' className='textosFaq' id ='enlaceWsp'>Hacer una consulta ↗</a>
             </div>
         <div className = 'col-12 col-lg-7 mt-4 mt-lg-0' id= 'faqPreguntas'>{/*col-lg hace que las columnas aparezcan una al lado de la otra a partir de los 992px fuente: codex*/ }
                 {/* 1ra faq */} 

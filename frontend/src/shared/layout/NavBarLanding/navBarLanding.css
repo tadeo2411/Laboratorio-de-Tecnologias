@@ -56,11 +56,12 @@ ul {
     position: relative;
     list-style: none;
     display: flex;
-    gap: 5rem;
+    gap: clamp(1.25rem, 4vw, 5rem);
     justify-content: center;
     align-items: center;
     /* Espacio entre los enlaces */
     width: 100%;
+    padding-inline: 1rem;
 }
 
 #logo {
@@ -144,23 +145,51 @@ nav>ul>li:hover .nav-underline {
 .item-turno {
     position: absolute;
     right: 1rem;
-    color: rgb(0, 0, 0);
-    background-color:var(--colorBoton);    
-    border-radius: 3px;
-    border: .1rem solid var(--colorBoton);
-    margin-left:auto
+    margin-left: auto;
 }
 .item-turno>a {
-    color: rgb(18, 16, 16);
-    text-decoration: none;
-    padding: .1rem
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    min-height: 42px;
+    padding: 0.65rem 1.25rem;
+
+    background-color: var(--colorBoton);
+    color: #0a0a0a;
+
+    border: 1px solid var(--colorBoton);
+    border-radius: 6px;
+
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
 }
 
 .item-turno>a:hover {
     background-color: var(--colorFondo);
-    color: var(--colorBoton); ;
-    transition : all 0.3s ease;
+    color: var(--verdeClaroTextos);
+    border-color: var(--colorBoton);
+    box-shadow: 0 0 0 3px rgba(61, 189, 61, 0.15);
 }
+
+.item-turno > a::after {
+    content: "↗";
+    font-size: 1rem;
+}
+
+.item-turno > a:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
 
 
 @media (min-width: 751px){

@@ -67,5 +67,12 @@
 #faqTexto{
     color: grey;
     font-size: smaller;
+    
 }
-
+#enlaceWsp{
+    font-size: large;
+    
+}
+a:hover{
+    color: grey;
+}

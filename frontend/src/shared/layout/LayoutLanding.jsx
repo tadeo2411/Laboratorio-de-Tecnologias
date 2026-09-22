@@ -10,6 +10,7 @@ function LayoutLanding(){
 
         <Outlet />
 
+
         <Footer />
         
         <ScrollRestoration />

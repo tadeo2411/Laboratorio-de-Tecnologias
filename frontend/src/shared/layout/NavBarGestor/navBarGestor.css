@@ -1,0 +1,111 @@
+header {
+    background-color: white;
+    border-bottom: 1px solid rgb(194, 192, 192);
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: space-between; /* Empuja logo a la izq y resto a la derecha */
+    padding: 0 20px;
+    position: relative; /* Necesario para que el menú móvil flote respecto al header */
+}
+
+.logo {
+    width: 122px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.darkTheme {
+    width: 2rem;
+    height: 2rem;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+nav {
+    flex-grow: 1; /* Obliga al nodo a absorber el 100% del espacio central disponible */
+    display: flex;
+    justify-content: center; /* Alinea la lista hija estrictamente al centro del vector */
+}
+
+/* Inyectar sobre tu lista interactiva (ul.barra o .sidebar-lista) */
+ul {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; /* Purgado de márgenes laterales automáticos residuales */
+    padding: 0;
+}
+
+.usuario-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.usuario-info p {
+    margin: 0;
+}
+
+/* Ocultar el botón de menú en escritorio */
+.btn-menu {
+    display: none;
+    background-color: transparent;
+    border: 1px solid rgb(194, 192, 192);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: .9rem;
+    cursor: pointer;
+    color: rgb(82, 82, 82);
+}
+
+/* Menú en Lista (Escritorio) */
+.barra {
+    display: flex;       /* Alinea los elementos en fila */
+    gap: 30px;           /* Distancia exacta de 30px entre items */
+    list-style: none;    /* Elimina los puntos del ul */
+    margin: 5;          
+    padding: 0;          
+    color: #ffffff;
+    position: relative;
+}
+
+.hoverNavBar{
+    position: relative;
+    display: inline-block;
+}
+
+.hoverNavBar::after, 
+.hoverNavBar::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, #0f5708, #60db7b);
+    bottom: -5px;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease-out;
+}
+
+.hoverNavBar::before{
+    top: -5px;
+  transform-origin: right;
+}
+
+.hoverNavBar:hover::after,
+.hoverNavBar:hover::before {
+  transform: scaleX(1);
+}
+
+.barra li {
+    margin: 0;
+}
+
+
+
+.barra a {
+    color: rgb(82, 82, 82);
+    text-decoration: none;
+    font-weight: 500;
+}

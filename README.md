@@ -534,7 +534,9 @@ src/features/Repuestos/
 
 ## Estado actual y límites deliberados
 
-Los datos se guardan en `useState`, por lo que pueden agregarse y buscarse mientras la aplicación está abierta, pero se pierden al recargar. Se eligió esto frente a conectar una API inexistente o usar `localStorage`: el objetivo de esta migración es trasladar la interfaz a React sin simular persistencia que después podría ocultar errores de integración.
+Los datos iniciales viven en `data/vehiculos.json` y `data/repuestos.json`, dentro de cada feature. Son datos puros y siguen la forma que deberían tener las entidades al llegar desde una API, por lo que sirven como una primera referencia para el modelo de datos. Se eligió JSON en vez de `data.js` porque no se necesita ejecutar lógica ni importar componentes: solo se representan registros.
+
+Al iniciar cada página, esos registros se cargan en `useState`, por lo que pueden agregarse y buscarse mientras la aplicación está abierta, pero los agregados se pierden al recargar. Se eligió esto frente a conectar una API inexistente o usar `localStorage`: el objetivo de esta migración es trasladar la interfaz a React sin simular persistencia que después podría ocultar errores de integración. Cuando exista la feature de clientes, el campo temporal `dueno` de los vehículos debería reemplazarse por `clienteId` para modelar la relación entre cliente y vehículos sin duplicar información.
 
 Tampoco se usó Context, Redux ni otra librería de estado. El estado solo lo necesita una página y sus hijos directos; introducir estado global en este punto aumentaría complejidad sin aportar reutilización real.
 

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import VehiculosForm from './components/VehiculosForm'
 import VehiculosList from './components/VehiculosList'
+import vehiculosIniciales from './data/vehiculos.json'
 import './vehiculos.css'
 
 function VehiculoPage() {
-  const [vehiculos, setVehiculos] = useState([])
+  const [vehiculos, setVehiculos] = useState(vehiculosIniciales)
 
   function agregarVehiculo(vehiculo) {
     setVehiculos((vehiculosActuales) => [

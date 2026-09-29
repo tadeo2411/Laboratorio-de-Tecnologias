@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import RepuestosForm from './components/RepuestosForm'
 import RepuestosList from './components/RepuestosList'
+import repuestosIniciales from './data/repuestos.json'
 import './repuestos.css'
 
 function RepuestoPage() {
-  const [repuestos, setRepuestos] = useState([])
+  const [repuestos, setRepuestos] = useState(repuestosIniciales)
 
   function agregarRepuesto(repuesto) {
     setRepuestos((repuestosActuales) => [

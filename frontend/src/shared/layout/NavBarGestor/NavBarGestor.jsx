@@ -4,14 +4,14 @@ import './navBarGestor.css';
 function NavBarGestor() {
     return (
         <>
-            <header>
+            <header className='navbar-gestor'>
 
                 <img className="logo" src="\images\logo-303mei.jpg" alt="Logo" height="100px" width="100px" />
 
                 <button className="btn-menu" id="btnMenu"></button>
                 <nav>
 
-                    <ul className="barra" id="menuNavegacion">
+                    <ul className="barra-gestor" id="menuNavegacion">
                         <li><NavLink  to="" className="hoverNavBar">Tableros</NavLink></li>
                         <li><NavLink to="ordenes" className="hoverNavBar">Ordenes</NavLink></li>
                         <li ><NavLink to="turnos" className="hoverNavBar">Turnos</NavLink></li>

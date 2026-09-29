@@ -2,20 +2,22 @@
     opacity: 1;
 }
 
-header {
+.navbar-landing {
     width: 100%;
     display: absolute;
     color: white;
-    z-index: 10;
-    position: fixed;
     background-color: var(--colorFondo);
+    z-index: 10;
+    position: absolute;
     font-size: 1rem;
+    border-color: var(--colorFondo);
 }
 
 .header-contenido {
     width: 100%;
     display: flex;
     align-items: center;
+
 }
 
 #logo-container {
@@ -30,13 +32,13 @@ header {
     justify-content: center;
 }
 
-header nav {
+.navbar-landing nav {
     justify-self: center;
 }
 
 
 
-header.nav-oculto {
+.navbar-landing.nav-oculto {
     transform: translateY(-100%);
 }
 
@@ -193,7 +195,7 @@ nav>ul>li:hover .nav-underline {
 
 
 @media (min-width: 751px){
-    header {
+    .navbar-landing {
         width: 100%;
         display: absolute;
         flex-direction: row;

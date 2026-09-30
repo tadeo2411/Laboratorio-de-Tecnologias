@@ -1,4 +1,4 @@
-header {
+.navbar-gestor {
     background-color: white;
     border-bottom: 1px solid rgb(194, 192, 192);
     display: flex;
@@ -28,7 +28,7 @@ nav {
     justify-content: center; /* Alinea la lista hija estrictamente al centro del vector */
 }
 
-/* Inyectar sobre tu lista interactiva (ul.barra o .sidebar-lista) */
+/* Inyectar sobre tu lista interactiva (ul.barra-gestor o .sidebar-lista) */
 ul {
     display: flex;
     justify-content: center;
@@ -59,7 +59,7 @@ ul {
 }
 
 /* Menú en Lista (Escritorio) */
-.barra {
+.barra-gestor {
     display: flex;       /* Alinea los elementos en fila */
     gap: 30px;           /* Distancia exacta de 30px entre items */
     list-style: none;    /* Elimina los puntos del ul */
@@ -98,13 +98,13 @@ ul {
   transform: scaleX(1);
 }
 
-.barra li {
+.barra-gestor li {
     margin: 0;
 }
 
 
 
-.barra a {
+.barra-gestor a {
     color: rgb(82, 82, 82);
     text-decoration: none;
     font-weight: 500;

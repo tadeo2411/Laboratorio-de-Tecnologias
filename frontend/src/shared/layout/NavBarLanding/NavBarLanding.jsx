@@ -9,7 +9,7 @@ function NavBarLanding() {
 //podría haberlo hecho con import pero no me dejaba
     return (
         <>
-            <header>
+            <header className='navbar-landing'>
                 <div className="header-contenido">
                     <div id="logo-container">
                         <a href="#inicio">

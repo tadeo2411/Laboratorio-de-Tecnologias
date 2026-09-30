@@ -6,7 +6,7 @@ function LayoutGestor() {
     return (
         <>
             <NavBarGestor />
-            <main>
+            <main className = 'contenido'>
                 <Outlet />
             </main>
             <FooterGestor />

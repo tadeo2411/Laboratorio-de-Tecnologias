@@ -1,4 +1,5 @@
 #faq {
+    background-color: var(--colorFondoFaq);
     align-items: flex;
     min-width: auto;
     font-family: 'ubuntu';

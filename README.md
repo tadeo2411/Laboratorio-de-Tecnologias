@@ -482,3 +482,69 @@ Antes de crear o mover un componente, seguir estas preguntas:
 - Las páginas públicas y privadas se distinguen mediante rutas y layouts, no mediante dos aplicaciones diferentes.
 
 > Un componente se convierte en compartido cuando existe una necesidad real de reutilización, no solamente porque podría reutilizarse algún día.
+
+# Migración del gestor: vehículos y repuestos
+
+Las pantallas históricas `vehiculos.html` y `repuestos.html` fueron migradas a React. Las rutas finales son `/gestor/vehiculos` y `/gestor/repuestos`. La navegación, el encabezado y el pie de página no se copiaron desde los HTML porque ya los aporta `LayoutGestor` mediante React Router y su `<Outlet />`. Copiarlos habría duplicado la estructura en cada página y provocado dos barras de navegación.
+
+## Cambios realizados
+
+### Página de vehículos
+
+La página se organiza así:
+
+```text
+src/features/Vehiculo/
+├── VehiculoPage.jsx
+├── vehiculos.css
+└── components/
+    ├── VehiculosForm.jsx
+    └── VehiculosList.jsx
+```
+
+- `VehiculoPage` es el contenedor de la pantalla. Mantiene el arreglo de vehículos y conecta formulario y listado. Se eligió una página contenedora en lugar de que el formulario modifique la tabla directamente porque los dos componentes necesitan los mismos datos.
+- `VehiculosForm` conserva los campos del HTML original: dueño, patente, marca, modelo, año, kilometraje y observaciones. Ahora es un formulario controlado: cada campo usa `value` y `onChange`. Esto se eligió frente a leer el DOM con `document.querySelector` porque React debe ser la fuente de verdad de la interfaz.
+- `VehiculosList` muestra la tabla y permite buscar por patente, marca o modelo. La búsqueda se calcula a partir del estado existente; no se guarda una segunda lista filtrada, ya que duplicar ese estado puede desincronizar datos.
+- Al guardar, el padre agrega un objeto con `crypto.randomUUID()` como clave estable. No se usó el índice de la lista como `key`, porque al agregar, borrar u ordenar filas React podría asociar una fila visual al dato incorrecto.
+- El selector de dueño contiene temporalmente "Sin asignar". No se inventaron clientes de prueba: deberá llenarse con datos reales cuando exista la feature o API de clientes.
+
+### Página de repuestos
+
+La página se organiza así:
+
+```text
+src/features/Repuestos/
+├── RepuestoPage.jsx
+├── repuestos.css
+└── components/
+    ├── RepuestosForm.jsx
+    └── RepuestosList.jsx
+```
+
+- `RepuestoPage` aplica el mismo patrón de contenedor con estado local.
+- `RepuestosForm` conserva los datos relevantes del HTML: código, nombre, precios de costo y venta, stock, stock mínimo y descripción. Los precios y cantidades usan `type="number"`, en vez de texto libre, para que el navegador impida entradas incompatibles desde el inicio.
+- El HTML anterior tenía dos campos llamados "Stock". Se conservó uno y el siguiente se representa como `Stock mínimo`, que es el dato que ya figuraba en la tabla. Mantener dos campos idénticos habría creado datos ambiguos.
+- `RepuestosList` busca por código o nombre y formatea los precios con `Intl.NumberFormat` en pesos argentinos. Esto evita concatenar manualmente símbolos y separadores de miles.
+
+### Rutas y estilos
+
+- `router.jsx` ahora asocia las rutas de vehículos y repuestos a las nuevas páginas React. También se eliminaron imports que ya no se usaban o apuntaban a una ruta anterior.
+- Los estilos de cada página están junto a su feature y usan el prefijo `.gestion-page`. No se reutilizó el CSS global del HTML porque tenía selectores como `section`, `label` y `.barra` que podían modificar la landing o la navegación del gestor accidentalmente.
+- Ambos formularios, tablas y buscadores son responsivos. En pantallas pequeñas las grillas de campos pasan de varias columnas a una sola.
+
+## Estado actual y límites deliberados
+
+Los datos iniciales viven en `data/vehiculos.json` y `data/repuestos.json`, dentro de cada feature. Son datos puros y siguen la forma que deberían tener las entidades al llegar desde una API, por lo que sirven como una primera referencia para el modelo de datos. Se eligió JSON en vez de `data.js` porque no se necesita ejecutar lógica ni importar componentes: solo se representan registros.
+
+Al iniciar cada página, esos registros se cargan en `useState`, por lo que pueden agregarse y buscarse mientras la aplicación está abierta, pero los agregados se pierden al recargar. Se eligió esto frente a conectar una API inexistente o usar `localStorage`: el objetivo de esta migración es trasladar la interfaz a React sin simular persistencia que después podría ocultar errores de integración. Cuando exista la feature de clientes, el campo temporal `dueno` de los vehículos debería reemplazarse por `clienteId` para modelar la relación entre cliente y vehículos sin duplicar información.
+
+Tampoco se usó Context, Redux ni otra librería de estado. El estado solo lo necesita una página y sus hijos directos; introducir estado global en este punto aumentaría complejidad sin aportar reutilización real.
+
+## Mejoras propuestas
+
+1. Conectar ambas features a una API: cargar inicialmente los datos, crear registros con `POST`, y luego incorporar edición y eliminación con confirmación.
+2. Crear la feature de clientes y consumirla en el selector de dueño, en lugar de dejar opciones fijas.
+3. Validar formato de patente, unicidad de código de repuesto, números no negativos y que el precio de venta no sea menor que el costo.
+4. Resaltar repuestos con stock bajo cuando `stock <= stockMinimo` y agregar filtros por esa condición.
+5. Añadir estados de carga, error y confirmación para las operaciones de red. Estos deberían vivir en hooks o servicios de cada feature, no dispersos entre componentes visuales.
+6. Extraer componentes realmente repetidos, como una tabla vacía o un campo de formulario, a `shared/components` solo cuando otra feature los use sin cambios ligados a vehículos o repuestos.

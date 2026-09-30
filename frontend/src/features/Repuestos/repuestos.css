@@ -1,0 +1,85 @@
+.gestion-page {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.gestion-page .contenedor {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.gestion-page .titContenedor {
+  margin: 0 0 20px;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+.gestion-page .grilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.gestion-page .formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.gestion-page label {
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.gestion-page input,
+.gestion-page select,
+.gestion-page textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.gestion-page textarea { resize: vertical; }
+
+.gestion-page input:focus,
+.gestion-page select:focus,
+.gestion-page textarea:focus {
+  outline: 2px solid #1a56a6;
+  outline-offset: 1px;
+}
+
+.gestion-page .btnGuardar {
+  padding: 10px 24px;
+  border: 0;
+  border-radius: 6px;
+  background: #198754;
+  color: #fff;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.gestion-page .btnGuardar:hover { background: #146c43; }
+
+.gestion-page .input-busqueda { margin-bottom: 20px; }
+.gestion-page .formatoTabla { overflow-x: auto; }
+.gestion-page .datosTabla { width: 100%; border-collapse: collapse; }
+.gestion-page .datosTabla th { padding: 0 12px 10px; text-align: left; border-bottom: 2px solid #eee; color: #666; font-size: 0.8rem; white-space: nowrap; }
+.gestion-page .datosTabla td { padding: 14px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+.gestion-page .sinDatos { color: #888; text-align: center; }
+.gestion-page .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 800px) { .gestion-page .grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .gestion-page { padding: 16px; } .gestion-page .contenedor { padding: 16px; } .gestion-page .grilla { grid-template-columns: 1fr; } }

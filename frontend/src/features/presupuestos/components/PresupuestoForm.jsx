@@ -1,26 +1,48 @@
 import '../../estilos.css'
-
+import { useState } from 'react';
 // import { obtenerPresupuestos } from '../services/presupuestosService';
+function PresupuestoForm( {onAgregar} ){
 
-function PresupuestoForm(){
+    const [obs, setObservaciones] = useState('')
+    function envioForm(evento){
 
+        evento.preventDefault()
+        const nuevoPresupuesto = {
+            id: 10,
+            numero:'presup-Prueba',
+            fecha: '2026-05-18',
+            estado: 'PENDIENTE',
+            total: 20000,
+            observaciones:obs
+        }
+    onAgregar(nuevoPresupuesto)
+    }
+
+
+    
     return(
         <>
 
             <section className = "contenedor">
                 <h2 className="titContenedor">Nuevo presupuesto</h2>
-                <form className="grilla grilla-presupuesto" id = "formularioPres">
+                <form className="grilla grilla-presupuesto" id = "formularioPres"
+                    onSubmit={envioForm}>
                     <div className = "formulario">
-                        <label for = "idOrden">Orden de trabajo:</label>
+                        <label htmlFor = "idOrden">Orden de trabajo:</label>
                         <select name = "Orden de trabajo" id = "idOrden">
-                            <option value = "">Elegir</option>
+                            <option>Elegir</option>
+                            
                         </select>
                     </div>
                     <div className="textos">
-                        <label for="idObs">Observaciones</label>
-                        <textarea name="Observaciones" id="idObs" cols="30" rows="5"></textarea>
+                        <label htmlFor="idObs">Observaciones</label>
+                        <textarea
+                            value={obs}
+                            onChange={evento => setObservaciones(evento.target.value)}
+                            id="idObs" cols="30" rows="5" />
                     </div>
-                    <button type="submit" className="btnGuardar">Guardar presupuesto</button>
+                    <button type="submit" className="btnGuardar"
+                        >Guardar presupuesto</button>
                 </form>
             </section>
             

@@ -1,7 +1,8 @@
-const URL = 'backend-labtech/data'
+const URL = '/backend/data'
 
 export async function obtenerPresupuestos(){
-    const respuesta = await fetch('${URL}/presupuestos.json')
+    const respuesta = await fetch(`${URL}/presupuestos.json`)
+
     if (!respuesta.ok){
         throw new Error("No se pudo cargar los presupuestos")
     }

@@ -1,10 +1,11 @@
-import {state, useState} from 'react';
 
-function Presupuestos(){
-    
-    
-    const [presupuestos, setPresupuestos] = useState([]);
 
+function Presupuestos({ presupuestos }){
+
+    function crearPresupuesto(nuevoPresupuesto){
+
+    }
+    console.log('Datos que recibe la tabla:', presupuestos);
     return(
         <>
         <section className="contenedor">
@@ -23,11 +24,19 @@ function Presupuestos(){
                         <tbody id="idTabla">
                             {presupuestos.length === 0 ?(
                                 <tr>
-                                    <td colspan={4} className="sinDatos">Aun no hay datos cargados</td>
+                                    <td colSpan={4} className="sinDatos" style={{textAlign: 'center'}}>Aun no hay datos cargados</td>
                                 </tr>
                             ):
                             (
-                                presupuesto.map
+                                presupuestos.map(presupuesto =>(
+                                    <tr key= {presupuesto.id}>
+                                        <td>{presupuesto.numero}</td>
+                                        <td>{presupuesto.fecha}</td>
+                                        <td>{presupuesto.estado}</td>
+                                        <td>{presupuesto.total}</td>
+                                    </tr>
+                                )
+                                )
                             )
                             }
                         </tbody>

@@ -6,17 +6,11 @@ import LayoutLogin from './shared/layout/LayoutLogin'
 import LayoutGestor from './shared/layout/LayoutGestor'
 import Tablero from './features/gestor/tablero/pages/Tablero'
 import Ordenes from './features/gestor/tablero/pages/Ordenes'
-<<<<<<< HEAD
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
-import Repuestos from './features/gestor/tablero/pages/Repuestos'
-import Turnos from './features/turnos/pages/Turnos'
-import Vehiculos from './features/gestor/tablero/pages/Vehiculos'
-=======
-import Presupuestos from './features/gestor/tablero/pages/Presupuestos'
-import Turnos from './features/gestor/tablero/pages/Turnos'
-import VehiculoPage from './features/Vehiculo/VehiculoPage'
-import RepuestoPage from './features/Repuestos/RepuestoPage'
->>>>>>> c6d65f5e9ce2b7f504addeb062fb9df2ab76407b
+import Repuestos from './features/Repuestos/RepuestoPage'
+import TurnosPage from './features/turnos/pages/TurnosPage'
+import TurnosForm from './features/turnos/components/TurnosForm'
+import Vehiculos from './features/Vehiculo/VehiculoPage'
 import Clientes from './features/gestor/tablero/pages/Clientes'
 
 export const router = createBrowserRouter([
@@ -50,7 +44,15 @@ export const router = createBrowserRouter([
             },
             {
                 path: "turnos",
-                element: <Turnos />
+                children: [{
+                    index: true,
+                    element: <TurnosPage />,
+                },
+                {
+                    path:"nuevo",
+                    element: <TurnosForm />
+                }
+                ]
             },
             {
                 path: "presupuestos",
@@ -62,11 +64,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "vehiculos",
-                element: <VehiculoPage />
+                element: <Vehiculos />
             },
             {
                 path: "repuestos",
-                element: <RepuestoPage />
+                element: <Repuestos />
             }
         ]
     } //no me carga si no comento

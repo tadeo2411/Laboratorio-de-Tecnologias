@@ -1,8 +1,7 @@
-import '../../estilos.css'
+import { useState } from 'react';
 
-function Turnos(){
-return(
-    <>
+function TurnosForm() {
+    return(
         <section className="contenedor">
             <h2 className="titContenedor">Nuevo turno</h2>
             <form>
@@ -29,14 +28,7 @@ return(
                 <button type="submit" className="btnGuardar">Guardar</button>
             </form>
         </section>
-        <section className="contenedor">
-            <div>
-                <h2 className="titContenedor">Agenda</h2>
-            </div>
-             <p className="sinDatos">No hay turnos para hoy.</p>
-        </section>
-    </>
-);
+)
 }
 
-export default Turnos;
+export default TurnosForm;

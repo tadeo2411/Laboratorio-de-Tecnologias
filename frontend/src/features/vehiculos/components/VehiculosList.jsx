@@ -7,12 +7,17 @@ function textoEstadoAviso(estado) {
   return 'Sin aviso'
 }
 
-function VehiculosList({ vehiculos, onEditar, onEliminar, onEnviarAviso, onVerHistorial }) {
+function VehiculosList({ vehiculos, onEditar, onEliminar, onGestionarAviso, onVerHistorial }) {
   const [busqueda, setBusqueda] = useState('')
   const termino = busqueda.trim().toLowerCase()
-  const vehiculosFiltrados = vehiculos.filter((vehiculo) => 
-    [vehiculo.patente, vehiculo.marca, vehiculo.modelo].some((valor) =>
-    valor && valor.toLowerCase().includes(termino),),)   
+
+  // La búsqueda se calcula desde los datos recibidos: no se guarda una segunda lista.
+  const vehiculosFiltrados = vehiculos.filter((vehiculo) =>
+    [vehiculo.patente, vehiculo.marca, vehiculo.modelo, vehiculo.dueno].some((valor) =>
+      valor?.toLowerCase().includes(termino),
+    ),
+  )
+
   return (
     <section className="contenedor">
       <h2 className="titContenedor">Vehículos</h2>
@@ -22,7 +27,7 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onEnviarAviso, onVerHi
         id="buscar-vehiculo"
         className="input-busqueda"
         type="search"
-        placeholder="Buscar por patente, marca o modelo..."
+        placeholder="Buscar por patente, marca, modelo o dueño..."
         value={busqueda}
         onChange={(event) => setBusqueda(event.target.value)}
       />
@@ -58,7 +63,9 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onEnviarAviso, onVerHi
                   <td data-label="Marca">{vehiculo.marca}</td>
                   <td data-label="Modelo">{vehiculo.modelo}</td>
                   <td data-label="Año">{vehiculo.anio || '—'}</td>
-                  <td data-label="Kilometraje">{vehiculo.kilometraje || '—'}</td>
+                  <td data-label="Kilometraje">
+                    {vehiculo.kilometraje ? `${vehiculo.kilometraje.toLocaleString('es-AR')} km` : '—'}
+                  </td>
                   <td data-label="Dueño">{vehiculo.dueno || '—'}</td>
                   <td data-label="Próximo service">{vehiculo.proximoService || '—'}</td>
                   <td data-label="Aviso">
@@ -67,42 +74,27 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onEnviarAviso, onVerHi
                     </span>
                   </td>
                   <td data-label="Acciones" className="celda-acciones">
-  <div className="acciones-tabla">
-    <button
-      type="button"
-      className="btnAccion"
-      onClick={() => onVerHistorial(vehiculo)}
-    >
-      Historial
-    </button>
-
-    <button
-      type="button"
-      className="btnAccion"
-      onClick={() => onEditar(vehiculo)}
-    >
-      Editar
-    </button>
-
-    {vehiculo.estadoAvisoService === 'pendiente' && (
-      <button
-        type="button"
-        className="btnAccion"
-        onClick={() => onEnviarAviso(vehiculo)}
-      >
-        Gestionar aviso
-      </button>
-    )}
-
-    <button
-      type="button"
-      className="btnAccion btnAccion--peligro"
-      onClick={() => onEliminar(vehiculo)}
-    >
-      Eliminar
-    </button>
-  </div>
-</td>
+                    <div className="acciones-tabla">
+                      <button type="button" className="btnAccion" onClick={() => onVerHistorial(vehiculo)}>
+                        Historial
+                      </button>
+                      <button type="button" className="btnAccion" onClick={() => onEditar(vehiculo)}>
+                        Editar
+                      </button>
+                      {vehiculo.estadoAvisoService === 'pendiente' && (
+                        <button type="button" className="btnAccion" onClick={() => onGestionarAviso(vehiculo)}>
+                          Gestionar aviso
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        className="btnAccion btnAccion--peligro"
+                        onClick={() => onEliminar(vehiculo)}
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))
             )}

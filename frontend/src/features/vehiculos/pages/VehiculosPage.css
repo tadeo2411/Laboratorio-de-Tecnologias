@@ -1,0 +1,212 @@
+/* Todas las reglas empiezan con .vehiculos-page: Vite agrega este CSS a toda la
+   aplicación, y sin ese prefijo modificaría tablas y formularios de otras pantallas. */
+.vehiculos-page {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.vehiculos-page__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.vehiculos-page__encabezado h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.vehiculos-page .contenedor {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.vehiculos-page .titContenedor {
+  margin: 0 0 20px;
+  color: #333;
+  font-size: 1.2rem;
+}
+
+/* Formulario */
+.vehiculos-page .grilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.vehiculos-page .formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.vehiculos-page label {
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.vehiculos-page input,
+.vehiculos-page select,
+.vehiculos-page textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.vehiculos-page textarea { resize: vertical; }
+
+.vehiculos-page input:focus,
+.vehiculos-page select:focus,
+.vehiculos-page textarea:focus {
+  outline: 2px solid #1a56a6;
+  outline-offset: 1px;
+}
+
+/* Botones */
+.vehiculos-page .acciones-formulario,
+.vehiculos-page .acciones-tabla {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.vehiculos-page .acciones-tabla { gap: 8px; }
+
+.vehiculos-page .btnGuardar,
+.vehiculos-page .btnCancelar {
+  box-sizing: border-box;
+  min-width: 150px;
+  height: 42px;
+  margin: 0;
+  padding: 0 16px;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.vehiculos-page .btnGuardar { background-color: #28a745; }
+.vehiculos-page .btnGuardar:hover { background-color: #218838; }
+.vehiculos-page .btnGuardar:disabled { opacity: 0.65; cursor: wait; }
+.vehiculos-page .btnCancelar { background-color: #dc3545; }
+.vehiculos-page .btnCancelar:hover { background-color: #c82333; }
+
+.vehiculos-page .btnAccion {
+  padding: 8px 12px;
+  border: 1px solid #6c757d;
+  border-radius: 6px;
+  background: #fff;
+  color: #343a40;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.vehiculos-page .btnAccion:hover { background: #f1f3f5; }
+.vehiculos-page .btnAccion--peligro { border-color: #bb2d3b; color: #bb2d3b; }
+.vehiculos-page .btnAccion--peligro:hover { background: #fff5f5; }
+
+/* Estado del aviso de service */
+.vehiculos-page .estado-aviso {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.vehiculos-page .estado-aviso--pendiente { background: #fff3cd; color: #664d03; }
+.vehiculos-page .estado-aviso--enviado { background: #d1e7dd; color: #0f5132; }
+.vehiculos-page .estado-aviso--descartado,
+.vehiculos-page .estado-aviso--sin-aviso { background: #e9ecef; color: #495057; }
+
+/* Historial */
+/* justify-content: normal anula la regla global "ul" de features/estilos.css, que centra las listas. */
+.vehiculos-page .historial-lista { display: grid; justify-content: normal; gap: 12px; margin: 0; padding-left: 20px; }
+.vehiculos-page .historial-lista li { padding-bottom: 12px; border-bottom: 1px solid #e9ecef; }
+
+/* Tabla y búsqueda */
+.vehiculos-page .input-busqueda { margin-bottom: 20px; }
+.vehiculos-page .formatoTabla { overflow-x: auto; }
+.vehiculos-page .datosTabla { width: 100%; border-collapse: collapse; }
+.vehiculos-page .datosTabla th { padding: 0 12px 10px; text-align: left; border-bottom: 2px solid #eee; color: #666; font-size: 0.8rem; white-space: nowrap; }
+.vehiculos-page .datosTabla td { padding: 14px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+.vehiculos-page .sinDatos { color: #888; text-align: center; }
+.vehiculos-page .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 768px) {
+  .vehiculos-page .grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* En el celular cada fila de la tabla se muestra como una tarjeta. */
+  .vehiculos-page .datosTabla thead { display: none; }
+
+  .vehiculos-page .datosTabla,
+  .vehiculos-page .datosTabla tbody,
+  .vehiculos-page .datosTabla tr,
+  .vehiculos-page .datosTabla td {
+    display: block;
+    width: 100%;
+  }
+
+  .vehiculos-page .datosTabla tr {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+  }
+
+  .vehiculos-page .datosTabla td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 8px 0;
+  }
+
+  .vehiculos-page .datosTabla td::before {
+    content: attr(data-label);
+    font-weight: 600;
+  }
+
+  .vehiculos-page .datosTabla .celda-acciones {
+    display: block;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #ddd;
+  }
+
+  .vehiculos-page .datosTabla .celda-acciones::before {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .vehiculos-page .acciones-tabla { justify-content: flex-start; }
+  .vehiculos-page .btnAccion { flex: 1 1 auto; }
+}
+
+@media (max-width: 520px) {
+  .vehiculos-page { padding: 16px; }
+  .vehiculos-page .contenedor { padding: 16px; }
+  .vehiculos-page .grilla { grid-template-columns: 1fr; }
+}

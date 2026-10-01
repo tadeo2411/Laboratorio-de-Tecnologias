@@ -10,7 +10,7 @@ function AvisoService({ vehiculo, onCerrar, onConfirmar }) {
         <p>Seleccioná una acción para registrar qué se hizo con este aviso.</p>
         <div className="acciones-formulario">
           <button type="button" className="btnGuardar" onClick={() => onConfirmar('enviado')}>Marcar como enviado</button>
-          <button type="button" className="btnSecundario" onClick={() => onConfirmar('descartado')}>Descartar aviso</button>
+          <button type="button" className="btnRojo" onClick={() => onConfirmar('descartado')}>Descartar aviso</button>
         </div>
       </section>
     </div>

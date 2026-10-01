@@ -123,7 +123,7 @@ function VehiculosForm({ vehiculoEnEdicion, onCancelar, onGuardar }) {
         <button type="submit" className="btnGuardar">
           {esEdicion ? 'Guardar Cambios' : 'Crear Vehículo'}
         </button>
-        <button type="button" className="btnRojo" onClick={onCancelar}>
+        <button type="button" className="btnCancelar" onClick={onCancelar}>
           Salir
         </button>
       </div>

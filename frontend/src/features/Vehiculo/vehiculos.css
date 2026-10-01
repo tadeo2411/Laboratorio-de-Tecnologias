@@ -60,28 +60,41 @@
   outline-offset: 1px;
 }
 
-.gestion-page .btnGuardar {
-  padding: 10px 24px;
-  border: 0;
+/* Botones Guardar / Cancelar (base compartida) */
+.gestion-page .btnGuardar,
+.gestion-page .btnCancelar,
+.acciones-formulario .btnGuardar,
+.acciones-formulario .btnCancelar {
+  box-sizing: border-box;
+  width: 150px;
+  height: 42px;
+  margin: 0;
+  padding: 0;
+  border: none;
   border-radius: 6px;
-  background: #198754;
-  color: #fff;
-  font: inherit;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
   cursor: pointer;
+  text-align: center;
+  transition: 0.2s ease;
 }
 
-.gestion-page .btnGuardar:hover { background: #146c43; }
-.gestion-page .btnRojo {
-  padding: 8px 12px;
-  border: 0;
-  border-radius: 6px;
-  background: #bb2d3b;
-  color: #fff;
-  font: inherit;
-  font-weight: bold;
-  cursor: pointer;
-}
+.gestion-page .btnGuardar,
+.acciones-formulario .btnGuardar { background-color: #28a745; color: #fff; }
+
+.gestion-page .btnCancelar,
+.acciones-formulario .btnCancelar { background-color: #dc3545; color: #fff; }
+
+.gestion-page .btnGuardar:hover,
+.acciones-formulario .btnGuardar:hover { background-color: #218838; }
+
+.gestion-page .btnCancelar:hover,
+.acciones-formulario .btnCancelar:hover { background-color: #c82333; }
+
 .gestion-page .btnSecundario,
 .gestion-page .btnAccion {
   padding: 8px 12px;
@@ -99,10 +112,13 @@
 .gestion-page .btnAccion--peligro:hover { background: #fff5f5; }
 
 .gestion-page .acciones-formulario,
-.gestion-page .acciones-tabla {
+.gestion-page .acciones-tabla,
+.acciones-formulario {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .gestion-page .mensaje-exito {

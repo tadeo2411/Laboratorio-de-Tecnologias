@@ -3,7 +3,7 @@ import VehiculosForm from './components/VehiculosForm'
 import VehiculosList from './components/VehiculosList'
 import HistorialVehiculo from './components/HistorialVehiculo'
 import AvisoService from './components/AvisoService'
-import vehiculosIniciales from './data/vehiculos.json'
+import vehiculosIniciales from "../../../../labtech-backend/data/vehiculos.json";   
 import './vehiculos.css'
 
 function VehiculoPage() {
@@ -70,7 +70,7 @@ function VehiculoPage() {
       {mensaje && (
         <div className="alert alert-success alert-dismissible fade show" role="alert">
           {mensaje}
-          <button type="button" className="btn-close" onClick={() => setMensaje('')}></button>
+          <button type="button" className="button-close" onClick={() => setMensaje('')}></button>
         </div>
       )}
 

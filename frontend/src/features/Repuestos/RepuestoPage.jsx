@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import RepuestosForm from './components/RepuestosForm'
 import RepuestosList from './components/RepuestosList'
-import repuestosIniciales from './data/repuestos.json'
+import repuestosIniciales from "../../../../labtech-backend/data/repuestos.json";   
 import './repuestos.css'
 
 function RepuestoPage() {

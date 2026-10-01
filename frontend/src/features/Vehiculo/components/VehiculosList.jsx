@@ -10,12 +10,9 @@ function textoEstadoAviso(estado) {
 function VehiculosList({ vehiculos, onEditar, onEliminar, onEnviarAviso, onVerHistorial }) {
   const [busqueda, setBusqueda] = useState('')
   const termino = busqueda.trim().toLowerCase()
-  const vehiculosFiltrados = vehiculos.filter((vehiculo) =>
+  const vehiculosFiltrados = vehiculos.filter((vehiculo) => 
     [vehiculo.patente, vehiculo.marca, vehiculo.modelo].some((valor) =>
-      valor.toLowerCase().includes(termino),
-    ),
-  )
-
+    valor && valor.toLowerCase().includes(termino),),)   
   return (
     <section className="contenedor">
       <h2 className="titContenedor">Vehículos</h2>

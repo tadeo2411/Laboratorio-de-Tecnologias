@@ -13,15 +13,12 @@ function PresupuestosPage(){
         async function cargarPresupuestos(){
             try {
                 const anteriores = await obtenerPresupuestos()
-                console.log('Datos recibidos:', anteriores);
-
 
                 if(activo)
                     setPresupuestos(anteriores)
 
 
             } catch (error) {
-                 console.log(error);
 
                 if(activo)
                     setError(error.message)

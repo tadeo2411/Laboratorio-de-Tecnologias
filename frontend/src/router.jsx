@@ -10,6 +10,7 @@ import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import Turnos from './features/turnos/pages/Turnos'
 import VehiculoPage from './features/Vehiculo/VehiculoPage'
 import RepuestoPage from './features/Repuestos/RepuestoPage'
+import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 
 import Clientes from './features/gestor/tablero/pages/Clientes'
 
@@ -18,7 +19,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <LayoutLanding />,
-
+        errorElement: <NoEncontradaPage />,
         children: [
             { index: true, element: <PaginaInicial /> } // Deberiamos crear otra sentencia
             //si queremos otra pag de sección de carreras
@@ -26,13 +27,15 @@ export const router = createBrowserRouter([
     },
     {
         path: '/login',
-        element: <LayoutLogin />
+        element: <LayoutLogin />,
+        errorElement: <NoEncontradaPage />,
         //element: aa,//la/s componente/s del login
         //creo q deben ir las validaciones del login
     },
     {
         path: '/gestor',
         element: <LayoutGestor />,
+        errorElement: <NoEncontradaPage />,
         children: [
             {
                 index: true,

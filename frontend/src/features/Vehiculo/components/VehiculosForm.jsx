@@ -1,68 +1,132 @@
 import { useState } from 'react'
 
-const valoresIniciales = {
-  dueno: '',
-  patente: '',
-  marca: '',
-  modelo: '',
-  anio: '',
-  kilometraje: '',
-  observaciones: '',
-}
+function VehiculosForm({ vehiculoEnEdicion, onCancelar, onGuardar }) {
+  const crearEstadoInicial = (vehiculo = null) => ({
+    dueno: vehiculo?.dueno || '',
+    patente: vehiculo?.patente || '',
+    marca: vehiculo?.marca || '',
+    modelo: vehiculo?.modelo || '',
+    anio: vehiculo?.anio || '',
+    kilometraje: vehiculo?.kilometraje || '',
+    observaciones: vehiculo?.observaciones || '',
+  })
 
-function VehiculosForm({ onGuardar }) {
-  const [formulario, setFormulario] = useState(valoresIniciales)
+  const [formData, setFormData] = useState(() => crearEstadoInicial(vehiculoEnEdicion))
 
-  function actualizarCampo(event) {
-    const { name, value } = event.target
-    setFormulario((valoresActuales) => ({ ...valoresActuales, [name]: value }))
+  const formKey = vehiculoEnEdicion?.id ?? vehiculoEnEdicion?.patente ?? 'new'
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  function manejarEnvio(event) {
-    event.preventDefault()
-    onGuardar({ ...formulario, patente: formulario.patente.toUpperCase() })
-    setFormulario(valoresIniciales)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onGuardar(formData)
   }
+
+  const esEdicion = vehiculoEnEdicion && !vehiculoEnEdicion.isNew
 
   return (
-    <form onSubmit={manejarEnvio}>
-      <div className="formulario anchoComp">
+    <form key={formKey} onSubmit={handleSubmit}>
+      <div className="formulario">
         <label htmlFor="dueno">Dueño</label>
-        <select id="dueno" name="dueno" value={formulario.dueno} onChange={actualizarCampo}>
-          <option value="">--- Elegir ---</option>
-          <option value="Sin asignar">Sin asignar</option>
+        <select
+          id="dueno"
+          name="dueno"
+          value={formData.dueno}
+          onChange={handleChange}
+          required
+        >
+          <option value="">--- Elegir dueño ---</option>
+          <option value="Juan Perez">Juan Pérez</option>
+          <option value="Maria Gomez">María Gómez</option>
+          <option value="Carlos Lopez">Carlos López</option>
         </select>
       </div>
 
       <div className="grilla">
         <div className="formulario">
           <label htmlFor="patente">Patente</label>
-          <input id="patente" name="patente" type="text" placeholder="AA000AA" value={formulario.patente} onChange={actualizarCampo} required />
+          <input
+            id="patente"
+            name="patente"
+            type="text"
+            placeholder="AA000AA"
+            value={formData.patente}
+            onChange={handleChange}
+            required
+          />
         </div>
+
         <div className="formulario">
           <label htmlFor="marca">Marca</label>
-          <input id="marca" name="marca" type="text" value={formulario.marca} onChange={actualizarCampo} required />
+          <input
+            id="marca"
+            name="marca"
+            type="text"
+            value={formData.marca}
+            onChange={handleChange}
+            required
+          />
         </div>
+
         <div className="formulario">
           <label htmlFor="modelo">Modelo</label>
-          <input id="modelo" name="modelo" type="text" value={formulario.modelo} onChange={actualizarCampo} required />
+          <input
+            id="modelo"
+            name="modelo"
+            type="text"
+            value={formData.modelo}
+            onChange={handleChange}
+            required
+          />
         </div>
+
         <div className="formulario">
           <label htmlFor="anio">Año</label>
-          <input id="anio" name="anio" type="number" min="1900" max="2100" value={formulario.anio} onChange={actualizarCampo} />
+          <input
+            id="anio"
+            name="anio"
+            type="number"
+            value={formData.anio}
+            onChange={handleChange}
+            required
+          />
         </div>
+
         <div className="formulario">
           <label htmlFor="kilometraje">Kilometraje</label>
-          <input id="kilometraje" name="kilometraje" type="number" min="0" value={formulario.kilometraje} onChange={actualizarCampo} />
+          <input
+            id="kilometraje"
+            name="kilometraje"
+            type="number"
+            value={formData.kilometraje}
+            onChange={handleChange}
+            required
+          />
         </div>
       </div>
 
-      <div className="formulario anchoComp">
+      <div className="formulario">
         <label htmlFor="observaciones">Observaciones</label>
-        <textarea id="observaciones" name="observaciones" rows="3" value={formulario.observaciones} onChange={actualizarCampo} />
+        <textarea
+          id="observaciones"
+          name="observaciones"
+          rows="3"
+          value={formData.observaciones}
+          onChange={handleChange}
+        ></textarea>
       </div>
 
-      <button type="submit" className="btnGuardar">Guardar</button>
+      <div className="acciones-formulario">
+        <button type="submit" className="btnGuardar">
+          {esEdicion ? 'Guardar Cambios' : 'Crear Vehículo'}
+        </button>
+        <button type="button" className="btnRojo" onClick={onCancelar}>
+          Salir
+        </button>
+      </div>
     </form>
   )
 }

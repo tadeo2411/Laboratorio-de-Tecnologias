@@ -5,25 +5,12 @@ import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
 import LayoutGestor from './shared/layout/LayoutGestor'
 import Tablero from './features/gestor/tablero/pages/Tablero'
-import Ordenes from './features/ordenes/pages/Ordenes'
+import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
-import Repuestos from './features/gestor/tablero/pages/Repuestos'
 import Turnos from './features/turnos/pages/Turnos'
-import Vehiculos from './features/gestor/tablero/pages/Vehiculos'
-import Clientes from './features/gestor/tablero/pages/Clientes'
-import Tablero from './features/gestor/tablero/pages/Tablero'
-import Ordenes from './features/gestor/tablero/pages/Ordenes'
-<<<<<<< HEAD
-import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
-import Repuestos from './features/gestor/tablero/pages/Repuestos'
-import Turnos from './features/turnos/pages/Turnos'
-import Vehiculos from './features/gestor/tablero/pages/Vehiculos'
-=======
-import Presupuestos from './features/gestor/tablero/pages/Presupuestos'
-import Turnos from './features/gestor/tablero/pages/Turnos'
 import VehiculoPage from './features/Vehiculo/VehiculoPage'
 import RepuestoPage from './features/Repuestos/RepuestoPage'
->>>>>>> c6d65f5e9ce2b7f504addeb062fb9df2ab76407b
+
 import Clientes from './features/gestor/tablero/pages/Clientes'
 
 export const router = createBrowserRouter([
@@ -53,7 +40,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "ordenes",
-                element: <Ordenes />
+                element: <OrdenesPage />
             },
             {
                 path: "turnos",

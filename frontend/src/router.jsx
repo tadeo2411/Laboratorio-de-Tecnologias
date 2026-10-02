@@ -4,13 +4,12 @@ import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
 import LayoutGestor from './shared/layout/LayoutGestor'
-import Tablero from './features/gestor/tablero/pages/Tablero'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import Turnos from './features/turnos/pages/Turnos'
-import VehiculosPage from './features/vehiculos/pages/VehiculoPage'
-import RepuestoPage from './features/Repuestos/RepuestoPage'
-import MetricaPage from './features/metricas/pages/MetricaPage';
+import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
+import RepuestoPage from './features/repuestos/pages/RepuestosPage'
+import TablerosPage from './features/tableros/pages/TablerosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 
 import Clientes from './features/gestor/tablero/pages/Clientes'
@@ -40,7 +39,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: <Tablero />
+                element: <TablerosPage />
             },
             {
                 path: "ordenes",
@@ -65,10 +64,6 @@ export const router = createBrowserRouter([
             {
                 path: "repuestos",
                 element: <RepuestoPage />
-            },
-            {
-                path: "metricas",
-                element: <MetricaPage />
             }
         ]
     } //no me carga si no comento

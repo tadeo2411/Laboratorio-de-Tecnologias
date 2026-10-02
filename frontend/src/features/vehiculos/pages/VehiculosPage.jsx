@@ -13,6 +13,7 @@ import {
   obtenerVehiculos,
 } from '../services/vehiculosService'
 import './VehiculosPage.css'
+import Spinner from '../../../shared/components/Spinner/Spinner'
 
 function VehiculosPage() {
   const [vehiculos, setVehiculos] = useState([])
@@ -147,7 +148,7 @@ function VehiculosPage() {
       )}
 
       {cargando ? (
-        <p className="sinDatos">Cargando vehículos...</p>
+        <Spinner />
       ) : (
         <VehiculosList
           vehiculos={vehiculos}

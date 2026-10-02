@@ -1,275 +1,202 @@
-.navList {
-    opacity: 1;
-}
-
+/* Barra de la landing. Todo usa clases "navbar-landing__...": en React los CSS
+   se cargan para toda la aplicación, y las reglas por etiqueta (ul, nav, header)
+   o con nombres repetidos (.btn-menu, .barra) se mezclaban con las del gestor.
+   Algunas propiedades (border, gap, margin, padding) se fijan a propósito para
+   anular las reglas por etiqueta de features/estilos.css. */
 .navbar-landing {
-    width: 100%;
-    display: absolute;
-    color: white;
-    background-color: var(--colorFondo);
-    z-index: 10;
     position: absolute;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    background-color: var(--colorFondo);
+    color: white;
     font-size: 1rem;
-    border-color: var(--colorFondo);
 }
 
-.header-contenido {
-    width: 100%;
+.navbar-landing__contenido {
     display: flex;
     align-items: center;
-
+    width: 100%;
 }
 
-#logo-container {
+.navbar-landing__logo-contenedor {
     display: flex;
     align-items: center;
     flex-shrink: 0;
 }
 
-#nav-container {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-}
-
-.navbar-landing nav {
-    justify-self: center;
-}
-
-
-
-.navbar-landing.nav-oculto {
-    transform: translateY(-100%);
-}
-
-.barra {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-}
-
-.menu-horizontal {
-    position: relative;
-    list-style: none;
-    display: flex;
-    gap: clamp(1.25rem, 4vw, 5rem);
-    justify-content: center;
-    align-items: center;
-    /* Espacio entre los enlaces */
-    width: 100%;
-    padding-inline: 1rem;
-}
-
-#logo {
+.navbar-landing__logo {
     width: 6rem;
     height: 3rem;
     object-fit: fill;
 }
 
-.btn-menu {
-    display: none;
-    background-color: transparent;
-    margin: revert;
-    border: 1px solid rgb(31, 233, 31);
-    border-radius: 4px;
-    padding: 8px 12px;
-    color: white;
-    cursor: pointer;
-    font-size: .9rem;
-}
-
-#logoContainer {
+.navbar-landing__nav-contenedor {
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 
-#navContainer {
+.navbar-landing__nav {
+    position: relative;
     flex: 1;
     display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-landing__menu {
+    position: relative;
+    display: flex;
+    gap: clamp(1.25rem, 4vw, 5rem);
     justify-content: center;
     align-items: center;
-
+    width: 100%;
+    margin: 0;
+    padding: 0 1rem;
+    list-style: none;
 }
 
-#navContainer>nav {
-    flex: 1;
-}
-
-#navContainer>nav>ul {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 20%;
-}
-
-
-nav>ul>li {
+.navbar-landing__item {
     display: flex;
     flex-direction: column;
 }
 
-nav>ul>li>a {
+.navbar-landing__enlace {
     color: white;
-    cursor: pointer;
+    font-weight: bold;
     text-align: center;
     text-decoration: none;
-    font-weight: bold;
+    cursor: pointer;
 }
 
-nav>ul>li>a:hover {
+.navbar-landing__enlace:hover {
     color: rgb(31, 233, 31);
     transition: 200ms;
 }
 
-.nav-underline {
-    height: 2px;
-    width: 100%;
-    background-color: rgb(31, 233, 31);
-    transform: scaleX(0);
-    transform-origin: center;
-    transition: transform 0.3s ease;
-}
-
-
-
-nav>ul>li:hover .nav-underline {
-    transform: scaleX(1);
-}
-
-.item-turno {
+.navbar-landing__item--turno {
     position: absolute;
     right: 1rem;
-    margin-left: auto;
 }
-.item-turno>a {
+
+.navbar-landing__boton-turno {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-
     min-height: 42px;
     padding: 0.65rem 1.25rem;
-
     background-color: var(--colorBoton);
     color: #0a0a0a;
-
     border: 1px solid var(--colorBoton);
     border-radius: 6px;
-
     font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     line-height: 1;
-
+    text-decoration: none;
     transition:
         background-color 180ms ease,
         color 180ms ease,
         box-shadow 180ms ease;
 }
 
-.item-turno>a:hover {
+.navbar-landing__boton-turno:hover {
     background-color: var(--colorFondo);
     color: var(--verdeClaroTextos);
     border-color: var(--colorBoton);
     box-shadow: 0 0 0 3px rgba(61, 189, 61, 0.15);
 }
 
-.item-turno > a::after {
+.navbar-landing__boton-turno::after {
     content: "↗";
     font-size: 1rem;
 }
 
-.item-turno > a:focus-visible {
+.navbar-landing__boton-turno:focus-visible {
     outline: 3px solid white;
     outline-offset: 3px;
 }
 
+.navbar-landing__boton-menu {
+    display: none;
+    margin-left: auto;
+    padding: 8px 12px;
+    background-color: transparent;
+    border: 1px solid rgb(31, 233, 31);
+    border-radius: 4px;
+    color: white;
+    font-size: .9rem;
+    cursor: pointer;
+}
 
-
-@media (min-width: 751px){
+@media (min-width: 751px) {
     .navbar-landing {
-        width: 100%;
-        display: absolute;
-        flex-direction: row;
-        color: white;
-        padding: .5rem;
-        z-index: 10;
         position: fixed;
-        background-color: var(--colorFondo);
-    }
-
-    #navContainer>nav>ul {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        width: 100%;
+        padding: .5rem;
     }
 }
 
 @media (max-width: 750px) {
-    .header-contenido{  
+    .navbar-landing__contenido {
         padding: .5rem;
-
+        box-sizing: border-box;
     }
-    .btn-menu {
+
+    .navbar-landing__boton-menu {
         display: block;
-        margin-left: auto;
     }
 
-    #nav-container {
+    .navbar-landing__nav-contenedor {
         flex: 0;
     }
 
-    .barra{
-        position:static;
+    .navbar-landing__nav {
+        position: static;
     }
 
-    .item-turno{
-        position : static;
-        right: auto;
-        margin-left : 0;
+    .navbar-landing__item--turno {
+        position: static;
+        padding: 0.5rem 1rem 0;
+        box-sizing: border-box;
     }
 
-    .menu-horizontal {
+    .navbar-landing__menu {
         display: none;
         flex-direction: column;
         gap: 0;
         position: absolute;
         top: 100%;
         left: 0;
+        z-index: 10;
         width: 100%;
+        padding: 0 0 1rem;
         background-color: var(--colorFondo);
         border-bottom: 1px solid rgb(31, 233, 31);
         box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
-        z-index: 10;
     }
 
-    .menu-horizontal.mostrar {
+    .navbar-landing__menu--abierto {
         display: flex;
     }
 
-    .menu-horizontal li {
+    .navbar-landing__item {
         width: 100%;
     }
 
-    .menu-horizontal a {
+    .navbar-landing__enlace {
         display: block;
         padding: 15px;
     }
 
-    #logo-container {
+    .navbar-landing__logo-contenedor {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        margin-top: .5px;
     }
 }

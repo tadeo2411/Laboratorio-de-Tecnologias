@@ -6,7 +6,7 @@ import LayoutLogin from './shared/layout/LayoutLogin'
 import LayoutGestor from './shared/layout/LayoutGestor'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
-import Turnos from './features/turnos/pages/Turnos'
+import TurnosPage from './features/turnos/pages/TurnosPage'
 import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "repuestos",
-                element: <Repuestos />
+                element: <RepuestoPage />
             }
         ]
     } //no me carga si no comento

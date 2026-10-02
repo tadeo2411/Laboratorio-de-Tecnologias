@@ -1,4 +1,4 @@
-
+import './footerGestor.css';
 
 function FooterGestor() {
     return (

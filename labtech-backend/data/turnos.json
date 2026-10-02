@@ -1,0 +1,16 @@
+[
+    {
+        "id": "T001",
+        "fechaHora" :"2024-06-01T09:00:00",
+        "motivo" :  "Service",
+        "estado" :  "CUMPLIDO",
+        "patente" :   "AG 625 NA"
+    },
+    {
+        "id": "T002",
+        "fechaHora": "2026-10-18T09:00:00",
+        "motivo": "Servicio Frenos",
+        "estado": "SOLICITADO",
+        "patente": "KXJ 439"
+    }
+]

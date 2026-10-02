@@ -1,4 +1,4 @@
-header {
+.navbar-gestor {
     background-color: white;
     border-bottom: 1px solid rgb(194, 192, 192);
     display: flex;
@@ -9,7 +9,8 @@ header {
     position: relative; /* Necesario para que el menú móvil flote respecto al header */
 }
 
-.logo {
+.navbar-gestor .logo {
+    flex-shrink: 0;
     width: 122px;
     height: 50px;
     object-fit: cover;
@@ -22,14 +23,16 @@ header {
     cursor: pointer;
 }
 
-nav {
+.navbar-gestor nav {
     flex-grow: 1; /* Obliga al nodo a absorber el 100% del espacio central disponible */
     display: flex;
+    align-items: center;
+    min-width: 0;
     justify-content: center; /* Alinea la lista hija estrictamente al centro del vector */
 }
 
-/* Inyectar sobre tu lista interactiva (ul.barra o .sidebar-lista) */
-ul {
+/* Inyectar sobre tu lista interactiva (ul.barra-gestor o .sidebar-lista) */
+.navbar-gestor ul {
     display: flex;
     justify-content: center;
     margin: 0 auto; /* Purgado de márgenes laterales automáticos residuales */
@@ -46,8 +49,37 @@ ul {
     margin: 0;
 }
 
+.usuario-info__nombre {
+    color: rgb(82, 82, 82);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-cerrar-sesion {
+    padding: 6px 12px;
+
+    border-radius: 6px;
+    background: #bb2d3b;
+    color: #fff;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-cerrar-sesion:hover {
+    background-color :#fff;
+    color: #bb2d3b;
+}
+
+/* Reservar espacio para los enlaces y el botón en pantallas intermedias. */
+@media (max-width: 1200px) {
+    .navbar-gestor .usuario-info__nombre {
+        display: none;
+    }
+}
+
 /* Ocultar el botón de menú en escritorio */
-.btn-menu {
+.navbar-gestor .btn-menu {
     display: none;
     background-color: transparent;
     border: 1px solid rgb(194, 192, 192);
@@ -56,15 +88,18 @@ ul {
     font-size: .9rem;
     cursor: pointer;
     color: rgb(82, 82, 82);
+    align-items: center;
 }
 
 /* Menú en Lista (Escritorio) */
-.barra {
+.navbar-gestor .barra-gestor {
     display: flex;       /* Alinea los elementos en fila */
-    gap: 30px;           /* Distancia exacta de 30px entre items */
+    align-items: center; /* Centra los enlaces a la altura del botón. */
+    width: 100%;
+    gap: clamp(8px, 2rem, 30px);
     list-style: none;    /* Elimina los puntos del ul */
-    margin: 5;          
-    padding: 0;          
+    margin: 0;
+    padding: 0;
     color: #ffffff;
     position: relative;
 }
@@ -98,14 +133,84 @@ ul {
   transform: scaleX(1);
 }
 
-.barra li {
+.barra-gestor li {
     margin: 0;
+}
+
+/* Estos márgenes centran los enlaces entre el logo y la sesión,
+   y dejan la sesión en el extremo derecho de la misma lista. */
+.navbar-gestor .barra-gestor > li:first-child,
+.navbar-gestor .barra-gestor > .barra-gestor__sesion {
+    margin-left: auto;
 }
 
 
 
-.barra a {
+.barra-gestor a {
     color: rgb(82, 82, 82);
     text-decoration: none;
     font-weight: 500;
+    white-space: nowrap;
+}
+
+/* El estado de React agrega la clase --abierto al tocar el botón. */
+@media (max-width: 900px) {
+    .navbar-gestor .btn-menu {
+        display: block;
+        margin-left: auto;
+    }
+
+    .navbar-gestor nav {
+        flex-grow: 0;
+    }
+
+    .navbar-gestor .barra-gestor {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid rgb(194, 192, 192);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-gestor .barra-gestor--abierto {
+        display: flex;
+    }
+
+    .barra-gestor li {
+        width: 100%;
+        text-align: center;
+        border-top: 1px solid #f0f0f0;
+    }
+
+    .barra-gestor a {
+        padding: 15px;
+    }
+
+    .navbar-gestor .barra-gestor > li:first-child,
+    .navbar-gestor .barra-gestor > .barra-gestor__sesion {
+        margin-left: 0;
+    }
+
+    .navbar-gestor .barra-gestor__sesion {
+        justify-content: center;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .navbar-gestor .barra-gestor__sesion .btn-cerrar-sesion {
+        display: block;
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        border: 0;
+        border-radius: 0;
+        font-weight: 500;
+        text-align: center;
+    }
 }

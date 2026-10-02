@@ -1,24 +1,25 @@
-import { createBrowserRouter, RouterProvider } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
-import { Children } from 'react'
 import LayoutLogin from './shared/layout/LayoutLogin'
-import LayoutGestor from './shared/layout/LayoutGestor'
-import Tablero from './features/home/gestor/tablero/pages/Tablero'
-import Ordenes from './features/home/gestor/tablero/pages/Ordenes'
-import Presupuestos from './features/home/gestor/tablero/pages/Presupuestos'
-import Repuestos from './features/home/gestor/tablero/pages/Repuestos'
-import Turnos from './features/home/gestor/tablero/pages/Turnos'
-import Vehiculos from './features/home/gestor/tablero/pages/Vehiculos'
-import Clientes from './features/home/gestor/tablero/pages/Clientes'
+import LoginPage from './features/auth/pages/LoginPage'
+import GestorProtegido from './features/auth/components/GestorProtegido'
+import OrdenesPage from './features/ordenes/pages/OrdenesPage'
+import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
+import TurnosPage from './features/turnos/pages/TurnosPage'
+import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
+import RepuestoPage from './features/repuestos/pages/RepuestosPage'
+import TablerosPage from './features/tableros/pages/TablerosPage';
+import NoEncontradaPage from './shared/pages/NoEncontradaPage'
+import ClientesPage from './features/clientes/pages/ClientesPage'
 
 export const router = createBrowserRouter([
     // rutas de la Landing
     {
         path: '/',
         element: <LayoutLanding />,
-
+        errorElement: <NoEncontradaPage />,
         children: [
             { index: true, element: <PaginaInicial /> } // Deberiamos crear otra sentencia
             //si queremos otra pag de sección de carreras
@@ -26,25 +27,29 @@ export const router = createBrowserRouter([
     },
     {
         path: '/login',
-        element: <LayoutLogin />
-        //element: aa,//la/s componente/s del login
-        //creo q deben ir las validaciones del login
+        element: <LayoutLogin />,
+        errorElement: <NoEncontradaPage />,
+        children: [
+            { index: true, element: <LoginPage /> }
+        ],
     },
     {
+        // GestorProtegido controla que haya sesión antes de mostrar cualquier pantalla del gestor
         path: '/gestor',
-        element: <LayoutGestor />,
+        element: <GestorProtegido />,
+        errorElement: <NoEncontradaPage />,
         children: [
             {
                 index: true,
-                element: <Tablero />
+                element: <TablerosPage />
             },
             {
                 path: "ordenes",
-                element: <Ordenes />
+                element: <OrdenesPage />
             },
             {
                 path: "turnos",
-                element: <Turnos />
+                element: <TurnosPage />
             },
             {
                 path: "presupuestos",
@@ -52,17 +57,17 @@ export const router = createBrowserRouter([
             },
             {
                 path: "clientes",
-                element: <Clientes />
+                element: <ClientesPage />
             },
             {
                 path: "vehiculos",
-                element: <Vehiculos />
+                element: <VehiculosPage />
             },
             {
                 path: "repuestos",
-                element: <Repuestos />
+                element: <RepuestoPage />
             }
         ]
-    } //no me carga si no comento
+    }
 ]
 )

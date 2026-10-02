@@ -1,0 +1,508 @@
+/* Estilos de la landing (PaginaInicial).
+   Todo usa clases, no etiquetas: en React los CSS se cargan para toda la
+   aplicación, así que una regla como "section" o "a:hover" también cambiaría el
+   gestor (y las del gestor cambiaban la landing).
+   Cada sección fija border: 0 y border-radius: 0 para anular la regla global
+   "section" de features/estilos.css (borde gris y esquinas redondeadas).
+   scroll-margin-top deja lugar para la barra fija al saltar desde el menú. */
+
+/* ===================== Inicio (components/Inicio/Inicio.jsx) ===================== */
+
+.section1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 90vh;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background-color: var(--colorFondo);
+}
+
+/* La foto se desvanece abajo para unirse con el fondo oscuro. */
+.section1__fondo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 30% center;
+    -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+}
+
+.section1__contenido {
+    position: relative;
+    z-index: 1;
+    width: 50%;
+    padding: 90px 50px 50px;
+    box-sizing: border-box;
+}
+
+.text1,
+.text2 {
+    display: block;
+    font-weight: bold;
+    line-height: 1.15;
+}
+
+.text1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: rgb(238, 238, 238);
+}
+
+.text2 {
+    font-size: clamp(1.4rem, 2.8vw, 2rem);
+    color: rgb(19, 235, 19);
+}
+
+.section1__descripcion {
+    margin: 1rem 0 0;
+    font-size: 1.1rem;
+    color: rgb(238, 238, 238);
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.infoSection1 {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+}
+
+/* El filtro pinta de verde los íconos, que son negros. */
+.infoSection1__icono {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
+}
+
+.infoSection1__titulo {
+    margin: 0;
+    font-weight: bold;
+}
+
+.infoSection1__texto {
+    margin: 0;
+}
+
+@media (max-width: 750px) {
+    .section1 {
+        background: linear-gradient(to bottom, rgba(16, 16, 17, 0.75), var(--colorFondoFaq) 100%);
+    }
+
+    .section1__fondo {
+        opacity: 0.2;
+        object-position: 38% center;
+    }
+
+    .section1__contenido {
+        width: 100%;
+        padding: 90px 20px 40px;
+    }
+}
+
+/* ===================== Servicios (components/ServiceCards) ===================== */
+
+.servicios {
+    display: block;
+    padding: 4rem 1.25rem;
+    border: 0;
+    border-radius: 0;
+    background-color: #0a0a0a;
+    color: #ffffff;
+    scroll-margin-top: 65px;
+}
+
+.services-container {
+    width: min(100%, 1400px);
+    margin: 0 auto;
+}
+
+.services-heading {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.titulo-servicios {
+    color: rgb(31, 233, 31); /* Verde neón */
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 2.5rem;
+}
+
+.subtitulo-servicios {
+    color: #aaaaaa;
+    font-size: 1.1rem;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.service-card {
+    display: flex;
+    min-height: 185px;
+    padding: 1.5rem 1rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #161616;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    color: inherit;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    border-color: rgb(31, 233, 31);
+    box-shadow: 0 8px 20px rgba(31, 233, 31, 0.15);
+}
+
+.service-card:focus-visible {
+    outline: 3px solid #1fe91f;
+    outline-offset: 3px;
+}
+
+.service-icon {
+    font-size: 2.2rem;
+    width: 65px;
+    height: 65px;
+    background-color: rgba(31, 233, 31, 0.08);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(31, 233, 31, 0.2);
+}
+
+.service-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin: 1rem 0;
+}
+
+.ver-mas-txt {
+    font-size: 0.8rem;
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.service-card:hover .ver-mas-txt {
+    opacity: 1;
+}
+
+.service-modal-backdrop {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 1.25rem;
+    background-color: rgba(0, 0, 0, 0.72);
+}
+
+.service-modal {
+    width: min(100%, 540px);
+}
+
+.modal-oscuro {
+    background-color: #161616;
+    color: #fff;
+    border: 1px solid rgb(31, 233, 31);
+    box-shadow: 0 0 30px rgba(31, 233, 31, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.service-modal__cabecera,
+.service-modal__pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem;
+}
+
+.service-modal__cuerpo {
+    padding: 0 1.25rem 1.25rem;
+}
+
+.service-modal__cerrar {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.btn-whatsapp {
+    display: block;
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 8px;
+    background-color: #1fe91f;
+    color: #0a0a0a;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+.service-modal__titulo {
+    margin: 0;
+    color: rgb(31, 233, 31);
+    font-weight: bold;
+}
+
+.modal-destacado {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #eaeaea;
+    margin-bottom: 10px;
+}
+
+.service-modal__detalle {
+    color: #b0b0b0;
+}
+
+@media (max-width: 1023px) {
+    .services-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .servicios {
+        padding-block: 3rem;
+    }
+
+    .titulo-servicios {
+        font-size: 2rem;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .service-card {
+        min-height: 165px;
+    }
+}
+
+@media (max-width: 420px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===================== Preguntas frecuentes (components/FAQ/Faq.jsx) ===================== */
+
+.faq {
+    display: flex;
+    justify-content: center;
+    padding: 4rem 1.25rem;
+    border: 0;
+    border-radius: 0;
+    background-color: var(--colorFondoFaq);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 600;
+    scroll-margin-top: 65px;
+}
+
+.faq__contenido {
+    width: min(90%, 1400px);
+    align-items: flex-start;
+}
+
+/* Las clases "accordion-..." son de Bootstrap: se cambian solo dentro de .faq. */
+.faq .accordion {
+    width: 100%;
+}
+
+.faq .accordion-item {
+    background-color: var(--colorFondoFaq);
+    color: white;
+}
+
+.faq .accordion-button {
+    background-color: var(--colorFondo);
+    color: white;
+}
+
+.faq .accordion-body {
+    font-weight: 400;
+}
+
+.faq .accordion-button:hover {
+    background-color: rgb(7, 41, 7);
+}
+
+.faq .accordion-button:not(.collapsed) {
+    background-color: var(--colorFondoFaq);
+    color: rgb(74, 220, 74);
+    box-shadow: none;
+}
+
+/* Cambia el color de la flecha */
+.faq .accordion-button::after {
+    filter: invert(1);
+}
+
+.faq__titulo {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    /*clamp es para tener una fuente responsive con minimo ideal y max*/
+    font-weight: 900;
+    line-height: 1.05;
+    color: white;
+}
+
+.textosFaq {
+    color: var(--verdeClaroTextos);
+    font-family: 'Ubuntu', 'Times New Roman';
+    font-size: small;
+    font-weight: 600;
+}
+
+.faq__texto {
+    display: block;
+    margin-bottom: 0.75rem;
+    color: grey;
+    font-size: smaller;
+}
+
+.faq__enlace {
+    font-size: large;
+}
+
+.faq__enlace:hover {
+    color: grey;
+}
+
+/* ===================== Ubicación (components/Mapa/Mapa.jsx) ===================== */
+
+.ubicacion {
+    padding: 4rem 1.25rem;
+    border: 0;
+    border-radius: 0;
+    background-color: var(--colorFondo);
+    color: white;
+    scroll-margin-top: 65px;
+}
+
+.ubicacion__contenido {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: center;
+    width: min(100%, 1200px);
+    margin: 0 auto;
+}
+
+.ubicacion__iframe {
+    display: block;
+    width: 100%;
+    height: 26rem;
+    border: 0;
+    border-radius: 10px;
+}
+
+.ubicacion__etiqueta {
+    color: var(--verdeClaroTextos);
+    font-family: 'Ubuntu', sans-serif;
+    font-size: small;
+    font-weight: 600;
+}
+
+.ubicacion__titulo {
+    margin: 0.5rem 0 1rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 700;
+    color: white;
+}
+
+.ubicacion__descripcion {
+    margin: 0 0 1.5rem;
+    color: #aaaaaa;
+}
+
+.ubicacion__datos {
+    display: grid;
+    gap: 1rem;
+    margin: 0 0 1.75rem;
+    font-style: normal;
+}
+
+.ubicacion__dato-nombre {
+    color: var(--verdeClaroTextos);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ubicacion__dato-valor {
+    margin: 0.25rem 0 0;
+    color: #e0e0e0;
+}
+
+/* Mismo estilo que el botón "Solicitar turno" de la barra. */
+.ubicacion__boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0.65rem 1.25rem;
+    background-color: var(--colorBoton);
+    color: #0a0a0a;
+    border: 1px solid var(--colorBoton);
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.ubicacion__boton:hover {
+    background-color: var(--colorFondo);
+    color: var(--verdeClaroTextos);
+    border-color: var(--colorBoton);
+    box-shadow: 0 0 0 3px rgba(61, 189, 61, 0.15);
+}
+
+.ubicacion__boton:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+    .ubicacion__contenido {
+        grid-template-columns: 1fr;
+    }
+
+    .ubicacion__iframe {
+        height: 18rem;
+    }
+}

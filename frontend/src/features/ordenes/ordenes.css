@@ -1,0 +1,157 @@
+/* ========================================= TÍTULO PRINCIPAL ========================================= */
+.contenedor>h3 {
+    margin: 0 0 25px 0;
+    font-size: 26px;
+    color: #222;
+}
+
+/* ========================================= FORMULARIO ========================================= */
+#formularioOrden {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* ========================================= SECCIONES ========================================= */
+.seccionOrden {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-sizing: border-box;
+}
+
+/* ========================================= TÍTULOS DE LAS SECCIONES ========================================= */
+.seccionOrden h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ddd;
+    font-size: 20px;
+    color: #333;
+}
+
+/* ========================================= LABELS ========================================= */
+.seccionOrden label {
+    margin-top: 5px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* ========================================= SELECTS ========================================= */
+.seccionOrden select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* ========================================= INPUTS ========================================= */
+.seccionOrden input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+/* ========================================= TEXTAREAS ========================================= */
+.seccionOrden textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+/* ========================================= FOCUS ========================================= */
+.seccionOrden select:focus,
+.seccionOrden input:focus,
+.seccionOrden textarea:focus {
+    outline: none;
+    border-color: #0077e0;
+    box-shadow: 0 0 0 2px rgba(0, 119, 224, 0.15);
+}
+
+/* ========================================= BOTONES ========================================= */
+.btnGuardar {
+    display: inline-block;
+    width: fit-content;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #0077e0;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* HOVER */
+.btnGuardar:hover {
+    background-color: #005bb5;
+}
+
+/* ACTIVE */
+.btnGuardar:active {
+    transform: scale(0.98);
+}
+
+/* ========================================= BOTÓN CARGAR VEHÍCULO ========================================= */
+.seccionOrden .btnGuardar {
+    align-self: flex-start;
+    margin-top: 8px;
+}
+
+/* ========================================= CREAR PRESUPUESTO ========================================= */
+.crearPresupuesto {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f0f6fc;
+    border: 1px solid #d5e7f8;
+    box-sizing: border-box;
+}
+
+/* ========================================= BOTÓN GUARDAR ORDEN ========================================= */
+.btnGuardarOrden {
+    align-self: flex-end;
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
+/* ========================================= RESPONSIVE ========================================= */
+@media (max-width: 600px) {
+    .contenedor {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .seccionOrden {
+        padding: 15px;
+    }
+
+    .btnGuardarOrden {
+        width: 100%;
+    }
+}

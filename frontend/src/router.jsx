@@ -10,6 +10,7 @@ import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import Turnos from './features/turnos/pages/Turnos'
 import VehiculoPage from './features/Vehiculo/VehiculoPage'
 import RepuestoPage from './features/Repuestos/RepuestoPage'
+import MetricaPage from './features/metricas/pages/MetricaPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 
 import Clientes from './features/gestor/tablero/pages/Clientes'
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
             {
                 path: "repuestos",
                 element: <RepuestoPage />
+            },
+            {
+                path: "metricas",
+                element: <MetricaPage />
             }
         ]
     } //no me carga si no comento

@@ -1,5 +1,5 @@
 // import '../../estilos.css'
-function Turnos({ turnos, onNuevoTurno }){
+function Turnos({ turnos, onNuevoTurno, onEliminarTurno, onEditarTurno }){
 return(
     <>
         <div id = 'nuevoTurno'>
@@ -15,12 +15,13 @@ return(
                             <th>Fecha</th>
                             <th>Patente</th>
                             <th>Estado</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         {turnos.length === 0?(
                             <tr>
-                                <td colSpan={3} className="sinDatos" style={{textAlign: 'center'}}>Aun no hay datos cargados</td>
+                                <td colSpan={4} className="sinDatos" style={{textAlign: 'center'}}>Aun no hay datos cargados</td>
                             </tr>
                         ):
                         (
@@ -29,6 +30,23 @@ return(
                                     <td>{turno.fechaHora.replace('T', ' ')}</td>
                                     <td>{turno.patente}</td>
                                     <td>{turno.estado}</td>
+                                    <td>
+                                        <button type ='button'
+                                        className="btn btn-danger btn-sm"
+                                        onClick = {() => onEliminarTurno(turno.id)}
+                                        alt ="Eliminar"
+                                        >
+                                            🗑️
+                                        </button>
+
+                                        <button type ='button'
+                                        className="btn btn-primary btn-sm"
+                                        onClick = {() => onEditarTurno(turno)}
+                                        alt ="Modificar"
+                                        >
+                                            ✏️
+                                        </button>
+                                    </td>
                                 </tr>
                             ))
                         )

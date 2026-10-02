@@ -11,8 +11,11 @@ const valoresIniciales = {
     estado: 'SOLICITADO',
 }
 
-function TurnosForm({ onGuardar, cargando, error, vehiculos }) {
-    const [formulario, setFormulario] = useState(valoresIniciales)
+function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
+    const [formulario, setFormulario] = useState( turnoInicial
+        ? {... valoresIniciales, ...turnoInicial}
+        : valoresIniciales
+    )
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target

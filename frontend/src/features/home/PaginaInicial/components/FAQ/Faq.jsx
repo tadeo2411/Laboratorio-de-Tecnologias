@@ -1,17 +1,15 @@
-import './faq.css'
-
 function Faq(){
         return(
-    <section id = 'faq'>
-    <div className = 'row'>
-       
-            <div className = 'col-12 col-lg-5' id = 'faqContenedor'>
-                <span className = 'textosFaq' >ANTES DE TRAER TU AUTO:<br /></span>
-                <h2 id = 'faqTitulo'>Preguntas Frecuentes</h2>
-                <span id = 'faqTexto'>Si no encontrás lo que buscás, contactános. Podemos asesorarte, orientandote según el modelo y la falla que tenga tu auto. <br /></span>
-                <a href = 'https://wa.me/5492664344135?' className='textosFaq' id ='enlaceWsp'>Hacer una consulta ↗</a>
+    <section className='faq' id='faq'>
+    <div className='row faq__contenido'>
+
+            <div className='col-12 col-lg-5'>
+                <span className='textosFaq'>ANTES DE TRAER TU AUTO:<br /></span>
+                <h2 className='faq__titulo'>Preguntas Frecuentes</h2>
+                <span className='faq__texto'>Si no encontrás lo que buscás, contactános. Podemos asesorarte, orientandote según el modelo y la falla que tenga tu auto. <br /></span>
+                <a href='https://wa.me/5492664344135?' className='textosFaq faq__enlace' target='_blank' rel='noopener noreferrer'>Hacer una consulta ↗</a>
             </div>
-        <div className = 'col-12 col-lg-7 mt-4 mt-lg-0' id= 'faqPreguntas'>{/*col-lg hace que las columnas aparezcan una al lado de la otra a partir de los 992px fuente: codex*/ }
+        <div className='col-12 col-lg-7 mt-4 mt-lg-0'>{/*col-lg hace que las columnas aparezcan una al lado de la otra a partir de los 992px fuente: codex*/ }
                 {/* 1ra faq */} 
                 <div className="accordion accordion-flush" id="accordionFlushExample">
                     <div className="accordion-item">

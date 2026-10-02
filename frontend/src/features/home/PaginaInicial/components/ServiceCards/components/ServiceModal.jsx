@@ -17,15 +17,15 @@ function ServiceModal({ servicio, onClose }) {
         <div className="service-modal-backdrop" role="presentation" onMouseDown={onClose}>
             <div className="service-modal" role="dialog" aria-modal="true" aria-labelledby={`modal${id}-title`} onMouseDown={(event) => event.stopPropagation()}>
                 <div className="modal-oscuro">
-                    <div className="modal-header">
-                    <h5 id={`modal${id}-title`} className="modal-title">{icono} {titulo}</h5>
-                    <button type="button" className="modal-close" onClick={onClose} aria-label="Cerrar">×</button>
+                    <div className="service-modal__cabecera">
+                    <h5 id={`modal${id}-title`} className="service-modal__titulo">{icono} {titulo}</h5>
+                    <button type="button" className="service-modal__cerrar" onClick={onClose} aria-label="Cerrar">×</button>
                     </div>
-                    <div className="modal-body">
+                    <div className="service-modal__cuerpo">
                         <p className="modal-destacado">{destacada}</p>
-                        <p>{detalle}</p>
+                        <p className="service-modal__detalle">{detalle}</p>
                     </div>
-                    <div className="modal-footer">
+                    <div className="service-modal__pie">
                         <a href={`https://wa.me/5492664344135?text=${mensajeWPP}`} target="_blank" rel="noopener noreferrer" className="btn-whatsapp">
                             📱 Cotizar por WhatsApp
                         </a>

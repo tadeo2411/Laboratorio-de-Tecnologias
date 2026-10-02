@@ -1,0 +1,6 @@
+/* Antes este tamaño llegaba "de rebote" desde el CSS del footer de la landing,
+   que también usaba la clase .copyright. Ahora la landing tiene sus propias
+   clases y el gestor define el suyo acá. */
+.copyright {
+    font-size: 14px;
+}

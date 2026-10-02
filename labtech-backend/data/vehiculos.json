@@ -1,5 +1,6 @@
 [
   {
+    "id": "veh-001",
     "dueno": "Sin asignar",
     "patente": "AA000AA",
     "marca": "Toyota",
@@ -9,6 +10,7 @@
     "observaciones": "Control general pendiente"
   },
   {
+    "id": "veh-002",
     "dueno": "Sin asignar",
     "patente": "AB123CD",
     "marca": "Ford",
@@ -18,6 +20,7 @@
     "observaciones": "Revisar sistema de frenos"
   },
   {
+    "id": "veh-003",
     "dueno": "Sin asignar",
     "patente": "AG 625 NA",
     "marca": "Chevrolet",
@@ -27,6 +30,7 @@
     "observaciones": "Cambio de aceite y filtro"
   },
   {
+    "id": "veh-004",
     "dueno": "Sin asignar",
     "patente": "KXJ 439",
     "marca": "Volkswagen",

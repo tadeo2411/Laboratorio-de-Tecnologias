@@ -2,13 +2,12 @@ import { useState } from "react"
 import { serviciosData } from "./data/ServiceData"
 import ServiceCard from "./components/ServiceCard"
 import ServiceModal from "./components/ServiceModal"
-import "./serviceCard.css"
 
 function ServiceSection(){
     const [servicioSeleccionado, setServicioSeleccionado] = useState(null)
 
     return(
-    <section id="servicios">
+    <section className="servicios" id="servicios">
       <div className="services-container">
         <div className="services-heading">
           <h2 className="titulo-servicios">Nuestros Servicios</h2>

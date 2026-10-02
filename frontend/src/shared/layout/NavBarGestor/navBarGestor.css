@@ -46,6 +46,34 @@ ul {
     margin: 0;
 }
 
+.usuario-info__nombre {
+    color: rgb(82, 82, 82);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-cerrar-sesion {
+    padding: 6px 12px;
+    border: 1px solid #bb2d3b;
+    border-radius: 6px;
+    background: #fff;
+    color: #bb2d3b;
+    font: inherit;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-cerrar-sesion:hover {
+    background: #fff5f5;
+}
+
+/* En celulares no entra el nombre: queda solo el botón de cerrar sesión. */
+@media (max-width: 768px) {
+    .usuario-info__nombre {
+        display: none;
+    }
+}
+
 /* Ocultar el botón de menú en escritorio */
 .btn-menu {
     display: none;

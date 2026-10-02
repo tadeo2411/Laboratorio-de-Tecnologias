@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router';
 import './navBarGestor.css';
 
-function NavBarGestor() {
+function NavBarGestor({ usuario, onCerrarSesion }) {
     return (
         <>
             <header className='navbar-gestor'>
@@ -22,6 +22,15 @@ function NavBarGestor() {
 
                     </ul>
                 </nav>
+
+                {usuario && (
+                    <div className="usuario-info">
+                        <span className="usuario-info__nombre">{usuario.nombre}</span>
+                        <button type="button" className="btn-cerrar-sesion" onClick={onCerrarSesion}>
+                            Cerrar sesión
+                        </button>
+                    </div>
+                )}
 
                 <img className="darkTheme" src="/images/img_darkTheme.png" alt="Boton de tema oscuro" height="50px" width="50px" />
             </header>

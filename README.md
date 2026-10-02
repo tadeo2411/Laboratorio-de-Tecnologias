@@ -548,3 +548,27 @@ Tampoco se usó Context, Redux ni otra librería de estado. El estado solo lo ne
 4. Resaltar repuestos con stock bajo cuando `stock <= stockMinimo` y agregar filtros por esa condición.
 5. Añadir estados de carga, error y confirmación para las operaciones de red. Estos deberían vivir en hooks o servicios de cada feature, no dispersos entre componentes visuales.
 6. Extraer componentes realmente repetidos, como una tabla vacía o un campo de formulario, a `shared/components` solo cuando otra feature los use sin cambios ligados a vehículos o repuestos.
+
+# Inicio de sesión (login)
+
+El gestor (`/gestor`) solo se puede usar con una sesión iniciada. Si alguien entra sin sesión, la aplicación lo manda a `/login`.
+
+Mientras no exista el backend, los usuarios se simulan en `labtech-backend/data/usuarios.json`. Ese archivo no guarda las contraseñas, sino su hash (SHA-256 con un `salt` distinto por usuario).
+
+## Usuarios de prueba
+
+| Usuario | Contraseña | Rol |
+|---|---|---|
+| `admin` | `Admin303!` | ADMINISTRADOR |
+| `mecanico` | `Mecanico303!` | MECANICO |
+
+Son datos de prueba: no deben usarse contraseñas reales en este archivo ni en el JSON.
+
+## Cómo funciona
+
+- `features/auth/services/authService.js` simula el endpoint `POST /api/auth/login`: controla usuario y contraseña y devuelve un token con formato JWT que vence en 8 horas.
+- `features/auth/utils/token.js` guarda el token en el navegador (`localStorage`) y lee sus datos.
+- `features/auth/context/AuthProvider.jsx` mantiene la sesión para toda la aplicación y la cierra sola cuando vence el token. Se accede con el hook `useAuth`.
+- `features/auth/components/GestorProtegido.jsx` controla la entrada al gestor.
+
+Limitación: como todo corre en el navegador, la simulación no es segura de verdad. Cuando exista el backend, el servidor controlará la contraseña y firmará el token; las pantallas no cambian.

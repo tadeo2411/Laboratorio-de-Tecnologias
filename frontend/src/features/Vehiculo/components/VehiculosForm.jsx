@@ -15,7 +15,8 @@ function VehiculosForm({ onGuardar }) {
 
   function actualizarCampo(event) {
     const { name, value } = event.target
-    setFormulario((valoresActuales) => ({ ...valoresActuales, [name]: value }))
+    setFormulario((valoresActuales) => ({
+      ...valoresActuales, [name]: value }))
   }
 
   function manejarEnvio(event) {

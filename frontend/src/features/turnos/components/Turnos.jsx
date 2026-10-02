@@ -1,12 +1,11 @@
 // import '../../estilos.css'
-import {Link} from 'react-router'
-function Turnos(){
+function Turnos({ turnos, onNuevoTurno }){
 return(
     <>
         <div id = 'nuevoTurno'>
-            <Link to="/gestor/turnos/nuevo" className="btnGuardar" >
+            <button type="button" onClick={onNuevoTurno} className="btnGuardar">
                 Nuevo turno
-            </Link>
+            </button>
         </div>
         <section className="contenedor">
             <div className='formatoTabla'>
@@ -26,17 +25,16 @@ return(
                         ):
                         (
                             turnos.map( turno=>(
-                                <tr key = {turno.id}>
-                                    <td>turno.fecha</td>
-                                    <td>turno.patente</td>
-                                    <td>turno.estado</td>
+                                <tr key = {turno.id ?? `${turno.patente}-${turno.fechaHora}`}>
+                                    <td>{turno.fechaHora.replace('T', ' ')}</td>
+                                    <td>{turno.patente}</td>
+                                    <td>{turno.estado}</td>
                                 </tr>
                             ))
                         )
                     }
                     </tbody>
                 </table>
-                <p className="sinDatos">No hay turnos para hoy.</p>
             </div>
         </section>
     </>

@@ -1,3 +1,14 @@
 [
-    
+    {
+        "fechaHora" :"2024-06-01T09:00:00",
+        "motivo" :  "Service",
+        "estado" :  "CUMPLIDO",
+        "patente" :   "AG 625 NA"
+    },
+    {
+        "fechaHora": "2026-10-18",
+        "motivo": "Servicio Frenos",
+        "estado": "SOLICITADO",
+        "patente": "KXJ 439"
+    }
 ]

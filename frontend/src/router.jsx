@@ -9,7 +9,6 @@ import Ordenes from './features/gestor/tablero/pages/Ordenes'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import Repuestos from './features/Repuestos/RepuestoPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
-import TurnosForm from './features/turnos/components/TurnosForm'
 import Vehiculos from './features/Vehiculo/VehiculoPage'
 import Clientes from './features/gestor/tablero/pages/Clientes'
 
@@ -44,15 +43,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "turnos",
-                children: [{
-                    index: true,
-                    element: <TurnosPage />,
-                },
-                {
-                    path:"nuevo",
-                    element: <TurnosForm />
-                }
-                ]
+                element: <TurnosPage />
             },
             {
                 path: "presupuestos",

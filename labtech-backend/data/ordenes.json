@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ot-001",
+    "diagnostico": "Cambio de aceite y filtro. Se detecta desgaste en pastillas de freno delanteras.",
+    "estado": "RECIBIDO",
+    "garantia": false,
+    "esService": true,
+    "esUrgencia": false,
+    "vehiculoId": "veh-001"
+  },
+  {
+    "id": "ot-002",
+    "diagnostico": "Ruido en el tren delantero. Se requiere revisión de suspensión.",
+    "estado": "DIAGNOSTICANDO",
+    "garantia": false,
+    "esService": false,
+    "esUrgencia": false,
+    "vehiculoId": "veh-002"
+  },
+  {
+    "id": "ot-003",
+    "diagnostico": "Falla en el sistema de refrigeración. Se detecta pérdida de líquido.",
+    "estado": "EN_REPARACION",
+    "garantia": true,
+    "esService": false,
+    "esUrgencia": true,
+    "vehiculoId": "veh-003"
+  },
+  {
+    "id": "ot-004",
+    "diagnostico": "Mantenimiento preventivo completo.",
+    "estado": "TERMINADO",
+    "garantia": false,
+    "esService": true,
+    "esUrgencia": false,
+    "vehiculoId": "veh-004"
+  }
+]

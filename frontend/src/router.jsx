@@ -5,11 +5,13 @@ import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
 import LayoutGestor from './shared/layout/LayoutGestor'
 import Tablero from './features/gestor/tablero/pages/Tablero'
-import Ordenes from './features/gestor/tablero/pages/Ordenes'
+import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import Turnos from './features/turnos/pages/Turnos'
-import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
-import RepuestosPage from './features/repuestos/pages/RepuestosPage'
+import VehiculosPage from './features/vehiculos/pages/VehiculoPage'
+import RepuestoPage from './features/Repuestos/RepuestoPage'
+import MetricaPage from './features/metricas/pages/MetricaPage';
+import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 
 import Clientes from './features/gestor/tablero/pages/Clientes'
 
@@ -18,7 +20,7 @@ export const router = createBrowserRouter([
     {
         path: '/',
         element: <LayoutLanding />,
-
+        errorElement: <NoEncontradaPage />,
         children: [
             { index: true, element: <PaginaInicial /> } // Deberiamos crear otra sentencia
             //si queremos otra pag de sección de carreras
@@ -26,13 +28,15 @@ export const router = createBrowserRouter([
     },
     {
         path: '/login',
-        element: <LayoutLogin />
+        element: <LayoutLogin />,
+        errorElement: <NoEncontradaPage />,
         //element: aa,//la/s componente/s del login
         //creo q deben ir las validaciones del login
     },
     {
         path: '/gestor',
         element: <LayoutGestor />,
+        errorElement: <NoEncontradaPage />,
         children: [
             {
                 index: true,
@@ -40,7 +44,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "ordenes",
-                element: <Ordenes />
+                element: <OrdenesPage />
             },
             {
                 path: "turnos",
@@ -60,7 +64,11 @@ export const router = createBrowserRouter([
             },
             {
                 path: "repuestos",
-                element: <RepuestosPage />
+                element: <RepuestoPage />
+            },
+            {
+                path: "metricas",
+                element: <MetricaPage />
             }
         ]
     } //no me carga si no comento

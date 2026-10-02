@@ -1,0 +1,20 @@
+[
+    {
+        "nombre": "Juan Pérez", 
+        "dni": "12345678",
+        "telefono" : "2665298830",
+        "tipo" : "PERSONA"
+    },
+    {
+        "nombre" : "María Gómez",
+        "dni" : "87654321",
+        "telefono" : "2665298831",
+        "tipo" : "PERSONA"
+    },
+    {
+        "nombre" : "Carlos López",
+        "dni" : "11223344",
+        "telefono" : "2665298832",
+        "tipo" : "PERSONA"
+    }
+]

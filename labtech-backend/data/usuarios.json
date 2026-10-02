@@ -1,0 +1,18 @@
+[
+  {
+    "id": "usr-001",
+    "usuario": "admin",
+    "nombre": "Administrador",
+    "rol": "ADMINISTRADOR",
+    "salt": "8e62ebcf2595c0b081ff667635bc60c0",
+    "contrasenaHash": "8a057c05a000d0863dac8eeea7c446f63dcd4779e399093ac8ef29e50ac47d99"
+  },
+  {
+    "id": "usr-002",
+    "usuario": "mecanico",
+    "nombre": "Mecánico de prueba",
+    "rol": "MECANICO",
+    "salt": "3aac6654dbb56bad5b94c3f735bc69d7",
+    "contrasenaHash": "894b95899ecbaf93808212caaba7ea72f8b9d2b340fd10d6aae6a16e336927d3"
+  }
+]

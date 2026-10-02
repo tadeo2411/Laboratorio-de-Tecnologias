@@ -1,6 +1,5 @@
 [
   {
-    "id": "veh-001",
     "dueno": "Sin asignar",
     "patente": "AA000AA",
     "marca": "Toyota",
@@ -10,7 +9,6 @@
     "observaciones": "Control general pendiente"
   },
   {
-    "id": "veh-002",
     "dueno": "Sin asignar",
     "patente": "AB123CD",
     "marca": "Ford",
@@ -18,5 +16,23 @@
     "anio": 2020,
     "kilometraje": 68500,
     "observaciones": "Revisar sistema de frenos"
+  },
+  {
+    "dueno": "Sin asignar",
+    "patente": "AG 625 NA",
+    "marca": "Chevrolet",
+    "modelo": "Onix",
+    "anio": 2021,
+    "kilometraje": 40000,
+    "observaciones": "Cambio de aceite y filtro"
+  },
+  {
+    "dueno": "Sin asignar",
+    "patente": "KXJ 439",
+    "marca": "Volkswagen",
+    "modelo": "Golf",
+    "anio": 2019,
+    "kilometraje": 80000,
+    "observaciones": "Revisión de suspensión"
   }
 ]

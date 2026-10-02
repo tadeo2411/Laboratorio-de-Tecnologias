@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "turnos",
-                element: <Turnos />
+                element: <TurnosPage />
             },
             {
                 path: "presupuestos",
@@ -63,7 +63,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "repuestos",
-                element: <RepuestoPage />
+                element: <Repuestos />
             }
         ]
     } //no me carga si no comento

@@ -7,15 +7,7 @@ function PresupuestoForm( {onAgregar} ){
     function envioForm(evento){
 
         evento.preventDefault()
-        const nuevoPresupuesto = {
-            id: 10,
-            numero:'presup-Prueba',
-            fecha: '2026-05-18',
-            estado: 'PENDIENTE',
-            total: 20000,
-            observaciones:obs
-        }
-    onAgregar(nuevoPresupuesto)
+        
     }
 
 

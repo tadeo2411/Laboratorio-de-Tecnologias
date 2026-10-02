@@ -1,6 +1,23 @@
-/* =========================================
-   ESTILOS GENERALES Y BASE
-   ========================================= */
+/*
+ * ESTILOS DEL GESTOR
+ *
+ * Este archivo reorganiza las reglas de css/estilos.css sin cambiar
+ * los nombres de clase utilizados actualmente por las paginas HTML.
+ *
+ * Estructura:
+ * 1. Estilos compartidos por todo el gestor.
+ * 2. Estilos particulares de cada seccion.
+ * 3. Adaptacion responsive compartida.
+ */
+
+/* ========================================================================== */
+/* 1. ESTILOS COMPARTIDOS                                                     */
+/* ========================================================================== */
+
+/* -------------------------------------------------------------------------- */
+/* Base                                                                       */
+/* -------------------------------------------------------------------------- */
+
 html,
 body {
     margin: 0;
@@ -8,18 +25,19 @@ body {
     background-color: rgb(252, 249, 244);
 }
 
-/* =========================================
-   HEADER Y BARRA DE NAVEGACIÓN
-   ========================================= */
+/* -------------------------------------------------------------------------- */
+/* Encabezado y navegacion                                                    */
+/* -------------------------------------------------------------------------- */
+
 header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 0 20px;
     background-color: white;
     border-bottom: 1px solid rgb(194, 192, 192);
-    display: flex;
-    gap: 30px;
-    align-items: center;
-    justify-content: space-between; /* Empuja logo a la izq y resto a la derecha */
-    padding: 0 20px;
-    position: relative; /* Necesario para que el menú móvil flote respecto al header */
 }
 
 header img {
@@ -29,16 +47,15 @@ header img {
 }
 
 nav {
-    flex-grow: 1; /* Obliga al nodo a absorber el 100% del espacio central disponible */
     display: flex;
-    justify-content: center; /* Alinea la lista hija estrictamente al centro del vector */
+    flex-grow: 1;
+    justify-content: center;
 }
 
-/* Inyectar sobre tu lista interactiva (ul.barra o .sidebar-lista) */
 ul {
     display: flex;
     justify-content: center;
-    margin: 0 auto; /* Purgado de márgenes laterales automáticos residuales */
+    margin: 0 auto;
     padding: 0;
 }
 
@@ -52,91 +69,86 @@ ul {
     margin: 0;
 }
 
-/* Ocultar el botón de menú en escritorio */
 .btn-menu {
     display: none;
+    padding: 8px 12px;
+    color: rgb(82, 82, 82);
+    font-size: .9rem;
+    cursor: pointer;
     background-color: transparent;
     border: 1px solid rgb(194, 192, 192);
     border-radius: 4px;
-    padding: 8px 12px;
-    font-size: .9rem;
-    cursor: pointer;
-    color: rgb(82, 82, 82);
 }
 
-/* Menú en Lista (Escritorio) */
 .barra {
-    display: flex;       /* Alinea los elementos en fila */
-    gap: 30px;           /* Distancia exacta de 30px entre items */
-    list-style: none;    /* Elimina los puntos del ul */
-    margin: 5;          
-    padding: 0;          
+    position: relative;
+    display: flex;
+    gap: 30px;
+    margin: 5;
+    padding: 0;
     color: #ffffff;
-    position: relative;
-}
-
-.hoverNavBar{
-    position: relative;
-    display: inline-block;
-}
-
-.hoverNavBar::after, 
-.hoverNavBar::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(to left, #0f5708, #60db7b);
-    bottom: -5px;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease-out;
-}
-
-.hoverNavBar::before{
-    top: -5px;
-  transform-origin: right;
-}
-
-.hoverNavBar:hover::after,
-.hoverNavBar:hover::before {
-  transform: scaleX(1);
+    list-style: none;
 }
 
 .barra li {
     margin: 0;
 }
 
-
-
 .barra a {
     color: rgb(82, 82, 82);
-    text-decoration: none;
     font-weight: 500;
+    text-decoration: none;
 }
 
+.hoverNavBar {
+    position: relative;
+    display: inline-block;
+}
 
+.hoverNavBar::after,
+.hoverNavBar::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to left, #0f5708, #60db7b);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease-out;
+}
 
-/* =========================================
-   ESTILOS DEL MAIN (FONDO Y ESPACIOS)
-   ========================================= */
+.hoverNavBar::before {
+    top: -5px;
+    transform-origin: right;
+}
+
+.hoverNavBar:hover::after,
+.hoverNavBar:hover::before {
+    transform: scaleX(1);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Contenido principal                                                        */
+/* -------------------------------------------------------------------------- */
+
 main {
-    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 .contenido {
-    background-color: #f4f6f8;
-    padding: 20px 30px 30px;
-    min-height: calc(100vh - 51px);
-    font-family: Arial, sans-serif;
-    justify-content: flex-start;
     align-items: stretch;
+    justify-content: flex-start;
+    min-height: calc(100vh - 51px);
+    padding: 20px 30px 30px;
     box-sizing: border-box;
+    background-color: #f4f6f8;
+    font-family: Arial, sans-serif;
 }
 
 section {
@@ -149,73 +161,45 @@ section {
     font-weight: bold;
 }
 
-/* =========================================
-   ESTILOS DE LOS CONTENEDORES (CAJAS BLANCAS)
-   ========================================= */
+/* -------------------------------------------------------------------------- */
+/* Contenedores reutilizables                                                 */
+/* -------------------------------------------------------------------------- */
+
 .contenedor {
+    width: 100%;
+    margin-bottom: 24px;
+    padding: 24px;
+    box-sizing: border-box;
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    width: 100%;
-    box-sizing: border-box;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .titContenedor {
-    font-size: 1.2rem;
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
+    font-size: 1.2rem;
 }
 
-.separadorSection {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 93%;
-    gap: 20px;
-}
+/* -------------------------------------------------------------------------- */
+/* Formularios compartidos                                                    */
+/* -------------------------------------------------------------------------- */
 
-.contenedorSection {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    flex: 1;
-}
-
-/* =========================================
-   ESTILOS DEL FORMULARIO
-   ========================================= */
 .grilla {
-    display: grid; 
-    grid-template-columns: repeat(5, 1fr); 
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 15px;
     margin-bottom: 15px;
-}
-
-.grilla-clientes,
-.grilla-presupuesto {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.grilla-clientes .btnGuardar,
-.grilla-presupuesto .btnGuardar {
-    grid-column: 1 / -1;
-    justify-self: start;
 }
 
 .formulario {
     display: flex;
     flex-direction: column;
-    margin-bottom: 1rem;
-    min-width: 0;
     width: 100%;
+    min-width: 0;
+    margin-bottom: 1rem;
 }
 
 .anchoComp {
@@ -223,68 +207,83 @@ section {
 }
 
 label {
-    font-size: 0.85rem;
-    font-weight: bold;
     margin-bottom: 5px;
     color: #333;
+    font-size: 0.85rem;
+    font-weight: bold;
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
+    width: 100%;
+    max-width: 100%;
     padding: 0.8rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    box-sizing: border-box;
     font-family: inherit;
     font-size: 1rem;
-    width: 100%;
-    box-sizing: border-box;
-    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-input[type="text"]:focus, select:focus, textarea:focus, .input-busqueda:focus {
-    border-color: #1a56a6; 
+input[type="text"]:focus,
+select:focus,
+textarea:focus,
+.input-busqueda:focus {
+    border-color: #1a56a6;
     outline: none;
 }
 
-.textos textarea {
-    width: 100%;
-    box-sizing: border-box; 
-    border: .01rem solid;
-    max-width: 100%; 
-    resize: vertical;
-    overflow-wrap: break-word;
-}
-
 textarea {
-    resize: none;
-    min-height: 100%;
     min-width: 100%;
+    min-height: 100%;
+    resize: none;
 }
 
 .btnGuardar {
-    background-color: rgba(4, 204, 4, 0.514);
-    color: rgba(6, 6, 6, 0.514);
-    border: none;
-    border-radius: 6px;
+    margin-top: 10px;
     padding: 10px 24px;
+    color: rgba(6, 6, 6, 0.514);
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 10px;
+    background-color: rgba(4, 204, 4, 0.514);
+    border: none;
+    border-radius: 6px;
 }
 
 .texto-ayuda {
-    font-size: 0.85rem;
-    color: #666;
     margin-top: 15px;
+    color: #666;
+    font-size: 0.85rem;
 }
 
-/* =========================================
-   ESTILOS DE LA TABLA Y BÚSQUEDA
-   ========================================= */
+.row > a:has(.botonAgregar) {
+    width: auto;
+    padding: 0;
+    align-self: center;
+}
+
+.row .botonAgregar {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    object-fit: contain;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Busqueda y tablas compartidas                                              */
+/* -------------------------------------------------------------------------- */
+
 .input-busqueda {
     width: 100%;
     margin-bottom: 20px;
     box-sizing: border-box;
+}
+
+.formatoTabla {
+    width: 100%;
+    overflow-x: auto;
 }
 
 .datosTabla {
@@ -293,36 +292,32 @@ textarea {
 }
 
 .datosTabla th {
+    padding-bottom: 10px;
+    color: #666;
+    font-size: 0.8rem;
     text-align: left;
     border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-    font-size: 0.8rem;
-    color: #666;
 }
 
 .datosTabla td {
     padding: 30px 0;
-
+    text-align: left;
 }
 
 .sinDatos {
     color: #888;
 }
 
-.formatoTabla {
-    overflow-x: auto;
-    width: 100%;
-}
+/* -------------------------------------------------------------------------- */
+/* Pie de pagina                                                              */
+/* -------------------------------------------------------------------------- */
 
-/* =========================================
-   FOOTER
-   ========================================= */
 footer {
-    background-color: #ffffff;
+    margin-top: 30px;
+    padding: 20px;
     color: black;
     text-align: center;
-    padding: 20px;
-    margin-top: 30px;
+    background-color: #ffffff;
 }
 
 footer h4 {
@@ -336,47 +331,132 @@ footer h5 {
     font-weight: normal;
 }
 
-/* =========================================
-   ESTILOS DE ACORDEÓN
-   ========================================= */
+/* -------------------------------------------------------------------------- */
+/* Componente compartido: acordeon                                            */
+/* -------------------------------------------------------------------------- */
+
 .acordeonCuerpo {
     padding: 15px;
-    font-size: 0.9rem;
     color: #bd1c1c;
-    border-top: 1px solid #e0e0e0;
+    font-size: 0.9rem;
     background-color: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
 }
-/* =========================================
-   DISEÑO RESPONSIVO (MEDIA QUERIES)
-   ========================================= */
+
+/* ========================================================================== */
+/* 2. ESTILOS POR SECCION DEL GESTOR                                          */
+/* ========================================================================== */
+
+/* -------------------------------------------------------------------------- */
+/* Tablero y ordenes: paneles colocados en paralelo                           */
+/* -------------------------------------------------------------------------- */
+
+.separadorSection {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 93%;
+    gap: 20px;
+}
+
+.contenedorSection {
+    flex: 1;
+    margin-bottom: 24px;
+    padding: 24px;
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Clientes                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.grilla-clientes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grilla-clientes .btnGuardar {
+    grid-column: 1 / -1;
+    justify-self: start;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Presupuestos                                                               */
+/* -------------------------------------------------------------------------- */
+
+.grilla-presupuesto {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grilla-presupuesto .btnGuardar {
+    grid-column: 1 / -1;
+    justify-self: start;
+}
+
+.textos textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    resize: vertical;
+    border: .01rem solid;
+}
+
+/* -------------------------------------------------------------------------- */
+/* Vehiculos                                                                  */
+/* Actualmente utiliza solamente los estilos compartidos.                    */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+/* Turnos                                                                     */
+/* -------------------------------------------------------------------------- */
+
+
+    #nuevoTurno{
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 16px
+    }
+
+
+
+
+/* -------------------------------------------------------------------------- */
+/* Repuestos                                                                  */
+/* Actualmente utiliza solamente los estilos compartidos.                    */
+/* -------------------------------------------------------------------------- */
+
+/* ========================================================================== */
+/* 3. RESPONSIVE COMPARTIDO                                                   */
+/* ========================================================================== */
+
 @media (max-width: 900px) {
-    /* Muestra el botón de menú flotante */
     .btn-menu {
         display: block;
         margin-left: auto;
     }
 
-    /* Oculta texto 'Bienvenido' para limpiar la pantalla en móviles */
     .usuario-info p {
         display: none;
     }
 
-    /* Convierte la barra de menú en desplegable vertical estilo combo box */
     .barra {
-        display: none; /* Oculto hasta hacer clic */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        display: none;
         flex-direction: column;
         gap: 0;
-        position: absolute;
-        top: 100%; /* Despliega justo debajo del header */
-        left: 0;
         width: 100%;
         background-color: white;
         border-bottom: 1px solid rgb(194, 192, 192);
-        box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Clase que activa JavaScript */
     .barra.mostrar {
         display: flex;
     }
@@ -389,7 +469,7 @@ footer h5 {
 
     .barra a {
         display: block;
-        padding: 15px; /* Área táctil amplia */
+        padding: 15px;
     }
 
     .grilla {
@@ -401,9 +481,11 @@ footer h5 {
     .grilla {
         grid-template-columns: 1fr;
     }
+
     .contenido {
         padding: 15px;
     }
+
     .contenedor {
         padding: 15px;
     }

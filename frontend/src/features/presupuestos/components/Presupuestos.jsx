@@ -1,11 +1,7 @@
-
-
 function Presupuestos({ presupuestos }){
 
-    function crearPresupuesto(nuevoPresupuesto){
 
-    }
-    console.log('Datos que recibe la tabla:', presupuestos);
+    
     return(
         <>
         <section className="contenedor">

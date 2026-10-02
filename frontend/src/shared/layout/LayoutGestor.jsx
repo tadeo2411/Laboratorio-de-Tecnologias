@@ -9,7 +9,7 @@ function LayoutGestor() {
             <main className = 'contenido'>
                 <Outlet />
             </main>
-            <FooterGestor />
+            {/* <FooterGestor /> */}
         </>
     );
 }

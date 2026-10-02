@@ -11,8 +11,7 @@ import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
-
-import Clientes from './features/gestor/tablero/pages/Clientes'
+import ClientesPage from './features/clientes/pages/ClientesPage'
 
 export const router = createBrowserRouter([
     // rutas de la Landing
@@ -55,7 +54,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "clientes",
-                element: <Clientes />
+                element: <ClientesPage />
             },
             {
                 path: "vehiculos",
@@ -66,6 +65,6 @@ export const router = createBrowserRouter([
                 element: <RepuestoPage />
             }
         ]
-    } //no me carga si no comento
+    }
 ]
 )

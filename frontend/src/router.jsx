@@ -3,7 +3,8 @@ import { createBrowserRouter } from 'react-router'
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
-import LayoutGestor from './shared/layout/LayoutGestor'
+import LoginPage from './features/auth/pages/LoginPage'
+import GestorProtegido from './features/auth/components/GestorProtegido'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
@@ -29,12 +30,14 @@ export const router = createBrowserRouter([
         path: '/login',
         element: <LayoutLogin />,
         errorElement: <NoEncontradaPage />,
-        //element: aa,//la/s componente/s del login
-        //creo q deben ir las validaciones del login
+        children: [
+            { index: true, element: <LoginPage /> }
+        ],
     },
     {
+        // GestorProtegido controla que haya sesión antes de mostrar cualquier pantalla del gestor
         path: '/gestor',
-        element: <LayoutGestor />,
+        element: <GestorProtegido />,
         errorElement: <NoEncontradaPage />,
         children: [
             {

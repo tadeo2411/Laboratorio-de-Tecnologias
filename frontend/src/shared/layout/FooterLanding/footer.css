@@ -1,37 +1,65 @@
-footer {
-    background-color: #ffffff;
-    color: black;
+/* Footer de la landing. Usa clases "footer-landing__..." y no la etiqueta
+   "footer" ni ".copyright", que también usa el footer del gestor.
+   background-color, color, padding y margin se fijan a propósito para anular
+   la regla "footer" de features/estilos.css (fondo blanco y letras negras). */
+.footer-landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 0;
+    padding: 40px 0 0;
+    background-color: var(--colorFondo);
+    background-image: url("/images/img_fondoFooter.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
     text-align: center;
+    scroll-margin-top: 65px;
 }
 
-#logoFooter {
+.footer-landing__contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-landing__logo {
     width: 122px;
     height: 50px;
     object-fit: cover;
 }
 
-.infoContacto {
+.footer-landing__titulo {
+    color: rgb(6, 231, 6);
+    font-weight: bold;
+}
+
+.footer-landing__dato {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 10px;
-    margin: 8px 0;
+    font-weight: 500;
 }
 
-.infoContacto img {
-    width: 25px;
-    height: 25px;
+/* El filtro pinta de verde los íconos, que son negros. */
+.footer-landing__icono {
+    width: 28px;
+    height: 28px;
     object-fit: contain;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
 }
 
-.copyright {
+.footer-landing__copyright {
+    width: 100%;
+    background-color: #101011;
+    color: #fff;
     font-size: 14px;
-    display: flex;
-    flex:1;
 }
 
-.copyright>p{
-    flex:1;
+.footer-landing__copyright-texto {
     margin: 0;
-    padding: .3rem;
+    padding: .5rem;
 }

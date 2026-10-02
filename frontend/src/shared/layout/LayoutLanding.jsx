@@ -1,19 +1,19 @@
-import  Footer  from './FooterLanding/Footer.jsx'
+import Footer from './FooterLanding/Footer.jsx'
 import NavBarLanding from './NavBarLanding/NavBarLanding.jsx'
 import { ScrollRestoration, Outlet } from 'react-router'
-
+import './LayoutLanding.css'
 
 function LayoutLanding(){
-    
-    return(<>
-        <NavBarLanding />
+    return(
+        <div className="layout-landing">
+            <NavBarLanding />
 
-        <Outlet />
+            <Outlet />
 
+            <Footer />
 
-        <Footer />
-        
-        <ScrollRestoration />
-    </>)
+            <ScrollRestoration />
+        </div>
+    )
 }
 export default LayoutLanding

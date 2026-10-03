@@ -33,8 +33,7 @@ function PresupuestoForm( {onAgregar} ){
                             onChange={evento => setObservaciones(evento.target.value)}
                             id="idObs" cols="30" rows="5" />
                     </div>
-                    <button type="submit" className="btnGuardar"
-                        >Guardar presupuesto</button>
+                    <button type="submit" className="btnGuardar">Guardar presupuesto</button>
                 </form>
             </section>
             

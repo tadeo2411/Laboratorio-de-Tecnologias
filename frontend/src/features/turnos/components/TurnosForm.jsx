@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { estadosTurno } from '../services/turnosService';
-import botonMas  from '../../../assets/botonMas.png';
+import botonMas  from '../../../assets/icons/botonMas.png';
 
 const valoresIniciales = {
     patente: '',
@@ -47,7 +47,7 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                 <div className="formulario anchoComp">
                     <label htmlFor="patente" >Vehículo *</label>
                     <div className="row g-2 align-items-center flex-nowrap">
-                        <select id="patente" name="patente" value={formulario.patente} onChange={actualizarCampo} required disabled={cargando||Boolean(error)} className='col'>
+                        <select id="patente" name="patente" value={formulario.patente} onChange={actualizarCampo} required disabled={cargando||Boolean(error)} className='col selectFormulario' >
                             <option value="">--- Elegir ---</option>
                             {vehiculos.map(vehiculo => (
                                 <option key={vehiculo.id} value={vehiculo.patente}>

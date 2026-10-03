@@ -1,4 +1,6 @@
 // import '../../estilos.css'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import BotonEditar from '../../../shared/components/BotonEditar'
 function Turnos({ turnos, onNuevoTurno, onEliminarTurno, onEditarTurno }){
 return(
     <>
@@ -31,21 +33,14 @@ return(
                                     <td>{turno.patente}</td>
                                     <td>{turno.estado}</td>
                                     <td>
-                                        <button type ='button'
-                                        className="btn btn-danger btn-sm"
-                                        onClick = {() => onEliminarTurno(turno.id)}
-                                        alt ="Eliminar"
-                                        >
-                                            🗑️
-                                        </button>
+                                        <BotonEliminar
+                                        onClick={()=> onEliminarTurno(turno.id)}
+                                        aria-label={`Eliminar turno del vehículo con patente ${turno.patente} en fecha ${turno.fechaHora.replace('T', ' ')}`}
+                                        />
 
-                                        <button type ='button'
-                                        className="btn btn-primary btn-sm"
-                                        onClick = {() => onEditarTurno(turno)}
-                                        alt ="Modificar"
-                                        >
-                                            ✏️
-                                        </button>
+                                        <BotonEditar
+                                        onClick={()=> onEditarTurno(turno)}
+                                        aria-label={`Editar turno del vehículo con patente ${turno.patente}`} />
                                     </td>
                                 </tr>
                             ))

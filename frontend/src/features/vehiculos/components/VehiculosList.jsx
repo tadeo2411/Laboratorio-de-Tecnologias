@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import BotonEditar from '../../../shared/components/BotonEditar'
 
 function textoEstadoAviso(estado) {
   if (estado === 'pendiente') return 'Pendiente'
@@ -77,7 +79,8 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onGestionarAviso, onVe
                     <div className="acciones-tabla">
                       <button type="button" className="btnAccion" onClick={() => onVerHistorial(vehiculo)}>
                         Historial
-                      </button>
+                      </button> 
+                      <BotonEditar onClick={() => onEditar(vehiculo)} /> 
                       <button type="button" className="btnAccion" onClick={() => onEditar(vehiculo)}>
                         Editar
                       </button>
@@ -86,13 +89,8 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onGestionarAviso, onVe
                           Gestionar aviso
                         </button>
                       )}
-                      <button
-                        type="button"
-                        className="btnAccion btnAccion--peligro"
-                        onClick={() => onEliminar(vehiculo)}
-                      >
-                        Eliminar
-                      </button>
+                      <BotonEliminar  onClick={() => onEliminar(vehiculo)} />
+                      
                     </div>
                   </td>
                 </tr>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
 
 function Clientes({ clientes, onNuevoCliente, onEliminarCliente, onEditarCliente }) {
     const [busqueda, setBusqueda] = useState('')
@@ -55,20 +56,18 @@ function Clientes({ clientes, onNuevoCliente, onEliminarCliente, onEditarCliente
                             <td>{cliente.tipo}</td>
                             <td>
                                 <div className="d-flex gap-2">
-                                <button type ='button'
-                                className="btn btn-danger btn-sm"
-                                onClick = {() => onEliminarCliente(cliente.id)}
-                                aria-label={`Eliminar cliente ${cliente.nombre}`}
-                                >
-                                    🗑️
-                                </button>
+                                    <BotonEliminar
+                                    onClick={()=> onEliminarCliente(cliente.id)}
+                                    aria-label={`Eliminar cliente ${cliente.nombre} ${cliente.apellido}`}
+                                    />
+                                    
 
-                                <button type ='button'
-                                className="btn btn-primary btn-sm"
-                                onClick = {() => onEditarCliente(cliente)}
-                                aria-label={`Editar cliente ${cliente.nombre}`}
-                                >
-                                    ✏️
+                                    <button type ='button'
+                                    className="btn btn-primary btn-sm"
+                                    onClick = {() => onEditarCliente(cliente)}
+                                    aria-label={`Editar cliente ${cliente.nombre}`}
+                                    >
+                                    
                                 </button>
                                 </div>
                             </td>

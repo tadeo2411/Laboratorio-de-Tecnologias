@@ -2,7 +2,6 @@
 import BotonEliminar from '../../../shared/components/BotonEliminar'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
-import botonMas from '../../../assets/icons/botonMas.png'
 function Turnos({ turnos, onNuevoTurno, onEliminarTurno, onEditarTurno }){
 return(
     <>
@@ -13,6 +12,7 @@ return(
             />
         </div>
         <section className="contenedor">
+            <h2 className="titContenedor">Turnos</h2>
             <div className='formatoTabla'>
                 <table className='datosTabla'>
                     <thead>
@@ -35,15 +35,17 @@ return(
                                     <td data-label ='Fecha'>{turno.fechaHora.replace('T', ' ')}</td>
                                     <td data-label ='Patente'>{turno.patente}</td>
                                     <td data-label ='Estado'>{turno.estado}</td>
-                                    <td data-label ='Acciones' className="d-flex gap-2">
-                                        <BotonEliminar
-                                        onClick={()=> onEliminarTurno(turno.id)}
-                                        aria-label={`Eliminar turno del vehículo con patente ${turno.patente} en fecha ${turno.fechaHora.replace('T', ' ')}`}
-                                        />
+                                    <td data-label ='Acciones' >
+                                        <div className="d-flex gap-2">
+                                            <BotonEliminar
+                                            onClick={()=> onEliminarTurno(turno.id)}
+                                            aria-label={`Eliminar turno del vehículo con patente ${turno.patente} en fecha ${turno.fechaHora.replace('T', ' ')}`}
+                                            />
 
-                                        <BotonEditar
-                                        onClick={()=> onEditarTurno(turno)}
-                                        aria-label={`Editar turno del vehículo con patente ${turno.patente}`} />
+                                            <BotonEditar
+                                            onClick={()=> onEditarTurno(turno)}
+                                            aria-label={`Editar turno del vehículo con patente ${turno.patente}`} />
+                                        </div>
                                     </td>
                                 </tr>
                             ))

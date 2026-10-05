@@ -11,7 +11,7 @@ function NavBarGestor({ usuario, onCerrarSesion }) {
 
                 <img className="logo" src="/images/logo-303mei.jpg" alt="Logo" height="100px" width="100px" />
 
-                <button className="btn-menu" 
+                <button className="btn-menu"
                 id="botonNavGestor"
                 type="button"
                 aria-label={menuAbierto ? 'Cerrar menú' : 'Abrir menú'}

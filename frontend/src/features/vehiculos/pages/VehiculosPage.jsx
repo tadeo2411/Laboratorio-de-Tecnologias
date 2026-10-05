@@ -4,6 +4,7 @@ import VehiculoForm from '../components/VehiculoForm'
 import VehiculosList from '../components/VehiculosList'
 import HistorialVehiculo from '../components/HistorialVehiculo'
 import AvisoService from '../components/AvisoService'
+import BotonNuevo from '../../../shared/components/botonNuevo'
 import {
   actualizarEstadoAviso,
   actualizarVehiculo,
@@ -125,12 +126,13 @@ function VehiculosPage() {
   }
 
   return (
-    <div className="vehiculos-page">
+    <div className="contenedor">
       <div className="vehiculos-page__encabezado">
         <h1>Gestión de vehículos</h1>
-        <button type="button" className="btn btn-primary" onClick={() => abrirFormulario()}>
-          + Nuevo vehículo
-        </button>
+        <BotonNuevo
+        onClick={()=>abrirFormulario()}
+        componente = "Vehículo"/>
+
       </div>
 
       {mensaje && (

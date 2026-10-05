@@ -154,7 +154,7 @@
 }
 
 /* El estado de React agrega la clase --abierto al tocar el botón. */
-@media (max-width: 900px) {
+@media (max-width: 970px) {
     .navbar-gestor .btn-menu {
         display: block;
         margin-left: auto;

@@ -1,21 +1,18 @@
 [
     {
-        "nombre": "Juan",
-        "apellido" : "Pérez",
+        "nombre": "Juan Pérez",
         "id": "12345678",
         "telefono" : "2665298830",
         "tipo" : "PERSONA"
     },
     {
-        "nombre" : "María",
-        "apellido" : "González",
+        "nombre" : "María González",
         "id" : "87654321",
         "telefono" : "2665298831",
         "tipo" : "PERSONA"
     },
     {
-        "nombre" : "Carlos",
-        "apellido" : "Ramírez",
+        "nombre" : "Carlos Ramírez",
         "id" : "11223344",
         "telefono" : "2665298832",
         "tipo" : "PERSONA"

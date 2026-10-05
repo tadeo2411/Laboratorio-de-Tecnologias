@@ -1,13 +1,16 @@
 // import '../../estilos.css'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
 import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonNuevo from '../../../shared/components/BotonNuevo'
+import botonMas from '../../../assets/icons/botonMas.png'
 function Turnos({ turnos, onNuevoTurno, onEliminarTurno, onEditarTurno }){
 return(
     <>
         <div id = 'nuevoTurno'>
-            <button type="button" onClick={onNuevoTurno} className="btnGuardar">
-                Nuevo turno
-            </button>
+            <BotonNuevo
+            componente = 'Turno'
+            onClick={onNuevoTurno}
+            />
         </div>
         <section className="contenedor">
             <div className='formatoTabla'>
@@ -29,10 +32,10 @@ return(
                         (
                             turnos.map( turno=>(
                                 <tr key = {turno.id ?? `${turno.patente}-${turno.fechaHora}`}>
-                                    <td>{turno.fechaHora.replace('T', ' ')}</td>
-                                    <td>{turno.patente}</td>
-                                    <td>{turno.estado}</td>
-                                    <td>
+                                    <td data-label ='Fecha'>{turno.fechaHora.replace('T', ' ')}</td>
+                                    <td data-label ='Patente'>{turno.patente}</td>
+                                    <td data-label ='Estado'>{turno.estado}</td>
+                                    <td data-label ='Acciones' className="d-flex gap-2">
                                         <BotonEliminar
                                         onClick={()=> onEliminarTurno(turno.id)}
                                         aria-label={`Eliminar turno del vehículo con patente ${turno.patente} en fecha ${turno.fechaHora.replace('T', ' ')}`}

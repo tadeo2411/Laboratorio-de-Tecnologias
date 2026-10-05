@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
 import BotonEditar from '../../../shared/components/BotonEditar'
+import botonHistorial from '../../../assets/icons/botonHistorial.png'
 
 function textoEstadoAviso(estado) {
   if (estado === 'pendiente') return 'Pendiente'
@@ -77,13 +78,11 @@ function VehiculosList({ vehiculos, onEditar, onEliminar, onGestionarAviso, onVe
                   </td>
                   <td data-label="Acciones" className="celda-acciones">
                     <div className="acciones-tabla">
-                      <button type="button" className="btnAccion" onClick={() => onVerHistorial(vehiculo)}>
-                        Historial
+                      <button type="button" className="botonHistorial" onClick={() => onVerHistorial(vehiculo)}>
+                        <img src={botonHistorial} alt={`historial del vehículo de patente ${vehiculo.patente}`}  />
                       </button> 
                       <BotonEditar onClick={() => onEditar(vehiculo)} /> 
-                      <button type="button" className="btnAccion" onClick={() => onEditar(vehiculo)}>
-                        Editar
-                      </button>
+                      
                       {vehiculo.estadoAvisoService === 'pendiente' && (
                         <button type="button" className="btnAccion" onClick={() => onGestionarAviso(vehiculo)}>
                           Gestionar aviso

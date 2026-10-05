@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
+import BotonNuevo from '../../../shared/components/BotonNuevo'
+import BotonEditar from '../../../shared/components/BotonEditar'
 
 function Clientes({ clientes, onNuevoCliente, onEliminarCliente, onEditarCliente }) {
     const [busqueda, setBusqueda] = useState('')
@@ -10,9 +12,10 @@ function Clientes({ clientes, onNuevoCliente, onEliminarCliente, onEditarCliente
     return(
         <>
             <div className="d-flex justify-content-end mb-3">
-                <button type="button" onClick={onNuevoCliente} className="btn btn-success">
-                    Nuevo cliente
-                </button>
+                <BotonNuevo
+                componente = "Cliente"
+                onClick={onNuevoCliente}/>
+
             </div>
             <section className="contenedor clientes-page__contenedor">
             <h2 className="titContenedor">Clientes</h2>
@@ -49,26 +52,22 @@ function Clientes({ clientes, onNuevoCliente, onEliminarCliente, onEditarCliente
                         ):
                         clientesFiltrados.map( cliente => (
                         <tr key = {cliente.id}>
-                            <td>{cliente.nombre}</td>
-                            <td>{cliente.apellido}</td>
-                            <td>{cliente.telefono}</td>
-                            <td>{cliente.id}</td>
-                            <td>{cliente.tipo}</td>
-                            <td>
+                            <td data-label= "Nombre">{cliente.nombre}</td>
+                            
+                            <td data-label= "Teléfono">{cliente.telefono}</td>
+                            <td data-label= "DNI / CUIT">{cliente.id}</td>
+                            <td data-label= "Tipo">{cliente.tipo}</td>
+                            <td data-label = "Acciones">
                                 <div className="d-flex gap-2">
                                     <BotonEliminar
                                     onClick={()=> onEliminarCliente(cliente.id)}
-                                    aria-label={`Eliminar cliente ${cliente.nombre} ${cliente.apellido}`}
+                                    aria-label={`Eliminar cliente ${cliente.nombre} `}
                                     />
                                     
-
-                                    <button type ='button'
-                                    className="btn btn-primary btn-sm"
-                                    onClick = {() => onEditarCliente(cliente)}
-                                    aria-label={`Editar cliente ${cliente.nombre}`}
-                                    >
+                                    <BotonEditar onClick = {() => onEditarCliente(cliente)}
+                                     componente = "Cliente"
+                                     aria-label={`Editar cliente ${cliente.nombre} y documento ${cliente.id}`}/>
                                     
-                                </button>
                                 </div>
                             </td>
                         </tr>

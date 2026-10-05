@@ -50,6 +50,17 @@
   gap: 15px;
 }
 
+.botonHistorial {
+  width: 3.5rem;
+  height: 3rem;
+  border: none;
+  background-color: transparent;
+}
+.botonHistorial img {
+  background-color: transparent;
+  object-fit: contain;
+}
+
 .vehiculos-page .formulario {
   display: flex;
   flex-direction: column;
@@ -161,8 +172,10 @@
 .vehiculos-page .sinDatos { color: #888; text-align: center; }
 .vehiculos-page .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
-@media (max-width: 768px) {
-  .vehiculos-page .grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1000px) {
+  .vehiculos-page .grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 
   /* En el celular cada fila de la tabla se muestra como una tarjeta. */
   .vehiculos-page .datosTabla thead { display: none; }
@@ -207,7 +220,7 @@
     margin-bottom: 10px;
   }
 
-  .vehiculos-page .acciones-tabla { justify-content: flex-start; }
+  /* .vehiculos-page .acciones-tabla { justify-content: flex-start; } */
   .vehiculos-page .btnAccion { flex: 1 1 auto; }
 }
 

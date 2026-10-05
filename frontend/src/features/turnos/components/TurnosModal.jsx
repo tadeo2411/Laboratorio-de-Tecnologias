@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 
-function TurnosModal({ children, onCerrar }) {
-    const modalRef = useRef(null)
 
+function TurnosModal({ children, onCerrar, comp }) {
+    const modalRef = useRef(null)
+comp = 'turno'
     useEffect(() => {
         const elemento = modalRef.current
         const disparador = document.activeElement
@@ -36,7 +37,7 @@ function TurnosModal({ children, onCerrar }) {
             <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h2 className="modal-title fs-5" id="nuevoTurnoModalTitulo">Nuevo turno</h2>
+                        <h2 className="modal-title fs-5" id="nuevoTurnoModalTitulo">Nuevo {comp}</h2>
                         <button
                             type="button"
                             className="btn-close"

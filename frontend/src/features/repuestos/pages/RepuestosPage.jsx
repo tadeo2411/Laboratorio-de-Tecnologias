@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import Modal from '../../../shared/components/Modal/Modal'
 import RepuestoForm from '../components/RepuestoForm'
 import RepuestosList from '../components/RepuestosList'
+import BotonNuevo from '../../../shared/components/BotonNuevo'
+
 import {
   actualizarRepuesto,
   crearRepuesto,
@@ -94,12 +96,10 @@ function RepuestosPage() {
   }
 
   return (
-    <div className="repuestos-page">
+    <div className="contenedor">
       <div className="repuestos-page__encabezado">
         <h1>Gestión de repuestos</h1>
-        <button type="button" className="btn btn-primary" onClick={() => abrirFormulario()}>
-          + Nuevo repuesto
-        </button>
+        <BotonNuevo componente = "Repuesto" onClick={() => abrirFormulario()} />
       </div>
 
       {mensaje && (

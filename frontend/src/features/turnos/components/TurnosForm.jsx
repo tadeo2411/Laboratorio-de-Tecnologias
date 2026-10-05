@@ -47,7 +47,10 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                 <div className="formulario anchoComp">
                     <label htmlFor="patente" >Vehículo *</label>
                     <div className="row g-2 align-items-center flex-nowrap">
-                        <select id="patente" name="patente" value={formulario.patente} onChange={actualizarCampo} required disabled={cargando||Boolean(error)} className='col selectFormulario' >
+                        <select id="patente" name="patente" value={formulario.patente}
+                        onChange={actualizarCampo}
+                        required disabled={cargando||Boolean(error)}
+                        className='col selectFormulario' >
                             <option value="">--- Elegir ---</option>
                             {vehiculos.map(vehiculo => (
                                 <option key={vehiculo.id} value={vehiculo.patente}>

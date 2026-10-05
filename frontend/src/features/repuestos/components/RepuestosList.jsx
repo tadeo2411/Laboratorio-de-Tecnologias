@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import BotonEditar from '../../../shared/components/BotonEditar'
 
 function formatoMoneda(valor) {
   return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(Number(valor))
@@ -62,16 +64,8 @@ function RepuestosList({ repuestos, onEditar, onEliminar }) {
                   <td data-label="Descripción">{repuesto.descripcion || '—'}</td>
                   <td data-label="Acciones" className="celda-acciones">
                     <div className="acciones-tabla">
-                      <button type="button" className="btnAccion" onClick={() => onEditar(repuesto)}>
-                        Editar
-                      </button>
-                      <button
-                        type="button"
-                        className="btnAccion btnAccion--peligro"
-                        onClick={() => onEliminar(repuesto)}
-                      >
-                        Eliminar
-                      </button>
+                      <BotonEditar onClick={() => onEditar(repuesto)} />
+                      <BotonEliminar onClick={() => onEliminar(repuesto)} />
                     </div>
                   </td>
                 </tr>

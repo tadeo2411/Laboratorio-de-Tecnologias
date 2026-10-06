@@ -1,22 +1,15 @@
-import { Link, Navigate, useLocation } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import LoginForm from '../components/LoginForm'
-import { useAuth } from '../hooks/useAuth'
+import { iniciarSesion } from '../services/authService'
 import './LoginPage.css'
 
 function LoginPage() {
-  const { sesion, iniciarSesion } = useAuth()
-  const ubicacion = useLocation()
-
-  // Si alguien quiso entrar a una pantalla del gestor sin sesión, después del
-  // login vuelve a esa pantalla; si no, va al inicio del gestor.
-  const destino = ubicacion.state?.desde ?? '/gestor'
-
-  // Con sesión iniciada no tiene sentido ver el login: se pasa directo al gestor.
-  // Esto también hace la redirección justo después de ingresar.
-  if (sesion) {
-    return <Navigate to={destino} replace />
+  const navigate = useNavigate()
+  async function handleIngresar(usuario, contrasena) {
+    await iniciarSesion(usuario, contrasena)
+    navigate('/gestor', { replace: true })
   }
-
+  
   return (
     <div className="login-page">
       <section className="login-page__tarjeta">
@@ -24,7 +17,7 @@ function LoginPage() {
         <h1>Iniciar sesión</h1>
         <p className="login-page__texto">Ingresá con tu usuario del taller para usar el gestor.</p>
 
-        <LoginForm onIngresar={iniciarSesion} />
+        <LoginForm onIngresar={handleIngresar} />
 
         <Link className="login-page__volver" to="/">
           ← Volver a la página principal

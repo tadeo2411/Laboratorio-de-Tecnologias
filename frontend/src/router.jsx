@@ -1,10 +1,7 @@
 import { createBrowserRouter } from 'react-router'
-
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
-import LoginPage from './features/auth/pages/LoginPage'
-import GestorProtegido from './features/auth/components/GestorProtegido'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
@@ -13,7 +10,8 @@ import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 import ClientesPage from './features/clientes/pages/ClientesPage'
-
+import Spinner from './shared/components/Spinner/Spinner'
+import {LoginPage, GestorConSesion, protegerRuta, redirigirSiHaySesion} from './features/auth'
 export const router = createBrowserRouter([
     // rutas de la Landing
     {
@@ -28,15 +26,19 @@ export const router = createBrowserRouter([
     {
         path: '/login',
         element: <LayoutLogin />,
+        loader: redirigirSiHaySesion,
+        hydrateFallbackElement: <Spinner />,
         errorElement: <NoEncontradaPage />,
         children: [
             { index: true, element: <LoginPage /> }
         ],
     },
     {
-        // GestorProtegido controla que haya sesión antes de mostrar cualquier pantalla del gestor
+        // protegerRuta redirige a /login de no haber sesion.
         path: '/gestor',
-        element: <GestorProtegido />,
+        element: <GestorConSesion />,
+        loader: protegerRuta,
+        hydrateFallbackElement: <Spinner />,
         errorElement: <NoEncontradaPage />,
         children: [
             {

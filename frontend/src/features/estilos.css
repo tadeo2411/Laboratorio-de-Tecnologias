@@ -356,7 +356,7 @@ textarea {
 /* Pie de pagina                                                              */
 /* -------------------------------------------------------------------------- */
 
-footer {
+.landing-footer {
     margin-top: 30px;
     padding: 20px;
     color: black;
@@ -364,12 +364,12 @@ footer {
     background-color: #ffffff;
 }
 
-footer h4 {
+.landing-footer h4 {
     margin: 0 0 10px 0;
     font-size: 20px;
 }
 
-footer h5 {
+.landing-footer h5 {
     margin: 0;
     font-size: 16px;
     font-weight: normal;

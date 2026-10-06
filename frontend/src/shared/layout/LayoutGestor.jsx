@@ -11,7 +11,9 @@ function LayoutGestor({ usuario, onCerrarSesion }) {
             <main className = 'contenido'>
                 <Outlet />
             </main>
-            {/* <FooterGestor /> */}
+            <footer>
+                <FooterGestor />
+            </footer>
         </>
     );
 }

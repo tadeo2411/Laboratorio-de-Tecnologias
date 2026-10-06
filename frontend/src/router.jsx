@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router'
 import LayoutLanding from './shared/layout/LayoutLanding'
-import PaginaInicial from './features/home/PaginaInicial/pages/PaginaInicial'
+import PaginaInicial from './features/home/pages/PaginaInicial'
 import LayoutLogin from './shared/layout/LayoutLogin'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
 import Presupuestos from './features/presupuestos/pages/PresupuestosPage'

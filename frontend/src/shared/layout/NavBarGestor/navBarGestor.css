@@ -2,15 +2,14 @@
     background-color: white;
     border-bottom: 1px solid rgb(194, 192, 192);
     display: flex;
-    gap: 30px;
     align-items: center;
-    justify-content: space-between; /* Empuja logo a la izq y resto a la derecha */
-    padding: 0 20px;
-    position: relative; /* Necesario para que el menú móvil flote respecto al header */
+    
 }
 
 .navbar-gestor .logo {
+    margin-right: auto;
     flex-shrink: 0;
+    padding: .1rem 0;
     width: 122px;
     height: 50px;
     object-fit: cover;
@@ -27,12 +26,7 @@
 }
 
 /* Inyectar sobre tu lista interactiva (ul.barra-gestor o .sidebar-lista) */
-.navbar-gestor ul {
-    display: flex;
-    justify-content: center;
-    margin: 0 auto; /* Purgado de márgenes laterales automáticos residuales */
-    padding: 0;
-}
+
 
 .usuario-info {
     display: flex;
@@ -52,7 +46,6 @@
 
 .btn-cerrar-sesion {
     padding: 6px 12px;
-
     border-radius: 6px;
     background: #bb2d3b;
     color: #fff;
@@ -67,24 +60,10 @@
 }
 
 /* Reservar espacio para los enlaces y el botón en pantallas intermedias. */
-@media (max-width: 1200px) {
-    .navbar-gestor .usuario-info__nombre {
-        display: none;
-    }
-}
+
 
 /* Ocultar el botón de menú en escritorio */
-.navbar-gestor .btn-menu {
-    display: none;
-    background-color: transparent;
-    border: 1px solid rgb(194, 192, 192);
-    border-radius: 4px;
-    padding: 8px 12px;
-    font-size: .9rem;
-    cursor: pointer;
-    color: rgb(82, 82, 82);
-    align-items: center;
-}
+
 
 /* Menú en Lista (Escritorio) */
 .navbar-gestor .barra-gestor {
@@ -136,7 +115,7 @@
    y dejan la sesión en el extremo derecho de la misma lista. */
 .navbar-gestor .barra-gestor > li:first-child,
 .navbar-gestor .barra-gestor > .barra-gestor__sesion {
-    margin-left: auto;
+    /* margin-left: auto; */
 }
 
 
@@ -150,17 +129,14 @@
 
 /* El estado de React agrega la clase --abierto al tocar el botón. */
 @media (max-width: 970px) {
-    .navbar-gestor .btn-menu {
-        display: block;
-        margin-left: auto;
-    }
+    
 
     .navbar-gestor nav {
         flex-grow: 0;
     }
 
     .navbar-gestor .barra-gestor {
-        display: none;
+        display: flex;
         flex-direction: column;
         gap: 0;
         position: absolute;
@@ -177,16 +153,7 @@
         display: flex;
     }
 
-    .barra-gestor li {
-        width: 100%;
-        text-align: center;
-        border-top: 1px solid #f0f0f0;
-    }
 
-    .barra-gestor a {
-        width : 100%;
-        padding: 15px;
-    }
 
     .navbar-gestor .barra-gestor > li:first-child,
     .navbar-gestor .barra-gestor > .barra-gestor__sesion {
@@ -200,13 +167,6 @@
     }
 
     .navbar-gestor .barra-gestor__sesion .btn-cerrar-sesion {
-        display: block;
-        width: 100%;
-        padding: 15px;
-        box-sizing: border-box;
-        border: 0;
-        border-radius: 0;
-        font-weight: 500;
-        text-align: center;
+        position: relative;
     }
 }

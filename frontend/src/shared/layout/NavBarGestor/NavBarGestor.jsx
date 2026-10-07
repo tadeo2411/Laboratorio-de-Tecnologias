@@ -7,8 +7,18 @@ function NavBarGestor({ usuario, onCerrarSesion }) {
             <header className='navbar-gestor'>
 
                 <nav>
-                    <img className="logo" src="/images/logo-303mei.jpg" alt="Logo" height="100px" width="100px" />
-                
+
+                    <ul className={`barra-gestor ${menuAbierto ? 'barra-gestor--abierto' : ''}`}
+                    id="menuNavegacion"
+                    >
+                        <li><NavLink  to="" className="hoverNavBar" onClick={cerrarMenu}>Tableros</NavLink></li>
+                        <li><NavLink to="ordenes" className="hoverNavBar" onClick={cerrarMenu}>Ordenes</NavLink></li>
+                        <li ><NavLink to="turnos" className="hoverNavBar" onClick={cerrarMenu}>Turnos</NavLink></li>
+                        <li ><NavLink to="presupuestos" className="hoverNavBar" onClick={cerrarMenu}>Presupuestos</NavLink></li>
+                        <li ><NavLink to="clientes" className="hoverNavBar" onClick={cerrarMenu}>Clientes</NavLink></li>
+                        <li ><NavLink to="vehiculos" className="hoverNavBar" onClick={cerrarMenu}>Vehículos</NavLink></li>
+                        <li ><NavLink to="repuestos" className="hoverNavBar" onClick={cerrarMenu}>Repuestos</NavLink></li>
+                        <li ><NavLink to="trabajos" className="hoverNavBar" onClick={cerrarMenu}>Trabajos</NavLink></li>
                     
 
                         {usuario && (

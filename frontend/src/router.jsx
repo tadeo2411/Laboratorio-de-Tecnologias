@@ -8,6 +8,7 @@ import TurnosPage from './features/turnos/pages/TurnosPage'
 import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
+import TrabajosPage from './features/trabajos/pages/TrabajosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 import ClientesPage from './features/clientes/pages/ClientesPage'
 import Spinner from './shared/components/Spinner/Spinner'
@@ -68,6 +69,10 @@ export const router = createBrowserRouter([
             {
                 path: "repuestos",
                 element: <RepuestoPage />
+            },
+            {
+                path: "trabajos",
+                element: <TrabajosPage />
             }
         ]
     }

@@ -4,7 +4,7 @@ import VehiculoForm from '../components/VehiculoForm'
 import VehiculosList from '../components/VehiculosList'
 import HistorialVehiculo from '../components/HistorialVehiculo'
 import AvisoService from '../components/AvisoService'
-import BotonNuevo from '../../../shared/components/botonNuevo'
+import BotonNuevo from '../../../shared/components/BotonNuevo'
 import {
   actualizarEstadoAviso,
   actualizarVehiculo,

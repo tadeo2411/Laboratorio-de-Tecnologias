@@ -1,0 +1,380 @@
+.trabajos-page {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.trabajos-page>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.img-container {
+    width: 70px;
+    height: 70px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #e8f5e9;
+    border-radius: 12px;
+}
+
+.img-container img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+
+    filter: brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%);
+}
+
+.title-container {
+    display: flex;
+    gap: .2rem;
+    flex: 1;
+    padding-left: 1rem;
+}
+
+.title-container h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.title-container p {
+    font-size: 1rem;
+    color: #585858;
+    margin: 0;
+}
+
+/* Fila */
+.trabajo-row {
+    border-bottom: 1px solid #eeeeee;
+    transition: background-color 0.2s ease;
+}
+
+.trabajo-row:hover {
+    background-color: #fafafa;
+}
+
+/* Fecha */
+.trabajo-fecha {
+    padding: 14px 16px;
+    color: #6c757d;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* Orden */
+.trabajo-orden {
+    padding: 14px 16px;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Descripción */
+.trabajo-descripcion {
+    padding: 14px 16px;
+    max-width: 280px;
+}
+
+.descripcion-principal {
+    font-weight: 500;
+    color: #343a40;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.descripcion-tipo {
+    margin-top: 3px;
+    font-size: 12px;
+    color: #8a8f98;
+}
+
+/* Empleado */
+.trabajo-empleado {
+    padding: 14px 16px;
+    color: #495057;
+    font-size: 14px;
+}
+
+/* Estado */
+.trabajo-estado {
+    padding: 14px 16px;
+}
+
+.estado-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Estados */
+.estado-terminado {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.estado-reparacion {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.estado-pendiente {
+    background-color: #fef3c7;
+    color: #a16207;
+}
+
+/* Total */
+.trabajo-total {
+    padding: 14px 16px;
+    font-weight: 700;
+    color: #212529;
+    white-space: nowrap;
+}
+
+/* Acciones */
+.trabajo-acciones {
+    padding: 14px 16px;
+}
+
+.acciones-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Botones de acciones */
+.accion-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.accion-button:hover {
+    transform: translateY(-1px);
+}
+
+/* Información */
+.accion-info {
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    color: #495057;
+}
+
+.accion-info:hover {
+    background-color: #f8f9fa;
+}
+
+/* Modificar */
+.accion-modificar {
+    border: 1px solid #bfdbfe;
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.accion-modificar:hover {
+    background-color: #dbeafe;
+}
+
+/* Eliminar */
+.accion-eliminar {
+    border: 1px solid #fecaca;
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.accion-eliminar:hover {
+    background-color: #fee2e2;
+}
+
+
+
+
+
+/*Nuevo trabajo */
+.campos-obligatorios {
+    color: #686868
+}
+
+.asterisco {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+.form-trabajos {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-trabajos>div {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.form-trabajos>div>div {
+    flex: 1;
+}
+
+textarea {
+    min-height: 0%;
+}
+
+
+.select {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0.5rem 0.8rem;
+
+    box-sizing: border-box;
+
+    font-family: inherit;
+    font-size: 1rem;
+    color: #212529;
+
+    background-color: #fff;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    cursor: pointer;
+}
+
+.campo-icono {
+    position: relative;
+    width: 100%;
+}
+
+.campo-icono img {
+    position: absolute;
+
+    left: 10px;
+    top: 50%;
+
+    width: 20px;
+    height: 20px;
+
+    object-fit: contain;
+
+    transform: translateY(-50%);
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
+.campo-icono input,
+.campo-icono select {
+    padding-left: 40px;
+}
+
+.campo-icono textarea {
+    padding-left: 40px;
+}
+
+.input {
+    max-height: 2.5rem;
+}
+
+.info-trabajo {
+    padding: 20px;
+}
+
+.info-trabajo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+}
+
+.info-trabajo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.info-trabajo-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #6c757d;
+}
+
+.info-trabajo-dato {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 42px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    color: #343a40;
+    font-size: 14px;
+}
+
+.info-trabajo-dato img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.info-trabajo-completo {
+    grid-column: 1 / -1;
+}
+
+.info-trabajo-descripcion {
+    min-height: 80px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    color: #343a40;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.info-trabajo-total {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 6px;
+}
+
+.info-trabajo-total .info-trabajo-label {
+    color: #166534;
+}
+
+.info-trabajo-total-valor {
+    font-size: 20px;
+    font-weight: 700;
+    color: #15803d;
+}
+
+@media (max-width: 600px) {
+    .info-trabajo-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .info-trabajo-completo,
+    .info-trabajo-total {
+        grid-column: auto;
+    }
+}

@@ -1,12 +1,52 @@
-.footer-gestor{
+
+
+.barraInfGestor svg{
+    height: 1.7rem;
+    width: auto;
+    
+}
+
+.barraInfGestor{
+    display: flex;
+    position: fixed;
+    height: auto;
+    background-color: white;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    list-style: none;
+}
+
+.barraInfGestor li{
+    width : 100%;
+    height: 100%;
+    flex-direction: column;
+    
+}
+
+
+.barraInfGestor a{
+    width : 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 1px 5px;
+    font-size: 0.7rem;
+    text-decoration: none;
+    color: #757575;
+}
+
+.barraInfGestor a.itemActivo{
+    color: rgba(1, 102, 1, 0.514);
+    font-size : .8rem;
+    font-weight: bold;
 
 }
 
-.barra-inf-gestor{
-    position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 1000;
-        display: none;
-        flex-direction: column;
+.barraInfGestor .itemActivo svg{
+    width: 2rem;
+    height: auto;
 }

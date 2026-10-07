@@ -1,6 +1,10 @@
 import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { defineConfig } from 'vite';
+// vite-plugin-svgr: permite importar un .svg como componente de React
+// (import Icono from './icono.svg?react'). Se usa en FooterGestor para que
+// los íconos hereden el color del link (currentColor) y cambien con itemActivo.
+import svgr from 'vite-plugin-svgr';
 import { readFile } from 'node:fs/promises';
 
 function servirBackend() {
@@ -56,6 +60,7 @@ function servirBackend() {
 export default defineConfig({
     plugins: [
         react(),
+        svgr(),
         babel({ presets: [reactCompilerPreset()] }),
         servirBackend()
     ]

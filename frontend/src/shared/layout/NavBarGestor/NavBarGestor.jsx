@@ -1,5 +1,4 @@
-import { NavLink } from 'react-router';
-import { useState } from 'react';
+
 import './navBarGestor.css';
 
 function NavBarGestor({ usuario, onCerrarSesion }) {
@@ -16,7 +15,6 @@ function NavBarGestor({ usuario, onCerrarSesion }) {
                             <div className="usuario-info barra-gestor__sesion">
                                 <span className="usuario-info__nombre">{usuario.nombre}</span>
                                 <button type="button" className="btn-cerrar-sesion" onClick={() => {
-                                    cerrarMenu()
                                     onCerrarSesion()
                                 }}>
                                     Cerrar sesión

@@ -146,7 +146,7 @@ main {
     align-items: stretch;
     justify-content: flex-start;
     min-height: calc(100vh - 51px);
-    padding: 20px 30px 30px;
+    padding: 20px 30px 6rem;
     box-sizing: border-box;
     background-color: #f4f6f8;
     font-family: Arial, sans-serif;
@@ -559,7 +559,7 @@ textarea {
     }
 
     .contenido {
-        padding: 15px;
+        padding: 15px 15px 5rem;
     }
 
     .contenedor {

@@ -3,9 +3,12 @@ import TurnosModal from '../components/TurnosModal'
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
 import { obtenerTurnos, obtenerAutos } from '../services/turnosService';
+import Table from "../../../shared/components/table/Table";
+import img_list from "../../../assets/icons/img_list.png"
+import BotonNuevo from "../../../shared/components/BotonNuevo";
+import "../turnos.css";
 
-
-function TurnosPage(){
+function TurnosPage() {
     const [turnos, setTurnos] = useState([])
     const [error, setError] = useState(null)
     const [vehiculos, setVehiculos] = useState([])
@@ -17,11 +20,11 @@ function TurnosPage(){
 
     //abm
     function handleAgregarTurno(nuevoTurno) { //se llama handle para seguir con la convencion de nombres en props
-        setTurnos(anteriores => [...anteriores, 
-            { id: crypto.randomUUID(), ...nuevoTurno }])
+        setTurnos(anteriores => [...anteriores,
+        { id: crypto.randomUUID(), ...nuevoTurno }])
         cerrarFormulario()
     }
-    function handleEliminarTurno(idTurno){
+    function handleEliminarTurno(idTurno) {
         const confirmado = window.confirm('¿Desea eliminar el turno?')
 
         if (!confirmado) return
@@ -30,38 +33,38 @@ function TurnosPage(){
         )
     }
 
-    function handleEditarTurno(turno){
+    function handleEditarTurno(turno) {
         setTurnoAEditar(turno)
         setMostrarFormulario(true)
     }
 
-    function handleModificarTurno(datosActualizados){
-        setTurnos (
+    function handleModificarTurno(datosActualizados) {
+        setTurnos(
             anteriores => anteriores.map(
                 turno =>
-                turno.id === turnoAEditar.id
-                ? {... datosActualizados, id:turno.id}
-                : turno
+                    turno.id === turnoAEditar.id
+                        ? { ...datosActualizados, id: turno.id }
+                        : turno
             )
         )
         cerrarFormulario()
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         let activo = true
-        async function cargarTurnos(){
-            try{
+        async function cargarTurnos() {
+            try {
                 const [listTurnos, listVehiculos] = await Promise.all([obtenerTurnos(), obtenerAutos()])
-                
-                if(activo){
+
+                if (activo) {
                     setTurnos(listTurnos)
                     setVehiculos(listVehiculos)
                 }
-            }catch(err){
-                if(activo)
+            } catch (err) {
+                if (activo)
                     setError(err instanceof Error ? err.message : 'No se pudieron cargar los turnos')
-            }finally{
-                if(activo)
+            } finally {
+                if (activo)
                     setCargando(false)
             }
 
@@ -72,36 +75,116 @@ function TurnosPage(){
     }, [])
 
 
+    const columnasTurnos = [
+        { key: "fechaHora", nombre: "Fecha y hora" },
+        { key: "motivo", nombre: "Motivo" },
+        { key: "estado", nombre: "Estado" },
+        { key: "patente", nombre: "Patente" },
+        { key: "acciones", nombre: "Acciones" }
+    ];
 
-    return(// camino de esta page: muestra los turnos traidos por el json, al tocar el botón de nuevo turno, se abre el modal con el formulario
+
+    return (// camino de esta page: muestra los turnos traidos por el json, al tocar el botón de nuevo turno, se abre el modal con el formulario
         <>
-        {error && <p role="alert">{error}</p>}
-        {cargando && <p role="status">Cargando turnos…</p>}
-        {!cargando && !error && (
-            <Turnos 
-            turnos={turnos}
+            {error && <p role="alert">{error}</p>}
+            {cargando && <p role="status">Cargando turnos…</p>}
+            {!cargando && !error && (
+                <div className="contenedor">
+                    <div className="turnos-page">
+                        <div className="img-container">
+                            <img src={img_list} />
+                        </div>
 
-            onNuevoTurno={() => {setTurnoAEditar(null)
-                setMostrarFormulario(true)}}
-            onEliminarTurno={handleEliminarTurno}
-            onEditarTurno={handleEditarTurno}
-            />
-        )}
-        {mostrarFormulario && ( //cuando es true monta el modal y el formulario, cuando es false los elimina
-            <TurnosModal onCerrar={cerrarFormulario}>
-                {error && <p role="alert">{error}</p>}
-                {cargando && <p role="status">Cargando vehículos…</p>}
-                <TurnosForm
-                    turnoInicial ={turnoAEditar}
-                    onGuardar={turnoAEditar
-                        ?  handleModificarTurno
-                        :handleAgregarTurno}
-                    vehiculos={vehiculos}
-                    cargando={cargando}
-                    error={error}
-                />
-            </TurnosModal>
-        )}
+                        <div className="title-container">
+                            <h1>Turnos</h1>
+                            <p>Listado de turnos registrados en el sistema.</p>
+                        </div>
+
+                        <BotonNuevo
+                            onClick={() => setMostrarFormulario(true)}
+                            componente={"turno"}
+                        />
+                    </div>
+                    <Table
+                        inputPlaceholder="Buscar por descripción, orden, trabajo..."
+                        columnas={columnasTurnos}
+                        datos={turnos}
+                        mensajeVacio="No hay turnos registrados"
+                        renderFila={(turno) => (
+                            <tr key={turno.id} className="turno-row">
+                                <td className="turno-fecha" data-label="Fecha y hora">
+                                    {turno.fechaHora}
+                                </td>
+
+                                <td className="turno-motivo" data-label="Motivo">
+                                    {turno.motivo}
+                                </td>
+
+                                <td className="turno-estado" data-label="Estado">
+                                    <span
+                                        className={`estado-badge ${turno.estado === "SOLICITADO"
+                                                ? "estado-solicitado"
+                                                : turno.estado === "CONFIRMADO"
+                                                    ? "estado-confirmado"
+                                                    : turno.estado === "CUMPLIDO"
+                                                        ? "estado-cumplido"
+                                                        : turno.estado === "CANCELADO"
+                                                            ? "estado-cancelado"
+                                                            : turno.estado === "AUSENTE"
+                                                                ? "estado-ausente"
+                                                                : "estado-pendiente"
+                                            }`}
+                                    >
+                                        {turno.estado}
+                                    </span>
+                                </td>
+
+                                <td className="turno-patente" data-label="Patente">
+                                    {turno.patente}
+                                </td>
+
+                                <td className="turno-acciones" data-label="Acciones">
+                                    <div className="acciones-container">
+
+                                        <button
+                                            className="accion-button accion-modificar"
+                                            title="Modificar"
+                                            onClick={() => handleEditarTurno(turno.id)}
+                                        >
+                                            ✎
+                                        </button>
+
+                                        <button
+                                            className="accion-button accion-eliminar"
+                                            title="Eliminar"
+                                            onClick={() => handleEliminarTurno(turno.id)}
+                                        >
+                                            🗑
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        )
+                        }
+                    />
+                </div>
+            )}
+            {mostrarFormulario && ( //cuando es true monta el modal y el formulario, cuando es false los elimina
+                <TurnosModal onCerrar={cerrarFormulario}>
+                    {error && <p role="alert">{error}</p>}
+                    {cargando && <p role="status">Cargando vehículos…</p>}
+                    <TurnosForm
+                        turnoInicial={turnoAEditar}
+                        onGuardar={turnoAEditar
+                            ? handleModificarTurno
+                            : handleAgregarTurno}
+                        vehiculos={vehiculos}
+                        cargando={cargando}
+                        error={error}
+                    />
+                </TurnosModal>
+            )}
 
         </>
     )

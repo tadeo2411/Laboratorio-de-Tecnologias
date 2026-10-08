@@ -89,52 +89,75 @@ function TrabajosPage() {
                         <tr key={trabajo.id} className="trabajo-row">
 
                             {/* Fecha */}
-                            <td className="trabajo-fecha">
+                            <td
+                                className="trabajo-fecha"
+                                data-label="Fecha"
+                            >
                                 {trabajo.fecha}
                             </td>
 
                             {/* Orden */}
-                            <td className="trabajo-orden">
+                            <td
+                                className="trabajo-orden"
+                                data-label="Orden"
+                            >
                                 #{trabajo.ordenTrabajo}
                             </td>
 
                             {/* Descripción */}
-                            <td className="trabajo-descripcion">
-                                <div className="descripcion-principal">
-                                    {trabajo.descripcion}
-                                </div>
+                            <td
+                                className="trabajo-descripcion"
+                                data-label="Descripción"
+                            >
+                                <div>
+                                    <div className="descripcion-principal">
+                                        {trabajo.descripcion}
+                                    </div>
 
-                                <div className="descripcion-tipo">
-                                    {trabajo.tipoTrabajo}
+                                    <div className="descripcion-tipo">
+                                        {trabajo.tipoTrabajo}
+                                    </div>
                                 </div>
                             </td>
 
                             {/* Empleado */}
-                            <td className="trabajo-empleado">
+                            <td
+                                className="trabajo-empleado"
+                                data-label="Empleado"
+                            >
                                 {trabajo.empleado}
                             </td>
 
                             {/* Estado */}
-                            <td className="trabajo-estado">
+                            <td
+                                className="trabajo-estado"
+                                data-label="Estado"
+                            >
                                 <span
-                                    className={`estado - badge ${trabajo.estado === "Terminado"
+                                    className={`estado-badge ${trabajo.estado === "Terminado"
                                         ? "estado-terminado"
                                         : trabajo.estado === "En reparación"
                                             ? "estado-reparacion"
                                             : "estado-pendiente"
-                                        } `}
+                                        }`}
                                 >
                                     {trabajo.estado}
                                 </span>
                             </td>
 
                             {/* Total */}
-                            <td className="trabajo-total">
+                            <td
+                                className="trabajo-total"
+                                data-label="Total"
+                            >
                                 ${trabajo.total.toLocaleString("es-AR")}
                             </td>
 
                             {/* Acciones */}
-                            <td className="trabajo-acciones">
+                            <td
+                                className="trabajo-acciones"
+                                data-label="Acciones"
+                            >
                                 <div className="acciones-container">
 
                                     <button
@@ -142,9 +165,8 @@ function TrabajosPage() {
                                         title="Más información"
                                         onClick={() => {
                                             setTrabajoSeleccionado(trabajo);
-                                            setModalMasInfoAbierto(true)
-                                        }
-                                        }
+                                            setModalMasInfoAbierto(true);
+                                        }}
                                     >
                                         ⓘ
                                     </button>

@@ -3,6 +3,7 @@ import Modal from '../../../shared/components/Modal/Modal'
 import RepuestoForm from '../components/RepuestoForm'
 import RepuestosList from '../components/RepuestosList'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
+import img_list from "../../../assets/icons/img_list.png"
 
 import {
   actualizarRepuesto,
@@ -11,6 +12,15 @@ import {
   obtenerRepuestos,
 } from '../services/repuestosService'
 import './RepuestosPage.css'
+import Table from '../../../shared/components/table/Table'
+
+const columnasRepuestos = [
+  { key: "codigo", nombre: "Código" },
+  { key: "nombre", nombre: "Nombre" },
+  { key: "precioVenta", nombre: "Precio de venta" },
+  { key: "stock", nombre: "Stock" },
+  { key: "acciones", nombre: "Acciones" }
+];
 
 function RepuestosPage() {
   const [repuestos, setRepuestos] = useState([])
@@ -19,6 +29,7 @@ function RepuestosPage() {
   const [error, setError] = useState('')
   const [formularioAbierto, setFormularioAbierto] = useState(false)
   const [repuestoEnEdicion, setRepuestoEnEdicion] = useState(null)
+
 
   // Carga los repuestos desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -96,10 +107,22 @@ function RepuestosPage() {
   }
 
   return (
+
     <div className="contenedor">
-      <div className="repuestos-page__encabezado">
-        <h1>Gestión de repuestos</h1>
-        <BotonNuevo componente = "Repuesto" onClick={() => abrirFormulario()} />
+      <div className="repuestos-page">
+        <div className="img-container">
+          <img src={img_list} />
+        </div>
+
+        <div className="title-container">
+          <h1>Repuestos</h1>
+          <p>Listado de repuestos registrados en el sistema.</p>
+        </div>
+
+        <BotonNuevo
+          onClick={() => setFormularioAbierto(true)}
+          componente={"repuesto"}
+        />
       </div>
 
       {mensaje && (
@@ -119,7 +142,80 @@ function RepuestosPage() {
       {cargando ? (
         <p className="sinDatos">Cargando repuestos...</p>
       ) : (
-        <RepuestosList repuestos={repuestos} onEditar={abrirFormulario} onEliminar={confirmarEliminacion} />
+
+        <Table
+          inputPlaceholder="Buscar por código, nombre..."
+          columnas={columnasRepuestos}
+          datos={repuestos}
+          mensajeVacio="Todavía no hay repuestos cargados."
+          renderFila={(repuesto) => (
+            <tr key={repuesto.id} className="repuesto-row">
+
+              <td
+                className="repuesto-codigo"
+                data-label="Código"
+              >
+                {repuesto.codigo}
+              </td>
+
+              <td
+                className="repuesto-nombre"
+                data-label="Nombre"
+              >
+                {repuesto.nombre}
+              </td>
+
+              <td
+                className="repuesto-precio"
+                data-label="Precio de venta"
+              >
+                ${repuesto.precioVenta.toLocaleString("es-AR")}
+              </td>
+
+              <td
+                className="repuesto-stock"
+                data-label="Stock"
+              >
+                {repuesto.stock}
+              </td>
+
+              <td
+                className="repuesto-acciones"
+                data-label="Acciones"
+              >
+                <div className="acciones-container">
+
+                  <button
+                    className="accion-button accion-info"
+                    title="Más información"
+                    onClick={() => {
+                      setRepuestoSeleccionado(repuesto);
+                      setModalMasInfoAbierto(true);
+                    }}
+                  >
+                    ⓘ
+                  </button>
+
+                  <button
+                    className="accion-button accion-modificar"
+                    title="Modificar"
+                  >
+                    ✎
+                  </button>
+
+                  <button
+                    className="accion-button accion-eliminar"
+                    title="Eliminar"
+                  >
+                    🗑
+                  </button>
+
+                </div>
+              </td>
+
+            </tr>
+          )}
+        />
       )}
 
       {formularioAbierto && (

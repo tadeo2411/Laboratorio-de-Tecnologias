@@ -3,7 +3,17 @@ import Clientes from '../components/Clientes'
 import ClientesForm from '../components/ClientesForm'
 import ClientesModal from '../components/ClientesModal'
 import { obtenerClientes } from '../services/clientesServices'
+import img_list from "../../../assets/icons/img_list.png"
+import "../clientes.css";
+import BotonNuevo from '../../../shared/components/BotonNuevo'
+import Table from '../../../shared/components/table/Table'
 
+const columnasClientes = [
+    { key: "nombre", nombre: "Nombre" },
+    { key: "id", nombre: "DNI" },
+    { key: "telefono", nombre: "Teléfono" },
+    { key: "acciones", nombre: "Acciones" }
+];
 
 function ClientesPage() {
     const [clientes, setClientes] = useState([])
@@ -81,12 +91,68 @@ function ClientesPage() {
             {error && <p role="alert">{error}</p>}
             {cargando && <p role="status">Cargando clientes…</p>}
             {!cargando && !error && (
-                <Clientes
-                    clientes={clientes}
-                    onNuevoCliente={handleNuevoCliente}
-                    onEditarCliente={handleEditarCliente}
-                    onEliminarCliente={handleEliminarCliente}
-                />
+                <div className="contenedor">
+                    <div className="clientes-page">
+                        <div className="img-container">
+                            <img src={img_list} />
+                        </div>
+
+                        <div className="title-container">
+                            <h1>Clientes</h1>
+                            <p>Listado de clientes registrados en el sistema.</p>
+                        </div>
+
+                        <BotonNuevo
+                            onClick={() => setMostrarFormulario(true)}
+                            componente={"cliente"}
+                        />
+                    </div>
+
+                    <Table
+                        inputPlaceholder="Buscar por nombre, apellido, DNI..."
+                        columnas={columnasClientes}
+                        datos={clientes}
+                        mensajeVacio="No hay clientes registrados"
+                        renderFila={(cliente) => (
+                            <tr key={cliente.id} className="cliente-row">
+
+                                <td className="cliente-nombre" data-label="Nombre">
+                                    {cliente.nombre}
+                                </td>
+
+                                <td className="cliente-dni" data-label="DNI">
+                                    {cliente.id}
+                                </td>
+
+                                <td className="cliente-telefono" data-label="Teléfono">
+                                    {cliente.telefono}
+                                </td>
+
+                                <td className="cliente-acciones" data-label="Acciones">
+                                    <div className="acciones-container">
+
+                                        <button
+                                            className="accion-button accion-modificar"
+                                            title="Modificar"
+                                        >
+                                            ✎
+                                        </button>
+
+                                        <button
+                                            className="accion-button accion-eliminar"
+                                            title="Eliminar"
+                                            onClick={() => handleEliminarCliente(cliente.id)}
+                                        >
+                                            🗑
+                                        </button>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+                        )}
+                    />
+                </div>
             )}
             {mostrarFormulario && (
                 <ClientesModal

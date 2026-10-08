@@ -170,55 +170,7 @@ tbody tr:last-child td {
 }
 
 
-
-
-
 @media (max-width: 1000px) {
-    .btn-menu {
-        display: block;
-        margin-left: auto;
-    }
-
-    .usuario-info p {
-        display: none;
-    }
-
-    .barra {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 1000;
-        display: none;
-        flex-direction: column;
-        gap: 0;
-        width: 100%;
-        background-color: white;
-        border-bottom: 1px solid rgb(194, 192, 192);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .barra.mostrar {
-        display: flex;
-    }
-
-    .barra li {
-        width: 100%;
-        text-align: center;
-        border-top: 1px solid #f0f0f0;
-    }
-
-    .barra a {
-        display: block;
-        padding: 15px;
-    }
-
-    .grilla {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .formatoTabla {
-        grid-template-columns: repeat(2, 1fr);
-    }
 
     .table-container {
         width: 100%;
@@ -254,46 +206,147 @@ tbody tr:last-child td {
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         width: 100%;
+        max-width: none;
+
         padding: 8px 0;
+        gap: 15px;
+
         border-bottom: 1px solid #f0f0f0;
+
+        box-sizing: border-box;
     }
 
     .table-container tbody td:last-child {
         border-bottom: none;
     }
 
+    .table-container tbody td::before {
+        content: attr(data-label);
+        flex-shrink: 0;
+
+        font-weight: 600;
+        color: #666;
+    }
+
+
+    /* =========================
+       FECHA
+       ========================= */
+
     .trabajo-fecha {
         font-size: 13px;
         color: #6c757d;
     }
+
+
+    /* =========================
+       ORDEN
+       ========================= */
 
     .trabajo-orden {
         font-weight: 600;
         color: #343a40;
     }
 
-    .trabajo-descripcion {
-        display: block !important;
-        max-width: none;
+
+    /* =========================
+       DESCRIPCIÓN
+       ========================= */
+
+    .table-container tbody td.trabajo-descripcion {
+        display: flex !important;
+
+        width: 100% !important;
+        max-width: none !important;
+
+        flex: 1 1 100%;
+
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 15px;
     }
+
+    /*
+     * Contenedor de:
+     *
+     * descripcion-principal
+     * descripcion-tipo
+     */
+    .table-container tbody td.trabajo-descripcion > div {
+        flex: 1 1 auto;
+
+        width: auto;
+        min-width: 0;
+
+        text-align: right;
+    }
+
+    .trabajo-descripcion .descripcion-principal {
+        width: 100%;
+
+        margin: 0;
+
+        font-weight: 500;
+        color: #343a40;
+
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+    .trabajo-descripcion .descripcion-tipo {
+        width: 100%;
+
+        margin-top: 4px;
+
+        font-size: 12px;
+        color: #8a8f98;
+    }
+
+
+    /* =========================
+       EMPLEADO
+       ========================= */
 
     .trabajo-empleado {
         color: #495057;
     }
 
+
+    /* =========================
+       ESTADO
+       ========================= */
+
     .trabajo-estado {
-        display: flex;
-        justify-content: space-between;
+        display: flex !important;
+        width: 100%;
+        justify-content: space-between !important;
     }
+
+
+    /* =========================
+       TOTAL
+       ========================= */
 
     .trabajo-total {
         font-weight: 700;
     }
 
+
+    /* =========================
+       ACCIONES
+       ========================= */
+
     .trabajo-acciones {
         display: flex !important;
-        justify-content: flex-end !important;
+        width: 100%;
+        justify-content: space-between !important;
     }
 
     .acciones-container {
@@ -301,6 +354,11 @@ tbody tr:last-child td {
         align-items: center;
         gap: 6px;
     }
+
+
+    /* =========================
+       SIN DATOS
+       ========================= */
 
     .table-container tbody tr:has(.sinDatos) {
         text-align: center;
@@ -312,5 +370,4 @@ tbody tr:last-child td {
         padding: 20px 10px;
         border-bottom: none;
     }
-
 }

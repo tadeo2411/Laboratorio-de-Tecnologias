@@ -12,6 +12,7 @@ import Vehiculos from '../../../assets/icons/vehiculosIcono.svg?react'
 import Trabajos from '../../../assets/icons/trabajosIcono.svg?react'
 import Repuestos from '../../../assets/icons/repuestosIcono.svg?react'
 import Clientes from '../../../assets/icons/clientesIcono.svg?react'
+import Presupuestos from '../../../assets/icons/presupuestosIcono.svg?react'
 import './footerGestor.css'
 
 // Clase activa según el estado de la ruta que entrega NavLink.
@@ -24,10 +25,11 @@ function FooterGestor() {
             <li><NavLink to="" end className={claseItem}><Inicio />Tableros</NavLink></li>
             <li><NavLink to="ordenes" className={claseItem}><Ordenes />Ordenes</NavLink></li>
             <li><NavLink to="turnos" className={claseItem}><Turnos />Turnos</NavLink></li>
-            <li><NavLink to="presupuestos" className={claseItem}><Trabajos />Trabajos</NavLink></li>
+            <li><NavLink to="trabajos" className={claseItem}><Trabajos />Trabajos</NavLink></li>
             <li><NavLink to="clientes" className={claseItem}><Clientes />Clientes</NavLink></li>
             <li><NavLink to="vehiculos" className={claseItem}><Vehiculos />Vehículos</NavLink></li>
             <li><NavLink to="repuestos" className={claseItem}><Repuestos />Repuestos</NavLink></li>
+            <li><NavLink to="presupuestos" className={claseItem}><Presupuestos />Presupuestos</NavLink></li>
         </ul>
     );
 }

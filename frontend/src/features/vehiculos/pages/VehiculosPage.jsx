@@ -15,6 +15,17 @@ import {
 } from '../services/vehiculosService'
 import './VehiculosPage.css'
 import Spinner from '../../../shared/components/Spinner/Spinner'
+import Table from '../../../shared/components/table/Table'
+import img_list from "../../../assets/icons/img_list.png"
+
+const columnasVehiculos = [
+  { key: "patente", nombre: "Patente" },
+  { key: "marca", nombre: "Marca" },
+  { key: "modelo", nombre: "Modelo" },
+  { key: "anio", nombre: "Año" },
+  { key: "kilometraje", nombre: "Kilometraje" },
+  { key: "acciones", nombre: "Acciones" }
+];
 
 function VehiculosPage() {
   const [vehiculos, setVehiculos] = useState([])
@@ -26,6 +37,7 @@ function VehiculosPage() {
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
   const [vehiculoConAviso, setVehiculoConAviso] = useState(null)
+  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
 
   // Carga vehículos y clientes desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -126,40 +138,124 @@ function VehiculosPage() {
   }
 
   return (
-    <div className="contenedor">
-      <div className="vehiculos-page__encabezado">
-        <h1>Gestión de vehículos</h1>
-        <BotonNuevo
-        onClick={()=>abrirFormulario()}
-        componente = "Vehículo"/>
 
-      </div>
+      <div className="contenedor">
+        <div className="vehiculos-page">
+          <div className="img-container">
+            <img src={img_list} />
+          </div>
 
-      {mensaje && (
-        <div className="alert alert-success alert-dismissible" role="status">
-          {mensaje}
-          <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
+          <div className="title-container">
+            <h1>Vehículos</h1>
+            <p>Listado de vehículos registrados en el sistema.</p>
+          </div>
+
+          <BotonNuevo
+            onClick={() => setFormularioAbierto(true)}
+            componente={"vehiculo"}
+          />
         </div>
-      )}
 
-      {error && (
-        <div className="alert alert-danger alert-dismissible" role="alert">
-          {error}
-          <button type="button" className="btn-close" aria-label="Cerrar error" onClick={() => setError('')} />
-        </div>
-      )}
+        {mensaje && (
+          <div className="alert alert-success alert-dismissible" role="status">
+            {mensaje}
+            <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
+          </div>
+        )}
 
-      {cargando ? (
-        <Spinner />
-      ) : (
-        <VehiculosList
-          vehiculos={vehiculos}
-          onEditar={abrirFormulario}
-          onEliminar={confirmarEliminacion}
-          onGestionarAviso={setVehiculoConAviso}
-          onVerHistorial={setVehiculoConHistorial}
-        />
-      )}
+        {error && (
+          <div className="alert alert-danger alert-dismissible" role="alert">
+            {error}
+            <button type="button" className="btn-close" aria-label="Cerrar error" onClick={() => setError('')} />
+          </div>
+        )}
+
+        {cargando ? (
+          <Spinner />
+        ) : (
+
+          <Table
+            inputPlaceholder="Buscar por patente, marca, modelo..."
+            columnas={columnasVehiculos}
+            datos={vehiculos}
+            mensajeVacio="Todavía no hay vehículos cargados."
+            renderFila={(vehiculo) => (
+              <tr key={vehiculo.id} className="vehiculo-row">
+
+                <td
+                  className="vehiculo-patente"
+                  data-label="Patente"
+                >
+                  {vehiculo.patente}
+                </td>
+
+                <td
+                  className="vehiculo-marca"
+                  data-label="Marca"
+                >
+                  {vehiculo.marca}
+                </td>
+
+                <td
+                  className="vehiculo-modelo"
+                  data-label="Modelo"
+                >
+                  {vehiculo.modelo}
+                </td>
+
+                <td
+                  className="vehiculo-anio"
+                  data-label="Año"
+                >
+                  {vehiculo.anio}
+                </td>
+
+                <td
+                  className="vehiculo-kilometraje"
+                  data-label="Kilometraje"
+                >
+                  {vehiculo.kilometraje.toLocaleString("es-AR")} km
+                </td>
+
+                <td
+                  className="vehiculo-acciones"
+                  data-label="Acciones"
+                >
+                  <div className="acciones-container">
+
+                    <button
+                      className="accion-button accion-info"
+                      title="Más información"
+                      onClick={() => {
+                        setVehiculoSeleccionado(vehiculo);
+                        setModalMasInfoAbierto(true);
+                      }}
+                    >
+                      ⓘ
+                    </button>
+
+                    <button
+                      className="accion-button accion-modificar"
+                      title="Modificar"
+                    >
+                      ✎
+                    </button>
+
+                    <button
+                      className="accion-button accion-eliminar"
+                      title="Eliminar"
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+                </td>
+
+              </tr>
+            )}
+          />
+        )}
+
 
       {formularioAbierto && (
         <Modal

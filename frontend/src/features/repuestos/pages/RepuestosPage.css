@@ -1,12 +1,6 @@
 /* Todas las reglas empiezan con .repuestos-page: Vite agrega este CSS a toda la
    aplicación, y sin ese prefijo modificaría tablas y formularios de otras pantallas. */
-.repuestos-page {
-  width: min(1180px, 100%);
-  margin: 0 auto;
-  padding: 24px;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+
 
 .repuestos-page__encabezado {
   display: flex;
@@ -140,6 +134,166 @@
 .repuestos-page .datosTabla td { padding: 14px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
 .repuestos-page .sinDatos { color: #888; text-align: center; }
 .repuestos-page .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+
+/* ============================= */
+/*        PÁGINA REPUESTOS       */
+/* ============================= */
+
+.repuestos-page {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.repuestos-page > div {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* ============================= */
+/*           TABLA               */
+/* ============================= */
+
+.repuesto-row td {
+    vertical-align: middle;
+}
+
+.repuesto-codigo {
+    font-weight: 600;
+}
+
+.repuesto-nombre {
+    font-weight: 500;
+}
+
+.repuesto-precio {
+    font-weight: 600;
+}
+
+.repuesto-stock {
+    font-weight: 600;
+}
+
+
+/* ============================= */
+/*           ACCIONES            */
+/* ============================= */
+
+.repuesto-acciones {
+    text-align: center;
+}
+
+.repuesto-acciones .acciones-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.repuesto-acciones .accion-button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+    transition: all 0.2s ease;
+}
+
+.repuesto-acciones .accion-button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* Información */
+
+.repuesto-acciones .accion-info {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}
+
+.repuesto-acciones .accion-info:hover {
+    background-color: #bae6fd;
+}
+
+
+/* Modificar */
+
+.repuesto-acciones .accion-modificar {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.repuesto-acciones .accion-modificar:hover {
+    background-color: #bfdbfe;
+}
+
+
+/* Eliminar */
+
+.repuesto-acciones .accion-eliminar {
+    background-color: #fee2e2;
+    color: #dc2626;
+}
+
+.repuesto-acciones .accion-eliminar:hover {
+    background-color: #fecaca;
+}
+
+
+/* ============================= */
+/*       STOCK BAJO              */
+/* ============================= */
+
+.repuesto-stock.stock-bajo {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.repuesto-stock.stock-normal {
+    color: #15803d;
+    font-weight: 600;
+}
+
+
+/* ============================= */
+/*          RESPONSIVE           */
+/* ============================= */
+
+@media (max-width: 768px) {
+
+    .repuestos-page {
+        align-items: flex-start;
+    }
+
+    .repuestos-page .title-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .repuestos-page .title-container p {
+        font-size: 0.9rem;
+    }
+
+    .repuesto-acciones .acciones-container {
+        justify-content: flex-start;
+    }
+
+    .repuesto-acciones .accion-button {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+
+
 
 @media (max-width: 768px) {
   .repuestos-page .grilla { grid-template-columns: repeat(2, minmax(0, 1fr)); }

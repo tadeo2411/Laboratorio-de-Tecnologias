@@ -1,5 +1,5 @@
-import Footer from './FooterLanding/Footer.jsx'
-import NavBarLanding from './NavBarLanding/NavBarLanding.jsx'
+import Footer from './Footer.jsx'
+import NavBarLanding from './NavBarLanding.jsx'
 import { ScrollRestoration, Outlet } from 'react-router'
 import './LayoutLanding.css'
 

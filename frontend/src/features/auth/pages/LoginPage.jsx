@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router'
 import LoginForm from '../components/LoginForm'
 import { iniciarSesion } from '../services/authService'
-import './LoginPage.css'
+import '../LoginPage.css'
 
 function LoginPage() {
   const navigate = useNavigate()

@@ -5,15 +5,14 @@ import { NavLink } from 'react-router';
 // en el DOM heredan el color del <a> y cambian con la clase itemActivo.
 // Con <img src> o <use href> el color no se puede cambiar desde el CSS
 // (y <use> además necesita un id y falla con SVG inlineados como data: URI).
-import Inicio from '../../../assets/icons/dashboardIcono.svg?react'
-import Turnos from '../../../assets/icons/turnosIcono.svg?react'
-import Ordenes from '../../../assets/icons/ordenesIcono.svg?react'
-import Vehiculos from '../../../assets/icons/vehiculosIcono.svg?react'
-import Trabajos from '../../../assets/icons/trabajosIcono.svg?react'
-import Repuestos from '../../../assets/icons/repuestosIcono.svg?react'
-import Clientes from '../../../assets/icons/clientesIcono.svg?react'
-import Presupuestos from '../../../assets/icons/presupuestosIcono.svg?react'
-import './footerGestor.css'
+import Inicio from '../../assets/icons/dashboardIcono.svg?react'
+import Turnos from '../../assets/icons/turnosIcono.svg?react'
+import Ordenes from '../../assets/icons/ordenesIcono.svg?react'
+import Vehiculos from '../../assets/icons/vehiculosIcono.svg?react'
+import Trabajos from '../../assets/icons/trabajosIcono.svg?react'
+import Repuestos from '../../assets/icons/repuestosIcono.svg?react'
+import Clientes from '../../assets/icons/clientesIcono.svg?react'
+import Presupuestos from '../../assets/icons/presupuestosIcono.svg?react'
 
 // Clase activa según el estado de la ruta que entrega NavLink.
 const claseItem = ({ isActive }) => isActive ? 'itemActivo' : '';
@@ -29,7 +28,6 @@ function FooterGestor() {
             <li><NavLink to="clientes" className={claseItem}><Clientes />Clientes</NavLink></li>
             <li><NavLink to="vehiculos" className={claseItem}><Vehiculos />Vehículos</NavLink></li>
             <li><NavLink to="repuestos" className={claseItem}><Repuestos />Repuestos</NavLink></li>
-            <li><NavLink to="presupuestos" className={claseItem}><Presupuestos />Presupuestos</NavLink></li>
         </ul>
     );
 }

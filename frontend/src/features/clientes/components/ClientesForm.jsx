@@ -53,7 +53,7 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
                         <input id="clienteDni" name="id" type="text" className="form-control" value={formulario.id} onChange={actualizarCampo} pattern={'[0-9][0-9. \\-]*'} title="Usá números; podés incluir puntos, espacios y guiones." required />
                     </div>
                     <div className="col-12 col-md-6 mb-3">
-                        <label htmlFor="clienteTipo" className="form-label">Tipo *</label>
+                        <label htmlFor="clienteTipo" className="form-label ">Tipo *</label>
                         <select id="clienteTipo" name="tipo" className="form-select" value={formulario.tipo} onChange={actualizarCampo} required>
                             {tipoCliente.map(tipo => <option key={tipo} value={tipo}>{tipo}</option>)}
                         </select>
@@ -61,7 +61,7 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
                 </div>
                 <div className="d-flex justify-content-end gap-2">
                     <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" className="btn btn-success">Guardar</button>
+                    <button type="submit" className="btn btnGuardar">Guardar</button>
                 </div>
             </form>
         </div>

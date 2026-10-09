@@ -1,0 +1,436 @@
+/* estilos del footer del gestor*/
+.barraInfGestor svg{
+    height: 1.7rem;
+    width: auto;
+    
+}
+
+.barraInfGestor{
+    display: flex;
+    position: fixed;
+    height: auto;
+    background-color: white;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    list-style: none;
+}
+
+.barraInfGestor li{
+    width : 100%;
+    height: 100%;
+    flex-direction: column;
+    
+}
+
+
+.barraInfGestor a{
+    width : 100%;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 1px 5px;
+    font-size: 0.7rem;
+    text-decoration: none;
+    color: #757575;
+}
+
+.barraInfGestor a.itemActivo{
+    color: rgba(1, 102, 1, 0.514);
+    font-size : .8rem;
+    font-weight: bold;
+
+}
+
+.barraInfGestor .itemActivo svg{
+    width: 2rem;
+    height: auto;
+}
+
+/* navBar gestor */
+
+.navbar-gestor {
+    background-color: white;
+    border-bottom: 1px solid rgb(194, 192, 192);
+    display: flex;
+    align-items: center;
+    
+}
+
+.navbar-gestor .logo {
+    margin-right: auto;
+    flex-shrink: 0;
+    padding: .1rem 0;
+    width: 122px;
+    height: 50px;
+    object-fit: cover;
+}
+.navbar-gestor nav {
+    flex-grow: 1; /* Obliga al nodo a absorber el 100% del espacio central disponible */
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+/* Inyectar sobre tu lista interactiva (ul.barra-gestor o .sidebar-lista) */
+
+.usuario-info .barra-gestor__sesion{
+    margin-left: auto;
+}
+.usuario-info {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.usuario-info p {
+    margin: 0;
+}
+
+.usuario-info__nombre {
+    color: rgb(82, 82, 82);
+    font-size: .7rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.btn-cerrar-sesion {
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: #bb2d3b;
+    color: #fff;
+    font: inherit;
+    font-size: .7rem;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.btn-cerrar-sesion:hover {
+    background-color :#fff;
+    color: #bb2d3b;
+}
+
+/* Menú en Lista (Escritorio) */
+.navbar-gestor .barra-gestor {
+    display: flex;       /* Alinea los elementos en fila */
+    align-items: center; /* Centra los enlaces a la altura del botón. */
+    width: 100%;
+    gap: clamp(8px, 2rem, 30px);
+    list-style: none;    /* Elimina los puntos del ul */
+    margin: 0;
+    padding: 0;
+    color: #ffffff;
+    position: relative;
+}
+
+.barra-gestor li {
+    margin: 0;
+}
+
+.barra-gestor a {
+    color: rgb(82, 82, 82);
+    text-decoration: none;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* El estado de React agrega la clase --abierto al tocar el botón. */
+@media (max-width: 970px) {
+    .navbar-gestor .barra-gestor {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 1000;
+        width: 100%;
+        background-color: white;
+        border-bottom: 1px solid rgb(194, 192, 192);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+}
+
+
+
+
+
+
+
+
+/* estilos del footer de la landing. Usa clases "footer-landing__..." y no la etiqueta
+   "footer" ni ".copyright", que también usa el footer del gestor.
+   background-color, color, padding y margin se fijan a propósito para anular
+   la regla "footer" de features/estilos.css (fondo blanco y letras negras). */
+.footer-landing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 0;
+    padding: 40px 0 0;
+    background-color: var(--colorFondo);
+    background-image: url("/images/img_fondoFooter.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
+    scroll-margin-top: 65px;
+}
+
+.footer-landing__contenido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-landing__logo {
+    width: 122px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.footer-landing__titulo {
+    color: rgb(6, 231, 6);
+    font-weight: bold;
+}
+
+.footer-landing__dato {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+/* El filtro pinta de verde los íconos, que son negros. */
+.footer-landing__icono {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    filter: invert(48%) sepia(100%) saturate(1000%) hue-rotate(80deg);
+}
+
+.footer-landing__copyright {
+    width: 100%;
+    background-color: #101011;
+    color: #fff;
+    font-size: 14px;
+}
+
+.footer-landing__copyright-texto {
+    margin: 0;
+    padding: .5rem;
+}
+
+
+/* Barra de la landing. Todo usa clases "navbar-landing__...": en React los CSS
+   se cargan para toda la aplicación, y las reglas por etiqueta (ul, nav, header)
+   o con nombres repetidos (.btn-menu, .barra) se mezclaban con las del gestor.
+   Algunas propiedades (border, gap, margin, padding) se fijan a propósito para
+   anular las reglas por etiqueta de features/estilos.css. */
+.navbar-landing {
+    position: absolute;
+    z-index: 10;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0;
+    border: 0;
+    background-color: var(--colorFondo);
+    color: white;
+    font-size: 1rem;
+}
+
+.navbar-landing__contenido {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-landing__logo-contenedor {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.navbar-landing__logo {
+    width: 6rem;
+    height: 3rem;
+    object-fit: fill;
+}
+
+.navbar-landing__nav-contenedor {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-landing__nav {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.navbar-landing__menu {
+    position: relative;
+    display: flex;
+    gap: clamp(1.25rem, 4vw, 5rem);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0 1rem;
+    list-style: none;
+}
+
+.navbar-landing__item {
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar-landing__enlace {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.navbar-landing__enlace:hover {
+    color: rgb(31, 233, 31);
+    transition: 200ms;
+}
+
+.navbar-landing__item--turno {
+    position: absolute;
+    right: 1rem;
+}
+
+.navbar-landing__boton-turno {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 42px;
+    padding: 0.65rem 1.25rem;
+    background-color: var(--colorBoton);
+    color: #0a0a0a;
+    border: 1px solid var(--colorBoton);
+    border-radius: 6px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.navbar-landing__boton-turno:hover {
+    background-color: var(--colorFondo);
+    color: var(--verdeClaroTextos);
+    border-color: var(--colorBoton);
+    box-shadow: 0 0 0 3px rgba(61, 189, 61, 0.15);
+}
+
+.navbar-landing__boton-turno::after {
+    content: "↗";
+    font-size: 1rem;
+}
+
+.navbar-landing__boton-turno:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+.navbar-landing__boton-menu {
+    display: none;
+    margin-left: auto;
+    padding: 8px 12px;
+    background-color: transparent;
+    border: 1px solid rgb(31, 233, 31);
+    border-radius: 4px;
+    color: white;
+    font-size: .9rem;
+    cursor: pointer;
+}
+
+@media (min-width: 751px) {
+    .navbar-landing {
+        position: fixed;
+        padding: .5rem;
+    }
+}
+
+@media (max-width: 750px) {
+    .navbar-landing__contenido {
+        padding: .5rem;
+        box-sizing: border-box;
+    }
+
+    .navbar-landing__boton-menu {
+        display: block;
+    }
+
+    .navbar-landing__nav-contenedor {
+        flex: 0;
+    }
+
+    .navbar-landing__nav {
+        position: static;
+    }
+
+    .navbar-landing__item--turno {
+        position: static;
+        padding: 0.5rem 1rem 0;
+        box-sizing: border-box;
+    }
+
+    .navbar-landing__menu {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 10;
+        width: 100%;
+        padding: 0 0 1rem;
+        background-color: var(--colorFondo);
+        border-bottom: 1px solid rgb(31, 233, 31);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
+    }
+
+    .navbar-landing__menu--abierto {
+        display: flex;
+    }
+
+    .navbar-landing__item {
+        width: 100%;
+    }
+
+    .navbar-landing__enlace {
+        display: block;
+        padding: 15px;
+    }
+
+    .navbar-landing__logo-contenedor {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+
+

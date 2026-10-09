@@ -1,5 +1,5 @@
-import FooterGestor from "./FooterGestor/FooterGestor";
-import NavBarGestor from "./NavBarGestor/NavBarGestor";
+import FooterGestor from "./FooterGestor";
+import NavBarGestor from "./NavBarGestor";
 import { Outlet } from "react-router";
 
 // Recibe el usuario y la acción de cerrar sesión por props (desde GestorProtegido),

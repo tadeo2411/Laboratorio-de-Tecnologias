@@ -1,5 +1,3 @@
-import './navBarGestor.css';
-
 function NavBarGestor({ usuario, onCerrarSesion }) {
     return (
         <>

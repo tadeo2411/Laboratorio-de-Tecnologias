@@ -14,7 +14,7 @@ import {
   obtenerVehiculos,
 } from '../services/vehiculosService'
 import './VehiculosPage.css'
-import Spinner from '../../../shared/components/Spinner/Spinner'
+import Spinner from '../../../shared/components/Spinner'
 import Table from '../../../shared/components/table/Table'
 import img_list from "../../../assets/icons/img_list.png"
 

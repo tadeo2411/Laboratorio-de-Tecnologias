@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { obtenerOrdenes } from "../services/ordenesService";
-import Table from '../../../shared/components/table/Table.jsx';
+import Table from '../../../shared/components/Table.jsx';
 import BotonNuevo from '../../../shared/components/BotonNuevo.jsx';
-import Modal from '../../../shared/components/Modal/Modal.jsx';
+import Modal from '../../../shared/components/Modal.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import img_list from "../../../assets/icons/img_list.png"

@@ -6,7 +6,7 @@ import { obtenerClientes } from '../services/clientesServices'
 import img_list from "../../../assets/icons/img_list.png"
 import "../clientes.css";
 import BotonNuevo from '../../../shared/components/BotonNuevo'
-import Table from '../../../shared/components/table/Table'
+import Table from '../../../shared/components/Table'
 
 const columnasClientes = [
     { key: "nombre", nombre: "Nombre" },

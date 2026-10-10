@@ -1,7 +1,7 @@
-import "./table.css";
-import img_lupa from "../../../assets/icons/img_lupa.svg"
-import img_filter from "../../../assets/icons/img_filter.svg"
-import img_calender from "../../../assets/icons/img_calender.svg"
+import "../compartido.css"
+import img_lupa from "../../assets/icons/img_lupa.svg"
+import img_filter from "../../assets/icons/img_filter.svg"
+import img_calender from "../../assets/icons/img_calender.svg"
 
 function Table({
     inputPlaceholder,

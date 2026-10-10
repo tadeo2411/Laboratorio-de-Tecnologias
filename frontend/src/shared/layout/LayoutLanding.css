@@ -1,6 +1,0 @@
-/* Fondo oscuro de toda la landing. En la versión HTML lo ponía "body", pero en
-   React body es de toda la aplicación y el gestor usa otro fondo. */
-/* .layout-landing {
-    min-height: 100vh;
-    background-color: var(--colorFondo);
-} */

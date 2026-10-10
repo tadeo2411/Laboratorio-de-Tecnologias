@@ -1,5 +1,5 @@
 import botonMas from '../../assets/icons/botonMas.png'
-import '../../features/estilos.css'
+import "../compartido.css"
 function BotonNuevo({ onClick,  componente }) {
     return (
         <button 

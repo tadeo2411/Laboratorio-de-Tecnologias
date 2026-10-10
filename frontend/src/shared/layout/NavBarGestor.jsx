@@ -1,3 +1,4 @@
+
 function NavBarGestor({ usuario, onCerrarSesion }) {
     return (
         <>

@@ -1,10 +1,10 @@
 import { useId } from "react";
-import "./Modal.css";
-
+import "../compartido.css"
 function Modal({
     titulo,
     onCerrar,
     cerrarAlTocarFondo = true,
+    onEscSalida,
     children,
 }) {
     const idTitulo = useId();
@@ -18,11 +18,17 @@ function Modal({
         }
     };
 
+    // const handleEscSalida = (event) =>{
+    //     if
+    // }
+
+
     return (
         <div
             className="modal-fondo"
             role="presentation"
             onMouseDown={manejarClickFondo}
+            onEscSalida = {handleEscSalida}
         >
             <section
                 className="modal-contenido"

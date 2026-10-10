@@ -1,5 +1,5 @@
 import botonEditar from '../../assets/icons/botonEditar.png'
-
+import "../compartido.css"
 function BotonEditar({ onClick }) {
     return(
         

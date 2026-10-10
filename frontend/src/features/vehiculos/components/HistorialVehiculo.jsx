@@ -1,4 +1,4 @@
-import Modal from '../../../shared/components/Modal/Modal'
+import Modal from '../../../shared/components/Modal'
 
 function HistorialVehiculo({ vehiculo, onCerrar }) {
   const historial = vehiculo.historialServices ?? []

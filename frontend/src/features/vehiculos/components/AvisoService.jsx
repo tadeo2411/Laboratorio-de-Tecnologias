@@ -1,4 +1,4 @@
-import Modal from '../../../shared/components/Modal/Modal'
+import Modal from '../../../shared/components/Modal'
 
 function AvisoService({ vehiculo, onCerrar, onConfirmar }) {
   return (

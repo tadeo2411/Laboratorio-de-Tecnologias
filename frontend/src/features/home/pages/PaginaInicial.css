@@ -97,7 +97,8 @@
 
 @media (max-width: 750px) {
     .section1 {
-        background: linear-gradient(to bottom, rgba(16, 16, 17, 0.75), var(--colorFondoFaq) 100%);
+        /* Al quitar el 0.75 de opacidad, el fondo será oscuro sólido y no dejará ver el body blanco de atrás */
+        background: linear-gradient(to bottom, rgb(16, 16, 17), var(--colorFondoFaq) 100%);
     }
 
     .section1__fondo {

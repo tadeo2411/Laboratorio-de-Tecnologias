@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import './LayoutLogin.css';
+
 
 // Estructura de las pantallas de acceso. El formulario de login vive en la
 // feature auth (features/auth/pages/LoginPage.jsx) y se muestra en el <Outlet />.

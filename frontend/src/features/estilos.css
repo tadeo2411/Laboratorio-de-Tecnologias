@@ -253,39 +253,7 @@ textarea {
     border-radius: 6px;
 }
 
-.btnNuevo {
-    padding: 1.5rem 1rem; ;
-    background-color: rgba(4, 204, 4, 0.514);
-    border: none;
-    border-radius: 6px;
-    height: 2rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    white-space: nowrap;
-}
 
-.btnNuevo img {
-    width: 1.25rem;
-    height: 1.25rem;
-    object-fit: contain;
-    display: block;
-}
-.botonEliminar{
-    padding: .3rem;
-}
-.botonEliminar img{
-    width: 2rem;
-    height: 2rem;
-}
-.botonEditar{
-    padding: .3rem;
-}
-.botonEditar img{
-    width: 2rem;
-    height: 2rem;
-}
 
 .acciones-tabla {
     display: flex;

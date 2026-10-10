@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router'
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/pages/PaginaInicial'
 import OrdenesPage from './features/ordenes/pages/OrdenesPage'
-import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
+// import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
 import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
@@ -51,10 +51,10 @@ export const router = createBrowserRouter([
                 path: "turnos",
                 element: <TurnosPage />
             },
-            {
-                path: "presupuestos",
-                element: <Presupuestos />
-            },
+            // {
+            //     path: "presupuestos",
+            //     element: <Presupuestos />
+            // },
             {
                 path: "clientes",
                 element: <ClientesPage />

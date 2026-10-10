@@ -1,6 +1,0 @@
-/* Anula la regla global "main" de features/estilos.css (padding y centrado en
-   columna), que achicaba la pantalla de login al ancho de su contenido. */
-.layout-login {
-    display: block;
-    padding: 0;
-}

@@ -1,9 +1,9 @@
 import Turnos from "../components/Turnos"
-import TurnosModal from '../components/TurnosModal'
+import TurnosModal from '../../../shared/components/Modal'
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
 import { obtenerTurnos, obtenerAutos } from '../services/turnosService';
-import Table from "../../../shared/components/table/Table";
+import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/img_list.png"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
 import "../turnos.css";

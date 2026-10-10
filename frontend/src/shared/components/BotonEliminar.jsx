@@ -1,5 +1,5 @@
 import botonEliminar from '../../assets/icons/botonEliminar.png'
-
+import "../compartido.css"
 function BotonEliminar({ onClick }) {
     return(
         <button type ='button'

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import "./layout.css"
+import "../compartido.css"
 
 function NavBarLanding() {
     const [menuAbierto, setMenuAbierto] = useState(false)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Modal from '../../../shared/components/Modal/Modal'
+import Modal from '../../../shared/components/Modal'
 import VehiculoForm from '../components/VehiculoForm'
 import VehiculosList from '../components/VehiculosList'
 import HistorialVehiculo from '../components/HistorialVehiculo'
@@ -15,7 +15,7 @@ import {
 } from '../services/vehiculosService'
 import './VehiculosPage.css'
 import Spinner from '../../../shared/components/Spinner'
-import Table from '../../../shared/components/table/Table'
+import Table from '../../../shared/components/Table'
 import img_list from "../../../assets/icons/img_list.png"
 
 const columnasVehiculos = [

@@ -1,37 +1,26 @@
+import { obtenerVehiculos } from '../../vehiculos'
+
 const URL = '/backend/data'
 
-export async function obtenerVehiculos(){
-    const respuesta = await fetch(`${URL}/vehiculos.json`)
+let ordenes = null
 
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los vehiculos")
+async function cargarOrdenes(){
+    if (ordenes === null){
+        const respuesta = await fetch(`${URL}/ordenes.json`)
+
+        if (!respuesta.ok){
+            throw new Error("No se pudieron cargar las órdenes")
+        }
+        ordenes = await respuesta.json()
     }
-    return respuesta.json()
-}
-
-export async function obtenerRepuestos(){
-    const respuesta = await fetch(`${URL}/repuestos.json`)
-
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los repuestos")
-    }
-    return respuesta.json()
+    return ordenes
 }
 
 export async function obtenerOrdenes(){
-    const respuesta = await fetch(`${URL}/ordenes.json`)
-
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los ordenes")
-    }
-    return respuesta.json()
+    return cargarOrdenes()
 }
 
-export async function obtenerPresupuestos(){
-    const respuesta = await fetch(`${URL}/presupuestos.json`)
-
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los presupuestos")
-    }
-    return respuesta.json()
+export async function cargarPaginaOrdenes(){
+    const [listaOrdenes, vehiculos] = await Promise.all([obtenerOrdenes(), obtenerVehiculos()])
+    return { ordenes: listaOrdenes, vehiculos }
 }

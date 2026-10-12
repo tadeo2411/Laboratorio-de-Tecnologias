@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
-import { obtenerOrdenes } from "../services/ordenesService";
+import { useState } from 'react';
+import { useLoaderData } from 'react-router';
+import EtiquetaEstado from "../components/EtiquetaEstado.jsx";
 import Table from '../../../shared/components/Table.jsx';
 import BotonNuevo from '../../../shared/components/BotonNuevo.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
@@ -18,18 +19,10 @@ const columnasOrdenes = [
 ];
 
 function OrdenesPage() {
-    const [ordenes, setOrdenes] = useState([]);
+    const { ordenes, vehiculos } = useLoaderData();
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalMasInfoAbierto, setModalMasInfoAbierto] = useState(false);
     const [ordenSeleccionado, setOrdenSeleccionado] = useState(null);
-
-    useEffect(() => {
-        async function pedirOrdenes() {
-            const ordenes = await obtenerOrdenes();
-            setOrdenes(ordenes);
-        }
-        pedirOrdenes();
-    }, []);
 
     return (
         <>
@@ -77,39 +70,8 @@ function OrdenesPage() {
 
                             {/* Estado */}
                             <td className="orden-estado" data-label="Estado">
-                            
-                            <span
-                                className={`estado-badge ${
-                                orden.estado === "RECIBIDO"
-                                    ? "estado-recibido"
-                                    : orden.estado === "DIAGNOSTICANDO"
-                                    ? "estado-diagnosticando"
-                                    : orden.estado === "ESPERANDO_APROBACION"
-                                    ? "estado-aprobacion"
-                                    : orden.estado === "ESPERANDO_REPUESTO"
-                                    ? "estado-repuesto"
-                                    : orden.estado === "EN_REPARACION"
-                                    ? "estado-reparacion"
-                                    : orden.estado === "TERMINADO"
-                                    ? "estado-terminado"
-                                    : orden.estado === "ENTREGADO"
-                                    ? "estado-entregado"
-                                    : orden.estado === "CANCELADO"
-                                    ? "estado-cancelado"
-                                    : "estado-pendiente"
-                                }`}
-                            >
-                                
-                                {orden.estado === "ESPERANDO_APROBACION"
-                                ? "Esperando aprobación"
-                                : orden.estado === "ESPERANDO_REPUESTO"
-                                ? "Esperando repuesto"
-                                : orden.estado === "EN_REPARACION"
-                                ? "En reparación"
-                                : orden.estado.charAt(0) + orden.estado.slice(1).toLowerCase()}
-                            </span>
+                                <EtiquetaEstado estado={orden.estado} />
                             </td>
-
 
                             <td className="orden-garantia" data-label="Garantía">
                                 {orden.garantia ? "Sí" : "No"}

@@ -1,0 +1,14 @@
+[
+  { "id": 1, "nombre": "Cambio de aceite y filtro", "categoria": "MANTENIMIENTO", "precioEstandar": 15000, "activo": true },
+  { "id": 2, "nombre": "Cambio de pastillas de freno", "categoria": "REPARACION", "precioEstandar": 25000, "activo": true },
+  { "id": 3, "nombre": "Cambio de bujes de parrilla", "categoria": "REPARACION", "precioEstandar": 40000, "activo": true },
+  { "id": 4, "nombre": "Reparación del sistema de refrigeración", "categoria": "REPARACION", "precioEstandar": 30000, "activo": true },
+  { "id": 5, "nombre": "Diagnóstico con escáner", "categoria": "DIAGNOSTICO", "precioEstandar": 12000, "activo": true },
+  { "id": 6, "nombre": "Limpieza de inyectores", "categoria": "MANTENIMIENTO", "precioEstandar": 35000, "activo": true },
+  { "id": 7, "nombre": "Service completo (filtros de aire, aceite y combustible)", "categoria": "MANTENIMIENTO", "precioEstandar": 45000, "activo": true },
+  { "id": 8, "nombre": "Cambio de bujías", "categoria": "MANTENIMIENTO", "precioEstandar": 10000, "activo": true },
+  { "id": 9, "nombre": "Cambio de correa de distribución", "categoria": "MANTENIMIENTO", "precioEstandar": 60000, "activo": true },
+  { "id": 10, "nombre": "Cambio de embrague", "categoria": "REPARACION", "precioEstandar": 90000, "activo": true },
+  { "id": 11, "nombre": "Cambio de batería", "categoria": "REPARACION", "precioEstandar": 5000, "activo": true },
+  { "id": 12, "nombre": "Revisión del sistema eléctrico", "categoria": "DIAGNOSTICO", "precioEstandar": 18000, "activo": true }
+]

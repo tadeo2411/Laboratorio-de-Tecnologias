@@ -4,17 +4,20 @@ import EtiquetaEstado from "../components/EtiquetaEstado.jsx";
 import Table from '../../../shared/components/Table.jsx';
 import BotonNuevo from '../../../shared/components/BotonNuevo.jsx';
 import BotonEditar from '../../../shared/components/BotonEditar.jsx';
-import BotonEliminar from '../../../shared/components/BotonEliminar.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import img_list from "../../../assets/icons/img_list.png"
+import { numeroOrden, formatearFecha, fechaIngreso, describirVehiculo } from "../utils/ordenes";
+import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabajo } from "../services/ordenesService";
+import { esEstadoFinal } from "../utils/estados";
 import "../ordenes.css"
 
 const columnasOrdenes = [
-    { key: "diagnostico", nombre: "Diagnóstico" },
+    { key: "numero", nombre: "N°" },
+    { key: "vehiculo", nombre: "Vehículo" },
+    { key: "ingreso", nombre: "Ingreso" },
     { key: "estado", nombre: "Estado" },
-    { key: "garantia", nombre: "Garantía" },
     { key: "esService", nombre: "Service" },
     { key: "esUrgencia", nombre: "Urgencia" },
     { key: "acciones", nombre: "Acciones" },
@@ -38,9 +41,36 @@ function OrdenesPage() {
         setOrdenEnEdicion(null);
     }
 
-    function handleEliminarOrden(idOrden) {
-        if (!window.confirm('¿Desea eliminar la orden?')) return;
-        setOrdenes(anteriores => anteriores.filter(orden => orden.id !== idOrden));
+    async function handleGuardarOrden(datosFormulario, fichasNuevas = []) {
+        if (ordenEnEdicion) {
+            const seCancela = datosFormulario.estado === "CANCELADO" && ordenEnEdicion.estado !== "CANCELADO";
+            if (seCancela && !window.confirm('¿Seguro que querés cancelar la orden? Después no se va a poder modificar.')) return;
+
+            for (const ficha of fichasNuevas) {
+                await agregarFicha(ordenEnEdicion.id, ficha);
+            }
+            const ordenActualizada = await actualizarOrden(ordenEnEdicion.id, datosFormulario);
+            setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
+        } else {
+            const nuevaOrden = await crearOrden(datosFormulario);
+            setOrdenes(anteriores => [...anteriores, nuevaOrden]);
+        }
+        cerrarFormulario();
+    }
+
+    function mostrarOrdenActualizada(ordenActualizada) {
+        setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
+        setOrdenSeleccionado(ordenActualizada);
+    }
+
+    async function handleAgregarTrabajo(idOrden, trabajo) {
+        const ordenActualizada = await agregarTrabajo(idOrden, trabajo);
+        mostrarOrdenActualizada(ordenActualizada);
+    }
+
+    async function handleQuitarTrabajo(idOrden, idTrabajo) {
+        const ordenActualizada = await quitarTrabajo(idOrden, idTrabajo);
+        mostrarOrdenActualizada(ordenActualizada);
     }
 
     return (
@@ -50,7 +80,12 @@ function OrdenesPage() {
                     titulo={ordenEnEdicion ? "Editar orden" : "Nueva orden"}
                     onCerrar={cerrarFormulario}
                 >
-                    <OrdenForm onCerrar={cerrarFormulario} />
+                    <OrdenForm
+                        orden={ordenEnEdicion}
+                        vehiculos={datos.vehiculos}
+                        onGuardar={handleGuardarOrden}
+                        onCerrar={cerrarFormulario}
+                    />
                 </Modal>
             )}
             {modalMasInfoAbierto && (
@@ -58,7 +93,16 @@ function OrdenesPage() {
                     titulo="Más información"
                     onCerrar={() => setModalMasInfoAbierto(false)}
                 >
-                    <MasInfo orden={ordenSeleccionado} onCerrar={() => setModalMasInfoAbierto(false)} />
+                    <MasInfo
+                        orden={ordenSeleccionado}
+                        vehiculos={datos.vehiculos}
+                        tiposTrabajo={datos.tiposTrabajo}
+                        repuestos={datos.repuestos}
+                        empleados={datos.empleados}
+                        onAgregarTrabajo={handleAgregarTrabajo}
+                        onQuitarTrabajo={handleQuitarTrabajo}
+                        onCerrar={() => setModalMasInfoAbierto(false)}
+                    />
                 </Modal>
             )}
 
@@ -76,24 +120,30 @@ function OrdenesPage() {
                     <BotonNuevo onClick={() => abrirFormulario()} componente={"orden"} />
                 </div>
                 <Table
-                    inputPlaceholder="Buscar por descripción, orden, trabajo..."
+                    inputPlaceholder="Buscar por patente o numero de orden..."
                     columnas={columnasOrdenes}
                     datos={ordenes}
                     mensajeVacio="Todavía no hay ordenes cargadas."
                     renderFila={(orden) => (
                         <tr key={orden.id} className="orden-row">
-                            {/* Diagnóstico */}
-                            <td className="orden-diagnostico" data-label="Diagnóstico">
-                                {orden.diagnostico}
+                            
+                            <td className="orden-numero" data-label="N°">
+                                {numeroOrden(orden.id)}
                             </td>
 
-                            {/* Estado */}
+                            <td className="orden-vehiculo" data-label="Vehículo">
+                                <strong>{orden.vehiculoPatente}</strong>
+                                <div>
+                                    {describirVehiculo(datos.vehiculos, orden.vehiculoPatente)}
+                                </div>
+                            </td>
+
+                            <td className="orden-ingreso" data-label="Ingreso">
+                                {formatearFecha(fechaIngreso(orden))}
+                            </td>
+
                             <td className="orden-estado" data-label="Estado">
                                 <EtiquetaEstado estado={orden.estado} />
-                            </td>
-
-                            <td className="orden-garantia" data-label="Garantía">
-                                {orden.garantia ? "Sí" : "No"}
                             </td>
 
                             <td className="orden-service" data-label="Service">
@@ -119,9 +169,9 @@ function OrdenesPage() {
                                         ⓘ
                                     </button>
 
-                                    <BotonEditar onClick={() => abrirFormulario(orden)} />
-
-                                    <BotonEliminar onClick={() => handleEliminarOrden(orden.id)} />
+                                    {!esEstadoFinal(orden.estado) && (
+                                        <BotonEditar onClick={() => abrirFormulario(orden)} />
+                                    )}
 
                                 </div>
                             </td>

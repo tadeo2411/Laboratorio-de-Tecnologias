@@ -29,3 +29,17 @@ export function obtenerEstado(clave){
 export function siguienteEstado(clave){
     return TRANSICIONES[clave] ?? [];
 }
+
+export function esEstadoFinal(clave){
+    return siguienteEstado(clave).length === 0;
+}
+
+const ESTADOS_CON_TRABAJOS = ["DIAGNOSTICANDO", "ESPERANDO_REPUESTO", "EN_REPARACION"];
+
+export function permiteModificarTrabajos(clave){
+    return ESTADOS_CON_TRABAJOS.includes(clave);
+}
+
+export function puedeCambiarEstado(estadoActual, estadoNuevo){
+    return estadoActual === estadoNuevo || siguienteEstado(estadoActual).includes(estadoNuevo);
+}

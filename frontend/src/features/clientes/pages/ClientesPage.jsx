@@ -7,6 +7,8 @@ import img_list from "../../../assets/icons/img_list.png"
 import "../clientes.css";
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import Table from '../../../shared/components/Table'
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
 
 const columnasClientes = [
     { key: "nombre", nombre: "Nombre" },
@@ -103,7 +105,7 @@ function ClientesPage() {
                         </div>
 
                         <BotonNuevo
-                            onClick={() => setMostrarFormulario(true)}
+                            onClick={handleNuevoCliente}
                             componente={"cliente"}
                         />
                     </div>
@@ -131,20 +133,17 @@ function ClientesPage() {
                                 <td className="cliente-acciones" data-label="Acciones">
                                     <div className="acciones-container">
 
-                                        <button
-                                            className="accion-button accion-modificar"
-                                            title="Modificar"
-                                        >
-                                            ✎
-                                        </button>
+                                        <BotonEditar
+                                        onClick={() => handleEditarCliente(cliente)}
+                                        componente = "Cliente"
+                                        aria-label={`Editar cliente ${cliente.nombre} y documento ${cliente.id}`}
+                                        />
 
-                                        <button
-                                            className="accion-button accion-eliminar"
-                                            title="Eliminar"
-                                            onClick={() => handleEliminarCliente(cliente.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                        <BotonEliminar
+                                        onClick={() => handleEliminarCliente(cliente.id)}
+                                        aria-label={`Eliminar cliente ${cliente.nombre} `}
+
+                                        />
 
                                     </div>
                                 </td>

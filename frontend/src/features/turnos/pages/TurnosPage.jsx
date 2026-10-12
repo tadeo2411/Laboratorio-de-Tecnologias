@@ -6,6 +6,8 @@ import { obtenerTurnos, obtenerAutos } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/img_list.png"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
+import BotonEditar from "../../../shared/components/BotonEditar";
+import BotonEliminar from "../../../shared/components/BotonEliminar";
 import "../turnos.css";
 
 function TurnosPage() {
@@ -101,7 +103,7 @@ function TurnosPage() {
                         </div>
 
                         <BotonNuevo
-                            onClick={() => setMostrarFormulario(true)}
+                            onClick={() => { setTurnoAEditar(null); setMostrarFormulario(true) }}
                             componente={"turno"}
                         />
                     </div>
@@ -146,21 +148,9 @@ function TurnosPage() {
                                 <td className="turno-acciones" data-label="Acciones">
                                     <div className="acciones-container">
 
-                                        <button
-                                            className="accion-button accion-modificar"
-                                            title="Modificar"
-                                            onClick={() => handleEditarTurno(turno.id)}
-                                        >
-                                            ✎
-                                        </button>
+                                        <BotonEditar onClick={() => handleEditarTurno(turno)} />
 
-                                        <button
-                                            className="accion-button accion-eliminar"
-                                            title="Eliminar"
-                                            onClick={() => handleEliminarTurno(turno.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                        <BotonEliminar onClick={() => handleEliminarTurno(turno.id)} />
 
                                     </div>
                                 </td>

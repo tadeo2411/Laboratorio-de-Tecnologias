@@ -3,6 +3,8 @@ import Modal from '../../../shared/components/Modal'
 import RepuestoForm from '../components/RepuestoForm'
 import RepuestosList from '../components/RepuestosList'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
 import img_list from "../../../assets/icons/img_list.png"
 
 import {
@@ -120,7 +122,7 @@ function RepuestosPage() {
         </div>
 
         <BotonNuevo
-          onClick={() => setFormularioAbierto(true)}
+          onClick={() => abrirFormulario()}
           componente={"repuesto"}
         />
       </div>
@@ -185,30 +187,9 @@ function RepuestosPage() {
               >
                 <div className="acciones-container">
 
-                  <button
-                    className="accion-button accion-info"
-                    title="Más información"
-                    onClick={() => {
-                      setRepuestoSeleccionado(repuesto);
-                      setModalMasInfoAbierto(true);
-                    }}
-                  >
-                    ⓘ
-                  </button>
+                  <BotonEditar onClick={() => abrirFormulario(repuesto)} />
 
-                  <button
-                    className="accion-button accion-modificar"
-                    title="Modificar"
-                  >
-                    ✎
-                  </button>
-
-                  <button
-                    className="accion-button accion-eliminar"
-                    title="Eliminar"
-                  >
-                    🗑
-                  </button>
+                  <BotonEliminar onClick={() => confirmarEliminacion(repuesto)} />
 
                 </div>
               </td>

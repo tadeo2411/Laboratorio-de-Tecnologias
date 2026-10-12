@@ -1,10 +1,10 @@
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import "../compartido.css"
 function Modal({
     titulo,
     onCerrar,
     cerrarAlTocarFondo = true,
-    onEscSalida,
+
     children,
 }) {
     const idTitulo = useId();
@@ -18,9 +18,15 @@ function Modal({
         }
     };
 
-    // const handleEscSalida = (event) =>{
-    //     if
-    // }
+    // Cierra el modal al apretar Escape mientras esté montado.
+    useEffect(() => {
+        const handleEscSalida = (event) => {
+            if (event.key === "Escape") onCerrar();
+        };
+
+        document.addEventListener("keydown", handleEscSalida);
+        return () => document.removeEventListener("keydown", handleEscSalida);
+    }, [onCerrar]);
 
 
     return (
@@ -28,7 +34,6 @@ function Modal({
             className="modal-fondo"
             role="presentation"
             onMouseDown={manejarClickFondo}
-            onEscSalida = {handleEscSalida}
         >
             <section
                 className="modal-contenido"

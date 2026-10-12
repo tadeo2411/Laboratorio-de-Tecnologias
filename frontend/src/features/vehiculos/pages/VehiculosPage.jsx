@@ -5,6 +5,9 @@ import VehiculosList from '../components/VehiculosList'
 import HistorialVehiculo from '../components/HistorialVehiculo'
 import AvisoService from '../components/AvisoService'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import botonHistorial from '../../../assets/icons/botonHistorial.png'
 import {
   actualizarEstadoAviso,
   actualizarVehiculo,
@@ -37,7 +40,6 @@ function VehiculosPage() {
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
   const [vehiculoConAviso, setVehiculoConAviso] = useState(null)
-  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
 
   // Carga vehículos y clientes desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -151,7 +153,7 @@ function VehiculosPage() {
           </div>
 
           <BotonNuevo
-            onClick={() => setFormularioAbierto(true)}
+            onClick={() => abrirFormulario()}
             componente={"vehiculo"}
           />
         </div>
@@ -223,30 +225,19 @@ function VehiculosPage() {
                 >
                   <div className="acciones-container">
 
-                    <button
-                      className="accion-button accion-info"
-                      title="Más información"
-                      onClick={() => {
-                        setVehiculoSeleccionado(vehiculo);
-                        setModalMasInfoAbierto(true);
-                      }}
-                    >
-                      ⓘ
+                    <button type="button" className="botonHistorial" onClick={() => setVehiculoConHistorial(vehiculo)}>
+                      <img src={botonHistorial} alt={`Historial del vehículo de patente ${vehiculo.patente}`} />
                     </button>
 
-                    <button
-                      className="accion-button accion-modificar"
-                      title="Modificar"
-                    >
-                      ✎
-                    </button>
+                    <BotonEditar onClick={() => abrirFormulario(vehiculo)} />
 
-                    <button
-                      className="accion-button accion-eliminar"
-                      title="Eliminar"
-                    >
-                      🗑
-                    </button>
+                    {vehiculo.estadoAvisoService === 'pendiente' && (
+                      <button type="button" className="btnAccion" onClick={() => setVehiculoConAviso(vehiculo)}>
+                        Gestionar aviso
+                      </button>
+                    )}
+
+                    <BotonEliminar onClick={() => confirmarEliminacion(vehiculo)} />
 
                   </div>
                 </td>

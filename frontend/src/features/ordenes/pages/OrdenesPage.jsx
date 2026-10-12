@@ -3,6 +3,8 @@ import { useLoaderData } from 'react-router';
 import EtiquetaEstado from "../components/EtiquetaEstado.jsx";
 import Table from '../../../shared/components/Table.jsx';
 import BotonNuevo from '../../../shared/components/BotonNuevo.jsx';
+import BotonEditar from '../../../shared/components/BotonEditar.jsx';
+import BotonEliminar from '../../../shared/components/BotonEliminar.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
@@ -19,19 +21,36 @@ const columnasOrdenes = [
 ];
 
 function OrdenesPage() {
-    const { ordenes, vehiculos } = useLoaderData();
+    const datos = useLoaderData();
+    const [ordenes, setOrdenes] = useState(datos.ordenes);
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalMasInfoAbierto, setModalMasInfoAbierto] = useState(false);
     const [ordenSeleccionado, setOrdenSeleccionado] = useState(null);
+    const [ordenEnEdicion, setOrdenEnEdicion] = useState(null);
+
+    function abrirFormulario(orden = null) {
+        setOrdenEnEdicion(orden);
+        setModalAbierto(true);
+    }
+
+    function cerrarFormulario() {
+        setModalAbierto(false);
+        setOrdenEnEdicion(null);
+    }
+
+    function handleEliminarOrden(idOrden) {
+        if (!window.confirm('¿Desea eliminar la orden?')) return;
+        setOrdenes(anteriores => anteriores.filter(orden => orden.id !== idOrden));
+    }
 
     return (
         <>
             {modalAbierto && (
                 <Modal
-                    titulo="Nueva orden"
-                    onCerrar={() => setModalAbierto(false)}
+                    titulo={ordenEnEdicion ? "Editar orden" : "Nueva orden"}
+                    onCerrar={cerrarFormulario}
                 >
-                    <OrdenForm onCerrar={() => setModalAbierto(false)} />
+                    <OrdenForm onCerrar={cerrarFormulario} />
                 </Modal>
             )}
             {modalMasInfoAbierto && (
@@ -54,7 +73,7 @@ function OrdenesPage() {
                         <p>Listado de ordenes registradas en el sistema.</p>
                     </div>
 
-                    <BotonNuevo onClick={() => setModalAbierto(true)} componente={"orden"} />
+                    <BotonNuevo onClick={() => abrirFormulario()} componente={"orden"} />
                 </div>
                 <Table
                     inputPlaceholder="Buscar por descripción, orden, trabajo..."
@@ -100,19 +119,9 @@ function OrdenesPage() {
                                         ⓘ
                                     </button>
 
-                                    <button
-                                        className="accion-button accion-modificar"
-                                        title="Modificar"
-                                    >
-                                        ✎
-                                    </button>
+                                    <BotonEditar onClick={() => abrirFormulario(orden)} />
 
-                                    <button
-                                        className="accion-button accion-eliminar"
-                                        title="Eliminar"
-                                    >
-                                        🗑
-                                    </button>
+                                    <BotonEliminar onClick={() => handleEliminarOrden(orden.id)} />
 
                                 </div>
                             </td>

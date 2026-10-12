@@ -1,10 +1,70 @@
 [
     {
-        "id": 1,
+        "id": "pre-001",
         "numero": "P-001",
-        "fecha": "2026-09-30",
-        "estado": "Pendiente",
-        "total": 50000,
-        "observaciones": "Revisar frenos"
+        "ordenId": "ot-001",
+        "fechaEmision": "2026-09-30",
+        "estadoPresupuesto": "ENVIADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de aceite y filtro", "cantidad": 1, "precioUnitario": 15000 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Aceite 5W30 (litro)", "cantidad": 4, "precioUnitario": 9000 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Filtro de aceite", "cantidad": 1, "precioUnitario": 7500 }
+        ]
+    },
+    {
+        "id": "pre-002",
+        "numero": "P-002",
+        "ordenId": "ot-001",
+        "fechaEmision": "2026-10-02",
+        "estadoPresupuesto": "BORRADOR",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 20000 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Juego de pastillas delanteras", "cantidad": 1, "precioUnitario": 38000 }
+        ]
+    },
+    {
+        "id": "pre-003",
+        "numero": "P-003",
+        "ordenId": "ot-003",
+        "fechaEmision": "2026-09-10",
+        "estadoPresupuesto": "ENVIADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reparación de radiador", "cantidad": 1, "precioUnitario": 45000 },
+            { "id": 2, "tipo": "OTRO", "descripcion": "Prueba de presión del circuito", "cantidad": 1, "precioUnitario": 8000 }
+        ]
+    },
+    {
+        "id": "pre-004",
+        "numero": "P-004",
+        "ordenId": "ot-003",
+        "fechaEmision": "2026-09-27",
+        "estadoPresupuesto": "APROBADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reemplazo de radiador", "cantidad": 1, "precioUnitario": 35000 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Radiador", "cantidad": 1, "precioUnitario": 120000 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Líquido refrigerante (litro)", "cantidad": 5, "precioUnitario": 6000 }
+        ]
+    },
+    {
+        "id": "pre-005",
+        "numero": "P-005",
+        "ordenId": "ot-004",
+        "fechaEmision": "2026-09-05",
+        "estadoPresupuesto": "CANCELADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Mantenimiento preventivo completo", "cantidad": 1, "precioUnitario": 60000 }
+        ]
+    },
+    {
+        "id": "pre-006",
+        "numero": "P-006",
+        "ordenId": "ot-004",
+        "fechaEmision": "2026-09-08",
+        "estadoPresupuesto": "APROBADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Mantenimiento preventivo completo", "cantidad": 1, "precioUnitario": 50000 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Kit de filtros (aire, aceite, combustible)", "cantidad": 1, "precioUnitario": 32000 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Bujías", "cantidad": 4, "precioUnitario": 6500 }
+        ]
     }
 ]

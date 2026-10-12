@@ -58,7 +58,7 @@ function RepuestosList({ repuestos, onEditar, onEliminar }) {
                   <td data-label="Código"><strong>{repuesto.codigo}</strong></td>
                   <td data-label="Nombre">{repuesto.nombre}</td>
                   <td data-label="Precio de costo">{formatoMoneda(repuesto.precioCosto)}</td>
-                  <td data-label="Precio de venta">{formatoMoneda(repuesto.precioVenta)}</td>
+                  <td data-label="Precio de venta">{formatoMoneda(repuesto.precioEstandar)}</td>
                   <td data-label="Stock">{repuesto.stock}</td>
                   <td data-label="Stock mínimo">{repuesto.stockMinimo}</td>
                   <td data-label="Descripción">{repuesto.descripcion || '—'}</td>

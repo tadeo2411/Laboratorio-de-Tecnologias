@@ -1,20 +1,30 @@
 [
     {
+        "id": "cli-001",
+        "documento": "12345678",
         "nombre": "Juan Pérez",
-        "id": "12345678",
-        "telefono" : "2665298830",
-        "tipo" : "PERSONA"
+        "telefono": "2665298830",
+        "tipo": "PERSONA"
     },
     {
-        "nombre" : "María González",
-        "id" : "87654321",
-        "telefono" : "2665298831",
-        "tipo" : "PERSONA"
+        "id": "cli-002",
+        "documento": "87654321",
+        "nombre": "María González",
+        "telefono": "2665298831",
+        "tipo": "PERSONA"
     },
     {
-        "nombre" : "Carlos Ramírez",
-        "id" : "11223344",
-        "telefono" : "2665298832",
-        "tipo" : "PERSONA"
+        "id": "cli-003",
+        "documento": "11223344",
+        "nombre": "Carlos Ramírez",
+        "telefono": "2665298832",
+        "tipo": "PERSONA"
+    },
+    {
+        "id": "cli-004",
+        "documento": "30712345679",
+        "nombre": "Transportes del Oeste S.A.",
+        "telefono": "2664401122",
+        "tipo": "EMPRESA"
     }
 ]

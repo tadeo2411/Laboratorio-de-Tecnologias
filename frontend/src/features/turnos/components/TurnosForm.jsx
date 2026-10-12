@@ -4,7 +4,7 @@ import { estadosTurno } from '../services/turnosService';
 import botonMas  from '../../../assets/icons/botonMas.png';
 
 const valoresIniciales = {
-    patente: '',
+    vehiculoId: '',
     fechaHora: '',
     duracion: '',
     motivo: '',
@@ -27,7 +27,7 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
         if (cargando || error) return
 
         const nuevoTurno = {
-            patente: formulario.patente,
+            vehiculoId: formulario.vehiculoId,
             fechaHora: formulario.fechaHora,
             motivo: formulario.motivo.trim(),
             estado: formulario.estado,
@@ -45,15 +45,15 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
             <p>Los campos con * son obligatorios.</p>
             <form onSubmit={manejarEnvio}>
                 <div className="formulario anchoComp">
-                    <label htmlFor="patente" >Vehículo *</label>
+                    <label htmlFor="vehiculoId" >Vehículo *</label>
                     <div className="row g-2 align-items-center flex-nowrap">
-                        <select id="patente" name="patente" value={formulario.patente}
+                        <select id="vehiculoId" name="vehiculoId" value={formulario.vehiculoId}
                         onChange={actualizarCampo}
                         required disabled={cargando||Boolean(error)}
                         className='col selectFormulario' >
                             <option value="">--- Elegir ---</option>
                             {vehiculos.map(vehiculo => (
-                                <option key={vehiculo.id} value={vehiculo.patente}>
+                                <option key={vehiculo.id} value={vehiculo.id}>
                                     {vehiculo.patente} — {vehiculo.marca} {vehiculo.modelo}
                                 </option>
                             ))}

@@ -12,7 +12,7 @@ import BotonEliminar from '../../../shared/components/BotonEliminar'
 
 const columnasClientes = [
     { key: "nombre", nombre: "Nombre" },
-    { key: "id", nombre: "DNI" },
+    { key: "documento", nombre: "DNI / CUIT" },
     { key: "telefono", nombre: "Teléfono" },
     { key: "acciones", nombre: "Acciones" }
 ];
@@ -61,10 +61,12 @@ function ClientesPage() {
     }
 
     function handleGuardarCliente(datos) {
-        const documento = datos.id.replace(/[.\s-]/g, '')
+        // El id identifica al cliente en el sistema; el documento (DNI o CUIT) es un dato
+        // del cliente que igual no se puede repetir.
+        const documento = datos.documento.replace(/[.\s-]/g, '')
         const repetido = clientes.some(cliente =>
             cliente.id !== clienteAEditar?.id &&
-            cliente.id.replace(/[.\s-]/g, '') === documento
+            cliente.documento.replace(/[.\s-]/g, '') === documento
         )
 
         if (repetido) {
@@ -78,7 +80,7 @@ function ClientesPage() {
                 cliente.id === clienteAEditar.id ? { ...cliente, ...datos } : cliente
             ))
         } else {
-            setClientes(anteriores => [...anteriores, datos])
+            setClientes(anteriores => [...anteriores, { ...datos, id: crypto.randomUUID() }])
         }
         cerrarFormulario()
     }
@@ -122,8 +124,8 @@ function ClientesPage() {
                                     {cliente.nombre}
                                 </td>
 
-                                <td className="cliente-dni" data-label="DNI">
-                                    {cliente.id}
+                                <td className="cliente-dni" data-label="DNI / CUIT">
+                                    {cliente.documento}
                                 </td>
 
                                 <td className="cliente-telefono" data-label="Teléfono">
@@ -136,7 +138,7 @@ function ClientesPage() {
                                         <BotonEditar
                                         onClick={() => handleEditarCliente(cliente)}
                                         componente = "Cliente"
-                                        aria-label={`Editar cliente ${cliente.nombre} y documento ${cliente.id}`}
+                                        aria-label={`Editar cliente ${cliente.nombre} y documento ${cliente.documento}`}
                                         />
 
                                         <BotonEliminar

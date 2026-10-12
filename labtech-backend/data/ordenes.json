@@ -1,38 +1,42 @@
 [
   {
     "id": "ot-001",
+    "vehiculoId": "veh-001",
+    "turnoId": null,
     "diagnostico": "Cambio de aceite y filtro. Se detecta desgaste en pastillas de freno delanteras.",
     "estado": "RECIBIDO",
-    "garantia": false,
+    "garantiaHasta": null,
     "esService": true,
-    "esUrgencia": false,
-    "vehiculoId": "veh-001"
+    "esUrgencia": false
   },
   {
     "id": "ot-002",
+    "vehiculoId": "veh-002",
+    "turnoId": null,
     "diagnostico": "Ruido en el tren delantero. Se requiere revisión de suspensión.",
     "estado": "DIAGNOSTICANDO",
-    "garantia": false,
+    "garantiaHasta": null,
     "esService": false,
-    "esUrgencia": false,
-    "vehiculoId": "veh-002"
+    "esUrgencia": false
   },
   {
     "id": "ot-003",
+    "vehiculoId": "veh-003",
+    "turnoId": "tur-001",
     "diagnostico": "Falla en el sistema de refrigeración. Se detecta pérdida de líquido.",
     "estado": "EN_REPARACION",
-    "garantia": true,
+    "garantiaHasta": null,
     "esService": false,
-    "esUrgencia": true,
-    "vehiculoId": "veh-003"
+    "esUrgencia": true
   },
   {
     "id": "ot-004",
+    "vehiculoId": "veh-004",
+    "turnoId": null,
     "diagnostico": "Mantenimiento preventivo completo.",
     "estado": "TERMINADO",
-    "garantia": false,
+    "garantiaHasta": "2026-12-15",
     "esService": true,
-    "esUrgencia": false,
-    "vehiculoId": "veh-004"
+    "esUrgencia": false
   }
 ]

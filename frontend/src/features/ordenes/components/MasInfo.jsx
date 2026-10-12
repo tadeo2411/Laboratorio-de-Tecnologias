@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import img_auto from "../../../assets/icons/img_auto.png";
 import img_estado from "../../../assets/icons/img_estado.svg";
 import img_diagnostico from "../../../assets/icons/img_diagnostico.svg";
@@ -5,16 +6,44 @@ import img_garantia from "../../../assets/icons/img_garantia.svg";
 import img_service from "../../../assets/icons/img_trabajo.svg";
 import img_urgencia from "../../../assets/icons/img_urgencia.svg";
 import img_trabajo from "../../../assets/icons/img_trabajo.svg";
-import img_empleado from "../../../assets/icons/img_empleado.svg";
 import img_repuestos from "../../../assets/icons/img_repuestos.svg";
-import img_precio from "../../../assets/icons/img_precio.svg";
-import img_presupuesto from "../../../assets/icons/img_presupuesto.png";
+import { obtenerDetalleOrden } from "../services/ordenesService";
+import { TIPOS_ITEM, formatearFecha, formatearPrecio } from "../utils/presupuestosVista";
+import PresupuestosOrden from "./PresupuestosOrden.jsx";
 
+// Los datos generales se muestran con la orden que llega por props (ya está en la lista).
+// El resto (vehículo, presupuestos, trabajos, repuestos y totales) lo arma el servicio.
 function MasInfo({ orden }) {
+    const [detalle, setDetalle] = useState(null);
+    const [cargando, setCargando] = useState(true);
+    const [error, setError] = useState("");
 
-    const formatearPrecio = (valor) => {
-        return `$${Number(valor || 0).toLocaleString("es-AR")}`;
-    };
+    // El useEffect y los estados quedan en el componente porque son de React:
+    // guardan lo que llega del servicio para volver a dibujar la pantalla.
+    useEffect(() => {
+        let activo = true;
+
+        async function cargarDetalle() {
+            try {
+                const detalleOrden = await obtenerDetalleOrden(orden.id);
+                if (activo) setDetalle(detalleOrden);
+            } catch (errorCarga) {
+                if (activo) setError(errorCarga.message);
+            } finally {
+                if (activo) setCargando(false);
+            }
+        }
+        cargarDetalle();
+
+        return () => {
+            activo = false;
+        };
+    }, [orden.id]);
+
+    const presupuestos = detalle?.presupuestos ?? [];
+    const trabajos = detalle?.trabajos ?? [];
+    const repuestos = detalle?.repuestos ?? [];
+    const vehiculo = detalle?.vehiculo;
 
     return (
         <div className="info-orden">
@@ -39,7 +68,9 @@ function MasInfo({ orden }) {
                         <div className="info-orden-dato">
                             <img src={img_auto} alt="" style={{filter: "brightness(0) saturate(100%) invert(12%) sepia(9%) saturate(1138%) hue-rotate(230deg) brightness(91%) contrast(92%)"}} />
                             <span>
-                                {orden.vehiculo || `Vehículo #${orden.vehiculoId}`}
+                                {vehiculo
+                                    ? `${vehiculo.marca} ${vehiculo.modelo} · ${vehiculo.patente}`
+                                    : cargando ? "Cargando..." : "Vehículo no encontrado"}
                             </span>
                         </div>
                     </div>
@@ -67,7 +98,9 @@ function MasInfo({ orden }) {
                         <div className="info-orden-dato">
                             <img src={img_garantia} alt="" />
                             <span>
-                                {orden.garantia ? "Sí" : "No"}
+                                {orden.garantiaHasta
+                                    ? `Hasta el ${formatearFecha(orden.garantiaHasta)}`
+                                    : "Sin garantía"}
                             </span>
                         </div>
                     </div>
@@ -126,88 +159,14 @@ function MasInfo({ orden }) {
 
 
             {/* =========================
-                PRESUPUESTO
+                PRESUPUESTOS
             ========================= */}
 
-            <div className="info-orden-seccion">
-
-                <div className="info-orden-seccion-header">
-                    <h3 className="info-orden-titulo">
-                        Presupuesto
-                    </h3>
-
-                    {orden.presupuesto && (
-                        <span className="info-orden-total">
-                            {formatearPrecio(
-                                orden.presupuesto.precioTotal
-                            )}
-                        </span>
-                    )}
-                </div>
-
-                {orden.presupuesto ? (
-
-                    <div className="info-orden-presupuesto">
-
-                        <div className="info-orden-item">
-                            <span className="info-orden-label">
-                                Nombre
-                            </span>
-
-                            <div className="info-orden-dato">
-                                <img
-                                    src={img_presupuesto}
-                                    alt=""
-                                />
-
-                                <span>
-                                    {orden.presupuesto.nombre}
-                                </span>
-                            </div>
-                        </div>
-
-                        <div className="info-orden-item info-orden-completo">
-                            <span className="info-orden-label">
-                                Descripción
-                            </span>
-
-                            <div className="info-orden-texto">
-                                {orden.presupuesto.descripcion ||
-                                    "Sin descripción"}
-                            </div>
-                        </div>
-
-                        <div className="info-orden-item">
-                            <span className="info-orden-label">
-                                Precio total
-                            </span>
-
-                            <div className="info-orden-dato">
-                                <img src={img_precio} alt="" />
-
-                                <span>
-                                    {formatearPrecio(
-                                        orden.presupuesto.precioTotal
-                                    )}
-                                </span>
-                            </div>
-                        </div>
-
-                    </div>
-
-                ) : (
-
-                    <div className="info-orden-vacio">
-                        No hay un presupuesto asociado a esta orden.
-                    </div>
-
-                )}
-
-            </div>
+            <PresupuestosOrden presupuestos={presupuestos} cargando={cargando} error={error} />
 
 
             {/* =========================
-                TRABAJOS
+                TRABAJOS (de presupuestos aprobados)
             ========================= */}
 
             <div className="info-orden-seccion">
@@ -218,19 +177,19 @@ function MasInfo({ orden }) {
                     </h3>
 
                     <span className="info-orden-contador">
-                        {orden.trabajos?.length || 0}
+                        {trabajos.length}
                     </span>
                 </div>
 
-                {orden.trabajos?.length > 0 ? (
+                {trabajos.length > 0 ? (
 
                     <div className="info-orden-lista">
 
-                        {orden.trabajos.map((trabajo) => (
+                        {trabajos.map((trabajo) => (
 
                             <div
                                 className="info-orden-card"
-                                key={trabajo.id}
+                                key={trabajo.clave}
                             >
 
                                 <div className="info-orden-card-header">
@@ -247,9 +206,7 @@ function MasInfo({ orden }) {
                                     </div>
 
                                     <span className="info-orden-card-precio">
-                                        {formatearPrecio(
-                                            trabajo.precio
-                                        )}
+                                        {formatearPrecio(trabajo.precioTotal)}
                                     </span>
 
                                 </div>
@@ -258,40 +215,33 @@ function MasInfo({ orden }) {
 
                                     <div>
                                         <span className="info-orden-label">
-                                            Estado
+                                            Tipo
                                         </span>
 
                                         <span>
-                                            {trabajo.estado}
+                                            {TIPOS_ITEM[trabajo.tipo] ?? trabajo.tipo}
                                         </span>
                                     </div>
 
                                     <div>
                                         <span className="info-orden-label">
-                                            Empleado
+                                            Cantidad
                                         </span>
 
-                                        <span className="info-orden-empleado">
-                                            <img
-                                                src={img_empleado}
-                                                alt=""
-                                            />
-
-                                            {trabajo.empleado}
+                                        <span>
+                                            {trabajo.cantidad}
                                         </span>
                                     </div>
 
-                                    {trabajo.tipoTrabajo && (
-                                        <div>
-                                            <span className="info-orden-label">
-                                                Tipo
-                                            </span>
+                                    <div>
+                                        <span className="info-orden-label">
+                                            Presupuesto
+                                        </span>
 
-                                            <span>
-                                                {trabajo.tipoTrabajo}
-                                            </span>
-                                        </div>
-                                    )}
+                                        <span>
+                                            {trabajo.numeroPresupuesto}
+                                        </span>
+                                    </div>
 
                                 </div>
 
@@ -304,7 +254,7 @@ function MasInfo({ orden }) {
                 ) : (
 
                     <div className="info-orden-vacio">
-                        No hay trabajos asociados a esta orden.
+                        No hay trabajos en presupuestos aprobados.
                     </div>
 
                 )}
@@ -313,7 +263,7 @@ function MasInfo({ orden }) {
 
 
             {/* =========================
-                REPUESTOS
+                REPUESTOS (de presupuestos aprobados)
             ========================= */}
 
             <div className="info-orden-seccion">
@@ -324,19 +274,19 @@ function MasInfo({ orden }) {
                     </h3>
 
                     <span className="info-orden-contador">
-                        {orden.repuestos?.length || 0}
+                        {repuestos.length}
                     </span>
                 </div>
 
-                {orden.repuestos?.length > 0 ? (
+                {repuestos.length > 0 ? (
 
                     <div className="info-orden-lista">
 
-                        {orden.repuestos.map((repuesto) => (
+                        {repuestos.map((repuesto) => (
 
                             <div
                                 className="info-orden-card"
-                                key={repuesto.id}
+                                key={repuesto.clave}
                             >
 
                                 <div className="info-orden-card-header">
@@ -348,15 +298,12 @@ function MasInfo({ orden }) {
                                         />
 
                                         <span>
-                                            {repuesto.nombre}
+                                            {repuesto.descripcion}
                                         </span>
                                     </div>
 
                                     <span className="info-orden-card-precio">
-                                        {formatearPrecio(
-                                            repuesto.precio *
-                                            (repuesto.cantidad || 1)
-                                        )}
+                                        {formatearPrecio(repuesto.precioTotal)}
                                     </span>
 
                                 </div>
@@ -369,7 +316,7 @@ function MasInfo({ orden }) {
                                         </span>
 
                                         <span>
-                                            {repuesto.cantidad || 1}
+                                            {repuesto.cantidad}
                                         </span>
                                     </div>
 
@@ -379,22 +326,17 @@ function MasInfo({ orden }) {
                                         </span>
 
                                         <span>
-                                            {formatearPrecio(
-                                                repuesto.precio
-                                            )}
+                                            {formatearPrecio(repuesto.precioUnitario)}
                                         </span>
                                     </div>
 
                                     <div>
                                         <span className="info-orden-label">
-                                            Subtotal
+                                            Presupuesto
                                         </span>
 
                                         <span>
-                                            {formatearPrecio(
-                                                repuesto.precio *
-                                                (repuesto.cantidad || 1)
-                                            )}
+                                            {repuesto.numeroPresupuesto}
                                         </span>
                                     </div>
 
@@ -409,7 +351,7 @@ function MasInfo({ orden }) {
                 ) : (
 
                     <div className="info-orden-vacio">
-                        No hay repuestos utilizados en esta orden.
+                        No hay repuestos en presupuestos aprobados.
                     </div>
 
                 )}
@@ -418,7 +360,7 @@ function MasInfo({ orden }) {
 
 
             {/* =========================
-                RESUMEN
+                RESUMEN (de presupuestos aprobados)
             ========================= */}
 
             <div className="info-orden-resumen">
@@ -429,13 +371,7 @@ function MasInfo({ orden }) {
                     </span>
 
                     <strong>
-                        {formatearPrecio(
-                            orden.trabajos?.reduce(
-                                (total, trabajo) =>
-                                    total + Number(trabajo.precio || 0),
-                                0
-                            )
-                        )}
+                        {formatearPrecio(detalle?.totalTrabajos)}
                     </strong>
                 </div>
 
@@ -445,15 +381,7 @@ function MasInfo({ orden }) {
                     </span>
 
                     <strong>
-                        {formatearPrecio(
-                            orden.repuestos?.reduce(
-                                (total, repuesto) =>
-                                    total +
-                                    Number(repuesto.precio || 0) *
-                                    (repuesto.cantidad || 1),
-                                0
-                            )
-                        )}
+                        {formatearPrecio(detalle?.totalRepuestos)}
                     </strong>
                 </div>
 
@@ -463,9 +391,7 @@ function MasInfo({ orden }) {
                     </span>
 
                     <strong>
-                        {formatearPrecio(
-                            orden.total
-                        )}
+                        {formatearPrecio(detalle?.total)}
                     </strong>
                 </div>
 

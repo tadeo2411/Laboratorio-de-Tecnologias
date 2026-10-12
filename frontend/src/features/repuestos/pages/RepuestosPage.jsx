@@ -19,7 +19,7 @@ import Table from '../../../shared/components/Table'
 const columnasRepuestos = [
   { key: "codigo", nombre: "Código" },
   { key: "nombre", nombre: "Nombre" },
-  { key: "precioVenta", nombre: "Precio de venta" },
+  { key: "precioEstandar", nombre: "Precio de venta" },
   { key: "stock", nombre: "Stock" },
   { key: "acciones", nombre: "Acciones" }
 ];
@@ -171,7 +171,7 @@ function RepuestosPage() {
                 className="repuesto-precio"
                 data-label="Precio de venta"
               >
-                ${repuesto.precioVenta.toLocaleString("es-AR")}
+                ${repuesto.precioEstandar.toLocaleString("es-AR")}
               </td>
 
               <td

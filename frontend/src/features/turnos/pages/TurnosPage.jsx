@@ -77,11 +77,16 @@ function TurnosPage() {
     }, [])
 
 
+    // El turno guarda el id del vehículo; la patente se busca para mostrarla.
+    function patenteDeVehiculo(vehiculoId) {
+        return vehiculos.find(vehiculo => vehiculo.id === vehiculoId)?.patente ?? '—'
+    }
+
     const columnasTurnos = [
         { key: "fechaHora", nombre: "Fecha y hora" },
         { key: "motivo", nombre: "Motivo" },
         { key: "estado", nombre: "Estado" },
-        { key: "patente", nombre: "Patente" },
+        { key: "vehiculoId", nombre: "Patente" },
         { key: "acciones", nombre: "Acciones" }
     ];
 
@@ -142,7 +147,7 @@ function TurnosPage() {
                                 </td>
 
                                 <td className="turno-patente" data-label="Patente">
-                                    {turno.patente}
+                                    {patenteDeVehiculo(turno.vehiculoId)}
                                 </td>
 
                                 <td className="turno-acciones" data-label="Acciones">

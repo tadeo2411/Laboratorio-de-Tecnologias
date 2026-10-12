@@ -4,13 +4,13 @@ const ANIO_MAXIMO = new Date().getFullYear() + 1
 
 function crearValoresIniciales(vehiculo) {
   return {
-    dueno: vehiculo?.dueno ?? '',
+    clienteIds: vehiculo?.clienteIds ?? [],
     patente: vehiculo?.patente ?? '',
     marca: vehiculo?.marca ?? '',
     modelo: vehiculo?.modelo ?? '',
     anio: vehiculo?.anio ?? '',
     kilometraje: vehiculo?.kilometraje ?? '',
-    observaciones: vehiculo?.observaciones ?? '',
+    descripcion: vehiculo?.descripcion ?? '',
   }
 }
 
@@ -24,6 +24,13 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
   function actualizarCampo(event) {
     const { name, value } = event.target
     setFormulario((valoresActuales) => ({ ...valoresActuales, [name]: value }))
+  }
+
+  // Un vehículo puede tener varios dueños (1..* en el diagrama): el select es múltiple
+  // y guarda la lista de ids de los clientes elegidos.
+  function actualizarDuenos(event) {
+    const clienteIds = Array.from(event.target.selectedOptions, (opcion) => opcion.value)
+    setFormulario((valoresActuales) => ({ ...valoresActuales, clienteIds }))
   }
 
   async function manejarEnvio(event) {
@@ -50,12 +57,19 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
       {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
       <div className="formulario">
-        <label htmlFor="vehiculo-dueno">Dueño</label>
-        <select id="vehiculo-dueno" name="dueno" value={formulario.dueno} onChange={actualizarCampo} required>
-          <option value="">Elegir dueño</option>
+        <label htmlFor="vehiculo-duenos">Dueños (Ctrl + clic para elegir más de uno)</label>
+        <select
+          id="vehiculo-duenos"
+          name="clienteIds"
+          multiple
+          size={Math.min(clientes.length, 4) || 1}
+          value={formulario.clienteIds}
+          onChange={actualizarDuenos}
+          required
+        >
           {clientes.map((cliente) => (
-            <option key={cliente.dni} value={cliente.nombre}>
-              {cliente.nombre}
+            <option key={cliente.id} value={cliente.id}>
+              {cliente.nombre} · {cliente.documento}
             </option>
           ))}
         </select>
@@ -115,12 +129,12 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
       </div>
 
       <div className="formulario">
-        <label htmlFor="vehiculo-observaciones">Observaciones</label>
+        <label htmlFor="vehiculo-descripcion">Descripción</label>
         <textarea
-          id="vehiculo-observaciones"
-          name="observaciones"
+          id="vehiculo-descripcion"
+          name="descripcion"
           rows="3"
-          value={formulario.observaciones}
+          value={formulario.descripcion}
           onChange={actualizarCampo}
         />
       </div>

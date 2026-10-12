@@ -7,13 +7,15 @@ import BotonEliminar from '../../../shared/components/BotonEliminar.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
+import EditarOrden from "../components/EditarOrden.jsx";
+import { formatearFecha } from "../utils/presupuestosVista";
 import img_list from "../../../assets/icons/img_list.png"
 import "../ordenes.css"
 
 const columnasOrdenes = [
     { key: "diagnostico", nombre: "Diagnóstico" },
     { key: "estado", nombre: "Estado" },
-    { key: "garantia", nombre: "Garantía" },
+    { key: "garantiaHasta", nombre: "Garantía hasta" },
     { key: "esService", nombre: "Service" },
     { key: "esUrgencia", nombre: "Urgencia" },
     { key: "acciones", nombre: "Acciones" },
@@ -56,7 +58,11 @@ function OrdenesPage() {
                     titulo={ordenEnEdicion ? "Editar orden" : "Nueva orden"}
                     onCerrar={cerrarFormulario}
                 >
-                    <OrdenForm onCerrar={cerrarFormulario} />
+                    {ordenEnEdicion ? (
+                        <EditarOrden orden={ordenEnEdicion} onCerrar={cerrarFormulario} />
+                    ) : (
+                        <OrdenForm onCerrar={cerrarFormulario} />
+                    )}
                 </Modal>
             )}
             {modalMasInfoAbierto && (
@@ -129,8 +135,8 @@ function OrdenesPage() {
                             </td>
 
 
-                            <td className="orden-garantia" data-label="Garantía">
-                                {orden.garantia ? "Sí" : "No"}
+                            <td className="orden-garantia" data-label="Garantía hasta">
+                                {orden.garantiaHasta ? formatearFecha(orden.garantiaHasta) : "—"}
                             </td>
 
                             <td className="orden-service" data-label="Service">

@@ -5,7 +5,7 @@ function crearValoresIniciales(repuesto) {
     codigo: repuesto?.codigo ?? '',
     nombre: repuesto?.nombre ?? '',
     precioCosto: repuesto?.precioCosto ?? '',
-    precioVenta: repuesto?.precioVenta ?? '',
+    precioEstandar: repuesto?.precioEstandar ?? '',
     stock: repuesto?.stock ?? '',
     stockMinimo: repuesto?.stockMinimo ?? '',
     descripcion: repuesto?.descripcion ?? '',
@@ -34,7 +34,7 @@ function RepuestoForm({ repuesto, onCancelar, onGuardar }) {
       await onGuardar({
         ...formulario,
         precioCosto: Number(formulario.precioCosto),
-        precioVenta: Number(formulario.precioVenta),
+        precioEstandar: Number(formulario.precioEstandar),
         stock: Number(formulario.stock),
         stockMinimo: Number(formulario.stockMinimo),
       })
@@ -64,7 +64,7 @@ function RepuestoForm({ repuesto, onCancelar, onGuardar }) {
         </div>
         <div className="formulario">
           <label htmlFor="repuesto-precio-venta">Precio de venta</label>
-          <input id="repuesto-precio-venta" name="precioVenta" type="number" min="0" step="0.01" value={formulario.precioVenta} onChange={actualizarCampo} required />
+          <input id="repuesto-precio-venta" name="precioEstandar" type="number" min="0" step="0.01" value={formulario.precioEstandar} onChange={actualizarCampo} required />
         </div>
         <div className="formulario">
           <label htmlFor="repuesto-stock">Stock</label>

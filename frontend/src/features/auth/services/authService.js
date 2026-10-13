@@ -62,3 +62,8 @@ export function redirigirSiHaySesion() {
   }
   return null
 }
+
+export async function obtenerEmpleados() {
+  const usuarios = await leerUsuarios()
+  return usuarios.map((u) => ({ id: u.id, nombre: u.nombre }))
+}

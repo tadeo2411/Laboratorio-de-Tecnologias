@@ -35,7 +35,7 @@ function buscarVehiculo(lista, id) {
 
 // La patente identifica al vehículo: se guarda sin espacios y en mayúsculas
 // para que "ab 123 cd" y "AB123CD" se reconozcan como la misma.
-function normalizarPatente(patente) {
+export function normalizarPatente(patente) {
   return patente.replace(/\s+/g, '').toUpperCase()
 }
 

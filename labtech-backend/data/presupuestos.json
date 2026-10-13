@@ -2,43 +2,45 @@
     {
         "id": "pre-001",
         "numero": "P-001",
-        "ordenId": "ot-001",
-        "fechaEmision": "2026-09-30",
-        "estadoPresupuesto": "ENVIADO",
+        "ordenId": 1,
+        "fechaEmision": "2024-06-01",
+        "estadoPresupuesto": "APROBADO",
         "items": [
             { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de aceite y filtro", "cantidad": 1, "precioUnitario": 15000 },
-            { "id": 2, "tipo": "REPUESTO", "descripcion": "Aceite 5W30 (litro)", "cantidad": 4, "precioUnitario": 9000 },
-            { "id": 3, "tipo": "REPUESTO", "descripcion": "Filtro de aceite", "cantidad": 1, "precioUnitario": 7500 }
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Filtro de aceite", "cantidad": 1, "precioUnitario": 12500 },
+            { "id": 3, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno", "cantidad": 1, "precioUnitario": 25000 },
+            { "id": 4, "tipo": "REPUESTO", "descripcion": "Pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 46500 }
         ]
     },
     {
         "id": "pre-002",
         "numero": "P-002",
-        "ordenId": "ot-001",
-        "fechaEmision": "2026-10-02",
-        "estadoPresupuesto": "BORRADOR",
+        "ordenId": 3,
+        "fechaEmision": "2026-10-08",
+        "estadoPresupuesto": "ENVIADO",
         "items": [
-            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 20000 },
-            { "id": 2, "tipo": "REPUESTO", "descripcion": "Juego de pastillas delanteras", "cantidad": 1, "precioUnitario": 38000 }
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de bujes de parrilla", "cantidad": 1, "precioUnitario": 40000 },
+            { "id": 2, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno", "cantidad": 1, "precioUnitario": 25000 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 46500 }
         ]
     },
     {
         "id": "pre-003",
         "numero": "P-003",
-        "ordenId": "ot-003",
-        "fechaEmision": "2026-09-10",
-        "estadoPresupuesto": "ENVIADO",
+        "ordenId": 3,
+        "fechaEmision": "2026-10-09",
+        "estadoPresupuesto": "BORRADOR",
         "items": [
-            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reparación de radiador", "cantidad": 1, "precioUnitario": 45000 },
-            { "id": 2, "tipo": "OTRO", "descripcion": "Prueba de presión del circuito", "cantidad": 1, "precioUnitario": 8000 }
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de bujes de parrilla", "cantidad": 1, "precioUnitario": 40000 },
+            { "id": 2, "tipo": "OTRO", "descripcion": "Alineación y balanceo", "cantidad": 1, "precioUnitario": 18000 }
         ]
     },
     {
         "id": "pre-004",
         "numero": "P-004",
-        "ordenId": "ot-003",
-        "fechaEmision": "2026-09-27",
-        "estadoPresupuesto": "APROBADO",
+        "ordenId": 4,
+        "fechaEmision": "2026-10-10",
+        "estadoPresupuesto": "CANCELADO",
         "items": [
             { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reemplazo de radiador", "cantidad": 1, "precioUnitario": 35000 },
             { "id": 2, "tipo": "REPUESTO", "descripcion": "Radiador", "cantidad": 1, "precioUnitario": 120000 },
@@ -48,23 +50,11 @@
     {
         "id": "pre-005",
         "numero": "P-005",
-        "ordenId": "ot-004",
-        "fechaEmision": "2026-09-05",
-        "estadoPresupuesto": "CANCELADO",
-        "items": [
-            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Mantenimiento preventivo completo", "cantidad": 1, "precioUnitario": 60000 }
-        ]
-    },
-    {
-        "id": "pre-006",
-        "numero": "P-006",
-        "ordenId": "ot-004",
-        "fechaEmision": "2026-09-08",
+        "ordenId": 4,
+        "fechaEmision": "2026-10-10",
         "estadoPresupuesto": "APROBADO",
         "items": [
-            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Mantenimiento preventivo completo", "cantidad": 1, "precioUnitario": 50000 },
-            { "id": 2, "tipo": "REPUESTO", "descripcion": "Kit de filtros (aire, aceite, combustible)", "cantidad": 1, "precioUnitario": 32000 },
-            { "id": 3, "tipo": "REPUESTO", "descripcion": "Bujías", "cantidad": 4, "precioUnitario": 6500 }
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reparación del sistema de refrigeración", "cantidad": 1, "precioUnitario": 30000 }
         ]
     }
 ]

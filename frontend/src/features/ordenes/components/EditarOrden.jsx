@@ -2,7 +2,8 @@ import { useState } from "react";
 import OrdenForm from "./OrdenForm.jsx";
 import PresupuestosOrdenABM from "./PresupuestosOrdenABM.jsx";
 
-// Pestañas de "Editar orden". Acá se van a sumar las fichas y los trabajos.
+// Pestañas de "Editar orden". Las fichas se cargan desde el formulario de datos
+// y los trabajos desde "Más información".
 const PESTANAS = [
     { id: "datos", texto: "Datos de la orden" },
     { id: "presupuestos", texto: "Presupuestos" },
@@ -10,7 +11,7 @@ const PESTANAS = [
 
 // Las pestañas inactivas se ocultan en vez de desmontarse,
 // así no se pierde lo cargado al pasar de una a otra.
-function EditarOrden({ orden, onCerrar }) {
+function EditarOrden({ orden, vehiculos, onGuardar, onCerrar }) {
     const [pestanaActiva, setPestanaActiva] = useState("datos");
 
     return (
@@ -34,7 +35,7 @@ function EditarOrden({ orden, onCerrar }) {
             </ul>
 
             <div role="tabpanel" id="panel-datos" aria-labelledby="pestana-datos" hidden={pestanaActiva !== "datos"}>
-                <OrdenForm onCerrar={onCerrar} />
+                <OrdenForm orden={orden} vehiculos={vehiculos} onGuardar={onGuardar} onCerrar={onCerrar} />
             </div>
 
             <div

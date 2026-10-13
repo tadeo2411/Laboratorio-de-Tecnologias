@@ -107,6 +107,35 @@ export async function obtenerPresupuestosPorOrden(ordenId) {
         .map(armarRespuesta)
 }
 
+const sumarTotales = (items) => items.reduce((total, item) => total + item.precioTotal, 0)
+
+// Con backend real: GET /ordenes/:id/aprobado. Junta los ítems de todos los
+// presupuestos aprobados de la orden: es lo que el cliente autorizó hacer y lo
+// que consultan los mecánicos. Los repuestos se separan del resto (mano de obra, otros).
+export async function obtenerResumenAprobado(ordenId) {
+    const presupuestos = await obtenerPresupuestosPorOrden(ordenId)
+    const items = presupuestos
+        .filter((presupuesto) => presupuesto.estadoPresupuesto === 'APROBADO')
+        .flatMap((presupuesto) =>
+            presupuesto.items.map((item) => ({
+                ...item,
+                clave: `${presupuesto.id}-${item.id}`,
+                numeroPresupuesto: presupuesto.numero,
+            })),
+        )
+
+    const trabajos = items.filter((item) => item.tipo !== 'REPUESTO')
+    const repuestos = items.filter((item) => item.tipo === 'REPUESTO')
+
+    return {
+        trabajos,
+        repuestos,
+        totalTrabajos: sumarTotales(trabajos),
+        totalRepuestos: sumarTotales(repuestos),
+        total: sumarTotales(items),
+    }
+}
+
 // Recibe { ordenId, items }. Número, fechas y estado los asigna el sistema.
 export async function crearPresupuesto(datos) {
     const lista = await cargarPresupuestos()

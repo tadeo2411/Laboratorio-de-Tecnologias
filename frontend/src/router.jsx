@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router'
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/pages/PaginaInicial'
-import OrdenesPage from './features/ordenes/pages/OrdenesPage'
+import { OrdenesPage, cargarPaginaOrdenes } from './features/ordenes'
 // import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
 import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
@@ -45,7 +45,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "ordenes",
-                element: <OrdenesPage />
+                element: <OrdenesPage />,
+                loader: cargarPaginaOrdenes
             },
             {
                 path: "turnos",

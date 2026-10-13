@@ -14,9 +14,14 @@ export const TIPOS_ITEM = {
     MANO_DE_OBRA: "Mano de obra",
     REPUESTO: "Repuesto",
     OTRO: "Otro",
+    DESCUENTO: "Descuento",
 };
 
 export const formatearPrecio = (valor) => `$${Number(valor || 0).toLocaleString("es-AR")}`;
+
+// El total de un renglón viene positivo; si es un descuento se muestra con signo menos.
+export const formatearTotalDelRenglon = (renglon) =>
+    renglon.tipo === "DESCUENTO" ? `−${formatearPrecio(renglon.precioTotal)}` : formatearPrecio(renglon.precioTotal);
 
 // Las fechas vienen como "AAAA-MM-DD"; se arman a mano para no correr el día por zona horaria.
 export const formatearFecha = (fecha) => {

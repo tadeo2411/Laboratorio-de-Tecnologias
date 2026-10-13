@@ -16,6 +16,8 @@ function crearItemsIniciales(presupuesto) {
 
 // Vista previa mientras se escribe; el precio que vale es el que calcula el backend al guardar.
 const totalItem = (item) => Number(item.cantidad) * Number(item.precioUnitario);
+// Para el precio final, los descuentos restan.
+const importeConSigno = (item) => (item.tipo === "DESCUENTO" ? -totalItem(item) : totalItem(item));
 
 // Si recibe un presupuesto, lo edita; si recibe null, arma uno nuevo (queda como borrador).
 // Número y fechas no se cargan a mano: los asigna el sistema.
@@ -57,12 +59,15 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
         // Los inputs entregan texto: cantidad y precio se convierten antes de guardar.
         const datos = { estadoPresupuesto: estado };
         if (itemsEditables) {
+            // Se conserva el trabajoId de los renglones que salieron de un trabajo:
+            // si se perdiera, ese trabajo quedaría libre para otro presupuesto.
             datos.items = items.map((item, indice) => ({
                 id: indice + 1,
                 tipo: item.tipo,
                 descripcion: item.descripcion.trim(),
                 cantidad: Number(item.cantidad),
                 precioUnitario: Number(item.precioUnitario),
+                ...(item.trabajoId !== undefined && { trabajoId: item.trabajoId }),
             }));
         }
 
@@ -196,7 +201,7 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
 
             <div className="info-orden-resumen-total presupuesto-form-precio-final">
                 <span>Precio final</span>
-                <strong>{formatearPrecio(items.reduce((total, item) => total + totalItem(item), 0))}</strong>
+                <strong>{formatearPrecio(items.reduce((total, item) => total + importeConSigno(item), 0))}</strong>
             </div>
 
             <div className="d-flex justify-content-end gap-2">

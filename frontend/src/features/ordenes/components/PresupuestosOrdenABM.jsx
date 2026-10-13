@@ -10,11 +10,14 @@ import {
 } from "../services/presupuestosService";
 import PresupuestoCard from "./PresupuestoCard.jsx";
 import PresupuestoForm from "./PresupuestoForm.jsx";
+import PresupuestoAltaForm from "./PresupuestoAltaForm.jsx";
 
 const ESTADOS_FINALES = ["APROBADO", "CANCELADO", "VENCIDO"];
 
-// ABM de los presupuestos de una orden (pestaña "Presupuestos" de Editar orden).
+// ABM de los presupuestos de una orden (pestaña "Presupuestos" del modal de la orden).
 // El formulario reemplaza a la lista en la misma pestaña para no abrir un modal sobre otro.
+// El alta se arma eligiendo trabajos (PresupuestoAltaForm); la edición de uno
+// existente sigue con los renglones a mano (PresupuestoForm).
 function PresupuestosOrdenABM({ ordenId }) {
     const [presupuestos, setPresupuestos] = useState([]);
     const [cargando, setCargando] = useState(true);
@@ -67,17 +70,19 @@ function PresupuestosOrdenABM({ ordenId }) {
         setPresupuestoEnEdicion(null);
     }
 
-    // No captura errores: si el servicio rechaza los datos, el formulario los muestra.
-    async function handleGuardar(datos) {
-        if (presupuestoEnEdicion) {
-            const actualizado = await actualizarPresupuesto(presupuestoEnEdicion.id, datos);
-            await recargarPresupuestos();
-            mostrarMensaje(`Presupuesto ${actualizado.numero} actualizado.`);
-        } else {
-            const nuevo = await crearPresupuesto({ ...datos, ordenId });
-            await recargarPresupuestos();
-            mostrarMensaje(`Presupuesto ${nuevo.numero} creado como borrador.`);
-        }
+    // Estas dos funciones no capturan errores: si el servicio rechaza los datos,
+    // el formulario muestra el motivo y queda abierto para corregirlos.
+    async function handleCrear(datosDelAlta) {
+        const nuevo = await crearPresupuesto({ ...datosDelAlta, ordenId });
+        await recargarPresupuestos();
+        mostrarMensaje(`Presupuesto ${nuevo.numero} creado como borrador.`);
+        cerrarFormulario();
+    }
+
+    async function handleGuardarEdicion(datosEditados) {
+        const actualizado = await actualizarPresupuesto(presupuestoEnEdicion.id, datosEditados);
+        await recargarPresupuestos();
+        mostrarMensaje(`Presupuesto ${actualizado.numero} actualizado.`);
         cerrarFormulario();
     }
 
@@ -116,12 +121,22 @@ function PresupuestosOrdenABM({ ordenId }) {
         );
     }
 
-    if (formularioAbierto) {
+    if (formularioAbierto && presupuestoEnEdicion) {
         return (
             <PresupuestoForm
                 presupuesto={presupuestoEnEdicion}
                 onCancelar={cerrarFormulario}
-                onGuardar={handleGuardar}
+                onGuardar={handleGuardarEdicion}
+            />
+        );
+    }
+
+    if (formularioAbierto) {
+        return (
+            <PresupuestoAltaForm
+                ordenId={ordenId}
+                onCancelar={cerrarFormulario}
+                onCrear={handleCrear}
             />
         );
     }

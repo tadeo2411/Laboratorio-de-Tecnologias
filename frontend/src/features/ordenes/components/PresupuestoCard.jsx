@@ -1,5 +1,11 @@
 import img_presupuesto from "../../../assets/icons/img_presupuesto.png";
-import { ESTADOS_PRESUPUESTO, TIPOS_ITEM, formatearFecha, formatearPrecio } from "../utils/presupuestosVista";
+import {
+    ESTADOS_PRESUPUESTO,
+    TIPOS_ITEM,
+    formatearFecha,
+    formatearPrecio,
+    formatearTotalDelRenglon,
+} from "../utils/presupuestosVista";
 
 // Tarjeta desplegable con los datos e ítems de un presupuesto.
 // "acciones" se muestra al pie (lo usa el ABM para editar y eliminar).
@@ -58,7 +64,7 @@ function PresupuestoCard({ presupuesto, abierto = false, acciones = null }) {
                                     {formatearPrecio(item.precioUnitario)}
                                 </td>
                                 <td data-label="Total" className="presupuesto-numero">
-                                    {formatearPrecio(item.precioTotal)}
+                                    {formatearTotalDelRenglon(item)}
                                 </td>
                             </tr>
                         ))}

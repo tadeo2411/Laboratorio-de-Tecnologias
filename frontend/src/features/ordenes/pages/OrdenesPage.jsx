@@ -14,6 +14,7 @@ import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabaj
 import { esEstadoFinal } from "../utils/estados";
 import { crearVehiculo } from "../../vehiculos";
 import "../ordenes.css"
+import "../../estilos.css"
 
 const columnasOrdenes = [
     { key: "numero", nombre: "N°" },
@@ -87,7 +88,7 @@ function OrdenesPage() {
         <>
             {modalAbierto && (
                 <Modal
-                    titulo={ordenEnEdicion ? "Editar orden" : "Nueva orden"}
+                    titulo={ordenEnEdicion ? `Orden #${ordenEnEdicion.id} · ${ordenEnEdicion.vehiculoPatente}` : "Nueva orden"}
                     onCerrar={cerrarFormulario}
                 >
                     {ordenEnEdicion ? (

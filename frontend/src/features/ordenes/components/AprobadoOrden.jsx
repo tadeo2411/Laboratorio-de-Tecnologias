@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { obtenerResumenAprobado } from "../services/presupuestosService";
-import { TIPOS_ITEM, formatearPrecio } from "../utils/presupuestosVista";
+import { TIPOS_ITEM, formatearPrecio, formatearTotalDelRenglon } from "../utils/presupuestosVista";
 
 // Resumen para el taller de lo que el cliente aprobó en la orden
 // (ítems de todos los presupuestos aprobados), en la vista "Más información".
@@ -29,8 +29,8 @@ function AprobadoOrden({ ordenId }) {
         };
     }, [ordenId]);
 
-    // Primero los trabajos y después los repuestos, como se leen en el taller.
-    const items = resumen ? [...resumen.trabajos, ...resumen.repuestos] : [];
+    // Primero los trabajos, después los repuestos y al final los descuentos, como se leen en el taller.
+    const items = resumen ? [...resumen.trabajos, ...resumen.repuestos, ...resumen.descuentos] : [];
 
     return (
         <div className="info-orden-seccion">
@@ -67,7 +67,7 @@ function AprobadoOrden({ ordenId }) {
                                         <td data-label="Descripción">{item.descripcion}</td>
                                         <td data-label="Cant." className="presupuesto-numero">{item.cantidad}</td>
                                         <td data-label="Total" className="presupuesto-numero">
-                                            {formatearPrecio(item.precioTotal)}
+                                            {formatearTotalDelRenglon(item)}
                                         </td>
                                         <td data-label="Presupuesto">{item.numeroPresupuesto}</td>
                                     </tr>
@@ -85,6 +85,12 @@ function AprobadoOrden({ ordenId }) {
                             <span>Repuestos aprobados</span>
                             <strong>{formatearPrecio(resumen.totalRepuestos)}</strong>
                         </div>
+                        {resumen.totalDescuentos > 0 && (
+                            <div className="info-orden-resumen-item">
+                                <span>Descuentos</span>
+                                <strong>−{formatearPrecio(resumen.totalDescuentos)}</strong>
+                            </div>
+                        )}
                         <div className="info-orden-resumen-total">
                             <span>Total aprobado</span>
                             <strong>{formatearPrecio(resumen.total)}</strong>

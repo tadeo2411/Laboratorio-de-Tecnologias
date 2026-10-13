@@ -889,3 +889,132 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+/* ========================================= ALTA DE PRESUPUESTO (ELIGIENDO TRABAJOS) ========================================= */
+.presupuesto-alta-seccion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.presupuesto-alta-subtitulo {
+    margin: 0;
+    color: #343a40;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.presupuesto-alta-trabajos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.presupuesto-alta-trabajo {
+    padding: 10px 12px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.presupuesto-alta-trabajo-fila {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.presupuesto-alta-trabajo-fila .form-check-label {
+    margin: 0;
+    color: #343a40;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.presupuesto-alta-importe {
+    margin-left: auto;
+    color: #212529;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Repuestos de cada trabajo: con sangría y texto más chico. */
+.presupuesto-alta-repuestos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 6px 0 0;
+    padding: 0 0 0 2rem;
+    list-style: none;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.presupuesto-alta-repuestos li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.presupuesto-alta-notas {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.presupuesto-alta-fila {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 12px;
+}
+
+.presupuesto-alta-validez small {
+    font-size: 11px;
+}
+
+.presupuesto-alta-descuento {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(100px, 1fr) auto;
+    align-items: end;
+    gap: 10px;
+}
+
+.presupuesto-alta-resumen {
+    margin-top: 0;
+}
+
+.presupuesto-alta-negativo,
+.presupuesto-alta-negativo strong {
+    color: #dc3545 !important;
+}
+
+.presupuesto-alta-aviso-negativo {
+    margin: 6px 0 0;
+    color: #dc3545;
+    font-size: 13px;
+}
+
+.presupuesto-alta-pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .presupuesto-alta-fila {
+        grid-template-columns: 1fr;
+    }
+}

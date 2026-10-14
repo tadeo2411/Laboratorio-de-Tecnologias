@@ -47,24 +47,6 @@
     filter: brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%);
 }
 
-.title-container {
-    display: flex;
-    gap: .2rem;
-    flex: 1;
-    padding-left: 1rem;
-}
-
-.title-container h1 {
-    font-size: 2rem;
-    margin: 0;
-}
-
-.title-container p {
-    font-size: 1rem;
-    color: #585858;
-    margin: 0;
-}
-
 /* ========================================= TÍTULO PRINCIPAL ========================================= */
 .contenedor>h3 {
     margin: 0 0 25px 0;

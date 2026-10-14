@@ -1,5 +1,6 @@
 import "../trabajosPage.css"
-import img_list from "../../../assets/icons/img_list.png"
+import "../../estilos.css"
+import img_list from "../../../assets/icons/trabajosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
 import Table from "../../../shared/components/Table";
 import Modal from "../../../shared/components/Modal";
@@ -86,12 +87,13 @@ function TrabajosPage() {
                     <MasInfo trabajo={trabajoSeleccionado} onCerrar={() => setModalMasInfoAbierto(false)} />
                 </Modal>
             )}
-            <div className="trabajos-page">
-                <div className="img-container">
-                    <img src={img_list} />
-                </div>
-
-                <div className="title-container">
+            <div className="page-header">
+            
+                    <div className="page-header-image">
+            
+                      <img src={img_list} alt="Listado" />
+                    </div>
+                    <div className="page-header-title">
                     <h1>Trabajos</h1>
                     <p>Listado de trabajos registrados en el sistema.</p>
                 </div>

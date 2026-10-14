@@ -5,7 +5,9 @@ import RepuestosList from '../components/RepuestosList'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
-import img_list from "../../../assets/icons/img_list.png"
+import img_list from "../../../assets/icons/repuestosIcono.svg"
+import '../RepuestosPage.css'
+import '../../estilos.css'
 
 import {
   actualizarRepuesto,
@@ -13,7 +15,8 @@ import {
   eliminarRepuesto,
   obtenerRepuestos,
 } from '../services/repuestosService'
-import './RepuestosPage.css'
+import '../RepuestosPage.css'
+import "../../estilos.css"
 import Table from '../../../shared/components/Table'
 
 const columnasRepuestos = [
@@ -111,12 +114,13 @@ function RepuestosPage() {
   return (
 
     <div className="contenedor">
-      <div className="repuestos-page">
-        <div className="img-container">
-          <img src={img_list} />
-        </div>
-
-        <div className="title-container">
+      <div className="page-header">
+      
+              <div className="page-header-image">
+      
+                <img src={img_list} alt="Listado" />
+              </div>
+              <div className="page-header-title">
           <h1>Repuestos</h1>
           <p>Listado de repuestos registrados en el sistema.</p>
         </div>
@@ -203,7 +207,7 @@ function RepuestosPage() {
         <Modal
           titulo={repuestoEnEdicion ? 'Editar repuesto' : 'Registrar repuesto'}
           onCerrar={cerrarFormulario}
-          cerrarAlTocarFondo={false}
+          cerrarAlTocarFondo={true}
         >
           <RepuestoForm repuesto={repuestoEnEdicion} onCancelar={cerrarFormulario} onGuardar={guardarRepuesto} />
         </Modal>

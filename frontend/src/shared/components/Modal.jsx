@@ -18,17 +18,11 @@ function Modal({
         }
     };
 
-    // const handleEscSalida = (event) =>{
-    //     if
-    // }
-
-
     return (
         <div
             className="modal-fondo"
             role="presentation"
             onMouseDown={manejarClickFondo}
-            onEscSalida = {handleEscSalida}
         >
             <section
                 className="modal-contenido"

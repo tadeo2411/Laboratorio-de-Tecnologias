@@ -5,7 +5,7 @@ import img_empleado from "../../../assets/icons/img_empleado.svg";
 import img_precio from "../../../assets/icons/img_precio.svg";
 import img_repuestos from "../../../assets/icons/img_repuestos.svg";
 
-function TrabajosForm({onCerrar}) {
+function TrabajosForm({ onCerrar }) {
     return (
         <div>
             <p className="campos-obligatorios">
@@ -22,12 +22,14 @@ function TrabajosForm({onCerrar}) {
                             <select className="select"></select>
                         </div>
                     </div>
+                </div>
 
+                <div>
                     <div>
-                        <label>Estado <span className="asterisco">*</span></label>
+                        <label>Tipo de trabajo <span className="asterisco">*</span></label>
 
                         <div className="campo-icono">
-                            <img style={{filter:"brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%)"}} src={img_estado} alt="" />
+                            <img src={img_trabajo} alt="" />
                             <select className="select"></select>
                         </div>
                     </div>
@@ -42,17 +44,7 @@ function TrabajosForm({onCerrar}) {
                         </div>
                     </div>
                 </div>
-
                 <div>
-                    <div>
-                        <label>Tipo de trabajo <span className="asterisco">*</span></label>
-
-                        <div className="campo-icono">
-                            <img src={img_trabajo} alt="" />
-                            <select className="select"></select>
-                        </div>
-                    </div>
-
                     <div>
                         <label>Empleado <span className="asterisco">*</span></label>
 

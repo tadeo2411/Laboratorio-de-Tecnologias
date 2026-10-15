@@ -1,13 +1,26 @@
-import { useId } from "react";
+import { useEffect, useId } from "react";
 import "../compartido.css"
 function Modal({
     titulo,
     onCerrar,
     cerrarAlTocarFondo = true,
-    onEscSalida,
     children,
 }) {
     const idTitulo = useId();
+
+    useEffect(() => {
+    const manejarTecla = (event) => {
+        if (event.key === "Escape") {
+            onCerrar();
+        }
+    };
+
+    window.addEventListener("keydown", manejarTecla);
+
+    return () => {
+        window.removeEventListener("keydown", manejarTecla);
+    };
+}, [onCerrar]);
 
     const manejarClickFondo = (event) => {
         if (

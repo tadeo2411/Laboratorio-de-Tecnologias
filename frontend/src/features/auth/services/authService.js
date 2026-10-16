@@ -11,21 +11,13 @@ async function leerUsuarios() {
   return respuesta.json()
 }
 
-async function calcularHash(salt, contrasena) {
-  const bytes = new TextEncoder().encode(salt + contrasena)
-  const huella = await crypto.subtle.digest('SHA-256', bytes)
-  return Array.from(new Uint8Array(huella), (byte) => byte.toString(16).padStart(2, '0')).join('')
-}
 //Cambios con funciones nuevas
 export async function iniciarSesion(usuario, contrasena) {
   const usuarios = await leerUsuarios()
-  const nombreUsuario = usuario.trim().toLowerCase()
-  const encontrado = usuarios.find((u) => u.usuario === nombreUsuario)
+  const encontrado = usuarios.find(
+    (u) => u.usuario === usuario.trim().toLowerCase() && u.contrasena === contrasena)
 
-  const contrasenaCorrecta = true
-    //encontrado && (await calcularHash(encontrado.salt, contrasena)) === encontrado.contrasenaHash
-
-  if (!contrasenaCorrecta) {
+  if (!encontrado) {
     throw new Error('Usuario o contraseña incorrectos.')
   }
 

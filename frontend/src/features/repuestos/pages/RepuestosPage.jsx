@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import Modal from '../../../shared/components/Modal'
 import RepuestoForm from '../components/RepuestoForm'
-import RepuestosList from '../components/RepuestosList'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'

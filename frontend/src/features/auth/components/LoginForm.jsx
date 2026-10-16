@@ -4,6 +4,8 @@ function LoginForm({ onIngresar }) {
   const [formulario, setFormulario] = useState({ usuario: '', contrasena: '' })
   const [error, setError] = useState('')
   const [ingresando, setIngresando] = useState(false)
+  const [mostrarContrasena, setMostrarContrasena] = useState(false)
+
 
   function actualizarCampo(event) {
     const { name, value } = event.target
@@ -44,17 +46,25 @@ function LoginForm({ onIngresar }) {
         />
       </div>
 
-      <div className="login-form__campo">
+      <div className="login-form__campo contrasenaCampo">
         <label htmlFor="login-contrasena">Contraseña</label>
         <input
           id="login-contrasena"
           name="contrasena"
-          type="password"
+          type={mostrarContrasena ? "text ":"password"}
           autoComplete="current-password"
           value={formulario.contrasena}
           onChange={actualizarCampo}
           required
         />
+        <button
+            type="button"
+            className="mostrarContrasena"
+            onClick={() => setMostrarContrasena(!mostrarContrasena)}
+            aria-pressed={mostrarContrasena}
+          >
+            {mostrarContrasena ? 'Ocultar' : 'Mostrar'}
+          </button>
       </div>
 
       <button type="submit" className="login-form__boton" disabled={ingresando}>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Tarjeta from "../components/Tarjeta";
 import "../TablerosPage.css"
+import "../../estilos.css"
 import img_auto from "../../../assets/icons/img_auto.png"
 import img_correcto from "../../../assets/icons/img_correcto.png"
 import img_presupuesto from "../../../assets/icons/img_presupuesto.png"

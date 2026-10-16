@@ -1,5 +1,7 @@
 import { useState } from "react";
 import img_auto from "../../../assets/icons/img_auto.png";
+import img_cliente from "../../../assets/icons/clientesIcono.svg";
+import turnosIcono from "../../../assets/icons/turnosIcono.svg";
 import img_estado from "../../../assets/icons/img_estado.svg";
 import img_urgencia from "../../../assets/icons/img_urgencia.svg"
 import img_service from "../../../assets/icons/img_trabajo.svg"
@@ -298,8 +300,9 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                         {guardando ? "Guardando..." : "Guardar"}
                     </button>
                 </div>
-            </form>
-        </div>
+
+            </form >
+        </div >
     );
 }
 

@@ -46,50 +46,151 @@ function RepuestoForm({ repuesto, onCancelar, onGuardar }) {
   }
 
   return (
-    <form onSubmit={manejarEnvio}>
-      {error && <p className="alert alert-danger" role="alert">{error}</p>}
+    <div>
+    <p className="campos-obligatorios">
+        Los campos con <span className="asterisco">*</span> son obligatorios.
+    </p>
 
-      <div className="grilla">
-        <div className="formulario">
-          <label htmlFor="repuesto-codigo">Código</label>
-          <input id="repuesto-codigo" name="codigo" type="text" value={formulario.codigo} onChange={actualizarCampo} required />
-        </div>
-        <div className="formulario">
-          <label htmlFor="repuesto-nombre">Nombre</label>
-          <input id="repuesto-nombre" name="nombre" type="text" value={formulario.nombre} onChange={actualizarCampo} required />
-        </div>
-        <div className="formulario">
-          <label htmlFor="repuesto-precio-costo">Precio de costo</label>
-          <input id="repuesto-precio-costo" name="precioCosto" type="number" min="0" step="0.01" value={formulario.precioCosto} onChange={actualizarCampo} required />
-        </div>
-        <div className="formulario">
-          <label htmlFor="repuesto-precio-venta">Precio de venta</label>
-          <input id="repuesto-precio-venta" name="precioEstandar" type="number" min="0" step="0.01" value={formulario.precioEstandar} onChange={actualizarCampo} required />
-        </div>
-        <div className="formulario">
-          <label htmlFor="repuesto-stock">Stock</label>
-          <input id="repuesto-stock" name="stock" type="number" min="0" step="1" value={formulario.stock} onChange={actualizarCampo} required />
-        </div>
-        <div className="formulario">
-          <label htmlFor="repuesto-stock-minimo">Stock mínimo</label>
-          <input id="repuesto-stock-minimo" name="stockMinimo" type="number" min="0" step="1" value={formulario.stockMinimo} onChange={actualizarCampo} required />
-        </div>
-      </div>
+    {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
-      <div className="formulario">
-        <label htmlFor="repuesto-descripcion">Descripción</label>
-        <textarea id="repuesto-descripcion" name="descripcion" rows="3" value={formulario.descripcion} onChange={actualizarCampo} />
-      </div>
+    <form className="form-ordenes" onSubmit={manejarEnvio}>
+        <div>
+            <div>
+                <label htmlFor="repuesto-codigo">
+                    Código <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-codigo"
+                    name="codigo"
+                    type="text"
+                    value={formulario.codigo}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
 
-      <div className="acciones-formulario">
-        <button type="submit" className="btnGuardar" disabled={guardando}>
-          {guardando ? 'Guardando...' : esEdicion ? 'Guardar cambios' : 'Crear repuesto'}
-        </button>
-        <button type="button" className="btnCancelar" onClick={onCancelar}>
-          Cancelar
-        </button>
-      </div>
+            <div>
+                <label htmlFor="repuesto-nombre">
+                    Nombre <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-nombre"
+                    name="nombre"
+                    type="text"
+                    value={formulario.nombre}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <label htmlFor="repuesto-precio-costo">
+                    Precio de costo <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-precio-costo"
+                    name="precioCosto"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={formulario.precioCosto}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
+
+            <div>
+                <label htmlFor="repuesto-precio-venta">
+                    Precio de venta <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-precio-venta"
+                    name="precioEstandar"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={formulario.precioEstandar}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <label htmlFor="repuesto-stock">
+                    Stock <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-stock"
+                    name="stock"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formulario.stock}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
+
+            <div>
+                <label htmlFor="repuesto-stock-minimo">
+                    Stock mínimo <span className="asterisco">*</span>
+                </label>
+                <input
+                    id="repuesto-stock-minimo"
+                    name="stockMinimo"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value={formulario.stockMinimo}
+                    onChange={actualizarCampo}
+                    required
+                />
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <label htmlFor="repuesto-descripcion">Descripción</label>
+                <div>
+                    <textarea
+                        id="repuesto-descripcion"
+                        name="descripcion"
+                        rows="3"
+                        placeholder="Describí el repuesto..."
+                        value={formulario.descripcion}
+                        onChange={actualizarCampo}
+                    />
+                </div>
+            </div>
+        </div>
+
+        <div className="d-flex justify-content-end gap-2">
+            <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={onCancelar}
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="submit"
+                className="btn btn-success"
+                disabled={guardando}
+            >
+                {guardando
+                    ? 'Guardando...'
+                    : esEdicion
+                        ? 'Guardar cambios'
+                        : 'Crear repuesto'}
+            </button>
+        </div>
     </form>
+</div>
   )
 }
 

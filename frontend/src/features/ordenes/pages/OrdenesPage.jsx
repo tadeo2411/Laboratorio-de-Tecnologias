@@ -8,11 +8,11 @@ import Modal from '../../../shared/components/Modal.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import EditarOrden from "../components/EditarOrden.jsx";
-import img_list from "../../../assets/icons/img_list.png"
 import { numeroOrden, formatearFecha, fechaIngreso, describirVehiculo } from "../utils/ordenes";
 import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabajo } from "../services/ordenesService";
 import { esEstadoFinal } from "../utils/estados";
 import { crearVehiculo } from "../../vehiculos";
+import img_list from "../../../assets/icons/img_presupuesto.png"
 import "../ordenes.css"
 import "../../estilos.css"
 
@@ -128,12 +128,13 @@ function OrdenesPage() {
             )}
 
             <div className="contenedor">
-                <div className="ordenes-page">
-                    <div className="img-container">
-                        <img src={img_list} />
-                    </div>
-
-                    <div className="title-container">
+                <div className="page-header">
+                
+                        <div className="page-header-image">
+                
+                          <img src={img_list} alt="Listado" />
+                        </div>
+                        <div className="page-header-title">
                         <h1>Ordenes</h1>
                         <p>Listado de ordenes registradas en el sistema.</p>
                     </div>

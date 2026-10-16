@@ -1,9 +1,9 @@
-.contenedorMetricas{
+.contenedorMetricas {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap:30px;
+    gap: 30px;
 }
 
 .contenedorTarjetas {
@@ -19,33 +19,31 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     background-color: white;
     border: 1px solid rgb(194, 192, 192);
     border-radius: 10px;
     padding: 10px;
-
     width: 250px;
     min-height: 140px;
-
     box-sizing: border-box;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
 }
 
-.tarjetaTitulo{
+.tarjetaTitulo {
     font-size: 15px;
 }
 
-.tarjetaCantidad{
+.tarjetaCantidad {
     font-weight: bold;
     font-size: 25px;
 }
 
-.vehiculosPorEstado{
-     display: flex;
+.vehiculosPorEstado {
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items:baseline;
+    align-items: baseline;
     background-color: white;
     border: 1px solid rgb(194, 192, 192);
     border-radius: 10px;
@@ -54,7 +52,7 @@
     max-width: 900px;
 }
 
-.vehiculosPorEstado > h2 {
+.vehiculosPorEstado>h2 {
     font-weight: bold;
 }
 

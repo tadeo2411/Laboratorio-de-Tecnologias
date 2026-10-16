@@ -3,12 +3,14 @@ import Clientes from '../components/Clientes'
 import ClientesForm from '../components/ClientesForm'
 import ClientesModal from '../components/ClientesModal'
 import { obtenerClientes } from '../services/clientesServices'
-import img_list from "../../../assets/icons/img_list.png"
+import img_list from "../../../assets/icons/clientesIcono.svg"
 import "../clientes.css";
+import "../../estilos.css"
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import Table from '../../../shared/components/Table'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
+import Modal from '../../../shared/components/Modal'
 
 const columnasClientes = [
     { key: "nombre", nombre: "Nombre" },
@@ -91,17 +93,18 @@ function ClientesPage() {
     }
 
     return (
-        <div className="clientes-page">
+        <div>
             {error && <p role="alert">{error}</p>}
             {cargando && <p role="status">Cargando clientes…</p>}
             {!cargando && !error && (
                 <div className="contenedor">
-                    <div className="clientes-page">
-                        <div className="img-container">
-                            <img src={img_list} />
-                        </div>
-
-                        <div className="title-container">
+                   <div className="page-header">
+                   
+                           <div className="page-header-image">
+                   
+                             <img src={img_list} alt="Listado" />
+                           </div>
+                           <div className="page-header-title">
                             <h1>Clientes</h1>
                             <p>Listado de clientes registrados en el sistema.</p>
                         </div>
@@ -142,8 +145,8 @@ function ClientesPage() {
                                         />
 
                                         <BotonEliminar
-                                        onClick={() => handleEliminarCliente(cliente.id)}
-                                        aria-label={`Eliminar cliente ${cliente.nombre} `}
+                                            onClick={() => handleEliminarCliente(cliente.id)}
+                                            aria-label={`Eliminar cliente ${cliente.nombre} `}
 
                                         />
 
@@ -156,7 +159,8 @@ function ClientesPage() {
                 </div>
             )}
             {mostrarFormulario && (
-                <ClientesModal
+                
+                <Modal
                     titulo={clienteAEditar ? 'Editar cliente' : 'Nuevo cliente'}
                     onCerrar={cerrarFormulario}
                 >
@@ -165,7 +169,7 @@ function ClientesPage() {
                         onGuardar={handleGuardarCliente}
                         error={errorFormulario}
                     />
-                </ClientesModal>
+                </Modal>
             )}
         </div>
     )

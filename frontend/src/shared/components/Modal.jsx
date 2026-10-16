@@ -4,10 +4,23 @@ function Modal({
     titulo,
     onCerrar,
     cerrarAlTocarFondo = true,
-
     children,
 }) {
     const idTitulo = useId();
+
+    useEffect(() => {
+    const manejarTecla = (event) => {
+        if (event.key === "Escape") {
+            onCerrar();
+        }
+    };
+
+    window.addEventListener("keydown", manejarTecla);
+
+    return () => {
+        window.removeEventListener("keydown", manejarTecla);
+    };
+}, [onCerrar]);
 
     const manejarClickFondo = (event) => {
         if (
@@ -17,17 +30,6 @@ function Modal({
             onCerrar();
         }
     };
-
-    // Cierra el modal al apretar Escape mientras esté montado.
-    useEffect(() => {
-        const handleEscSalida = (event) => {
-            if (event.key === "Escape") onCerrar();
-        };
-
-        document.addEventListener("keydown", handleEscSalida);
-        return () => document.removeEventListener("keydown", handleEscSalida);
-    }, [onCerrar]);
-
 
     return (
         <div

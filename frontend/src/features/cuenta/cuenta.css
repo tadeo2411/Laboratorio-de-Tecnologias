@@ -1,0 +1,144 @@
+.mi-cuenta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f1f8f2 0%, #ffffff 70%);
+    border: 1px solid #e3eee4;
+}
+
+.mi-cuenta-datos {
+    flex: 1;
+    min-width: 180px;
+}
+
+.mi-cuenta-datos h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.mi-cuenta-etiquetas {
+    display: flex;
+    gap: .5rem;
+    margin-top: .6rem;
+}
+
+.mi-cuenta-info {
+    display: grid;
+    gap: .75rem;
+    margin: 0;
+    padding-left: 1.5rem;
+    border-left: 1px solid #e0e0e0;
+}
+
+.mi-cuenta-info dt {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #8a8a8a;
+}
+
+.mi-cuenta-info dd {
+    margin: 0;
+    font-weight: 500;
+}
+
+.cuenta-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #2e7d32;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+.cuenta-avatar-grande {
+    width: 84px;
+    height: 84px;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, .3);
+}
+
+.cuenta-usuario {
+    color: #757575;
+    font-size: .9rem;
+}
+
+.cuenta-badge {
+    display: inline-block;
+    padding: .2rem .7rem;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.cuenta-rol-administrador {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.cuenta-rol-mecanico {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.cuenta-activo {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.cuenta-inactivo {
+    background-color: #eeeeee;
+    color: #757575;
+}
+
+.cuenta-vos {
+    margin-left: .5rem;
+    padding: .05rem .5rem;
+    border-radius: 999px;
+    background-color: #2e7d32;
+    color: #ffffff;
+    font-size: .7rem;
+    font-weight: 600;
+}
+
+.empleado-celda {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    text-align: left;
+}
+
+.empleado-inactivo .cuenta-avatar {
+    background-color: #bdbdbd;
+}
+
+.empleado-inactivo strong {
+    color: #9e9e9e;
+}
+
+@media (max-width: 600px) {
+    .mi-cuenta {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .mi-cuenta-etiquetas {
+        justify-content: center;
+    }
+
+    .mi-cuenta-info {
+        width: 100%;
+        padding-left: 0;
+        padding-top: 1rem;
+        border-left: none;
+        border-top: 1px solid #e0e0e0;
+    }
+}

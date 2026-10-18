@@ -10,6 +10,7 @@ import TablerosPage from './features/tableros/pages/TablerosPage';
 import TrabajosPage from './features/trabajos/pages/TrabajosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 import ClientesPage from './features/clientes/pages/ClientesPage'
+import { CuentaPage, cargarPaginaCuenta } from './features/cuenta'
 import Spinner from './shared/components/Spinner'
 import {LoginPage, GestorConSesion, protegerRuta, redirigirSiHaySesion} from './features/auth'
 export const router = createBrowserRouter([
@@ -71,6 +72,11 @@ export const router = createBrowserRouter([
             {
                 path: "trabajos",
                 element: <TrabajosPage />
+            },
+            {
+                path: "cuenta",
+                element: <CuentaPage />,
+                loader: cargarPaginaCuenta
             }
         ]
     }

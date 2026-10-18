@@ -139,7 +139,7 @@ function OrdenesPage() {
                         <p>Listado de ordenes registradas en el sistema.</p>
                     </div>
 
-                    <BotonNuevo onClick={() => abrirFormulario()} componente={"orden"} />
+                    <BotonNuevo onClick={() => abrirFormulario()} componente={"orden"} esFemenino />
                 </div>
                 <Table
                     inputPlaceholder="Buscar por patente o numero de orden..."

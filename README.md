@@ -561,6 +561,7 @@ Mientras no exista el backend, los usuarios se simulan en `labtech-backend/data/
 |---|---|---|
 | `admin` | `Admin303!` | ADMINISTRADOR |
 | `mecanico` | `Mecanico303!` | MECANICO |
+| `ex.mecanico` | `ExMecanico303!` | MECANICO (inactivo, no puede iniciar sesión) |
 
 Son datos de prueba: no deben usarse contraseñas reales en este archivo ni en el JSON.
 

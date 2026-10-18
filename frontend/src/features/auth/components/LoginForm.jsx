@@ -51,7 +51,7 @@ function LoginForm({ onIngresar }) {
         <input
           id="login-contrasena"
           name="contrasena"
-          type={mostrarContrasena ? "text ":"password"}
+          type={mostrarContrasena ? "text" : "password"}
           autoComplete="current-password"
           value={formulario.contrasena}
           onChange={actualizarCampo}

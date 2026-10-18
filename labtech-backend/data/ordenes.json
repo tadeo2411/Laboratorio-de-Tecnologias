@@ -41,7 +41,7 @@
         "tipoTrabajo": "Cambio de aceite y filtro",
         "descripcion": "Aceite 5W30 sintético, 4 litros.",
         "manoDeObra": 15000,
-        "empleados": [{ "id": "usr-002", "nombre": "Mecánico de prueba" }],
+        "empleados": [{ "id": 2, "nombre": "Mecánico de prueba" }],
         "repuestos": [
           { "id": 1, "repuestoId": "rep-001", "nombre": "Filtro de aceite", "cantidad": 1, "precioUnitario": 12500 }
         ]
@@ -52,7 +52,7 @@
         "tipoTrabajo": "Cambio de pastillas de freno",
         "descripcion": "Pastillas delanteras.",
         "manoDeObra": 25000,
-        "empleados": [{ "id": "usr-002", "nombre": "Mecánico de prueba" }],
+        "empleados": [{ "id": 2, "nombre": "Mecánico de prueba" }],
         "repuestos": [
           { "id": 2, "repuestoId": "rep-002", "nombre": "Pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 46500 }
         ]
@@ -161,8 +161,8 @@
         "descripcion": "Cambio de manguera inferior y carga de refrigerante.",
         "manoDeObra": 30000,
         "empleados": [
-          { "id": "usr-001", "nombre": "Administrador" },
-          { "id": "usr-002", "nombre": "Mecánico de prueba" }
+          { "id": 1, "nombre": "Administrador" },
+          { "id": 2, "nombre": "Mecánico de prueba" }
         ],
         "repuestos": []
       }

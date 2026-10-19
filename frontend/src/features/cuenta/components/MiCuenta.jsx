@@ -1,7 +1,7 @@
 import { textoRol } from "../../auth";
 import { iniciales, formatearFecha } from "../utils/cuenta";
 
-function MiCuenta({ cuenta }) {
+function MiCuenta({ cuenta, usuario, onCerrarSesion }) {
     return (
         <div className="mi-cuenta">
             <div className="cuenta-avatar cuenta-avatar-grande">{iniciales(cuenta.nombre)}</div>
@@ -18,6 +18,16 @@ function MiCuenta({ cuenta }) {
                 <div><dt>Rol</dt><dd>{textoRol(cuenta.rol)}</dd></div>
                 <div><dt>En el sistema desde</dt><dd>{formatearFecha(cuenta.createdAt)}</dd></div>
             </dl>
+            {usuario && (
+                                        <div className="usuario-info barra-gestor__sesion">
+                                            <span className="usuario-info__nombre">{usuario.nombre}</span>
+                                            <button type="button" className="btn-cerrar-sesion" onClick={() => {
+                                                onCerrarSesion()
+                                            }}>
+                                                Cerrar sesión
+                                            </button>
+                                        </div>
+                                    )} 
         </div>
     );
 }

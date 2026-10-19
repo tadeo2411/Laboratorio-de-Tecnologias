@@ -7,6 +7,8 @@ import BotonEditar from "../../../shared/components/BotonEditar";
 import MiCuenta from "../components/MiCuenta";
 import { textoRol } from "../../auth";
 import { iniciales, formatearFecha } from "../utils/cuenta";
+import { cerrarSesion } from "../../auth";
+import { useNavigate } from "react-router";
 import "../../estilos.css"
 import "../cuenta.css"
 
@@ -18,9 +20,13 @@ const columnasEmpleados = [
     { key: "acciones", nombre: "Acciones" },
 ];
 
-function CuentaPage() {
+function CuentaPage(usuario, onCerrarSesion) {
     const { miCuenta, empleados, esAdmin } = useLoaderData();
-
+    const navigate = useNavigate()
+    function handleCerrarSesion() {
+        cerrarSesion()
+        navigate('/login', { replace: true })
+    }
     return (
         <>
             <div className="contenedor">
@@ -32,8 +38,19 @@ function CuentaPage() {
                         <h1>Mi cuenta</h1>
                         <p>Tus datos dentro del sistema del taller.</p>
                     </div>
+                     {usuario && (
+                            <div className="usuario-info barra-gestor__sesion">
+                                <span className="usuario-info__nombre">{usuario.nombre}</span>
+                                <button type="button" className="btn-cerrar-sesion" onClick={() => {
+                                    const onCerrarSesion=handleCerrarSesion()
+                                }}>
+                                    Cerrar sesión
+                                </button>
+                            </div>
+                        )} 
                 </div>
                 <MiCuenta cuenta={miCuenta} />
+                    /
             </div>
 
             {esAdmin && (

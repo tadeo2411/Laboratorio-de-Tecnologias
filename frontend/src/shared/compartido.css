@@ -72,7 +72,7 @@ por que cada vez que reutilizamos no estariamos cargando todas las hojas de esti
 }
 
 .navbar-gestor .logo {
-    margin-right: auto;
+
     flex-shrink: 0;
     padding: .1rem 0;
     width: 122px;

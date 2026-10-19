@@ -1,17 +1,13 @@
 [
   {
-    "id": "veh-001",
-    "dueno": "Sin asignar",
     "patente": "AA000AA",
     "marca": "Toyota",
     "modelo": "Corolla",
     "anio": 2022,
     "kilometraje": 25000,
-    "observaciones": "Control general pendiente"
+    "descripcion": "Control general pendiente"
   },
   {
-    "id": "veh-002",
-    "dueno": "Sin asignar",
     "patente": "AB123CD",
     "marca": "Ford",
     "modelo": "Ranger",
@@ -20,9 +16,7 @@
     "observaciones": "Revisar sistema de frenos"
   },
   {
-    "id": "veh-003",
-    "dueno": "Sin asignar",
-    "patente": "AG 625 NA",
+    "patente": "AG625NA",
     "marca": "Chevrolet",
     "modelo": "Onix",
     "anio": 2021,
@@ -30,9 +24,7 @@
     "observaciones": "Cambio de aceite y filtro"
   },
   {
-    "id": "veh-004",
-    "dueno": "Sin asignar",
-    "patente": "KXJ 439",
+    "patente": "KXJ439",
     "marca": "Volkswagen",
     "modelo": "Golf",
     "anio": 2019,

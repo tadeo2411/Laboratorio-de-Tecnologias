@@ -1,18 +1,29 @@
 [
   {
-    "id": "usr-001",
+    "id": 1,
     "usuario": "admin",
     "nombre": "Administrador",
     "rol": "ADMINISTRADOR",
-    "salt": "8e62ebcf2595c0b081ff667635bc60c0",
-    "contrasenaHash": "8a057c05a000d0863dac8eeea7c446f63dcd4779e399093ac8ef29e50ac47d99"
+    "activo": true,
+    "createdAt": "2024-01-15T09:00:00",
+    "contrasenaHash": "$2b$10$ZQ8AAy2ZP7NA26E9iks7buT7T9nQOyKmTMNteE79JnBbJpYdrRgCW"
   },
   {
-    "id": "usr-002",
+    "id": 2,
     "usuario": "mecanico",
     "nombre": "Mecánico de prueba",
     "rol": "MECANICO",
-    "salt": "3aac6654dbb56bad5b94c3f735bc69d7",
-    "contrasenaHash": "894b95899ecbaf93808212caaba7ea72f8b9d2b340fd10d6aae6a16e336927d3"
+    "activo": true,
+    "createdAt": "2024-01-15T09:30:00",
+    "contrasenaHash": "$2b$10$iZzThdco2k0aW9iB2j4NWOtnVxoGMPS9CK8SWUQhz5tBuWOXD.4O6"
+  },
+  {
+    "id": 3,
+    "usuario": "ex.mecanico",
+    "nombre": "Ex mecánico de prueba",
+    "rol": "MECANICO",
+    "activo": false,
+    "createdAt": "2025-03-10T08:00:00",
+    "contrasenaHash": "$2b$10$yJXrozYvRnTfgLNaL766OuHuJHocJJgTuPqfV/EOZ4gt936D4GiDK"
   }
 ]

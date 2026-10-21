@@ -1,38 +1,265 @@
 [
   {
-    "id": "ot-001",
-    "diagnostico": "Cambio de aceite y filtro. Se detecta desgaste en pastillas de freno delanteras.",
-    "estado": "RECIBIDO",
-    "garantia": false,
+    "id": 1,
+    "vehiculoPatente": "AG625NA",
+    "turnoId": "T001",
+    "estado": "ENTREGADO",
+    "diagnostico": "Service de los 60.000 km. Pastillas de freno delanteras gastadas.",
     "esService": true,
     "esUrgencia": false,
-    "vehiculoId": "veh-001"
+    "createdAt": "2024-06-01T09:10:00",
+    "fichas": [
+      {
+        "id": 1,
+        "tipo": "INGRESO",
+        "fecha": "2024-06-01T09:10:00",
+        "kilometraje": 60120,
+        "conformidad": "APROBADA",
+        "items": [
+          {
+            "id": 1,
+            "concepto": "Nivel de combustible",
+            "valor": "1/2"
+          },
+          {
+            "id": 2,
+            "concepto": "Rayones",
+            "valor": "Paragolpes trasero"
+          },
+          {
+            "id": 3,
+            "concepto": "Rueda de auxilio",
+            "valor": "Sí"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "tipo": "EGRESO",
+        "fecha": "2024-06-03T18:30:00",
+        "kilometraje": 60126,
+        "conformidad": "APROBADA",
+        "items": [
+          {
+            "id": 4,
+            "concepto": "Nivel de combustible",
+            "valor": "1/2"
+          },
+          {
+            "id": 5,
+            "concepto": "Rayones",
+            "valor": "Paragolpes trasero"
+          },
+          {
+            "id": 6,
+            "concepto": "Rueda de auxilio",
+            "valor": "Sí"
+          }
+        ]
+      }
+    ],
+    "trabajos": [
+      {
+        "id": 1,
+        "tipoTrabajoId": 1,
+        "tipoTrabajo": "Cambio de aceite y filtro",
+        "descripcion": "Aceite 5W30 sintético, 4 litros.",
+        "manoDeObra": 15000,
+        "empleados": [
+          {
+            "id": 2,
+            "nombre": "Mecánico de prueba"
+          }
+        ],
+        "repuestos": [
+          {
+            "id": 1,
+            "repuestoId": "rep-001",
+            "nombre": "Filtro de aceite",
+            "cantidad": 1,
+            "precioUnitario": 12500
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "tipoTrabajoId": 2,
+        "tipoTrabajo": "Cambio de pastillas de freno",
+        "descripcion": "Pastillas delanteras.",
+        "manoDeObra": 25000,
+        "empleados": [
+          {
+            "id": 2,
+            "nombre": "Mecánico de prueba"
+          }
+        ],
+        "repuestos": [
+          {
+            "id": 2,
+            "repuestoId": "rep-002",
+            "nombre": "Pastillas de freno delanteras",
+            "cantidad": 1,
+            "precioUnitario": 46500
+          }
+        ]
+      }
+    ]
   },
   {
-    "id": "ot-002",
-    "diagnostico": "Ruido en el tren delantero. Se requiere revisión de suspensión.",
-    "estado": "DIAGNOSTICANDO",
-    "garantia": false,
+    "id": 2,
+    "vehiculoPatente": "AA000AA",
+    "turnoId": null,
+    "estado": "RECIBIDO",
+    "diagnostico": null,
     "esService": false,
     "esUrgencia": false,
-    "vehiculoId": "veh-002"
+    "createdAt": "2026-10-09T08:45:00",
+    "fichas": [
+      {
+        "id": 3,
+        "tipo": "INGRESO",
+        "fecha": "2026-10-09T08:45:00",
+        "kilometraje": 25310,
+        "conformidad": "PENDIENTE",
+        "items": [
+          {
+            "id": 7,
+            "concepto": "Nivel de combustible",
+            "valor": "3/4"
+          },
+          {
+            "id": 8,
+            "concepto": "Rayones",
+            "valor": "No"
+          },
+          {
+            "id": 9,
+            "concepto": "Rueda de auxilio",
+            "valor": "Sí"
+          }
+        ]
+      }
+    ],
+    "trabajos": []
   },
   {
-    "id": "ot-003",
-    "diagnostico": "Falla en el sistema de refrigeración. Se detecta pérdida de líquido.",
+    "id": 3,
+    "vehiculoPatente": "AB123CD",
+    "turnoId": null,
+    "estado": "ESPERANDO_APROBACION_PRESUPUESTO",
+    "diagnostico": "Ruido en el tren delantero. Bujes de parrilla y pastillas gastadas.",
+    "esService": false,
+    "esUrgencia": false,
+    "createdAt": "2026-10-07T10:20:00",
+    "fichas": [
+      {
+        "id": 4,
+        "tipo": "INGRESO",
+        "fecha": "2026-10-07T10:20:00",
+        "kilometraje": 68540,
+        "conformidad": "APROBADA",
+        "items": [
+          {
+            "id": 10,
+            "concepto": "Nivel de combustible",
+            "valor": "1/4"
+          },
+          {
+            "id": 11,
+            "concepto": "Rayones",
+            "valor": "Puerta del acompañante"
+          },
+          {
+            "id": 12,
+            "concepto": "Rueda de auxilio",
+            "valor": "No"
+          }
+        ]
+      }
+    ],
+    "trabajos": [
+      {
+        "id": 3,
+        "tipoTrabajoId": 3,
+        "tipoTrabajo": "Cambio de bujes de parrilla",
+        "descripcion": "Bujes de ambas parrillas delanteras.",
+        "manoDeObra": 40000,
+        "empleados": [],
+        "repuestos": []
+      },
+      {
+        "id": 4,
+        "tipoTrabajoId": 2,
+        "tipoTrabajo": "Cambio de pastillas de freno",
+        "descripcion": "Pastillas delanteras.",
+        "manoDeObra": 25000,
+        "empleados": [],
+        "repuestos": [
+          {
+            "id": 3,
+            "repuestoId": "rep-002",
+            "nombre": "Pastillas de freno delanteras",
+            "cantidad": 1,
+            "precioUnitario": 46500
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "vehiculoPatente": "KXJ439",
+    "turnoId": null,
     "estado": "EN_REPARACION",
-    "garantia": true,
+    "diagnostico": "Pérdida de líquido refrigerante. Manguera inferior del radiador rota.",
     "esService": false,
     "esUrgencia": true,
-    "vehiculoId": "veh-003"
-  },
-  {
-    "id": "ot-004",
-    "diagnostico": "Mantenimiento preventivo completo.",
-    "estado": "TERMINADO",
-    "garantia": false,
-    "esService": true,
-    "esUrgencia": false,
-    "vehiculoId": "veh-004"
+    "createdAt": "2026-10-10T16:05:00",
+    "fichas": [
+      {
+        "id": 5,
+        "tipo": "INGRESO",
+        "fecha": "2026-10-10T16:05:00",
+        "kilometraje": 112300,
+        "conformidad": "APROBADA",
+        "items": [
+          {
+            "id": 13,
+            "concepto": "Nivel de combustible",
+            "valor": "1/2"
+          },
+          {
+            "id": 14,
+            "concepto": "Rayones",
+            "valor": "No"
+          },
+          {
+            "id": 15,
+            "concepto": "Rueda de auxilio",
+            "valor": "Sí"
+          }
+        ]
+      }
+    ],
+    "trabajos": [
+      {
+        "id": 5,
+        "tipoTrabajoId": 4,
+        "tipoTrabajo": "Reparación del sistema de refrigeración",
+        "descripcion": "Cambio de manguera inferior y carga de refrigerante.",
+        "manoDeObra": 30000,
+        "empleados": [
+          {
+            "id": 1,
+            "nombre": "Administrador"
+          },
+          {
+            "id": 2,
+            "nombre": "Mecánico de prueba"
+          }
+        ],
+        "repuestos": []
+      }
+    ]
   }
 ]

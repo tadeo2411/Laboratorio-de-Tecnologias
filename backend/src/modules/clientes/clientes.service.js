@@ -1,12 +1,10 @@
 // aca va la logica de negocio. Genera id y llama a repository
-const clientesRepository = require("./clientes.repository");
+import clientesRepository from "./clientes.repository.js";
 
+function listar() {
+    const objetoCliente = clientesRepository.obtenerClientes();
 
-
-function listarClientes(){
-    const objetoCliente=clientesRepository.obtenerClientes()
-    return objetoCliente
+    return objetoCliente;
 }
 
-
-module.exports = {listarClientes}
+export default listar ;

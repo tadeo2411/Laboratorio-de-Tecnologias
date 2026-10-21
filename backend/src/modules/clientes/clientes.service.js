@@ -8,5 +8,10 @@ function listarClientes(){
     return objetoCliente
 }
 
+function buscarCliente(documento){
+    const clienteBuscado = clientesRepository.buscarPorDocumento(documento)
+    return clienteBuscado
+}
 
-module.exports = {listarClientes}
+
+module.exports = {listarClientes, buscarCliente}

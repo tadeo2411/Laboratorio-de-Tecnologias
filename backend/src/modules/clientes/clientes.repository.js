@@ -9,8 +9,19 @@ function obtenerClientes(){
     return clientesPlano
 }
 
+function buscarPorDocumento(documento){
+    const clientes =obtenerClientes()
+    return clientes.find(c => c.documento === documento)
+}
 
-module.exports = {obtenerClientes}
+function altaCliente(cliente){
+    const lista = obtenerClientes()
+    lista.push(clientes)
+    fs.readFileSync(lista.ruta, JSON.stringify(lista, null, 2))
+
+}
+
+module.exports = {obtenerClientes, buscarPorDocumento}
 // fs.readFileSync(ruta, 'utf-8'): lee un archivo y devuelve texto.
 // JSON.parse(texto): convierte ese texto en un arreglo u objeto de JavaScript.
 // JSON.stringify(datos, null, 2): lo vuelve texto (el 2 lo deja con sangría legible).

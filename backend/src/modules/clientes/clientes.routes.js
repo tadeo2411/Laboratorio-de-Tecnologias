@@ -5,5 +5,7 @@ const express = require('express')
 const router = express.Router()
 
 router.get('/', clientesController.listarClientes)
+router.get('/:documento', clientesController.buscarCliente)
+router.post('/', clientesController.altaCliente)
 
 module.exports = router

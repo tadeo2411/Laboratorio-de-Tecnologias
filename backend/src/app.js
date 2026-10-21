@@ -1,10 +1,9 @@
 const express =require('express')
 const cors = require('cors')
-const ruta = './data/clientes-copy.json'
-const fs = require('fs')
+const notfound = require ('./middlewares/notFound')
+const errorHandler =require('./middlewares/errorHandler')
 const router = require('./modules/clientes/clientes.routes')
 const app = express()
-
 
 app.use(cors())
 app.use(express.json())
@@ -16,5 +15,7 @@ app.get('/api/health', (req, res) => {
 })
 
 
+app.use(notfound)
+app.use(errorHandler)
 
 module.exports = app

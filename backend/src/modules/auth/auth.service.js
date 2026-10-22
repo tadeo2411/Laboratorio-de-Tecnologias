@@ -1,8 +1,8 @@
 // aca va la logica de negocio. Genera id y llama a repository
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const authRepository = require('./auth.repository')
-const { env } = require('../../config/env')
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import authRepository from './auth.repository.js'
+import { env } from '../../config/env.js'
 
 const HASH_DE_RELLENO = bcrypt.hashSync('usuario-inexistente', 10)
 
@@ -51,4 +51,4 @@ function obtenerPerfil(id) {
     return datosPublicos(usuario)
 }
 
-module.exports = { iniciarSesion, obtenerPerfil }
+export default { iniciarSesion, obtenerPerfil }

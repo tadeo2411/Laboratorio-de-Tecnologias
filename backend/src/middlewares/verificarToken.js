@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken')
-const { env } = require('../config/env')
+import jwt from 'jsonwebtoken'
+import { env } from '../config/env.js'
 
-function verificarToken(req, res, next) {
+export function verificarToken(req, res, next) {
     const authHeader = req.headers.authorization
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,5 +19,3 @@ function verificarToken(req, res, next) {
         return res.status(401).json({ error: mensaje })
     }
 }
-
-module.exports = { verificarToken }

@@ -1,20 +1,21 @@
-const express =require('express')
-const cors = require('cors')
-const ruta = './data/clientes-copy.json'
-const fs = require('fs')
-const router = require('./modules/clientes/clientes.routes')
-const authRouter = require('./modules/auth/auth.routes')
-const ordenesRouter = require('./modules/ordenes/ordenes.routes')
-const { notFound } = require('./middlewares/notFound')
-const { errorHandler } = require('./middlewares/errorHandler')
-const app = express()
+import express from 'express'
+import cors from 'cors'
 
+import router  from'./modules/clientes/clientes.routes.js'
+import repuestosRoutes from "./modules/repuestos/repuestos.routes.js";
+import authRoutes from './modules/auth/auth.routes.js'
+import ordenesRoutes from './modules/ordenes/ordenes.routes.js'
+import { notFound } from './middlewares/notFound.js'
+import { errorHandler } from './middlewares/errorHandler.js'
+
+const app = express();
 
 app.use(cors())
 app.use(express.json())
 app.use('/api/clientes', router)
-app.use('/api/auth', authRouter)
-app.use('/api/ordenes', ordenesRouter)
+app.use('/api/repuestos', repuestosRoutes)
+app.use('/api/auth', authRoutes)
+app.use('/api/ordenes', ordenesRoutes)
 
 app.get('/api/health', (req, res) => {
 
@@ -25,4 +26,4 @@ app.use(notFound)
 app.use(errorHandler)
 
 
-module.exports = app
+export default app

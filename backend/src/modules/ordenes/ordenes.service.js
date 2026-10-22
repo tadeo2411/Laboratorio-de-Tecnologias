@@ -1,5 +1,5 @@
 // aca va la logica de negocio. Genera id y llama a repository
-const ordenesRepository = require('./ordenes.repository')
+import ordenesRepository from './ordenes.repository.js'
 
 const ESTADO_INICIAL = 'RECIBIDO'
 
@@ -366,7 +366,7 @@ function quitarTrabajo(idRecibido, idTrabajoRecibido) {
     })
 }
 
-module.exports = {
+export default {
     listarOrdenes,
     obtenerOrden,
     crearOrden,

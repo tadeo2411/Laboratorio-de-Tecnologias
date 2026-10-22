@@ -1,6 +1,9 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const carpetaDatos = path.join(__dirname, '..', '..', '..', 'data')
 
@@ -38,7 +41,7 @@ function obtenerEmpleadosActivos() {
         .map((usuario) => ({ id: usuario.id, nombre: usuario.nombre }))
 }
 
-module.exports = {
+export default {
     obtenerOrdenes,
     guardarOrdenes,
     existeVehiculo,

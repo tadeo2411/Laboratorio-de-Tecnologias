@@ -1,7 +1,7 @@
 // es quien recibe las req y responde res
 // Lee `req.params` / `req.body`,
 // llama al service y responde con status + JSON.
-const authService = require('./auth.service')
+import authService from './auth.service.js'
 
 async function login(req, res) {
     const { usuario, contrasena } = req.body ?? {}
@@ -13,4 +13,4 @@ function perfil(req, res) {
     res.json(authService.obtenerPerfil(req.usuario.id))
 }
 
-module.exports = { login, perfil }
+export default { login, perfil }

@@ -1,7 +1,7 @@
 // es quien recibe las req y responde res
 // Lee `req.params` / `req.body`,
 // llama al service y responde con status + JSON.
-const ordenesService = require('./ordenes.service')
+import ordenesService from './ordenes.service.js'
 
 function listar(req, res) {
     res.json(ordenesService.listarOrdenes(req.query))
@@ -39,4 +39,4 @@ function quitarTrabajo(req, res) {
     res.json(ordenesService.quitarTrabajo(req.params.id, req.params.idTrabajo))
 }
 
-module.exports = { listar, obtener, crear, actualizar, cambiarEstado, agregarFicha, agregarTrabajo, quitarTrabajo }
+export default { listar, obtener, crear, actualizar, cambiarEstado, agregarFicha, agregarTrabajo, quitarTrabajo }

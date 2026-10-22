@@ -1,6 +1,9 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
-const fs = require('fs')
-const path = require('path')
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const ruta = path.join(__dirname, '..', '..', '..', 'data', 'usuarios.json')
 
@@ -16,4 +19,4 @@ function buscarPorId(id) {
     return obtenerUsuarios().find((u) => u.id === id)
 }
 
-module.exports = { obtenerUsuarios, buscarPorUsuario, buscarPorId }
+export default { obtenerUsuarios, buscarPorUsuario, buscarPorId }

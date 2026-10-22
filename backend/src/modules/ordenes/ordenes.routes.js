@@ -1,7 +1,7 @@
 // mapea cada metodo + url a una funcion de controller
-const express = require('express')
-const ordenesController = require('./ordenes.controller')
-const { verificarToken } = require('../../middlewares/verificarToken')
+import express from 'express'
+import ordenesController from './ordenes.controller.js'
+import { verificarToken } from '../../middlewares/verificarToken.js'
 
 const router = express.Router()
 
@@ -16,4 +16,4 @@ router.post('/:id/fichas', ordenesController.agregarFicha)
 router.post('/:id/trabajos', ordenesController.agregarTrabajo)
 router.delete('/:id/trabajos/:idTrabajo', ordenesController.quitarTrabajo)
 
-module.exports = router
+export default router

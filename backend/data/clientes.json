@@ -1,23 +1,30 @@
 [
-    {
-        "nombre": "Juan Pérez",
-        "documento": "12345678",
-        "telefono" : "2665298830",
-        "tipo" : "PERSONA",
-        "activo" : true
-    },
-    {
-        "nombre" : "María González",
-        "documento" : "87654321",
-        "telefono" : "2665298831",
-        "tipo" : "PERSONA",
-        "activo" : true
-    },
-    {
-        "nombre" : "Carlos Ramírez",
-        "documento" : "11223344",
-        "telefono" : "2665298832",
-        "tipo" : "PERSONA",
-        "activo" : true
-    }
+  {
+    "documento": "12345678",
+    "tipo": "PERSONA",
+    "nombre": "Juan Pérez",
+    "telefono": "2665298830",
+    "activo": true
+  },
+  {
+    "documento": "87654321",
+    "tipo": "PERSONA",
+    "nombre": "María González",
+    "telefono": "2665298831",
+    "activo": true
+  },
+  {
+    "documento": "11223344",
+    "tipo": "PERSONA",
+    "nombre": "Carlos Ramírez",
+    "telefono": "2665298832",
+    "activo": false
+  },
+  {
+    "documento": "30111222",
+    "tipo": "PERSONA",
+    "nombre": "Lucía Fernández",
+    "telefono": "2665300000",
+    "activo": true
+  }
 ]

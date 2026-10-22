@@ -2,11 +2,18 @@
 const fs = require('fs')
 const path =require('path')
 
+// La ruta se calcula una sola vez y la usan todas las funciones de este archivo
+const RUTA = path.join(__dirname,"../", "../","../","data","clientes.json")
+
 function obtenerClientes(){
-    const ruta = path.join(__dirname,"../", "../","../","data","clientes.json")
-    const clientesJSON =fs.readFileSync(ruta, 'utf-8')
+    const clientesJSON =fs.readFileSync(RUTA, 'utf-8')
     const clientesPlano= JSON.parse(clientesJSON)
     return clientesPlano
+}
+
+// Escribe la lista completa: pisa lo que había en el archivo
+function guardarClientes(lista){
+    fs.writeFileSync(RUTA, JSON.stringify(lista, null, 2))
 }
 
 function buscarPorDocumento(documento){
@@ -16,12 +23,25 @@ function buscarPorDocumento(documento){
 
 function altaCliente(cliente){
     const lista = obtenerClientes()
-    lista.push(clientes)
-    fs.readFileSync(lista.ruta, JSON.stringify(lista, null, 2))
-
+    lista.push(cliente)
+    guardarClientes(lista)
+    return cliente
 }
 
-module.exports = {obtenerClientes, buscarPorDocumento}
+// Pisa solo los campos que vienen en `cambios` y deja el resto igual.
+// Devuelve el cliente actualizado, o undefined si no existe.
+function modificarCliente(documento, cambios){
+    const lista = obtenerClientes()
+    const indice = lista.findIndex(c => c.documento === documento)
+    if (indice === -1) {
+        return undefined
+    }
+    lista[indice] = { ...lista[indice], ...cambios }
+    guardarClientes(lista)
+    return lista[indice]
+}
+
+module.exports = {obtenerClientes, buscarPorDocumento, altaCliente, modificarCliente}
 // fs.readFileSync(ruta, 'utf-8'): lee un archivo y devuelve texto.
 // JSON.parse(texto): convierte ese texto en un arreglo u objeto de JavaScript.
 // JSON.stringify(datos, null, 2): lo vuelve texto (el 2 lo deja con sangría legible).

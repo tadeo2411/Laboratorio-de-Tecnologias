@@ -1,27 +1,30 @@
 // es quien recibe las req y responde res
-// Lee `req.params` / `req.body`,
 // llama al service y responde con status + JSON.
+// Si el service lanza un error (400, 404, 409...), Express lo manda al errorHandler.
 const clientes = require('./clientes.service')
 
 
 function listarClientes(req, res){
-    const listaClientes = clientes.listarClientes()
+    const listaClientes = clientes.listarClientes(req.query.activo)
     res.json(listaClientes)
 }
 
 function buscarCliente(req,res){
     const documento = req.params.documento
     const clienteBuscado = clientes.buscarCliente(documento)
-    if(!clienteBuscado){
-        return res.status(404).json({error: `El cliente con documento ${documento} no esta registrado`})
-    }
     res.json(clienteBuscado)
 }
+
 function altaCliente(req,res){
-    const cliente = req.params
+    const clienteCreado = clientes.altaCliente(req.body)
+    res.status(201).json(clienteCreado)
+}
+
+function modificarCliente(req,res){
+    const documento = req.params.documento
+    const clienteModificado = clientes.modificarCliente(documento, req.body)
+    res.json(clienteModificado)
 }
 
 
-
-
-module.exports = {listarClientes, buscarCliente}
+module.exports = {listarClientes, buscarCliente, altaCliente, modificarCliente}

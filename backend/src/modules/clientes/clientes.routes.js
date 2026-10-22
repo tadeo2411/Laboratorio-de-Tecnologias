@@ -1,6 +1,6 @@
 // mapea cada metodo + url a una funcion de controller
-const clientesController = require('./clientes.controller')
-const express = require('express')
+import clientesController  from'./clientes.controller.js'
+import express from 'express'
 
 const router = express.Router()
 
@@ -9,4 +9,4 @@ router.get('/:documento', clientesController.buscarCliente)
 router.post('/', clientesController.altaCliente)
 router.patch('/:documento', clientesController.modificarCliente)
 
-module.exports = router
+export default router

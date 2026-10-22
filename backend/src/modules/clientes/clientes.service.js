@@ -1,6 +1,6 @@
 // aca va la logica de negocio: validaciones, reglas y decidir qué error corresponde. Llama a repository
-const clientesRepository = require("./clientes.repository");
-const { httpError } = require("../../utils/httpError");
+import clientesRepository from "./clientes.repository.js"
+import { httpError }  from"../../utils/httpError.js"
 
 const TIPOS = ['PERSONA', 'EMPRESA']
 const CAMPOS_MODIFICABLES = ['nombre', 'telefono', 'tipo', 'activo']
@@ -127,4 +127,4 @@ function modificarCliente(documento, cambios){
 }
 
 
-module.exports = {listarClientes, buscarCliente, altaCliente, modificarCliente}
+export {listarClientes, buscarCliente, altaCliente, modificarCliente}

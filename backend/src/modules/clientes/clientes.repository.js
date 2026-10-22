@@ -1,6 +1,6 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
-const fs = require('fs')
-const path =require('path')
+import fs  from 'fs'
+import path from 'path'
 
 // La ruta se calcula una sola vez y la usan todas las funciones de este archivo
 const RUTA = path.join(__dirname,"../", "../","../","data","clientes.json")
@@ -41,7 +41,7 @@ function modificarCliente(documento, cambios){
     return lista[indice]
 }
 
-module.exports = {obtenerClientes, buscarPorDocumento, altaCliente, modificarCliente}
+export {obtenerClientes, buscarPorDocumento, altaCliente, modificarCliente}
 // fs.readFileSync(ruta, 'utf-8'): lee un archivo y devuelve texto.
 // JSON.parse(texto): convierte ese texto en un arreglo u objeto de JavaScript.
 // JSON.stringify(datos, null, 2): lo vuelve texto (el 2 lo deja con sangría legible).

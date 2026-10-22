@@ -1,8 +1,8 @@
-const express =require('express')
-const cors = require('cors')
-const notfound = require ('./middlewares/notFound')
-const errorHandler =require('./middlewares/errorHandler')
-const router = require('./modules/clientes/clientes.routes')
+import express from'express'
+import cors  from'cors'
+import notfound from './middlewares/notFound.js'
+import errorHandler from './middlewares/errorHandler.js'
+import router  from './modules/clientes/clientes.routes.js'
 const app = express()
 
 app.use(cors())
@@ -18,4 +18,4 @@ app.get('/api/health', (req, res) => {
 app.use(notfound)
 app.use(errorHandler)
 
-module.exports = app
+export default app

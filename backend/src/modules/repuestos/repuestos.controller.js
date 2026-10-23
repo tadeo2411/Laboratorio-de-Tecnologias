@@ -11,4 +11,28 @@ const listar = async (req, res, next) => {
     }
 }
 
-export default {listar}
+const eliminar = async (req, res, next) => {
+try {
+        res.json(service.eliminar());
+    } catch (err) {
+        next(err);
+    }
+}
+
+const cargar = async (req, res, next) => {
+try {
+        res.json(service.cargar());
+    } catch (err) {
+        next(err);
+    }
+}
+
+const modificar = async (req, res, next) => {
+try {
+        res.json(service.modificar());
+    } catch (err) {
+        next(err);
+    }
+}
+
+export default {listar, eliminar, cargar, modificar}

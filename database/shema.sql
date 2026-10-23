@@ -1,7 +1,7 @@
 -- Taller 303 - Sistema de Control para Talleres Mecanicos
 -- Esquema de la base de datos para PostgreSQL (16 o posterior)
 
-CREATE DATABASE "taller-303"
+CREATE DATABASE "taller-303";
 \c "taller-303"
 BEGIN;
 

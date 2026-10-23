@@ -1,7 +1,7 @@
 // es quien recibe las req y responde res
 // llama al service y responde con status + JSON.
 // Si el service lanza un error (400, 404, 409...), Express lo manda al errorHandler.
-import clientes from './clientes.service.js'
+import * as clientes from './clientes.service.js'
 
 
 function listarClientes(req, res){

@@ -1,21 +1,23 @@
 // aca va la logica de negocio: validaciones, reglas y decidir qué error corresponde. Llama a repository
-import clientesRepository from "./clientes.repository.js"
+import * as clientesRepository from "./clientes.repository.js"
 import { httpError }  from"../../utils/httpError.js"
 
 const TIPOS = ['PERSONA', 'EMPRESA']
-const CAMPOS_MODIFICABLES = ['nombre', 'telefono', 'tipo', 'activo']
+const CAMPOS_MODIFICABLES = ['nombre', 'telefono', 'tipo']
 
 
 function esTextoNoVacio(valor){
     return typeof valor === 'string' && valor.trim() !== ''
 }
 
-// El documento es la clave: texto con solo dígitos, hasta 11 (DNI o CUIT)
+
 function validarDocumento(documento){
     if (typeof documento !== 'string' || !/^\d{1,11}$/.test(documento)) {
         throw httpError(400, 'El documento debe ser un texto con solo dígitos (hasta 11)')
     }
 }
+
+
 
 function validarTipo(tipo){
     if (!TIPOS.includes(tipo)) {
@@ -31,16 +33,11 @@ function validarTextoObligatorio(valor, nombreCampo){
 
 
 
+
 // activo es opcional: ?activo=true o ?activo=false. Sin eso, devuelve todos.
-function listarClientes(activo){
+function listarClientes(){
     const lista = clientesRepository.obtenerClientes()
-    if (activo === undefined) {
-        return lista
-    }
-    if (activo !== 'true' && activo !== 'false') {
-        throw httpError(400, 'El filtro activo debe ser true o false')
-    }
-    return lista.filter(c => c.activo === (activo === 'true'))
+    return lista
 }
 
 // Devuelve el cliente aunque esté dado de baja (con activo: false)
@@ -62,7 +59,6 @@ function altaCliente(datos){
     validarTextoObligatorio(nombre, 'nombre')
     validarTextoObligatorio(telefono, 'telefono')
 
-    // Se rechaza también si existe dado de baja: el documento es la clave y no se repite
     if (clientesRepository.buscarPorDocumento(documento)) {
         throw httpError(409, `Ya existe un cliente con documento ${documento}`)
     }
@@ -79,7 +75,7 @@ function altaCliente(datos){
     return clientesRepository.altaCliente(nuevoCliente)
 }
 
-// Sirve para modificar datos y también para la baja/alta lógica (activo: false / true)
+
 function modificarCliente(documento, cambios){
     validarDocumento(documento)
 
@@ -97,7 +93,7 @@ function modificarCliente(documento, cambios){
         throw httpError(400, 'El documento no se puede modificar')
     }
 
-    // solo se aceptan los campos de la lista; por ejemplo created_at no se toca
+    //Esti es para que no pueda cambiarse el timestamp
     const camposInvalidos = Object.keys(cambios).filter(
         campo => campo !== 'documento' && !CAMPOS_MODIFICABLES.includes(campo)
     )
@@ -108,14 +104,7 @@ function modificarCliente(documento, cambios){
     if (cambios.tipo !== undefined) validarTipo(cambios.tipo)
     if (cambios.nombre !== undefined) validarTextoObligatorio(cambios.nombre, 'nombre')
     if (cambios.telefono !== undefined) validarTextoObligatorio(cambios.telefono, 'telefono')
-    if (cambios.activo !== undefined && typeof cambios.activo !== 'boolean') {
-        throw httpError(400, 'El campo activo debe ser true o false')
-    }
 
-    // Un cliente dado de baja no puede operar: lo único permitido es reactivarlo
-    if (cliente.activo === false && cambios.activo !== true) {
-        throw httpError(409, 'El cliente está dado de baja: hay que reactivarlo (activo: true) antes de modificarlo')
-    }
 
     const cambiosLimpios = {}
     for (const campo of CAMPOS_MODIFICABLES) {

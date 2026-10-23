@@ -7,4 +7,4 @@ function httpError(status, mensaje) {
     return error
 }
 
-module.exports = { httpError }
+export { httpError }

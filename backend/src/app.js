@@ -22,9 +22,6 @@ app.get('/api/health', (req, res) => {
   res.json({"estado":"ok"})
 })
 
-app.use(notFound)
-app.use(errorHandler)
-
 app.use(notfound)
 app.use(errorHandler)
 

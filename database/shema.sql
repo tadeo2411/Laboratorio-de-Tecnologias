@@ -74,7 +74,7 @@ CREATE TABLE "clientes" (
   "tipo" tipo_cliente NOT NULL,
   "nombre" varchar(120) NOT NULL,
   "telefono" varchar(30) NOT NULL,
-  "activo" BOOLEAN NOT NULL DEFAULT true
+  "created_at" timestamp NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "vehiculos" (
@@ -97,8 +97,7 @@ CREATE TABLE "empleados" (
   "nombre" varchar(120) NOT NULL,
   "usuario" varchar(50) UNIQUE NOT NULL,
   "password_hash" varchar(255) NOT NULL,
-  "activo" boolean NOT NULL DEFAULT true,
-  "activo" BOOLEAN NOT NULL DEFAULT true
+  "activo" boolean NOT NULL DEFAULT true
 );
 
 CREATE TABLE "roles" (

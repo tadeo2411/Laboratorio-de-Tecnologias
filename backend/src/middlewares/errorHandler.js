@@ -1,6 +1,6 @@
 // Tiene que tener 4 parámetros (err, req, res, next): así Express sabe que es un manejador de errores.
 function errorHandler(err,req,res,next){
-    const status = err.status || 500
+    const status = err.status ?? 500
 
     // Errores "esperados" (400, 404, 409...): el mensaje es para el cliente.
     if (status < 500) {

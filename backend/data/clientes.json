@@ -26,5 +26,12 @@
     "nombre": "Lucía Fernández",
     "telefono": "2665300000",
     "activo": true
+  },
+  {
+    "documento": "46333144",
+    "tipo": "EMPRESA",
+    "nombre": "Lucía Fernández",
+    "telefono": "26652933838",
+    "activo": true
   }
 ]

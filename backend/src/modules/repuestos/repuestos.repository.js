@@ -1,41 +1,37 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
-
 import { pool } from '../../config/db.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 async function listar() {
-        const { rows } = await pool.query('SELECT * FROM repuestos ORDER BY id');
-        console.log(rows)
-        return rows;
+    const { rows } = await pool.query(
+        'SELECT * FROM repuestos ORDER BY id'
+    );
+    return rows;
 }
 
-async function eliminar() {
-
+async function eliminar(id) {
+    const resultado = await pool.query(
+        "DELETE FROM repuestos WHERE id = $1 RETURNING *",
+        [id]
+    );
+    return resultado;
 }
 
-async function cargar() {
-    const ruta = path.join(__dirname, "../", "../", "../", "data", "repuestos.json");
+async function cargar(datos) {
+    const { nombre, precio_estandar, activo } = datos;
 
-    const repuestosJSON = fs.readFileSync(ruta, "utf-8");
+  const resultado = await pool.query(
+    `INSERT INTO repuestos
+      (nombre, precio_estandar, activo)
+     VALUES ($1, $2, $3)
+     RETURNING *`,
+    [nombre, precio_estandar, activo]
+  );
 
-    const repuestosPlano = JSON.parse(repuestosJSON);
-
-    return repuestosPlano;
+  return resultado.rows[0];
 }
 
-async function modificar() {
-    const ruta = path.join(__dirname, "../", "../", "../", "data", "repuestos.json");
-
-    const repuestosJSON = fs.readFileSync(ruta, "utf-8");
-
-    const repuestosPlano = JSON.parse(repuestosJSON);
-
-    return repuestosPlano;
+async function modificar(datos) {
 }
 
 export default { listar, cargar, eliminar, modificar };

@@ -5,7 +5,7 @@ import service from "./repuestos.service.js"
 
 const listar = async (req, res, next) => {
     try {
-        res.json(service.listar());
+        res.json(await service.listar());
     } catch (err) {
         next(err);
     }
@@ -13,7 +13,7 @@ const listar = async (req, res, next) => {
 
 const eliminar = async (req, res, next) => {
 try {
-        res.json(service.eliminar());
+        res.json(await service.eliminar(req.params.id));
     } catch (err) {
         next(err);
     }
@@ -21,7 +21,7 @@ try {
 
 const cargar = async (req, res, next) => {
 try {
-        res.json(service.cargar());
+        res.json(await service.cargar(req.body));
     } catch (err) {
         next(err);
     }
@@ -29,7 +29,7 @@ try {
 
 const modificar = async (req, res, next) => {
 try {
-        res.json(service.modificar());
+        res.json(await service.modificar({id : req.params.id, ...req.body}));
     } catch (err) {
         next(err);
     }

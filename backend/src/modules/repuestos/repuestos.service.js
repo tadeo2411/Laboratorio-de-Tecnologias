@@ -2,26 +2,19 @@
 import  repository  from "./repuestos.repository.js";
 
 function listar() {
-    const objetoRepuestos = repository.listar();
-    return objetoRepuestos;
+    return repository.listar();
 }
 
-function cargar() {
-    const objetoRepuestos = repository.cargar();
-
-    return objetoRepuestos;
+function cargar(datos) {
+    return repository.cargar(datos);
 }
 
-function eliminar() {
-    const objetoRepuestos = repository.eliminar();
-
-    return objetoRepuestos;
+function eliminar(id) {
+    return repository.eliminar(id);
 }
 
-function modificar() {
-    const objetoRepuestos = repository.modificar();
-
-    return objetoRepuestos;
+function modificar(id) {
+    return repository.modificar(datos);
 }
 
 export default { listar, cargar, eliminar, modificar };

@@ -5,8 +5,8 @@ import controller from "./repuestos.controller.js";
 const router = Router();
 
 router.get("/", controller.listar);
-router.post("/cargar", controller.cargar);
-router.patch("/modificar", controller.modificar);
-router.delete("/eliminar", controller.eliminar);
+router.post("/", controller.cargar);
+router.patch("/:id", controller.modificar);
+router.delete("/:id", controller.eliminar);
 
 export default router;

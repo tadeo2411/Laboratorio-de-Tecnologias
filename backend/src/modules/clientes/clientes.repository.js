@@ -1,43 +1,58 @@
-//aca es donde leemos y escribimos sobre 'nombreModulo.json'
-import fs  from 'fs'
-import path from 'path'
+//En repository es donde hacemos las consultas a la base de datos
 
-// La ruta se calcula una sola vez y la usan todas las funciones de este archivo
-const RUTA = path.join(import.meta.dirname, "../", "../", "../", "data", "clientes.json")
-function obtenerClientes(){
-    const clientesJSON =fs.readFileSync(RUTA, 'utf-8')
-    const clientesPlano= JSON.parse(clientesJSON)
-    return clientesPlano
+import {pool} from '../../config/db.js'
+
+
+async function obtener(){
+        const {rows} = await pool.query(
+            'SELECT id, documento, nombre, telefono, tipo  FROM clientes ORDER BY id');
+        return rows
+
 }
 
-// Escribe la lista completa: pisa lo que había en el archivo
-function guardarClientes(lista){
-    fs.writeFileSync(RUTA, JSON.stringify(lista, null, 2))
+
+async function buscarPorId(id){
+    const {rows} = await pool.query(
+        "SELECT id, documento, nombre, telefono, tipo FROM clientes WHERE id = $1",
+        [id]
+    )
+    return rows[0]
 }
 
-function buscarPorDocumento(documento){
-    const clientes =obtenerClientes()
-    return clientes.find(c => c.documento === documento)
+async function buscarPorDocumento(documento){
+    const {rows} = await pool.query(
+        "SELECT id, documento, nombre, telefono, tipo FROM clientes WHERE documento = $1",
+        [documento]
+    )
+    return rows[0]
 }
 
-function altaCliente(cliente){
-    const lista = obtenerClientes()
-    lista.push(cliente)
-    guardarClientes(lista)
-    return cliente
+async function alta(cliente){
+    const {rows} = await pool.query(
+        "INSERT INTO clientes (documento, tipo, nombre, telefono) VALUES ($1, $2, $3, $4) RETURNING id, documento, tipo, nombre, telefono, created_at",
+        [cliente.documento, cliente.tipo, cliente.nombre, cliente.telefono]
+    )
+    return rows[0]
 }
 
 // Pisa solo los campos que vienen en `cambios` y deja el resto igual.
 // Devuelve el cliente actualizado, o undefined si no existe.
-function modificarCliente(documento, cambios){
-    const lista = obtenerClientes()
-    const indice = lista.findIndex(c => c.documento === documento)
-    if (indice === -1) {
-        return undefined
-    }
-    lista[indice] = { ...lista[indice], ...cambios }
-    guardarClientes(lista)
-    return lista[indice]
+// Los nombres de columna se arman con las claves de `cambios`: el service ya las filtró con CAMPOS_MODIFICABLES.
+async function modificar(id, cambios){
+    const campos= Object.keys(cambios)
+    const numerados = campos.map((campo, i) => `${campo} = $${i+1}`)
+    const valores = campos.map(campo =>cambios[campo])
+    valores.push(id) // el id va al final: es el valor del WHERE
+    const {rows} = await pool.query(
+        `UPDATE clientes SET ${numerados.join(', ')} WHERE id = $${valores.length} RETURNING id, documento, tipo, nombre, telefono`,
+        valores
+    )
+    return rows[0]
 }
 
-export {obtenerClientes, buscarPorDocumento, altaCliente, modificarCliente}
+function eliminar(documento){
+    const cliente = buscarPorDocumento(documento)
+
+}
+
+export default {obtener, buscarPorId, buscarPorDocumento, alta, modificar}

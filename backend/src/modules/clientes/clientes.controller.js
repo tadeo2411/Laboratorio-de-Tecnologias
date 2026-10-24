@@ -1,30 +1,30 @@
 // es quien recibe las req y responde res
 // llama al service y responde con status + JSON.
 // Si el service lanza un error (400, 404, 409...), Express lo manda al errorHandler.
-import * as clientes from './clientes.service.js'
+import clientes from './clientes.service.js'
 
 
-function listarClientes(req, res){
-    const listaClientes = clientes.listarClientes(req.query.activo)
+async function listar(req, res){
+    const listaClientes = await clientes.listar()
     res.json(listaClientes)
 }
 
-function buscarCliente(req,res){
-    const documento = req.params.documento
-    const clienteBuscado = clientes.buscarCliente(documento)
+async function buscar(req,res){
+    const id = req.params.id
+    const clienteBuscado = await clientes.buscar(id)
     res.json(clienteBuscado)
 }
 
-function altaCliente(req,res){
-    const clienteCreado = clientes.altaCliente(req.body)
+async function alta(req,res){
+    const clienteCreado = await clientes.alta(req.body)
     res.status(201).json(clienteCreado)
 }
 
-function modificarCliente(req,res){
-    const documento = req.params.documento
-    const clienteModificado = clientes.modificarCliente(documento, req.body)
+async function modificar(req,res){
+    const id = req.params.id
+    const clienteModificado = await clientes.modificar(id, req.body)
     res.json(clienteModificado)
 }
 
 
-export {listarClientes, buscarCliente, altaCliente, modificarCliente}
+export default {listar, buscar, alta, modificar}

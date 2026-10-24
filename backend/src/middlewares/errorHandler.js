@@ -7,6 +7,11 @@ function errorHandler(err,req,res,next){
         return res.status(status).json({error: err.message})
     }
 
+    // Postgres: 23505 = violación de UNIQUE (ej.: documento repetido que se coló entre el chequeo y el INSERT/UPDATE)
+    if (err.code === '23505') {
+        return res.status(409).json({error: 'Ya existe un registro con esos datos'})
+    }
+
     // Error inesperado: el detalle se queda en la terminal, al cliente le decimos poco.
     console.error(err)
     res.status(500).json({error:"Error interno del servidor"})

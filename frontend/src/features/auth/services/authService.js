@@ -1,14 +1,22 @@
 import { redirect } from 'react-router'
 
-const URL = '/backend/data'
+const URL = 'http://localhost:3000/api/auth'
 const CLAVE_SESION = 'gestorTaller303:sesion'
 
-async function leerUsuarios() {
-  const respuesta = await fetch(`${URL}/usuarios.json`)
+async function leerUsuarios(usuario, contrasena) {
+  const respuesta = await fetch(`${URL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ usuario, contrasena })
+  });
+
   if (!respuesta.ok) {
-    throw new Error('No se pudo conectar para iniciar sesión.')
+    throw new Error('No se pudo iniciar sesión.');
   }
-  return respuesta.json()
+
+  return respuesta.json();
 }
 
 async function calcularHash(salt, contrasena) {
@@ -29,18 +37,18 @@ export async function iniciarSesion(usuario, contrasena) {
     throw new Error('Usuario o contraseña incorrectos.')
   }
 
-  const sesion = {id: encontrado.id, usuario: encontrado.usuario, nombre: encontrado.nombre, rol: encontrado.rol}
+  const sesion = { id: encontrado.id, usuario: encontrado.usuario, nombre: encontrado.nombre, rol: encontrado.rol }
   sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion))
   return sesion
-}  
+}
 
-  export function obtenerSesion() {
-    try{
-      return JSON.parse(sessionStorage.getItem(CLAVE_SESION))
-    } catch {
-      return null
-    }
+export function obtenerSesion() {
+  try {
+    return JSON.parse(sessionStorage.getItem(CLAVE_SESION))
+  } catch {
+    return null
   }
+}
 
 
 export function cerrarSesion() {
@@ -49,7 +57,7 @@ export function cerrarSesion() {
 
 export function protegerRuta() {
   const sesion = obtenerSesion()
-  if (!sesion){
+  if (!sesion) {
     throw redirect('/login')
   }
   return sesion
@@ -57,7 +65,7 @@ export function protegerRuta() {
 
 export function redirigirSiHaySesion() {
   const sesion = obtenerSesion()
-  if (sesion){
+  if (sesion) {
     throw redirect('/gestor')
   }
   return null

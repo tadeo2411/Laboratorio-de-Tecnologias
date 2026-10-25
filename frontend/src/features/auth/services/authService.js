@@ -3,20 +3,12 @@ import { redirect } from 'react-router'
 const URL = 'http://localhost:3000/api/auth'
 const CLAVE_SESION = 'gestorTaller303:sesion'
 
-async function leerUsuarios(usuario, contrasena) {
-  const respuesta = await fetch(`${URL}/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ usuario, contrasena })
-  });
-
+async function leerUsuarios() {
+  const respuesta = await fetch(`${URL}/login`)
   if (!respuesta.ok) {
-    throw new Error('No se pudo iniciar sesión.');
+    throw new Error('No se pudo conectar para iniciar sesión.')
   }
-
-  return respuesta.json();
+  return respuesta.json()
 }
 
 async function calcularHash(salt, contrasena) {
@@ -26,6 +18,7 @@ async function calcularHash(salt, contrasena) {
 }
 //Cambios con funciones nuevas
 export async function iniciarSesion(usuario, contrasena) {
+  /*
   const usuarios = await leerUsuarios()
   const nombreUsuario = usuario.trim().toLowerCase()
   const encontrado = usuarios.find((u) => u.usuario === nombreUsuario)
@@ -37,9 +30,26 @@ export async function iniciarSesion(usuario, contrasena) {
     throw new Error('Usuario o contraseña incorrectos.')
   }
 
-  const sesion = { id: encontrado.id, usuario: encontrado.usuario, nombre: encontrado.nombre, rol: encontrado.rol }
+  const sesion = {id: encontrado.id, usuario: encontrado.usuario, nombre: encontrado.nombre, rol: encontrado.rol}
   sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion))
-  return sesion
+  return sesion*/
+
+  const respuesta = await fetch(`${URL}/login`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({usuario:usuario, contrasena:contrasena})
+  });
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(datos.mensaje || 'Usuario o contraseña incorrectos.');
+  }
+  sessionStorage.setItem(CLAVE_SESION, JSON.stringify(datos))
+  return datos
+
 }
 
 export function obtenerSesion() {

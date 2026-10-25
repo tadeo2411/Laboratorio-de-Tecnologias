@@ -1,5 +1,0 @@
-$kind: http-request
-description: ""
-url: "{{base_url}}/api/clientes-copy"
-method: GET
-order: 1000

@@ -9,7 +9,7 @@ import { readFile } from 'node:fs/promises';
 
 function servirBackend() {
     const carpetaDatos = new URL(
-        '../labtech-backend/data/',
+        '../backend/data/',
         import.meta.url
     );
 

@@ -26,5 +26,10 @@ async function modificar(req,res){
     res.json(clienteModificado)
 }
 
+async function eliminar(req, res){
+    await clientes.eliminar(req.params.id)
+    res.status(204).send()
+}
 
-export default {listar, buscar, alta, modificar}
+
+export default {listar, buscar, alta, modificar, eliminar}

@@ -12,9 +12,9 @@ INSERT INTO vehiculos (patente, marca, modelo, anio, descripcion) VALUES
 ('AE123BC', 'Toyota', 'Corolla', 2021, 'Sedán gris, motor 1.8'),
 ('AD456EF', 'Ford', 'Ranger', 2020, 'Pickup blanca, doble cabina');
 
-INSERT INTO duenos (cliente_documento, vehiculo_patente) VALUES
-('30123456', 'AE123BC'),
-('30712345678', 'AD456EF');
+INSERT INTO duenos (id_cliente, id_vehiculo) VALUES
+((SELECT id FROM clientes WHERE documento = '30123456'), (SELECT id FROM vehiculos WHERE patente = 'AE123BC')),
+((SELECT id FROM clientes WHERE documento = '30712345678'), (SELECT id FROM vehiculos WHERE patente = 'AD456EF'));
 
 INSERT INTO tipos_trabajo (nombre, categoria, precio_estandar) VALUES
 ('Cambio de aceite y filtros', 'MANTENIMIENTO', 45000.00),
@@ -26,15 +26,15 @@ INSERT INTO repuestos (nombre, precio_estandar) VALUES
 ('Aceite sintético 5W-30 (litro)', 9500.00),
 ('Pastillas de freno Ford Ranger', 38000.00);
 
-INSERT INTO turnos (cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado) VALUES
-('30123456', 'AE123BC', CURRENT_TIMESTAMP + INTERVAL '2 days', 60, 'Cambio de aceite y filtros', 'CONFIRMADO'),
-('30712345678', 'AD456EF', CURRENT_TIMESTAMP + INTERVAL '3 days', 90, 'Revisión del sistema de frenos', 'SOLICITADO');
+INSERT INTO turnos (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado) VALUES
+((SELECT id FROM clientes WHERE documento = '30123456'), (SELECT id FROM vehiculos WHERE patente = 'AE123BC'), CURRENT_TIMESTAMP + INTERVAL '2 days', 60, 'Cambio de aceite y filtros', 'CONFIRMADO'),
+((SELECT id FROM clientes WHERE documento = '30712345678'), (SELECT id FROM vehiculos WHERE patente = 'AD456EF'), CURRENT_TIMESTAMP + INTERVAL '3 days', 90, 'Revisión del sistema de frenos', 'SOLICITADO');
 
 INSERT INTO ordenes_trabajo
-(cliente_documento, vehiculo_patente, diagnostico, estado, es_service, es_urgencia, garantia_dias)
+(id_cliente, id_vehiculo, diagnostico, estado, es_service, es_urgencia, garantia_dias)
 VALUES
-('30123456', 'AE123BC', 'Mantenimiento programado; revisar posibles pérdidas de aceite.', 'RECIBIDO', TRUE, FALSE, 30),
-('30712345678', 'AD456EF', 'Desgaste de pastillas delanteras; verificar discos.', 'DIAGNOSTICANDO', FALSE, TRUE, 60);
+((SELECT id FROM clientes WHERE documento = '30123456'), (SELECT id FROM vehiculos WHERE patente = 'AE123BC'), 'Mantenimiento programado; revisar posibles pérdidas de aceite.', 'RECIBIDO', TRUE, FALSE, 30),
+((SELECT id FROM clientes WHERE documento = '30712345678'), (SELECT id FROM vehiculos WHERE patente = 'AD456EF'), 'Desgaste de pastillas delanteras; verificar discos.', 'DIAGNOSTICANDO', FALSE, TRUE, 60);
 
 INSERT INTO fichas (orden_id, tipo, fecha, kilometraje, conformidad) VALUES
 (1, 'INGRESO', CURRENT_TIMESTAMP, 45200, 'APROBADA'),

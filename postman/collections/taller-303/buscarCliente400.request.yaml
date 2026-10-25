@@ -1,0 +1,7 @@
+$kind: http-request
+description: ""
+url: "{{base_url}}/api/clientes/:id"
+method: GET
+pathVariables:
+  id: ""
+order: 4000

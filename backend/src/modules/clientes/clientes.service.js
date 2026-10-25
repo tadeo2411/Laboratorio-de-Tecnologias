@@ -61,7 +61,6 @@ async function listar(){
     return lista
 }
 
-// Devuelve el cliente aunque esté dado de baja (con activo: false)
 async function buscar(id){
     const idValido = validarId(id)
     const clienteBuscado = await clientesRepository.buscarPorId(idValido)
@@ -98,18 +97,13 @@ async function alta(datos){
 
 
 async function modificar(id, cambios){
-    const idValido = validarId(id)
+    const cliente = await buscar(id)
 
     if (!cambios || typeof cambios !== 'object' || Object.keys(cambios).length === 0) {
         throw httpError(400, 'Hay que enviar al menos un campo para modificar')
     }
 
-    const cliente = await clientesRepository.buscarPorId(idValido)
-    if (!cliente) {
-        throw httpError(404, `El cliente con id ${idValido} no esta registrado`)
-    }
-
-    //Esto es para que no pueda cambiarse el timestamp (ni el id)
+    //Esto es para que no pueda cambiarse el timestamp o el id
     const camposInvalidos = Object.keys(cambios).filter(
         campo => !CAMPOS_MODIFICABLES.includes(campo)
     )
@@ -139,8 +133,20 @@ async function modificar(id, cambios){
             cambiosLimpios[campo] = typeof cambios[campo] === 'string' ? cambios[campo].trim() : cambios[campo]
         }
     }
-    return clientesRepository.modificar(idValido, cambiosLimpios)
+    return clientesRepository.modificar(cliente.id, cambiosLimpios)
+}
+
+async function eliminar(id){
+    const clienteBuscado = await buscar(id)
+    try{
+    await clientesRepository.eliminar(clienteBuscado)
+    }catch (err){
+        if(err.code === '23503' || err.code === '23001'){
+            throw httpError(409, `Un cliente no puede eliminarse si esta asociado a otro elemento`)
+        }
+        else throw err
+    }
 }
 
 
-export default {listar, buscar, alta, modificar}
+export default {listar, buscar, alta, modificar, eliminar}

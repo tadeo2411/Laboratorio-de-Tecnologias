@@ -1,0 +1,7 @@
+$kind: http-request
+description: ""
+url: "{{base_url}}/api/clientes/:id"
+method: DELETE
+pathVariables:
+  id: "9099999999"
+order: 9000

@@ -54,4 +54,28 @@ async function eliminar (vehiculo){
     return rows[0]
 }
 
-export default{obtener, buscar, buscarPorPatente, alta, modificar, eliminar}
+async function obtenerDuenos(id){
+    const { rows } = await pool.query(
+        `SELECT cliente.id, cliente.documento, cliente.tipo, cliente.nombre, cliente.telefono 
+        FROM duenos dueno
+        JOIN clientes cliente ON cliente.id = dueno.id_cliente
+        WHERE dueno.id_vehiculo = $1`,
+        [id]
+    )
+    return rows
+}
+
+async function obtenerDueno(id, idCliente){
+    const { rows } = await pool.query(
+        `SELECT cliente.id, cliente.documento, cliente.tipo, cliente.nombre, cliente.telefono 
+        FROM duenos dueno
+        JOIN clientes cliente ON cliente.id = dueno.id_cliente
+        WHERE dueno.id_vehiculo = $1 AND cliente.id = $2`,
+        [id, idCliente]
+    )
+    return rows[0]
+}
+
+
+
+export default{obtener, buscar, buscarPorPatente, alta, modificar, eliminar, obtenerDuenos, obtenerDueno}

@@ -30,4 +30,16 @@ async function eliminar (req, res){
     res.status(204).send()
 }
 
-export default {listar, buscar, alta, modificar, eliminar}
+// parte de duenios
+
+async function listarDuenos(req, res){
+    const listaDuenos = await vehiculos.listarDuenos(req.params.id)
+    res.json(listaDuenos)
+}
+
+async function buscarDueno(req, res){
+    const dueno = await vehiculos.buscarDueno(req.params.id, req.params.idCliente)
+    res.json(dueno)
+}
+
+export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno}

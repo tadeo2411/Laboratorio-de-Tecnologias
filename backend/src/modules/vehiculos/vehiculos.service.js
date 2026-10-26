@@ -1,5 +1,6 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import vehiculosRepository from './vehiculos.repository.js'
+import clienteServicio from '../clientes/clientes.service.js'
 import {httpError} from '../../utils/httpError.js'
 import { validarTexto, validarTextoObligatorio, validarKilometraje } from '../../utils/validsTexto.js'
 const CAMPOS_MODIFICABLES =['patente', 'marca', 'modelo', 'anio', 'descripcion', 'kilometraje']
@@ -15,7 +16,6 @@ function normalizar(patente){
     return patente.toUpperCase().replace(/[^A-Z0-9]/g, '')
 }
 
-// Formatos: ABC123 (vieja) o AB123CD (Mercosur)
 function validarPatente(patente){
     if(!/^([A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$/.test(patente)){
         throw httpError(400, 'La patente debe tener formato ABC123 o AB123CD')
@@ -31,7 +31,6 @@ function validarAnio(anio){
     }
 }
 
-// El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
 function validarId(id){
     const idNumerico = Number(id)
     if(!Number.isInteger(idNumerico) || idNumerico <= 0){
@@ -39,7 +38,6 @@ function validarId(id){
     }
     return idNumerico
 }
-
 
 
 
@@ -57,16 +55,15 @@ async function buscar(id){
     return vehiculoBuscado
 }
 
-async function alta (datos){
-    // si no mandan body, req.body es undefined
-    const { patente, marca, modelo, anio, descripcion, kilometraje } =  datos || {}
+async function alta (vehiculo){
+    const { patente, marca, modelo, anio, descripcion, kilometraje } =  vehiculo || {}
     const patenteNorm = normalizar(patente)
     validarPatente(patenteNorm)
     validarAnio(anio)
     validarTextoObligatorio(marca, 'marca', maxMarca)
     validarTextoObligatorio(modelo, 'modelo', maxModelo)
     validarKilometraje(kilometraje)
-    // la descripcion es opcional
+
     const desc = descripcion ?? null
     if(desc !== null) validarTexto(desc, 'descripcion', maxDescripcion)
 
@@ -82,6 +79,7 @@ async function alta (datos){
         descripcion : desc === null ? null : desc.trim(),
         kilometraje
     }
+
     return vehiculosRepository.alta(nuevoVehiculo)
 }
 
@@ -99,7 +97,6 @@ async function modificar(id, cambios) {
         throw httpError(400, `Campos que no se pueden modificar: ${camposInvalidos.join(', ')}`)
     }
 
-    // La patente nueva se normaliza antes de validarla y de buscar duplicados
     if (cambios.patente !== undefined) {
         cambios.patente = normalizar(cambios.patente)
         validarPatente(cambios.patente)
@@ -110,7 +107,7 @@ async function modificar(id, cambios) {
     if (cambios.kilometraje !== undefined) validarKilometraje(cambios.kilometraje)
     if (cambios.descripcion !== undefined && cambios.descripcion !== null) validarTexto(cambios.descripcion, 'descripcion', maxDescripcion)
 
-    // Si cambia la patente, no puede ser la de OTRO vehiculo (si repite la suya propia, no pasa nada)
+    
     if (cambios.patente !== undefined && cambios.patente !== vehiculo.patente) {
         if (await vehiculosRepository.buscarPorPatente(cambios.patente)) {
             throw httpError(409, `Ya existe un vehiculo con esa patente ${cambios.patente}`)
@@ -137,4 +134,17 @@ async function eliminar(id){
     }
 }
 
-export default {listar, buscar, alta, modificar, eliminar}
+// parte de duenios
+
+async function listarDuenos(id){
+    const vehiculo = await buscar(id)
+    return vehiculosRepository.obtenerDuenos(vehiculo.id)
+}
+
+async function buscarDueno(id, idCliente){
+    const vehiculo = await buscar(id)
+    const cliente = await clienteServicio.buscar(idCliente)
+    return vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
+}
+
+export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno}

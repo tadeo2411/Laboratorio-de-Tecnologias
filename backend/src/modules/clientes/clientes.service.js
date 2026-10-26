@@ -1,15 +1,12 @@
 // aca va la logica de negocio: validaciones, reglas y decidir qué error corresponde. Llama a repository
 import clientesRepository from "./clientes.repository.js"
 import { httpError }  from"../../utils/httpError.js"
+import { validarTextoObligatorio } from "../../utils/validsTexto.js"
 
 const TIPOS = ['PERSONA', 'EMPRESA']
 const CAMPOS_MODIFICABLES = ['documento', 'nombre', 'telefono', 'tipo']
 const maxNombre = 120
 const maxTelefono = 30
-
-function esTextoNoVacio(valor){
-    return typeof valor === 'string' && valor.trim() !== ''
-}
 
 
 function validarDocumento(documento){
@@ -43,17 +40,6 @@ function validarTipo(tipo){
         throw httpError(400, `El tipo debe ser ${TIPOS.join(' o ')}`)
     }
 }
-
-function validarTextoObligatorio(valor, nombreCampo, maximo){
-    if (!esTextoNoVacio(valor)) {
-        throw httpError(400, `El campo ${nombreCampo} es obligatorio y debe ser un texto`)
-    }
-    if(valor.trim().length>maximo){
-        throw httpError(400, `El campo ${nombreCampo} puede contener como máximo ${maximo} caracteres`)
-    }
-}
-
-
 
 
 async function listar(){

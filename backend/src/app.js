@@ -6,16 +6,19 @@ import clientesRoutes  from './modules/clientes/clientes.routes.js'
 import repuestosRoutes from "./modules/repuestos/repuestos.routes.js";
 import authRoutes from './modules/auth/auth.routes.js'
 import ordenesRoutes from './modules/ordenes/ordenes.routes.js'
+import trabajosRoutes from "./modules/trabajos/trabajos.routes.js"
+import { corsOptions } from './config/cors.js';
 
 const app = express()
 
 
-app.use(cors())
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use('/api/clientes', clientesRoutes)
 app.use('/api/repuestos', repuestosRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/ordenes', ordenesRoutes)
+app.use('/api/trabajos', trabajosRoutes)
 
 app.get('/api/health', (req, res) => {
 

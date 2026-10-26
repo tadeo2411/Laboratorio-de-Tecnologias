@@ -60,4 +60,41 @@ INSERT INTO presupuesto_items (presupuesto_id, concepto, descripcion, cantidad, 
 ((SELECT id FROM presupuestos WHERE numero = 1002), 'MANO_DE_OBRA', 'Reparación de frenos', 1, 35000.00),
 ((SELECT id FROM presupuestos WHERE numero = 1002), 'REPUESTO', 'Pastillas de freno Ford Ranger', 1, 38000.00);
 
+INSERT INTO "empleados" (
+  "id", "nombre", "usuario", "password_hash", 
+  "activo"
+) 
+VALUES 
+  (
+    1, 'Administrador', 'admin', '$2b$10$ZQ8AAy2ZP7NA26E9iks7buT7T9nQOyKmTMNteE79JnBbJpYdrRgCW', 
+    TRUE
+  ), 
+  (
+    2, 'Mecánico de prueba', 'mecanico', 
+    '$2b$10$iZzThdco2k0aW9iB2j4NWOtnVxoGMPS9CK8SWUQhz5tBuWOXD.4O6', 
+    TRUE
+  ), 
+  (
+    3, 'Ex mecánico de prueba', 'ex.mecanico', 
+    '$2b$10$yJXrozYvRnTfgLNaL766OuHuJHocJJgTuPqfV/EOZ4gt936D4GiDK', 
+    FALSE
+  );
+
+  INSERT INTO "roles" ("nombre")
+VALUES
+    ('ADMINISTRADOR'),
+    ('MECANICO')
+ON CONFLICT ("nombre") DO NOTHING;
+
+INSERT INTO "empleados_roles" ("empleado_id", "rol_id")
+SELECT e."id", r."id"
+FROM "empleados" e
+JOIN "roles" r
+    ON r."nombre" = CASE
+        WHEN e."usuario" = 'admin' THEN 'ADMINISTRADOR'
+        WHEN e."usuario" IN ('mecanico', 'ex.mecanico') THEN 'MECANICO'
+    END
+WHERE e."usuario" IN ('admin', 'mecanico', 'ex.mecanico')
+ON CONFLICT ("empleado_id", "rol_id") DO NOTHING;
+
 COMMIT;

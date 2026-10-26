@@ -1,55 +1,52 @@
 import { redirect } from 'react-router'
 
-const URL = '/backend/data'
-const CLAVE_SESION = 'gestorTaller303:sesion'
+const URL = 'http://localhost:3000/api/auth'
+const CLAVE_USUARIO = 'gestorTaller303:usuario'
+const CLAVE_TOKEN = 'gestorTaller303:token'
 
-async function leerUsuarios() {
-  const respuesta = await fetch(`${URL}/usuarios.json`)
-  if (!respuesta.ok) {
-    throw new Error('No se pudo conectar para iniciar sesión.')
-  }
-  return respuesta.json()
-}
-
-async function calcularHash(salt, contrasena) {
-  const bytes = new TextEncoder().encode(salt + contrasena)
-  const huella = await crypto.subtle.digest('SHA-256', bytes)
-  return Array.from(new Uint8Array(huella), (byte) => byte.toString(16).padStart(2, '0')).join('')
-}
-//Cambios con funciones nuevas
 export async function iniciarSesion(usuario, contrasena) {
-  const usuarios = await leerUsuarios()
-  const nombreUsuario = usuario.trim().toLowerCase()
-  const encontrado = usuarios.find((u) => u.usuario === nombreUsuario)
-
-  const contrasenaCorrecta =
-    encontrado && (await calcularHash(encontrado.salt, contrasena)) === encontrado.contrasenaHash
-
-  if (!contrasenaCorrecta) {
-    throw new Error('Usuario o contraseña incorrectos.')
+  let respuesta
+  try {
+    respuesta = await fetch(`${URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario, contrasena })
+    })
+  } catch {
+    throw new Error('No se pudo conectar con el servidor.')
   }
 
-  const sesion = {id: encontrado.id, usuario: encontrado.usuario, nombre: encontrado.nombre, rol: encontrado.rol}
-  sessionStorage.setItem(CLAVE_SESION, JSON.stringify(sesion))
-  return sesion
-}  
+  const datos = await respuesta.json()
 
-  export function obtenerSesion() {
-    try{
-      return JSON.parse(sessionStorage.getItem(CLAVE_SESION))
-    } catch {
-      return null
-    }
+  if (!respuesta.ok) {
+    throw new Error(datos.error || 'Usuario o contraseña incorrectos.')
   }
 
+  sessionStorage.setItem(CLAVE_TOKEN, datos.token)
+  sessionStorage.setItem(CLAVE_USUARIO, JSON.stringify(datos.usuario))
+  return datos.usuario
+}
+
+export function obtenerSesion() {
+  try {
+    return JSON.parse(sessionStorage.getItem(CLAVE_USUARIO))
+  } catch {
+    return null
+  }
+}
+
+export function obtenerToken() {
+  return sessionStorage.getItem(CLAVE_TOKEN)
+}
 
 export function cerrarSesion() {
-  sessionStorage.removeItem(CLAVE_SESION)
+  sessionStorage.removeItem(CLAVE_TOKEN)
+  sessionStorage.removeItem(CLAVE_USUARIO)
 }
 
 export function protegerRuta() {
   const sesion = obtenerSesion()
-  if (!sesion){
+  if (!sesion || !obtenerToken()) {
     throw redirect('/login')
   }
   return sesion
@@ -57,7 +54,7 @@ export function protegerRuta() {
 
 export function redirigirSiHaySesion() {
   const sesion = obtenerSesion()
-  if (sesion){
+  if (sesion && obtenerToken()) {
     throw redirect('/gestor')
   }
   return null

@@ -21,8 +21,8 @@ async function iniciarSesion(usuario, contrasena) {
         throw httpError(400, 'Usuario y contraseña son obligatorios')
     }
 
-    const encontrado = authRepository.buscarPorUsuario(usuario.trim().toLowerCase())
-    const contrasenaOk = await bcrypt.compare(contrasena, encontrado?.contrasenaHash ?? HASH_DE_RELLENO)
+    const encontrado = await authRepository.buscarPorUsuario(usuario.trim().toLowerCase())
+    const contrasenaOk = await bcrypt.compare(contrasena, encontrado?.password_hash ?? HASH_DE_RELLENO)
 
     if (!encontrado || !contrasenaOk) {
         throw httpError(401, 'Credenciales inválidas')

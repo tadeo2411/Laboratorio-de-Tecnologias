@@ -1,18 +1,16 @@
-// Tiene que tener 4 parámetros (err, req, res, next): así Express sabe que es un manejador de errores.
 function errorHandler(err,req,res,next){
     const status = err.status ?? 500
 
-    // Errores "esperados" (400, 404, 409...): el mensaje es para el cliente.
     if (status < 500) {
         return res.status(status).json({error: err.message})
     }
 
-    // Postgres: 23505 = violación de UNIQUE (ej.: documento repetido que se coló entre el chequeo y el INSERT/UPDATE)
+    // 23505 es un error de postgresql por unique repetido.
     if (err.code === '23505') {
         return res.status(409).json({error: 'Ya existe un registro con esos datos'})
     }
 
-    // Error inesperado: el detalle se queda en la terminal, al cliente le decimos poco.
+    // error inesperado
     console.error(err)
     res.status(500).json({error:"Error interno del servidor"})
 }

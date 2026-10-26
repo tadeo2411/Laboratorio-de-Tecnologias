@@ -2,4 +2,4 @@ $kind: http-request
 description: ""
 url: "{{base_url}}/api/clientes"
 method: GET
-order: 6000
+order: 8000

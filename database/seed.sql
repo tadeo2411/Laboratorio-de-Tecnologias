@@ -8,9 +8,9 @@ INSERT INTO clientes (documento, tipo, nombre, telefono) VALUES
 ('30123456', 'PERSONA', 'Juan Pérez', '2664123456'),
 ('30712345678', 'EMPRESA', 'Transporte Los Andes SRL', '2664987654');
 
-INSERT INTO vehiculos (patente, marca, modelo, anio, descripcion) VALUES
-('AE123BC', 'Toyota', 'Corolla', 2021, 'Sedán gris, motor 1.8'),
-('AD456EF', 'Ford', 'Ranger', 2020, 'Pickup blanca, doble cabina');
+INSERT INTO vehiculos (patente, marca, modelo, anio, descripcion, kilometraje) VALUES
+('AE123BC', 'Toyota', 'Corolla', 2021, 'Sedán gris, motor 1.8', 15000),
+('AD456EF', 'Ford', 'Ranger', 2020, 'Pickup blanca, doble cabina', 35000);
 
 INSERT INTO duenos (id_cliente, id_vehiculo) VALUES
 ((SELECT id FROM clientes WHERE documento = '30123456'), (SELECT id FROM vehiculos WHERE patente = 'AE123BC')),

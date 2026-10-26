@@ -1,6 +1,6 @@
 // es quien recibe las req y responde res
 // llama al service y responde con status + JSON.
-import vehiculos from './vehiculos.service'
+import vehiculos from './vehiculos.service.js'
 
 
 async function listar(req, res){
@@ -25,4 +25,9 @@ async function modificar(req, res){
     res.json(vehiculoModificado)
 }
 
-export default {listar, buscar, alta, modificar}
+async function eliminar (req, res){
+    await vehiculos.eliminar(req.params.id)
+    res.status(204).send()
+}
+
+export default {listar, buscar, alta, modificar, eliminar}

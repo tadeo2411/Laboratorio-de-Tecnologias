@@ -1,9 +1,140 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import vehiculosRepository from './vehiculos.repository.js'
 import {httpError} from '../../utils/httpError.js'
+import { validarTexto, validarTextoObligatorio, validarKilometraje } from '../../utils/validsTexto.js'
+const CAMPOS_MODIFICABLES =['patente', 'marca', 'modelo', 'anio', 'descripcion', 'kilometraje']
+const maxMarca = 60
+const maxModelo = 60
+const maxDescripcion = 500
 
-const CAMBIOS_MODIFICABLES =['patente', 'marca', 'modelo', 'anio', 'descripcion']
-
-async function normalizar(patente){
-    
+// Le saco todo lo que no sea letra o numero y la paso a mayusculas
+function normalizar(patente){
+    if(typeof(patente) !== 'string'){
+        throw httpError(400, "Ingrese una patente valida")
+    }
+    return patente.toUpperCase().replace(/[^A-Z0-9]/g, '')
 }
+
+// Formatos: ABC123 (vieja) o AB123CD (Mercosur)
+function validarPatente(patente){
+    if(!/^([A-Z]{3}\d{3}|[A-Z]{2}\d{3}[A-Z]{2})$/.test(patente)){
+        throw httpError(400, 'La patente debe tener formato ABC123 o AB123CD')
+    }
+}
+
+function validarAnio(anio){
+    if(!Number.isInteger(anio)){
+        throw httpError(400, 'el año del vehiculo debe ser un numero')
+    }
+    if(anio <=1900 || anio > new Date().getFullYear()){
+        throw httpError(400, 'el año del vehiculo debe ser valido')
+    }
+}
+
+// El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
+function validarId(id){
+    const idNumerico = Number(id)
+    if(!Number.isInteger(idNumerico) || idNumerico <= 0){
+        throw httpError(400, 'El id debe ser un número entero positivo')
+    }
+    return idNumerico
+}
+
+
+
+
+async function listar(){
+    const lista = await vehiculosRepository.obtener()
+    return lista
+}
+
+async function buscar(id){
+    const idValido = validarId(id)
+    const vehiculoBuscado = await vehiculosRepository.buscar(idValido)
+    if(!vehiculoBuscado){
+        throw httpError(404, `No se encontro al vehiculo con id ${idValido}`)
+    }
+    return vehiculoBuscado
+}
+
+async function alta (datos){
+    // si no mandan body, req.body es undefined
+    const { patente, marca, modelo, anio, descripcion, kilometraje } =  datos || {}
+    const patenteNorm = normalizar(patente)
+    validarPatente(patenteNorm)
+    validarAnio(anio)
+    validarTextoObligatorio(marca, 'marca', maxMarca)
+    validarTextoObligatorio(modelo, 'modelo', maxModelo)
+    validarKilometraje(kilometraje)
+    // la descripcion es opcional
+    const desc = descripcion ?? null
+    if(desc !== null) validarTexto(desc, 'descripcion', maxDescripcion)
+
+    if(await vehiculosRepository.buscarPorPatente(patenteNorm)){
+        throw httpError(409, `El vehiculo con la patente ${patenteNorm} ya existe`)
+    }
+
+    const nuevoVehiculo ={
+        patente: patenteNorm,
+        marca : marca.trim(),
+        modelo : modelo.trim(),
+        anio,
+        descripcion : desc === null ? null : desc.trim(),
+        kilometraje
+    }
+    return vehiculosRepository.alta(nuevoVehiculo)
+}
+
+async function modificar(id, cambios) {
+    const vehiculo = await buscar(id)
+
+    if(!cambios || typeof cambios !== 'object' || Object.keys(cambios).length === 0){
+        throw httpError(400, `Se debe enviar al menos un campo para modificar`)
+    }
+
+    const camposInvalidos = Object.keys(cambios).filter(
+        campo => !CAMPOS_MODIFICABLES.includes(campo)
+    )
+    if(camposInvalidos.length > 0){
+        throw httpError(400, `Campos que no se pueden modificar: ${camposInvalidos.join(', ')}`)
+    }
+
+    // La patente nueva se normaliza antes de validarla y de buscar duplicados
+    if (cambios.patente !== undefined) {
+        cambios.patente = normalizar(cambios.patente)
+        validarPatente(cambios.patente)
+    }
+    if (cambios.modelo !== undefined) validarTextoObligatorio(cambios.modelo, 'modelo', maxModelo)
+    if (cambios.anio !== undefined) validarAnio(cambios.anio)
+    if (cambios.marca !== undefined) validarTextoObligatorio(cambios.marca, 'marca', maxMarca)
+    if (cambios.kilometraje !== undefined) validarKilometraje(cambios.kilometraje)
+    if (cambios.descripcion !== undefined && cambios.descripcion !== null) validarTexto(cambios.descripcion, 'descripcion', maxDescripcion)
+
+    // Si cambia la patente, no puede ser la de OTRO vehiculo (si repite la suya propia, no pasa nada)
+    if (cambios.patente !== undefined && cambios.patente !== vehiculo.patente) {
+        if (await vehiculosRepository.buscarPorPatente(cambios.patente)) {
+            throw httpError(409, `Ya existe un vehiculo con esa patente ${cambios.patente}`)
+        }
+    }
+    const cambiosLimpios = {}
+    for (const campo of CAMPOS_MODIFICABLES) {
+        if (cambios[campo] !== undefined) {
+            cambiosLimpios[campo] = typeof cambios[campo] === 'string' ? cambios[campo].trim() : cambios[campo]
+        }
+    }
+
+    return vehiculosRepository.modificar(vehiculo.id, cambiosLimpios)
+}
+
+async function eliminar(id){
+    const vehiculo = await buscar(id)
+    try{
+        await vehiculosRepository.eliminar(vehiculo)
+    }catch (err){
+        if(err.code === '23503' || err.code === '23001'){
+            throw httpError(409, `El vehiculo no puede eliminarse si esta asociado a otro elemento`)
+        }else throw err
+    }
+}
+
+export default {listar, buscar, alta, modificar, eliminar}

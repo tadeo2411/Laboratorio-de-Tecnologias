@@ -6,6 +6,7 @@ import clientesRoutes  from './modules/clientes/clientes.routes.js'
 import repuestosRoutes from "./modules/repuestos/repuestos.routes.js"
 import authRoutes from './modules/auth/auth.routes.js'
 import ordenesRoutes from './modules/ordenes/ordenes.routes.js'
+import vehiculosRoutes from './modules/vehiculos/vehiculos.routes.js'
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use('/api/clientes', clientesRoutes)
 app.use('/api/repuestos', repuestosRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/ordenes', ordenesRoutes)
+app.use('/api/vehiculos', vehiculosRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({"estado":"ok"})

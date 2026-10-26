@@ -5,7 +5,7 @@ const valoresIniciales = {
     nombre: '',
     apellido: '',
     telefono: '',
-    id: '',
+    documento: '',
     tipo: 'PERSONA',
 }
 
@@ -25,7 +25,7 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
             nombre: formulario.nombre.trim(),
             apellido: formulario.apellido.trim(),
             telefono: formulario.telefono.trim(),
-            id: formulario.id.trim(),
+            documento: formulario.documento.trim(),
             tipo: formulario.tipo,
         })
     }
@@ -50,7 +50,7 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="clienteDni" className="form-label">DNI / CUIT *</label>
-                        <input id="clienteDni" name="id" type="text" className="form-control" value={formulario.id} onChange={actualizarCampo} pattern={'[0-9][0-9. \\-]*'} title="Usá números; podés incluir puntos, espacios y guiones." required />
+                        <input id="clienteDni" name="documento" type="text" className="form-control" value={formulario.documento} onChange={actualizarCampo} pattern={'[0-9][0-9. \\-]*'} title="Usá números; podés incluir puntos, espacios y guiones." required />
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="clienteTipo" className="form-label ">Tipo *</label>

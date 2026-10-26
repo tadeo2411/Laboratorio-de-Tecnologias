@@ -1,3 +1,16 @@
 export { default as LoginPage } from './pages/LoginPage'
-export { cerrarSesion, protegerRuta, redirigirSiHaySesion, obtenerToken } from './services/authService'
+export {
+  cerrarSesion,
+  protegerRuta,
+  redirigirSiHaySesion,
+  obtenerSesion,
+  obtenerToken,
+  obtenerEmpleados,
+  obtenerMiCuenta,
+  obtenerTodosLosEmpleados,
+  crearEmpleado,
+  actualizarEmpleado,
+  cambiarActivoEmpleado
+} from './services/authService'
 export { default as GestorConSesion } from './components/GestorConSesion'
+export { ROLES, textoRol, esAdministrador } from './utils/roles'

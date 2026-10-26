@@ -1,13 +1,16 @@
 import "../trabajosPage.css"
-import img_list from "../../../assets/icons/img_list.png"
+import "../../estilos.css"
+import img_list from "../../../assets/icons/trabajosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
 import Table from "../../../shared/components/Table";
 import Modal from "../../../shared/components/Modal";
 import { useState } from "react";
 import TrabajosForm from "../components/TrabajosForm";
 import MasInfo from "../components/MasInfo"
+import BotonEditar from "../../../shared/components/BotonEditar";
+import BotonEliminar from "../../../shared/components/BotonEliminar";
 
-const trabajos = [
+const trabajosIniciales = [
     {
         id: 1,
         fecha: "06/10/2026",
@@ -45,17 +48,35 @@ const columnasTrabajos = [
 ];
 
 function TrabajosPage() {
+    const [trabajos, setTrabajos] = useState(trabajosIniciales);
+    const [trabajoEnEdicion, setTrabajoEnEdicion] = useState(null);
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalMasInfoAbierto, setModalMasInfoAbierto] = useState(false);
     const [trabajoSeleccionado, setTrabajoSeleccionado] = useState(null);
+
+    function abrirFormulario(trabajo = null) {
+        setTrabajoEnEdicion(trabajo);
+        setModalAbierto(true);
+    }
+
+    function cerrarFormulario() {
+        setModalAbierto(false);
+        setTrabajoEnEdicion(null);
+    }
+
+    function handleEliminarTrabajo(idTrabajo) {
+        if (!window.confirm('¿Desea eliminar el trabajo?')) return;
+        setTrabajos(anteriores => anteriores.filter(trabajo => trabajo.id !== idTrabajo));
+    }
+
     return (
         <div className="contenedor">
             {modalAbierto && (
                 <Modal
-                    titulo="Nuevo trabajo"
-                    onCerrar={() => setModalAbierto(false)}
+                    titulo={trabajoEnEdicion ? "Editar trabajo" : "Nuevo trabajo"}
+                    onCerrar={cerrarFormulario}
                 >
-                    <TrabajosForm onCerrar={() => setModalAbierto(false)} />
+                    <TrabajosForm onCerrar={cerrarFormulario} />
                 </Modal>
             )}
             {modalMasInfoAbierto && (
@@ -66,17 +87,18 @@ function TrabajosPage() {
                     <MasInfo trabajo={trabajoSeleccionado} onCerrar={() => setModalMasInfoAbierto(false)} />
                 </Modal>
             )}
-            <div className="trabajos-page">
-                <div className="img-container">
-                    <img src={img_list} />
-                </div>
-
-                <div className="title-container">
+            <div className="page-header">
+            
+                    <div className="page-header-image">
+            
+                      <img src={img_list} alt="Listado" />
+                    </div>
+                    <div className="page-header-title">
                     <h1>Trabajos</h1>
                     <p>Listado de trabajos registrados en el sistema.</p>
                 </div>
 
-                <BotonNuevo onClick={() => setModalAbierto(true)} componente={"trabajo"} />
+                <BotonNuevo onClick={() => abrirFormulario()} componente={"trabajo"} />
             </div>
 
             <div>
@@ -171,19 +193,9 @@ function TrabajosPage() {
                                         ⓘ
                                     </button>
 
-                                    <button
-                                        className="accion-button accion-modificar"
-                                        title="Modificar"
-                                    >
-                                        ✎
-                                    </button>
+                                    <BotonEditar onClick={() => abrirFormulario(trabajo)} />
 
-                                    <button
-                                        className="accion-button accion-eliminar"
-                                        title="Eliminar"
-                                    >
-                                        🗑
-                                    </button>
+                                    <BotonEliminar onClick={() => handleEliminarTrabajo(trabajo.id)} />
 
                                 </div>
                             </td>

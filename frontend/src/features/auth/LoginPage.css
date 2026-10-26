@@ -72,6 +72,26 @@
   outline: 2px solid #1a56a6;
   outline-offset: 1px;
 }
+#login-contrasena{
+  padding-right: 5rem;
+}
+.contrasenaCampo{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.mostrarContrasena{
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  height: 45px; /* La altura total que tiene tu input con sus paddings */
+  display: flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
 
 .login-form__boton {
   width: 100%;

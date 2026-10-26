@@ -1,10 +1,75 @@
 [
     {
-        "id": 1,
+        "id": "pre-001",
         "numero": "P-001",
-        "fecha": "2026-09-30",
-        "estado": "Pendiente",
-        "total": 50000,
-        "observaciones": "Revisar frenos"
+        "ordenId": 1,
+        "trabajoIds": [1, 2],
+        "fechaEmision": "2024-06-01",
+        "diasValidez": 15,
+        "observaciones": "",
+        "estadoPresupuesto": "APROBADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de aceite y filtro", "cantidad": 1, "precioUnitario": 15000, "trabajoId": 1 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Filtro de aceite", "cantidad": 1, "precioUnitario": 12500, "trabajoId": 1 },
+            { "id": 3, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno", "cantidad": 1, "precioUnitario": 25000, "trabajoId": 2 },
+            { "id": 4, "tipo": "REPUESTO", "descripcion": "Pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 46500, "trabajoId": 2 }
+        ]
+    },
+    {
+        "id": "pre-002",
+        "numero": "P-002",
+        "ordenId": 3,
+        "trabajoIds": [3, 4],
+        "fechaEmision": "2026-10-08",
+        "diasValidez": 15,
+        "observaciones": "",
+        "estadoPresupuesto": "ENVIADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de bujes de parrilla", "cantidad": 1, "precioUnitario": 40000, "trabajoId": 3 },
+            { "id": 2, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de pastillas de freno", "cantidad": 1, "precioUnitario": 25000, "trabajoId": 4 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Pastillas de freno delanteras", "cantidad": 1, "precioUnitario": 46500, "trabajoId": 4 }
+        ]
+    },
+    {
+        "id": "pre-003",
+        "numero": "P-003",
+        "ordenId": 3,
+        "trabajoIds": [3],
+        "fechaEmision": null,
+        "diasValidez": 15,
+        "observaciones": "",
+        "estadoPresupuesto": "CANCELADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Cambio de bujes de parrilla", "cantidad": 1, "precioUnitario": 40000, "trabajoId": 3 },
+            { "id": 2, "tipo": "OTRO", "descripcion": "Alineación y balanceo", "cantidad": 1, "precioUnitario": 18000 }
+        ]
+    },
+    {
+        "id": "pre-004",
+        "numero": "P-004",
+        "ordenId": 4,
+        "trabajoIds": [5],
+        "fechaEmision": "2026-10-10",
+        "diasValidez": 15,
+        "observaciones": "",
+        "estadoPresupuesto": "CANCELADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reemplazo de radiador", "cantidad": 1, "precioUnitario": 35000, "trabajoId": 5 },
+            { "id": 2, "tipo": "REPUESTO", "descripcion": "Radiador", "cantidad": 1, "precioUnitario": 120000, "trabajoId": 5 },
+            { "id": 3, "tipo": "REPUESTO", "descripcion": "Líquido refrigerante (litro)", "cantidad": 5, "precioUnitario": 6000, "trabajoId": 5 }
+        ]
+    },
+    {
+        "id": "pre-005",
+        "numero": "P-005",
+        "ordenId": 4,
+        "trabajoIds": [5],
+        "fechaEmision": "2026-10-10",
+        "diasValidez": 15,
+        "observaciones": "",
+        "estadoPresupuesto": "APROBADO",
+        "items": [
+            { "id": 1, "tipo": "MANO_DE_OBRA", "descripcion": "Reparación del sistema de refrigeración", "cantidad": 1, "precioUnitario": 30000, "trabajoId": 5 }
+        ]
     }
 ]

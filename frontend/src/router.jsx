@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router'
 import LayoutLanding from './shared/layout/LayoutLanding'
 import PaginaInicial from './features/home/pages/PaginaInicial'
-import OrdenesPage from './features/ordenes/pages/OrdenesPage'
+import { OrdenesPage, cargarPaginaOrdenes } from './features/ordenes'
 // import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
 import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
@@ -10,6 +10,7 @@ import TablerosPage from './features/tableros/pages/TablerosPage';
 import TrabajosPage from './features/trabajos/pages/TrabajosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 import ClientesPage from './features/clientes/pages/ClientesPage'
+import { CuentaPage, cargarPaginaCuenta } from './features/cuenta'
 import Spinner from './shared/components/Spinner'
 import {LoginPage, GestorConSesion, protegerRuta, redirigirSiHaySesion} from './features/auth'
 export const router = createBrowserRouter([
@@ -45,7 +46,8 @@ export const router = createBrowserRouter([
             },
             {
                 path: "ordenes",
-                element: <OrdenesPage />
+                element: <OrdenesPage />,
+                loader: cargarPaginaOrdenes
             },
             {
                 path: "turnos",
@@ -70,6 +72,11 @@ export const router = createBrowserRouter([
             {
                 path: "trabajos",
                 element: <TrabajosPage />
+            },
+            {
+                path: "cuenta",
+                element: <CuentaPage />,
+                loader: cargarPaginaCuenta
             }
         ]
     }

@@ -117,7 +117,7 @@ ul {
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.4s ease-out;
-    
+
 }
 
 .hoverNavBar::before {
@@ -140,6 +140,11 @@ main {
     align-items: center;
     justify-content: center;
     padding: 20px;
+
+    background-image: url("/images/img_fondo_gestor.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .contenido {
@@ -169,12 +174,14 @@ section {
 .contenedor {
     width: 100%;
     margin-bottom: 24px;
-    padding: 24px;
+    padding: 2rem;
     box-sizing: border-box;
+
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .titContenedor {
@@ -182,6 +189,58 @@ section {
     margin-bottom: 20px;
     color: #333;
     font-size: 1.2rem;
+}
+
+.page-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.page-header-image {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e8f5e9;
+    border-radius: 12px;
+}
+
+.page-header-image img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%);
+}
+
+.page-header-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 0;
+    padding-left: 1rem;
+    text-align: center;
+}
+
+.page-header-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    overflow-wrap: break-word;
+}
+
+.page-header-title p {
+    margin: 0;
+    font-size: 1rem;
+    color: #585858;
+    overflow-wrap: break-word;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -270,7 +329,7 @@ textarea {
     font-size: 0.85rem;
 }
 
-.row > a:has(.botonAgregar) {
+.row>a:has(.botonAgregar) {
     width: auto;
     padding: 0;
     align-self: center;
@@ -318,6 +377,25 @@ textarea {
 
 .sinDatos {
     color: #888;
+}
+
+.title-container {
+    display: flex;
+    gap: .2rem;
+    flex: 1;
+    padding-left: 1rem;
+    text-align: center;
+}
+
+.title-container h1 {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.title-container p {
+    font-size: 1rem;
+    color: #585858;
+    margin: 0;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -427,11 +505,11 @@ textarea {
 /* -------------------------------------------------------------------------- */
 
 
-    #nuevoTurno{
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 16px
-    }
+#nuevoTurno {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px
+}
 
 
 
@@ -488,37 +566,43 @@ textarea {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .formatoTabla{
+    .formatoTabla {
         grid-template-columns: repeat(2, 1fr);
     }
-    .datosTabla thead { display: none; }
 
-.datosTabla,
-.datosTabla tbody,
-.datosTabla tr,
-.datosTabla td { display: block; width: 100%; }
+    .datosTabla thead {
+        display: none;
+    }
 
-.datosTabla tr {
-    margin-bottom: 16px;
-    padding: 12px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-}
+    .datosTabla,
+    .datosTabla tbody,
+    .datosTabla tr,
+    .datosTabla td {
+        display: block;
+        width: 100%;
+    }
 
-.datosTabla td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-}
+    .datosTabla tr {
+        margin-bottom: 16px;
+        padding: 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+    }
 
-.datosTabla td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #666;
-}
+    .datosTabla td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .datosTabla td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: #666;
+    }
 }
 
 @media (max-width: 480px) {
@@ -532,5 +616,53 @@ textarea {
 
     .contenedor {
         padding: 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .page-header {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .page-header-image {
+        width: 56px;
+        height: 56px;
+    }
+
+    .page-header-image img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .page-header-title {
+        padding-left: 0;
+    }
+
+    .page-header-title h1 {
+        font-size: 1.5rem;
+    }
+
+    .page-header-title p {
+        font-size: 0.85rem;
+    }
+
+    .page-header> :last-child {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 380px) {
+    .page-header-image {
+        width: 48px;
+        height: 48px;
+    }
+
+    .page-header-title h1 {
+        font-size: 1.3rem;
+    }
+
+    .page-header-title p {
+        font-size: 0.8rem;
     }
 }

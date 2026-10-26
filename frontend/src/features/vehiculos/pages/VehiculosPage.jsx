@@ -5,6 +5,9 @@ import VehiculosList from '../components/VehiculosList'
 import HistorialVehiculo from '../components/HistorialVehiculo'
 import AvisoService from '../components/AvisoService'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import botonHistorial from '../../../assets/icons/botonHistorial.png'
 import {
   actualizarEstadoAviso,
   actualizarVehiculo,
@@ -13,10 +16,11 @@ import {
   obtenerClientes,
   obtenerVehiculos,
 } from '../services/vehiculosService'
-import './VehiculosPage.css'
+import '../VehiculosPage.css'
 import Spinner from '../../../shared/components/Spinner'
 import Table from '../../../shared/components/Table'
-import img_list from "../../../assets/icons/img_list.png"
+import img_list from "../../../assets/icons/vehiculosIcono.svg"
+import "../../estilos.css"
 
 const columnasVehiculos = [
   { key: "patente", nombre: "Patente" },
@@ -37,7 +41,6 @@ function VehiculosPage() {
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
   const [vehiculoConAviso, setVehiculoConAviso] = useState(null)
-  const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
 
   // Carga vehículos y clientes desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -139,129 +142,115 @@ function VehiculosPage() {
 
   return (
 
-      <div className="contenedor">
-        <div className="vehiculos-page">
-          <div className="img-container">
-            <img src={img_list} />
-          </div>
+    <div className="contenedor">
+      <div className="page-header">
 
-          <div className="title-container">
-            <h1>Vehículos</h1>
-            <p>Listado de vehículos registrados en el sistema.</p>
-          </div>
+        <div className="page-header-image">
 
-          <BotonNuevo
-            onClick={() => setFormularioAbierto(true)}
-            componente={"vehiculo"}
-          />
+          <img src={img_list} alt="Listado" />
         </div>
+        <div className="page-header-title">
 
-        {mensaje && (
-          <div className="alert alert-success alert-dismissible" role="status">
-            {mensaje}
-            <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
-          </div>
-        )}
+          <h1>Vehículos</h1> <p>Listado de vehículos registrados en el sistema.</p>
+        </div>
+        <BotonNuevo onClick={() => abrirFormulario()} componente="vehiculo" />
+      </div>
 
-        {error && (
-          <div className="alert alert-danger alert-dismissible" role="alert">
-            {error}
-            <button type="button" className="btn-close" aria-label="Cerrar error" onClick={() => setError('')} />
-          </div>
-        )}
+      {mensaje && (
+        <div className="alert alert-success alert-dismissible" role="status">
+          {mensaje}
+          <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
+        </div>
+      )}
 
-        {cargando ? (
-          <Spinner />
-        ) : (
+      {error && (
+        <div className="alert alert-danger alert-dismissible" role="alert">
+          {error}
+          <button type="button" className="btn-close" aria-label="Cerrar error" onClick={() => setError('')} />
+        </div>
+      )}
 
-          <Table
-            inputPlaceholder="Buscar por patente, marca, modelo..."
-            columnas={columnasVehiculos}
-            datos={vehiculos}
-            mensajeVacio="Todavía no hay vehículos cargados."
-            renderFila={(vehiculo) => (
-              <tr key={vehiculo.id} className="vehiculo-row">
+      {cargando ? (
+        <Spinner />
+      ) : (
 
-                <td
-                  className="vehiculo-patente"
-                  data-label="Patente"
-                >
-                  {vehiculo.patente}
-                </td>
+        <Table
+          inputPlaceholder="Buscar por patente, marca, modelo..."
+          columnas={columnasVehiculos}
+          datos={vehiculos}
+          mensajeVacio="Todavía no hay vehículos cargados."
+          renderFila={(vehiculo) => (
+            <tr key={vehiculo.id} className="vehiculo-row">
 
-                <td
-                  className="vehiculo-marca"
-                  data-label="Marca"
-                >
-                  {vehiculo.marca}
-                </td>
+              <td
+                className="vehiculo-patente"
+                data-label="Patente"
+              >
+                {vehiculo.patente}
+              </td>
 
-                <td
-                  className="vehiculo-modelo"
-                  data-label="Modelo"
-                >
-                  {vehiculo.modelo}
-                </td>
+              <td
+                className="vehiculo-marca"
+                data-label="Marca"
+              >
+                {vehiculo.marca}
+              </td>
 
-                <td
-                  className="vehiculo-anio"
-                  data-label="Año"
-                >
-                  {vehiculo.anio}
-                </td>
+              <td
+                className="vehiculo-modelo"
+                data-label="Modelo"
+              >
+                {vehiculo.modelo}
+              </td>
 
-                <td
-                  className="vehiculo-kilometraje"
-                  data-label="Kilometraje"
-                >
-                  {vehiculo.kilometraje.toLocaleString("es-AR")} km
-                </td>
+              <td
+                className="vehiculo-anio"
+                data-label="Año"
+              >
+                {vehiculo.anio}
+              </td>
 
-                <td
-                  className="vehiculo-acciones"
-                  data-label="Acciones"
-                >
-                  <div className="acciones-container">
+              <td
+                className="vehiculo-kilometraje"
+                data-label="Kilometraje"
+              >
+                {vehiculo.kilometraje.toLocaleString("es-AR")} km
+              </td>
 
-                    <button
-                      className="accion-button accion-info"
-                      title="Más información"
-                      onClick={() => {
-                        setVehiculoSeleccionado(vehiculo);
-                        setModalMasInfoAbierto(true);
-                      }}
-                    >
-                      ⓘ
+              <td
+                className="vehiculo-acciones"
+                data-label="Acciones"
+              >
+                <div className="acciones-container">
+
+                  <button type="button" className="botonHistorial" onClick={() => setVehiculoConHistorial(vehiculo)}>
+                    <img src={botonHistorial} alt={`Historial del vehículo de patente ${vehiculo.patente}`} />
+                  </button>
+
+                  <BotonEditar onClick={() => abrirFormulario(vehiculo)} />
+
+                  {vehiculo.estadoAvisoService === 'pendiente' && (
+                    <button type="button" className="btnAccion" onClick={() => setVehiculoConAviso(vehiculo)}>
+                      Gestionar aviso
                     </button>
+                  )}
 
-                    <button
-                      className="accion-button accion-modificar"
-                      title="Modificar"
-                    >
-                      ✎
-                    </button>
+                  <BotonEliminar onClick={() => confirmarEliminacion(vehiculo)} />
 
-                    <button
-                      className="accion-button accion-eliminar"
-                      title="Eliminar"
-                    >
-                      🗑
-                    </button>
+                </div>
+              </td>
 
-                  </div>
-                </td>
-
-              </tr>
-            )}
-          />
-        )}
+            </tr>
+          )}
+        />
+      )}
 
 
       {formularioAbierto && (
         <Modal
           titulo={vehiculoEnEdicion ? 'Editar vehículo' : 'Registrar vehículo'}
           onCerrar={cerrarFormulario}
-          cerrarAlTocarFondo={false}
+          cerrarAlTocarFondo={true}
         >
           <VehiculoForm
             vehiculo={vehiculoEnEdicion}

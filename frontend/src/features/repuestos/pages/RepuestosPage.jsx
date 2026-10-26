@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import Modal from '../../../shared/components/Modal'
 import RepuestoForm from '../components/RepuestoForm'
-import RepuestosList from '../components/RepuestosList'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
-import img_list from "../../../assets/icons/img_list.png"
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import img_list from "../../../assets/icons/repuestosIcono.svg"
+import '../RepuestosPage.css'
+import '../../estilos.css'
 
 import {
   actualizarRepuesto,
@@ -11,13 +14,14 @@ import {
   eliminarRepuesto,
   obtenerRepuestos,
 } from '../services/repuestosService'
-import './RepuestosPage.css'
+import '../RepuestosPage.css'
+import "../../estilos.css"
 import Table from '../../../shared/components/Table'
 
 const columnasRepuestos = [
   { key: "codigo", nombre: "Código" },
   { key: "nombre", nombre: "Nombre" },
-  { key: "precioVenta", nombre: "Precio de venta" },
+  { key: "precioEstandar", nombre: "Precio de venta" },
   { key: "stock", nombre: "Stock" },
   { key: "acciones", nombre: "Acciones" }
 ];
@@ -109,18 +113,19 @@ function RepuestosPage() {
   return (
 
     <div className="contenedor">
-      <div className="repuestos-page">
-        <div className="img-container">
-          <img src={img_list} />
-        </div>
-
-        <div className="title-container">
+      <div className="page-header">
+      
+              <div className="page-header-image">
+      
+                <img src={img_list} alt="Listado" />
+              </div>
+              <div className="page-header-title">
           <h1>Repuestos</h1>
           <p>Listado de repuestos registrados en el sistema.</p>
         </div>
 
         <BotonNuevo
-          onClick={() => setFormularioAbierto(true)}
+          onClick={() => abrirFormulario()}
           componente={"repuesto"}
         />
       </div>
@@ -169,7 +174,7 @@ function RepuestosPage() {
                 className="repuesto-precio"
                 data-label="Precio de venta"
               >
-                ${repuesto.precioVenta.toLocaleString("es-AR")}
+                ${repuesto.precioEstandar.toLocaleString("es-AR")}
               </td>
 
               <td
@@ -185,30 +190,9 @@ function RepuestosPage() {
               >
                 <div className="acciones-container">
 
-                  <button
-                    className="accion-button accion-info"
-                    title="Más información"
-                    onClick={() => {
-                      setRepuestoSeleccionado(repuesto);
-                      setModalMasInfoAbierto(true);
-                    }}
-                  >
-                    ⓘ
-                  </button>
+                  <BotonEditar onClick={() => abrirFormulario(repuesto)} />
 
-                  <button
-                    className="accion-button accion-modificar"
-                    title="Modificar"
-                  >
-                    ✎
-                  </button>
-
-                  <button
-                    className="accion-button accion-eliminar"
-                    title="Eliminar"
-                  >
-                    🗑
-                  </button>
+                  <BotonEliminar onClick={() => confirmarEliminacion(repuesto)} />
 
                 </div>
               </td>
@@ -222,7 +206,7 @@ function RepuestosPage() {
         <Modal
           titulo={repuestoEnEdicion ? 'Editar repuesto' : 'Registrar repuesto'}
           onCerrar={cerrarFormulario}
-          cerrarAlTocarFondo={false}
+          cerrarAlTocarFondo={true}
         >
           <RepuestoForm repuesto={repuestoEnEdicion} onCancelar={cerrarFormulario} onGuardar={guardarRepuesto} />
         </Modal>

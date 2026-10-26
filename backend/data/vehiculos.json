@@ -1,5 +1,7 @@
 [
   {
+    "id": "veh-001",
+    "clienteIds": ["cli-001"],
     "patente": "AA000AA",
     "marca": "Toyota",
     "modelo": "Corolla",
@@ -8,27 +10,33 @@
     "descripcion": "Control general pendiente"
   },
   {
+    "id": "veh-002",
+    "clienteIds": ["cli-002", "cli-003"],
     "patente": "AB123CD",
     "marca": "Ford",
     "modelo": "Ranger",
     "anio": 2020,
     "kilometraje": 68500,
-    "observaciones": "Revisar sistema de frenos"
+    "descripcion": "Revisar sistema de frenos"
   },
   {
+    "id": "veh-003",
+    "clienteIds": ["cli-003"],
     "patente": "AG625NA",
     "marca": "Chevrolet",
     "modelo": "Onix",
     "anio": 2021,
     "kilometraje": 40000,
-    "observaciones": "Cambio de aceite y filtro"
+    "descripcion": "Cambio de aceite y filtro"
   },
   {
+    "id": "veh-004",
+    "clienteIds": ["cli-004"],
     "patente": "KXJ439",
     "marca": "Volkswagen",
     "modelo": "Golf",
     "anio": 2019,
     "kilometraje": 80000,
-    "observaciones": "Revisión de suspensión"
+    "descripcion": "Revisión de suspensión"
   }
 ]

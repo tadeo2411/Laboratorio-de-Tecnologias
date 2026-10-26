@@ -4,9 +4,13 @@ import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
 import { obtenerTurnos, obtenerAutos } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
-import img_list from "../../../assets/icons/img_list.png"
+import img_list from "../../../assets/icons/turnosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
+import BotonEditar from "../../../shared/components/BotonEditar";
+import BotonEliminar from "../../../shared/components/BotonEliminar";
 import "../turnos.css";
+import "../../estilos.css"
+import Modal from "../../../shared/components/Modal";
 
 function TurnosPage() {
     const [turnos, setTurnos] = useState([])
@@ -75,11 +79,16 @@ function TurnosPage() {
     }, [])
 
 
+    // El turno guarda el id del vehículo; la patente se busca para mostrarla.
+    function patenteDeVehiculo(vehiculoId) {
+        return vehiculos.find(vehiculo => vehiculo.id === vehiculoId)?.patente ?? '—'
+    }
+
     const columnasTurnos = [
         { key: "fechaHora", nombre: "Fecha y hora" },
         { key: "motivo", nombre: "Motivo" },
         { key: "estado", nombre: "Estado" },
-        { key: "patente", nombre: "Patente" },
+        { key: "vehiculoId", nombre: "Patente" },
         { key: "acciones", nombre: "Acciones" }
     ];
 
@@ -90,18 +99,19 @@ function TurnosPage() {
             {cargando && <p role="status">Cargando turnos…</p>}
             {!cargando && !error && (
                 <div className="contenedor">
-                    <div className="turnos-page">
-                        <div className="img-container">
-                            <img src={img_list} />
-                        </div>
-
-                        <div className="title-container">
+                    <div className="page-header">
+                    
+                            <div className="page-header-image">
+                    
+                              <img src={img_list} alt="Listado" />
+                            </div>
+                            <div className="page-header-title">
                             <h1>Turnos</h1>
                             <p>Listado de turnos registrados en el sistema.</p>
                         </div>
 
                         <BotonNuevo
-                            onClick={() => setMostrarFormulario(true)}
+                            onClick={() => { setTurnoAEditar(null); setMostrarFormulario(true) }}
                             componente={"turno"}
                         />
                     </div>
@@ -140,27 +150,15 @@ function TurnosPage() {
                                 </td>
 
                                 <td className="turno-patente" data-label="Patente">
-                                    {turno.patente}
+                                    {patenteDeVehiculo(turno.vehiculoId)}
                                 </td>
 
                                 <td className="turno-acciones" data-label="Acciones">
                                     <div className="acciones-container">
 
-                                        <button
-                                            className="accion-button accion-modificar"
-                                            title="Modificar"
-                                            onClick={() => handleEditarTurno(turno.id)}
-                                        >
-                                            ✎
-                                        </button>
+                                        <BotonEditar onClick={() => handleEditarTurno(turno)} />
 
-                                        <button
-                                            className="accion-button accion-eliminar"
-                                            title="Eliminar"
-                                            onClick={() => handleEliminarTurno(turno.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                        <BotonEliminar onClick={() => handleEliminarTurno(turno.id)} />
 
                                     </div>
                                 </td>
@@ -171,7 +169,7 @@ function TurnosPage() {
                 </div>
             )}
             {mostrarFormulario && ( //cuando es true monta el modal y el formulario, cuando es false los elimina
-                <TurnosModal onCerrar={cerrarFormulario}>
+                <Modal titulo={false ? 'Editar vehículo' : 'Registrar vehículo'} onCerrar={cerrarFormulario}>
                     {error && <p role="alert">{error}</p>}
                     {cargando && <p role="status">Cargando vehículos…</p>}
                     <TurnosForm
@@ -183,7 +181,7 @@ function TurnosPage() {
                         cargando={cargando}
                         error={error}
                     />
-                </TurnosModal>
+                </Modal>
             )}
 
         </>

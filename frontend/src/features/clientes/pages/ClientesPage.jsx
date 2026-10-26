@@ -3,14 +3,18 @@ import Clientes from '../components/Clientes'
 import ClientesForm from '../components/ClientesForm'
 import ClientesModal from '../components/ClientesModal'
 import { obtenerClientes } from '../services/clientesServices'
-import img_list from "../../../assets/icons/img_list.png"
+import img_list from "../../../assets/icons/clientesIcono.svg"
 import "../clientes.css";
+import "../../estilos.css"
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import Table from '../../../shared/components/Table'
+import BotonEditar from '../../../shared/components/BotonEditar'
+import BotonEliminar from '../../../shared/components/BotonEliminar'
+import Modal from '../../../shared/components/Modal'
 
 const columnasClientes = [
     { key: "nombre", nombre: "Nombre" },
-    { key: "id", nombre: "DNI" },
+    { key: "documento", nombre: "DNI / CUIT" },
     { key: "telefono", nombre: "Teléfono" },
     { key: "acciones", nombre: "Acciones" }
 ];
@@ -59,10 +63,12 @@ function ClientesPage() {
     }
 
     function handleGuardarCliente(datos) {
-        const documento = datos.id.replace(/[.\s-]/g, '')
+        // El id identifica al cliente en el sistema; el documento (DNI o CUIT) es un dato
+        // del cliente que igual no se puede repetir.
+        const documento = datos.documento.replace(/[.\s-]/g, '')
         const repetido = clientes.some(cliente =>
             cliente.id !== clienteAEditar?.id &&
-            cliente.id.replace(/[.\s-]/g, '') === documento
+            cliente.documento.replace(/[.\s-]/g, '') === documento
         )
 
         if (repetido) {
@@ -76,7 +82,7 @@ function ClientesPage() {
                 cliente.id === clienteAEditar.id ? { ...cliente, ...datos } : cliente
             ))
         } else {
-            setClientes(anteriores => [...anteriores, datos])
+            setClientes(anteriores => [...anteriores, { ...datos, id: crypto.randomUUID() }])
         }
         cerrarFormulario()
     }
@@ -87,23 +93,24 @@ function ClientesPage() {
     }
 
     return (
-        <div className="clientes-page">
+        <div>
             {error && <p role="alert">{error}</p>}
             {cargando && <p role="status">Cargando clientes…</p>}
             {!cargando && !error && (
                 <div className="contenedor">
-                    <div className="clientes-page">
-                        <div className="img-container">
-                            <img src={img_list} />
-                        </div>
-
-                        <div className="title-container">
+                   <div className="page-header">
+                   
+                           <div className="page-header-image">
+                   
+                             <img src={img_list} alt="Listado" />
+                           </div>
+                           <div className="page-header-title">
                             <h1>Clientes</h1>
                             <p>Listado de clientes registrados en el sistema.</p>
                         </div>
 
                         <BotonNuevo
-                            onClick={() => setMostrarFormulario(true)}
+                            onClick={handleNuevoCliente}
                             componente={"cliente"}
                         />
                     </div>
@@ -120,8 +127,8 @@ function ClientesPage() {
                                     {cliente.nombre}
                                 </td>
 
-                                <td className="cliente-dni" data-label="DNI">
-                                    {cliente.id}
+                                <td className="cliente-dni" data-label="DNI / CUIT">
+                                    {cliente.documento}
                                 </td>
 
                                 <td className="cliente-telefono" data-label="Teléfono">
@@ -131,20 +138,17 @@ function ClientesPage() {
                                 <td className="cliente-acciones" data-label="Acciones">
                                     <div className="acciones-container">
 
-                                        <button
-                                            className="accion-button accion-modificar"
-                                            title="Modificar"
-                                        >
-                                            ✎
-                                        </button>
+                                        <BotonEditar
+                                        onClick={() => handleEditarCliente(cliente)}
+                                        componente = "Cliente"
+                                        aria-label={`Editar cliente ${cliente.nombre} y documento ${cliente.documento}`}
+                                        />
 
-                                        <button
-                                            className="accion-button accion-eliminar"
-                                            title="Eliminar"
+                                        <BotonEliminar
                                             onClick={() => handleEliminarCliente(cliente.id)}
-                                        >
-                                            🗑
-                                        </button>
+                                            aria-label={`Eliminar cliente ${cliente.nombre} `}
+
+                                        />
 
                                     </div>
                                 </td>
@@ -155,7 +159,8 @@ function ClientesPage() {
                 </div>
             )}
             {mostrarFormulario && (
-                <ClientesModal
+                
+                <Modal
                     titulo={clienteAEditar ? 'Editar cliente' : 'Nuevo cliente'}
                     onCerrar={cerrarFormulario}
                 >
@@ -164,7 +169,7 @@ function ClientesPage() {
                         onGuardar={handleGuardarCliente}
                         error={errorFormulario}
                     />
-                </ClientesModal>
+                </Modal>
             )}
         </div>
     )

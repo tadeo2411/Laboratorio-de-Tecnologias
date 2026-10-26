@@ -13,6 +13,7 @@ import Trabajos from '../../assets/icons/trabajosIcono.svg?react'
 import Repuestos from '../../assets/icons/repuestosIcono.svg?react'
 import Clientes from '../../assets/icons/clientesIcono.svg?react'
 import Presupuestos from '../../assets/icons/presupuestosIcono.svg?react'
+import Cuenta from '../../assets/icons/cuentaIcono.svg?react'
 
 // Clase activa según el estado de la ruta que entrega NavLink.
 const claseItem = ({ isActive }) => isActive ? 'itemActivo' : '';
@@ -28,6 +29,7 @@ function FooterGestor() {
             <li><NavLink to="clientes" className={claseItem}><Clientes />Clientes</NavLink></li>
             <li><NavLink to="vehiculos" className={claseItem}><Vehiculos />Vehículos</NavLink></li>
             <li><NavLink to="repuestos" className={claseItem}><Repuestos />Repuestos</NavLink></li>
+            <li><NavLink to="cuenta" className={claseItem}><Cuenta />Cuenta</NavLink></li>
         </ul>
     );
 }

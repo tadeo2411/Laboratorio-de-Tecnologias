@@ -1,5 +1,11 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import ordenesRepository from './ordenes.repository.js'
+import vehiculosService from '../vehiculos/vehiculos.service.js'
+import turnosService from '../turnos/turnos.service.js'
+import repuestosService from '../repuestos/repuestos.service.js'
+import trabajosService from '../trabajos/trabajos.service.js'
+import authService from '../auth/auth.service.js'
+import { httpError } from '../../utils/httpError.js'
 
 const ESTADO_INICIAL = 'RECIBIDO'
 
@@ -18,16 +24,10 @@ const ESTADOS_CON_TRABAJOS = ['DIAGNOSTICANDO', 'ESPERANDO_REPUESTO', 'EN_REPARA
 const TIPOS_FICHA = ['INGRESO', 'EGRESO']
 const CONFORMIDADES = ['PENDIENTE', 'APROBADA']
 
-function crearError(status, mensaje) {
-    const error = new Error(mensaje)
-    error.status = status
-    return error
-}
-
 function validarId(valor, nombre) {
     const id = Number(valor)
     if (!Number.isInteger(id) || id <= 0) {
-        throw crearError(400, `El ${nombre} tiene que ser un número entero positivo`)
+        throw httpError(400, `El ${nombre} tiene que ser un número entero positivo`)
     }
     return id
 }
@@ -63,7 +63,7 @@ function proximoId(lista) {
 function buscarOrden(lista, id) {
     const orden = lista.find((ordenActual) => ordenActual.id === id)
     if (!orden) {
-        throw crearError(404, `No existe la orden ${id}`)
+        throw httpError(404, `No existe la orden ${id}`)
     }
     return orden
 }
@@ -77,24 +77,24 @@ function guardarCambios(lista, ordenActualizada) {
 
 function exigirOrdenAbierta(orden) {
     if (esEstadoFinal(orden.estado)) {
-        throw crearError(409, `La orden está ${orden.estado} y ya no se puede modificar`)
+        throw httpError(409, `La orden está ${orden.estado} y ya no se puede modificar`)
     }
 }
 
 function validarBooleano(valor, campo) {
     if (valor !== undefined && typeof valor !== 'boolean') {
-        throw crearError(400, `${campo} tiene que ser true o false`)
+        throw httpError(400, `${campo} tiene que ser true o false`)
     }
 }
 
 function validarDiagnostico(valor) {
     if (valor === undefined || valor === null) return
     if (typeof valor !== 'string' || valor.length > 500) {
-        throw crearError(400, 'El diagnóstico tiene que ser un texto de hasta 500 caracteres')
+        throw httpError(400, 'El diagnóstico tiene que ser un texto de hasta 500 caracteres')
     }
 }
 
-function listarOrdenes(filtros) {
+async function listarOrdenes(filtros) {
     let ordenes = ordenesRepository.obtenerOrdenes()
 
     if (filtros.estado) {
@@ -107,26 +107,26 @@ function listarOrdenes(filtros) {
     return ordenes
 }
 
-function obtenerOrden(id) {
+async function obtenerOrden(id) {
     return buscarOrden(ordenesRepository.obtenerOrdenes(), validarId(id, 'id de la orden'))
 }
 
-function crearOrden(datos) {
+async function crearOrden(datos) {
     if (typeof datos.vehiculoPatente !== 'string' || !datos.vehiculoPatente.trim()) {
-        throw crearError(400, 'Falta la patente del vehículo')
+        throw httpError(400, 'Falta la patente del vehículo')
     }
     validarDiagnostico(datos.diagnostico)
     validarBooleano(datos.esService, 'esService')
     validarBooleano(datos.esUrgencia, 'esUrgencia')
 
     const patente = normalizarPatente(datos.vehiculoPatente)
-    if (!ordenesRepository.existeVehiculo(patente)) {
-        throw crearError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
+    if (!(await vehiculosService.buscarPorPatente(patente))) {
+        throw httpError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
     }
 
     const turnoId = datos.turnoId ?? null
-    if (turnoId !== null && !ordenesRepository.existeTurno(turnoId)) {
-        throw crearError(400, `No existe el turno ${turnoId}`)
+    if (turnoId !== null && !(await turnosService.buscarPorId(turnoId))) {
+        throw httpError(400, `No existe el turno ${turnoId}`)
     }
 
     const lista = ordenesRepository.obtenerOrdenes()
@@ -134,7 +134,7 @@ function crearOrden(datos) {
         (orden) => orden.vehiculoPatente === patente && !esEstadoFinal(orden.estado)
     )
     if (ordenAbierta) {
-        throw crearError(409, `El vehículo ${patente} ya tiene abierta la orden ${ordenAbierta.id}`)
+        throw httpError(409, `El vehículo ${patente} ya tiene abierta la orden ${ordenAbierta.id}`)
     }
 
     const nuevaOrden = {
@@ -154,10 +154,10 @@ function crearOrden(datos) {
     return nuevaOrden
 }
 
-function actualizarOrden(idRecibido, datos) {
+async function actualizarOrden(idRecibido, datos) {
     const id = validarId(idRecibido, 'id de la orden')
     if (datos.estado !== undefined) {
-        throw crearError(400, 'Para cambiar el estado usá PATCH /api/ordenes/:id/estado')
+        throw httpError(400, 'Para cambiar el estado usá PATCH /api/ordenes/:id/estado')
     }
     validarDiagnostico(datos.diagnostico)
     validarBooleano(datos.esService, 'esService')
@@ -175,10 +175,10 @@ function actualizarOrden(idRecibido, datos) {
     return guardarCambios(lista, { ...orden, ...cambios })
 }
 
-function cambiarEstado(idRecibido, estadoNuevo) {
+async function cambiarEstado(idRecibido, estadoNuevo) {
     const id = validarId(idRecibido, 'id de la orden')
     if (!esEstadoValido(estadoNuevo)) {
-        throw crearError(400, `"${estadoNuevo}" no es un estado de orden válido`)
+        throw httpError(400, `"${estadoNuevo}" no es un estado de orden válido`)
     }
 
     const lista = ordenesRepository.obtenerOrdenes()
@@ -186,10 +186,10 @@ function cambiarEstado(idRecibido, estadoNuevo) {
     exigirOrdenAbierta(orden)
 
     if (!puedeCambiarEstado(orden.estado, estadoNuevo)) {
-        throw crearError(409, `No se puede pasar de ${orden.estado} a ${estadoNuevo}`)
+        throw httpError(409, `No se puede pasar de ${orden.estado} a ${estadoNuevo}`)
     }
     if (estadoNuevo === 'ENTREGADO' && !orden.fichas.some((ficha) => ficha.tipo === 'EGRESO')) {
-        throw crearError(409, 'Para entregar el vehículo primero hay que cargar la ficha de egreso')
+        throw httpError(409, 'Para entregar el vehículo primero hay que cargar la ficha de egreso')
     }
 
     return guardarCambios(lista, { ...orden, estado: estadoNuevo })
@@ -197,28 +197,28 @@ function cambiarEstado(idRecibido, estadoNuevo) {
 
 function validarItemsFicha(items) {
     if (!Array.isArray(items) || items.length === 0) {
-        throw crearError(400, 'La ficha tiene que tener al menos un ítem')
+        throw httpError(400, 'La ficha tiene que tener al menos un ítem')
     }
     for (const item of items) {
         const conceptoValido = typeof item?.concepto === 'string' && item.concepto.trim()
         const valorValido = typeof item?.valor === 'string' && item.valor.trim()
         if (!conceptoValido || !valorValido) {
-            throw crearError(400, 'Cada ítem de la ficha necesita concepto y valor')
+            throw httpError(400, 'Cada ítem de la ficha necesita concepto y valor')
         }
     }
 }
 
-function agregarFicha(idRecibido, datos) {
+async function agregarFicha(idRecibido, datos) {
     const id = validarId(idRecibido, 'id de la orden')
     if (!TIPOS_FICHA.includes(datos.tipo)) {
-        throw crearError(400, 'El tipo de ficha tiene que ser INGRESO o EGRESO')
+        throw httpError(400, 'El tipo de ficha tiene que ser INGRESO o EGRESO')
     }
     if (!Number.isInteger(datos.kilometraje) || datos.kilometraje < 0) {
-        throw crearError(400, 'El kilometraje tiene que ser un número entero mayor o igual a 0')
+        throw httpError(400, 'El kilometraje tiene que ser un número entero mayor o igual a 0')
     }
     const conformidad = datos.conformidad ?? 'PENDIENTE'
     if (!CONFORMIDADES.includes(conformidad)) {
-        throw crearError(400, 'La conformidad tiene que ser PENDIENTE o APROBADA')
+        throw httpError(400, 'La conformidad tiene que ser PENDIENTE o APROBADA')
     }
     validarItemsFicha(datos.items)
 
@@ -227,19 +227,19 @@ function agregarFicha(idRecibido, datos) {
     exigirOrdenAbierta(orden)
 
     if (orden.fichas.some((ficha) => ficha.tipo === datos.tipo)) {
-        throw crearError(409, `La orden ya tiene ficha de ${datos.tipo}`)
+        throw httpError(409, `La orden ya tiene ficha de ${datos.tipo}`)
     }
 
     if (datos.tipo === 'EGRESO') {
         const ingreso = orden.fichas.find((ficha) => ficha.tipo === 'INGRESO')
         if (!ingreso) {
-            throw crearError(409, 'Primero hay que cargar la ficha de ingreso')
+            throw httpError(409, 'Primero hay que cargar la ficha de ingreso')
         }
         if (!permiteFichaDeEgreso(orden.estado)) {
-            throw crearError(409, 'La ficha de egreso se carga cuando la orden está en reparación o terminada')
+            throw httpError(409, 'La ficha de egreso se carga cuando la orden está en reparación o terminada')
         }
         if (datos.kilometraje < ingreso.kilometraje) {
-            throw crearError(400, `El kilometraje de egreso no puede ser menor al de ingreso (${ingreso.kilometraje})`)
+            throw httpError(400, `El kilometraje de egreso no puede ser menor al de ingreso (${ingreso.kilometraje})`)
         }
     }
 
@@ -263,72 +263,72 @@ function agregarFicha(idRecibido, datos) {
 
 function exigirTrabajosModificables(orden) {
     if (!permiteModificarTrabajos(orden.estado)) {
-        throw crearError(409, `Con la orden en ${orden.estado} no se pueden modificar los trabajos`)
+        throw httpError(409, `Con la orden en ${orden.estado} no se pueden modificar los trabajos`)
     }
 }
 
-function armarRepuestosUsados(repuestosPedidos) {
+async function armarRepuestosUsados(repuestosPedidos) {
     if (!Array.isArray(repuestosPedidos)) {
-        throw crearError(400, 'repuestos tiene que ser una lista')
+        throw httpError(400, 'repuestos tiene que ser una lista')
     }
     const ids = repuestosPedidos.map((repuesto) => repuesto?.repuestoId)
     if (new Set(ids).size !== ids.length) {
-        throw crearError(400, 'Hay repuestos repetidos: sumá las cantidades en un solo renglón')
+        throw httpError(400, 'Hay repuestos repetidos: sumá las cantidades en un solo renglón')
     }
 
-    return repuestosPedidos.map((pedido) => {
-        const repuesto = ordenesRepository.buscarRepuesto(pedido.repuestoId)
+    return Promise.all(repuestosPedidos.map(async (pedido) => {
+        const repuesto = await repuestosService.buscarPorId(pedido.repuestoId)
         if (!repuesto) {
-            throw crearError(400, `No existe el repuesto ${pedido.repuestoId}`)
+            throw httpError(400, `No existe el repuesto ${pedido.repuestoId}`)
         }
         if (typeof pedido.cantidad !== 'number' || pedido.cantidad <= 0) {
-            throw crearError(400, `La cantidad de ${repuesto.nombre} tiene que ser mayor a 0`)
+            throw httpError(400, `La cantidad de ${repuesto.nombre} tiene que ser mayor a 0`)
         }
         return {
             repuestoId: repuesto.id,
             nombre: repuesto.nombre,
             cantidad: pedido.cantidad,
-            precioUnitario: repuesto.precioVenta
+            precioUnitario: Number(repuesto.precio_estandar)
         }
-    })
+    }))
 }
 
-function armarEmpleados(empleadoIds) {
+async function armarEmpleados(empleadoIds) {
     if (!Array.isArray(empleadoIds)) {
-        throw crearError(400, 'empleadoIds tiene que ser una lista')
+        throw httpError(400, 'empleadoIds tiene que ser una lista')
     }
-    const activos = ordenesRepository.obtenerEmpleadosActivos()
+    const activos = await authService.obtenerEmpleadosActivos()
 
     return empleadoIds.map((idEmpleado) => {
         const empleado = activos.find((activo) => activo.id === idEmpleado)
         if (!empleado) {
-            throw crearError(400, `El empleado ${idEmpleado} no existe o está dado de baja`)
+            throw httpError(400, `El empleado ${idEmpleado} no existe o está dado de baja`)
         }
         return empleado
     })
 }
 
-function agregarTrabajo(idRecibido, datos) {
+async function agregarTrabajo(idRecibido, datos) {
     const id = validarId(idRecibido, 'id de la orden')
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirTrabajosModificables(orden)
 
-    const tipo = ordenesRepository.buscarTipoTrabajo(datos.tipoTrabajoId)
+    const tipo = await trabajosService.buscarTipoTrabajo(datos.tipoTrabajoId)
     if (!tipo || !tipo.activo) {
-        throw crearError(400, 'Elegí un tipo de trabajo válido')
+        throw httpError(400, 'Elegí un tipo de trabajo válido')
     }
 
-    const manoDeObra = datos.manoDeObra ?? tipo.precioEstandar
+    const manoDeObra = datos.manoDeObra ?? Number(tipo.precio_estandar)
     if (typeof manoDeObra !== 'number' || manoDeObra < 0) {
-        throw crearError(400, 'La mano de obra tiene que ser un número mayor o igual a 0')
+        throw httpError(400, 'La mano de obra tiene que ser un número mayor o igual a 0')
     }
     if (datos.descripcion !== undefined && datos.descripcion !== null && typeof datos.descripcion !== 'string') {
-        throw crearError(400, 'La descripción tiene que ser un texto')
+        throw httpError(400, 'La descripción tiene que ser un texto')
     }
 
-    const empleados = armarEmpleados(datos.empleadoIds ?? [])
-    const repuestos = armarRepuestosUsados(datos.repuestos ?? [])
+    const empleados = await armarEmpleados(datos.empleadoIds ?? [])
+    const repuestos = await armarRepuestosUsados(datos.repuestos ?? [])
 
     const todosLosTrabajos = lista.flatMap((ordenActual) => ordenActual.trabajos)
     let ultimoIdRepuesto = Math.max(0, ...todosLosTrabajos.flatMap((trabajo) => trabajo.repuestos).map((repuesto) => repuesto.id))
@@ -349,7 +349,7 @@ function agregarTrabajo(idRecibido, datos) {
     return guardarCambios(lista, { ...orden, trabajos: [...orden.trabajos, nuevoTrabajo] })
 }
 
-function quitarTrabajo(idRecibido, idTrabajoRecibido) {
+async function quitarTrabajo(idRecibido, idTrabajoRecibido) {
     const id = validarId(idRecibido, 'id de la orden')
     const idTrabajo = validarId(idTrabajoRecibido, 'id del trabajo')
     const lista = ordenesRepository.obtenerOrdenes()
@@ -357,7 +357,7 @@ function quitarTrabajo(idRecibido, idTrabajoRecibido) {
     exigirTrabajosModificables(orden)
 
     if (!orden.trabajos.some((trabajo) => trabajo.id === idTrabajo)) {
-        throw crearError(404, `La orden ${id} no tiene el trabajo ${idTrabajo}`)
+        throw httpError(404, `La orden ${id} no tiene el trabajo ${idTrabajo}`)
     }
 
     return guardarCambios(lista, {

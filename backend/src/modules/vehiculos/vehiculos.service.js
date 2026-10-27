@@ -172,4 +172,8 @@ async function desasociarDueno(id, idCliente){
 
 }
 
-export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno}
+async function buscarPorPatente(patente){
+    return vehiculosRepository.buscarPorPatente(normalizar(patente))
+}
+
+export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno, buscarPorPatente}

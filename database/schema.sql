@@ -146,7 +146,7 @@ CREATE TABLE "ordenes_trabajo" (
   "estado" estado_orden NOT NULL DEFAULT 'RECIBIDO',
   "es_service" boolean NOT NULL DEFAULT false,
   "es_urgencia" boolean NOT NULL DEFAULT false,
-  "garantia_dias" integer NOT NULL,
+  "garantia_dias" integer NOT NULL DEFAULT 15,
   "created_at" timestamp NOT NULL DEFAULT (now())
 );
 
@@ -272,7 +272,7 @@ COMMENT ON COLUMN "ordenes_trabajo"."turno_id" IS 'Vacío si el vehículo llegó
 
 COMMENT ON COLUMN "ordenes_trabajo"."diagnostico" IS 'Se va corrigiendo mientras se trabaja';
 
-COMMENT ON COLUMN "ordenes_trabajo"."garantia_dias" IS 'Plazo congelado: se copia de configuracion al abrir la orden';
+COMMENT ON COLUMN "ordenes_trabajo"."garantia_dias" IS 'Plazo congelado al abrir la orden (por defecto 15 días)';
 
 COMMENT ON TABLE "conceptos_ficha" IS 'Lista configurable de lo que el taller revisa (RNF-07)';
 

@@ -86,5 +86,22 @@ function obtenerOrdenes() {
 function guardarOrdenes(ordenes) {
     fs.writeFileSync(ruta, JSON.stringify(ordenes, null, 2))
 }
+async function buscarAbiertaPorVehiculo(idVehiculo){
+    const resultado = await pool.query(
+        `SELECT id FROM ordenes_trabajo
+        WHERE id_vehiculo = $1 AND estado NOT IN ('ENTREGADO', 'CANCELADO')`,
+        [idVehiculo]
+    )
+    return resultado.rows[0]
+}
 
-export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId }
+async function crear(orden){
+    const resultado = await pool.query(
+        `INSERT INTO ordenes_trabajo (id_vehiculo, turno_id, diagnostico, es_service, es_urgencia)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING id`,
+        [orden.idVehiculo, orden.turnoId, orden.diagnostico, orden.esService, orden.esUrgencia]
+    )
+    return resultado.rows[0].id
+}
+export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear }

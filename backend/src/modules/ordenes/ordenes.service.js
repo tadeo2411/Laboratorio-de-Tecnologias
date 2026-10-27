@@ -7,8 +7,6 @@ import trabajosService from '../trabajos/trabajos.service.js'
 import authService from '../auth/auth.service.js'
 import { httpError } from '../../utils/httpError.js'
 
-const ESTADO_INICIAL = 'RECIBIDO'
-
 const TRANSICIONES = {
     RECIBIDO: ['DIAGNOSTICANDO', 'CANCELADO'],
     DIAGNOSTICANDO: ['ESPERANDO_APROBACION_PRESUPUESTO', 'CANCELADO'],
@@ -125,7 +123,8 @@ async function crearOrden(datos) {
     validarBooleano(datos.esUrgencia, 'esUrgencia')
 
     const patente = normalizarPatente(datos.vehiculoPatente)
-    if (!(await vehiculosService.crearPatente(patente))) {
+    const vehiculo = await vehiculosService.buscarPorPatente(patente)
+    if (!vehiculo) {
         throw httpError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
     }
 
@@ -134,29 +133,19 @@ async function crearOrden(datos) {
         throw httpError(400, `No existe el turno ${turnoId}`)
     }
 
-    const lista = ordenesRepository.obtenerOrdenes()
-    const ordenAbierta = lista.find(
-        (orden) => orden.vehiculoPatente === patente && !esEstadoFinal(orden.estado)
-    )
+    const ordenAbierta = await ordenesRepository.buscarAbiertaPorVehiculo(vehiculo.id)
     if (ordenAbierta) {
         throw httpError(409, `El vehículo ${patente} ya tiene abierta la orden ${ordenAbierta.id}`)
     }
 
-    const nuevaOrden = {
-        id: proximoId(lista),
-        vehiculoPatente: patente,
+    const id = await ordenesRepository.crear({
+        idVehiculo: vehiculo.id,
         turnoId,
-        estado: ESTADO_INICIAL,
         diagnostico: datos.diagnostico?.trim() || null,
         esService: datos.esService ?? false,
-        esUrgencia: datos.esUrgencia ?? false,
-        createdAt: new Date().toISOString(),
-        fichas: [],
-        trabajos: []
-    }
-
-    ordenesRepository.guardarOrdenes([...lista, nuevaOrden])
-    return nuevaOrden
+        esUrgencia: datos.esUrgencia ?? false
+    })
+    return ordenesRepository.buscarPorId(id)
 }
 
 async function actualizarOrden(idRecibido, datos) {

@@ -17,4 +17,8 @@ function modificar(datos) {
     return repository.modificar(datos);
 }
 
-export default { listar, cargar, eliminar, modificar };
+function buscarPorId(id) {
+    return repository.buscarPorId(id);
+}
+
+export default { listar, cargar, eliminar, modificar, buscarPorId };

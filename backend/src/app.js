@@ -8,6 +8,7 @@ import authRoutes from './modules/auth/auth.routes.js'
 import ordenesRoutes from './modules/ordenes/ordenes.routes.js'
 import vehiculosRoutes from './modules/vehiculos/vehiculos.routes.js'
 import trabajosRoutes from "./modules/trabajos/trabajos.routes.js"
+import tablerosRoutes from './modules/tableros/tableros.routes.js'
 import { corsOptions } from './config/cors.js';
 
 const app = express()
@@ -21,6 +22,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/ordenes', ordenesRoutes)
 app.use('/api/vehiculos', vehiculosRoutes)
 app.use('/api/trabajos', trabajosRoutes)
+app.use('/api/tableros', tablerosRoutes)
 
 app.get('/api/health', (req, res) => {
   res.json({"estado":"ok"})

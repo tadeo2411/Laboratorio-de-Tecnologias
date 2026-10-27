@@ -104,4 +104,18 @@ async function crear(orden){
     )
     return resultado.rows[0].id
 }
-export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear }
+async function actualizar(id, orden){
+    await pool.query(
+        `UPDATE ordenes_trabajo SET diagnostico = $1, es_service = $2, es_urgencia = $3
+        WHERE id = $4`,
+        [orden.diagnostico, orden.esService, orden.esUrgencia, id]
+    )
+}
+
+async function actualizarEstado(id, estado){
+    await pool.query(
+        'UPDATE ordenes_trabajo SET estado = $1 WHERE id = $2',
+        [estado, id]
+    )
+}
+export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado }

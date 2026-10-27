@@ -6,6 +6,7 @@ import repuestosService from '../repuestos/repuestos.service.js'
 import trabajosService from '../trabajos/trabajos.service.js'
 import authService from '../auth/auth.service.js'
 import { httpError } from '../../utils/httpError.js'
+import clientesService from '../clientes/clientes.service.js'
 
 const TRANSICIONES = {
     RECIBIDO: ['DIAGNOSTICANDO', 'CANCELADO'],
@@ -50,9 +51,6 @@ function permiteFichaDeEgreso(estado) {
     return estado === 'TERMINADO' || puedeCambiarEstado(estado, 'TERMINADO')
 }
 
-function normalizarPatente(patente) {
-    return patente.replace(/\s+/g, '').toUpperCase()
-}
 
 function proximoId(lista) {
     return Math.max(0, ...lista.map((elemento) => elemento.id)) + 1
@@ -67,6 +65,8 @@ function buscarOrden(lista, id) {
 }
 
 function guardarCambios(lista, ordenActualizada) {
+    
+    // ponerle await cuando se migre a postgres
     ordenesRepository.guardarOrdenes(
         lista.map((orden) => orden.id === ordenActualizada.id ? ordenActualizada : orden)
     )
@@ -95,12 +95,18 @@ function validarDiagnostico(valor) {
 async function listarOrdenes(filtros) {
     let ordenes = await ordenesRepository.listarOrdenes()
 
+
+    const vehiculo = filtros.vehiculoId ? await vehiculosService.buscar(filtros.vehiculoId) : null
+    const cliente = filtros.clienteId ? await clientesService.buscar(filtros.clienteId) : null
+
     if (filtros.estado) {
         ordenes = ordenes.filter((orden) => orden.estado === filtros.estado)
     }
-    if (filtros.patente) {
-        const patente = normalizarPatente(filtros.patente)
-        ordenes = ordenes.filter((orden) => orden.vehiculoPatente.includes(patente))
+    if (vehiculo) {
+        ordenes = ordenes.filter((orden) => orden.vehiculoId === vehiculo.id)
+    }
+    if (cliente) {
+        ordenes = ordenes.filter((orden) => orden.clienteId === cliente.id)
     }
     return ordenes
 }
@@ -115,18 +121,13 @@ async function obtenerOrden(id) {
 }
 
 async function crearOrden(datos) {
-    if (typeof datos.vehiculoPatente !== 'string' || !datos.vehiculoPatente.trim()) {
-        throw httpError(400, 'Falta la patente del vehículo')
-    }
+
     validarDiagnostico(datos.diagnostico)
     validarBooleano(datos.esService, 'esService')
     validarBooleano(datos.esUrgencia, 'esUrgencia')
 
-    const patente = normalizarPatente(datos.vehiculoPatente)
-    const vehiculo = await vehiculosService.buscarPorPatente(patente)
-    if (!vehiculo) {
-        throw httpError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
-    }
+    const vehiculo = await vehiculosService.buscar(datos.vehiculoId)
+    const cliente = await clientesService.buscar(datos.clienteId)
 
     const turnoId = datos.turnoId ?? null
     if (turnoId !== null && !(await turnosService.buscarPorId(turnoId))) {
@@ -135,10 +136,13 @@ async function crearOrden(datos) {
 
     const ordenAbierta = await ordenesRepository.buscarAbiertaPorVehiculo(vehiculo.id)
     if (ordenAbierta) {
-        throw httpError(409, `El vehículo ${patente} ya tiene abierta la orden ${ordenAbierta.id}`)
+        throw httpError(409, `El vehículo ${vehiculo.patente} ya tiene abierta la orden ${ordenAbierta.id}`)
     }
 
+    await vehiculosService.asociarDueno(vehiculo.id, cliente.id)
+
     const id = await ordenesRepository.crear({
+        idCliente: cliente.id,
         idVehiculo: vehiculo.id,
         turnoId,
         diagnostico: datos.diagnostico?.trim() || null,
@@ -156,7 +160,7 @@ async function actualizarOrden(idRecibido, datos) {
     validarDiagnostico(datos.diagnostico)
     validarBooleano(datos.esService, 'esService')
     validarBooleano(datos.esUrgencia, 'esUrgencia')
-
+    // ponerle await cuando se migre a postgres
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirOrdenAbierta(orden)
@@ -174,7 +178,7 @@ async function cambiarEstado(idRecibido, estadoNuevo) {
     if (!esEstadoValido(estadoNuevo)) {
         throw httpError(400, `"${estadoNuevo}" no es un estado de orden válido`)
     }
-
+    // ponerle await cuando se migre a postgres
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirOrdenAbierta(orden)
@@ -215,7 +219,7 @@ async function agregarFicha(idRecibido, datos) {
         throw httpError(400, 'La conformidad tiene que ser PENDIENTE o APROBADA')
     }
     validarItemsFicha(datos.items)
-
+    // ponerle await cuando se migre a postgres
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirOrdenAbierta(orden)
@@ -304,6 +308,7 @@ async function armarEmpleados(empleadoIds) {
 
 async function agregarTrabajo(idRecibido, datos) {
     const id = validarId(idRecibido, 'id de la orden')
+    // ponerle await cuando se migre a postgres
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirTrabajosModificables(orden)
@@ -346,6 +351,7 @@ async function agregarTrabajo(idRecibido, datos) {
 async function quitarTrabajo(idRecibido, idTrabajoRecibido) {
     const id = validarId(idRecibido, 'id de la orden')
     const idTrabajo = validarId(idTrabajoRecibido, 'id del trabajo')
+    // ponerle await cuando se migre a postgres
     const lista = ordenesRepository.obtenerOrdenes()
     const orden = buscarOrden(lista, id)
     exigirTrabajosModificables(orden)

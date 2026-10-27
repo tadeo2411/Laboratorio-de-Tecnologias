@@ -1,19 +1,40 @@
 export const tipoCliente = ['PERSONA', 'EMPRESA']
-const URL = '/backend/data'
+import {obtenerToken} from '../../auth/services/authService'
+const URL = 'http://localhost:3000/api/clientes'
 
-export async function obtenerClientes(){
-    const respuesta = await fetch(`${URL}/clientes.json`)
+async function pedir(ruta, opciones = {}) {
+    const headers = { Authorization: `Bearer ${obtenerToken()}` }
+    if (opciones.body) headers['Content-Type'] = 'application/json'
 
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los clientes")
+    let respuesta
+    try {
+        respuesta = await fetch(`${URL}${ruta}`, { ...opciones, headers })
+    } catch {
+        throw new Error('No se pudo conectar con el servidor.')
     }
-    return respuesta.json()
-}
-export async function obtenerAutos(){
-    const respuesta = await fetch(`${URL}/vehiculos.json`)
 
-    if (!respuesta.ok){
-        throw new Error("No se pudo cargar los autos")
+    const datos = respuesta.status === 204 ? null : await respuesta.json()
+
+    if (!respuesta.ok) {
+        throw new Error(datos?.error || datos?.mensaje || 'Ocurrió un error con los clientes.')
     }
-    return respuesta.json()
+    return datos
 }
+
+export function obtenerClientes() {
+    return pedir('')
+}
+
+export function crearCliente(datos) {
+    return pedir('', { method: 'POST', body: JSON.stringify(datos) })
+}
+
+export function modificarCliente(id, cambios) {
+    return pedir(`/${id}`, { method: 'PATCH', body: JSON.stringify(cambios) })
+}
+
+export function eliminarCliente(id) {
+    return pedir(`/${id}`, { method: 'DELETE' })
+}
+
+

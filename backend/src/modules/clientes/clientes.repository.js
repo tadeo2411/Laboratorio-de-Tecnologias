@@ -50,9 +50,12 @@ async function modificar(id, cambios){
     return rows[0]
 }
 
-function eliminar(documento){
-    const cliente = buscarPorDocumento(documento)
-
+async function eliminar(cliente){
+    const {rows} = await pool.query(
+        "DELETE FROM clientes WHERE id = $1 RETURNING id, documento, tipo, nombre, telefono",
+        [cliente.id]
+    )
+    return rows[0]
 }
 
-export default {obtener, buscarPorId, buscarPorDocumento, alta, modificar}
+export default {obtener, buscarPorId, buscarPorDocumento, alta, modificar, eliminar}

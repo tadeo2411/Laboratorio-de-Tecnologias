@@ -10,8 +10,7 @@ async function listar(req, res){
 }
 
 async function buscar(req,res){
-    const id = req.params.id
-    const clienteBuscado = await clientes.buscar(id)
+    const clienteBuscado = await clientes.buscar(req.params.id)
     res.json(clienteBuscado)
 }
 
@@ -21,10 +20,14 @@ async function alta(req,res){
 }
 
 async function modificar(req,res){
-    const id = req.params.id
-    const clienteModificado = await clientes.modificar(id, req.body)
+    const clienteModificado = await clientes.modificar(req.params.id, req.body)
     res.json(clienteModificado)
 }
 
+async function eliminar(req, res){
+    await clientes.eliminar(req.params.id)
+    res.status(204).send()
+}
 
-export default {listar, buscar, alta, modificar}
+
+export default {listar, buscar, alta, modificar, eliminar}

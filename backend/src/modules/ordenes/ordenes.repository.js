@@ -1,12 +1,5 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
 import { pool } from '../../config/db.js'
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
-const ruta = path.join(__dirname, '..', '..', '..', 'data', 'ordenes.json')
 
 async function listarOrdenes(){
     const resultado = await pool.query(
@@ -79,13 +72,6 @@ async function buscarPorId(id){
     return orden
 }
 
-function obtenerOrdenes() {
-    return JSON.parse(fs.readFileSync(ruta, 'utf-8'))
-}
-
-function guardarOrdenes(ordenes) {
-    fs.writeFileSync(ruta, JSON.stringify(ordenes, null, 2))
-}
 async function buscarAbiertaPorVehiculo(idVehiculo){
     const resultado = await pool.query(
         `SELECT id FROM ordenes_trabajo
@@ -133,4 +119,30 @@ async function crearFicha(ordenId, ficha){
         )
     }
 }
-export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado, crearFicha }
+async function crearTrabajo(ordenId, trabajo){
+    const resultado = await pool.query(
+        `INSERT INTO trabajos (orden_id, tipo_trabajo_id, descripcion, mano_de_obra)
+        VALUES ($1, $2, $3, $4)
+        RETURNING id`,
+        [ordenId, trabajo.tipoTrabajoId, trabajo.descripcion, trabajo.manoDeObra]
+    )
+    const trabajoId = resultado.rows[0].id
+    for (const repuesto of trabajo.repuestos) {
+        await pool.query(
+            `INSERT INTO repuestos_usados (trabajo_id, repuesto_id, cantidad, precio_unitario)
+            VALUES ($1, $2, $3, $4)`,
+            [trabajoId, repuesto.repuestoId, repuesto.cantidad, repuesto.precioUnitario]
+        )
+    }
+    for (const empleado of trabajo.empleados) {
+        await pool.query(
+            'INSERT INTO trabajos_empleados (trabajo_id, empleado_id) VALUES ($1, $2)',
+            [trabajoId, empleado.id]
+        )
+    }
+}
+
+async function eliminarTrabajo(id){
+    await pool.query('DELETE FROM trabajos WHERE id = $1', [id])
+}
+export default { listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado, crearFicha, crearTrabajo, eliminarTrabajo }

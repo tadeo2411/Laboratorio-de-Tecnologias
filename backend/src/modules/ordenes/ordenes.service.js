@@ -50,26 +50,6 @@ function permiteFichaDeEgreso(estado) {
     return estado === 'TERMINADO' || puedeCambiarEstado(estado, 'TERMINADO')
 }
 
-
-function proximoId(lista) {
-    return Math.max(0, ...lista.map((elemento) => elemento.id)) + 1
-}
-
-function buscarOrden(lista, id) {
-    const orden = lista.find((ordenActual) => ordenActual.id === id)
-    if (!orden) {
-        throw httpError(404, `No existe la orden ${id}`)
-    }
-    return orden
-}
-
-function guardarCambios(lista, ordenActualizada) {
-    ordenesRepository.guardarOrdenes(
-        lista.map((orden) => orden.id === ordenActualizada.id ? ordenActualizada : orden)
-    )
-    return ordenActualizada
-}
-
 function exigirOrdenAbierta(orden) {
     if (esEstadoFinal(orden.estado)) {
         throw httpError(409, `La orden está ${orden.estado} y ya no se puede modificar`)
@@ -292,9 +272,7 @@ async function armarEmpleados(empleadoIds) {
 }
 
 async function agregarTrabajo(idRecibido, datos) {
-    const id = validarId(idRecibido, 'id de la orden')
-    const lista = ordenesRepository.obtenerOrdenes()
-    const orden = buscarOrden(lista, id)
+    const orden = await obtenerOrden(idRecibido)
     exigirTrabajosModificables(orden)
 
     const tipo = await trabajosService.buscarTipoTrabajo(datos.tipoTrabajoId)
@@ -313,40 +291,27 @@ async function agregarTrabajo(idRecibido, datos) {
     const empleados = await armarEmpleados(datos.empleadoIds ?? [])
     const repuestos = await armarRepuestosUsados(datos.repuestos ?? [])
 
-    const todosLosTrabajos = lista.flatMap((ordenActual) => ordenActual.trabajos)
-    let ultimoIdRepuesto = Math.max(0, ...todosLosTrabajos.flatMap((trabajo) => trabajo.repuestos).map((repuesto) => repuesto.id))
-
-    const nuevoTrabajo = {
-        id: proximoId(todosLosTrabajos),
+    await ordenesRepository.crearTrabajo(orden.id, {
         tipoTrabajoId: tipo.id,
-        tipoTrabajo: tipo.nombre,
         descripcion: datos.descripcion?.trim() || null,
         manoDeObra,
-        empleados,
-        repuestos: repuestos.map((repuesto) => {
-            ultimoIdRepuesto = ultimoIdRepuesto + 1
-            return { id: ultimoIdRepuesto, ...repuesto }
-        })
-    }
-
-    return guardarCambios(lista, { ...orden, trabajos: [...orden.trabajos, nuevoTrabajo] })
+        repuestos,
+        empleados
+    })
+    return ordenesRepository.buscarPorId(orden.id)
 }
 
 async function quitarTrabajo(idRecibido, idTrabajoRecibido) {
-    const id = validarId(idRecibido, 'id de la orden')
     const idTrabajo = validarId(idTrabajoRecibido, 'id del trabajo')
-    const lista = ordenesRepository.obtenerOrdenes()
-    const orden = buscarOrden(lista, id)
+    const orden = await obtenerOrden(idRecibido)
     exigirTrabajosModificables(orden)
 
     if (!orden.trabajos.some((trabajo) => trabajo.id === idTrabajo)) {
-        throw httpError(404, `La orden ${id} no tiene el trabajo ${idTrabajo}`)
+        throw httpError(404, `La orden ${orden.id} no tiene el trabajo ${idTrabajo}`)
     }
 
-    return guardarCambios(lista, {
-        ...orden,
-        trabajos: orden.trabajos.filter((trabajo) => trabajo.id !== idTrabajo)
-    })
+    await ordenesRepository.eliminarTrabajo(idTrabajo)
+    return ordenesRepository.buscarPorId(orden.id)
 }
 
 export default {

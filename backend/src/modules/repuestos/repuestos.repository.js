@@ -34,4 +34,12 @@ async function cargar(datos) {
 async function modificar(datos) {
 }
 
-export default { listar, cargar, eliminar, modificar };
+async function buscarPorId(id) {
+    const { rows } = await pool.query(
+        'SELECT * FROM repuestos WHERE id = $1',
+        [id]
+    );
+    return rows[0];
+}
+
+export default { listar, cargar, eliminar, modificar, buscarPorId };

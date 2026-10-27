@@ -47,4 +47,12 @@ async function modificar(datos) {
     return resultado.rows[0];
 }
 
-export default { listar, cargar, eliminar, modificar };
+async function buscarTipoTrabajo(id) {
+    const { rows } = await pool.query(
+        'SELECT * FROM tipos_trabajo WHERE id = $1',
+        [id]
+    );
+    return rows[0];
+}
+
+export default { listar, cargar, eliminar, modificar, buscarTipoTrabajo };

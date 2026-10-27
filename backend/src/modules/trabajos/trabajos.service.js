@@ -17,4 +17,8 @@ function modificar(datos) {
     return repository.modificar(datos);
 }
 
-export default { listar, cargar, eliminar, modificar };
+function buscarTipoTrabajo(id) {
+    return repository.buscarTipoTrabajo(id);
+}
+
+export default { listar, cargar, eliminar, modificar, buscarTipoTrabajo };

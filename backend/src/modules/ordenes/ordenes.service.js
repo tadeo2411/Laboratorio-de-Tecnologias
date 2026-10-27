@@ -95,8 +95,8 @@ function validarDiagnostico(valor) {
 }
 
 async function listarOrdenes(filtros) {
-    // ponerle await cuando se migre a postgres
-    let ordenes = ordenesRepository.obtenerOrdenes()
+    let ordenes = await ordenesRepository.listarOrdenes()
+
 
     const vehiculo = filtros.vehiculoId ? await vehiculosService.buscar(filtros.vehiculoId) : null
     const cliente = filtros.clienteId ? await clientesService.buscar(filtros.clienteId) : null
@@ -114,6 +114,12 @@ async function listarOrdenes(filtros) {
 }
 
 async function obtenerOrden(id) {
+    const ordenId = validarId(id, 'id de la orden')
+    const orden = await ordenesRepository.buscarPorId(ordenId)
+    if(!orden){
+        throw httpError(404, `No existe la orden ${ordenId}`)
+    }
+    return orden
     // ponerle await cuando se migre a postgres
     return buscarOrden(ordenesRepository.obtenerOrdenes(), validarId(id, 'id de la orden'))
 }
@@ -124,6 +130,15 @@ async function crearOrden(datos) {
     validarBooleano(datos.esService, 'esService')
     validarBooleano(datos.esUrgencia, 'esUrgencia')
 
+    const patente = normalizarPatente(datos.vehiculoPatente)
+    if (!(await vehiculosService.crearPatente(patente))) {
+        throw httpError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
+    }
+
+    const turnoId = datos.turnoId ?? null
+    if (turnoId !== null && !(await turnosService.buscarPorId(turnoId))) {
+        throw httpError(400, `No existe el turno ${turnoId}`)
+    }
     const vehiculo = await vehiculosService.buscar(datos.vehiculoId)
     const cliente = await clientesService.buscar(datos.clienteId)
 

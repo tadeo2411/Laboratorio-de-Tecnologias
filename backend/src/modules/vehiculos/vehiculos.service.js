@@ -144,7 +144,32 @@ async function listarDuenos(id){
 async function buscarDueno(id, idCliente){
     const vehiculo = await buscar(id)
     const cliente = await clienteServicio.buscar(idCliente)
-    return vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
+    const dueno =  await vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
+    if(!dueno){
+        throw httpError(404, `el cliente con documento ${cliente.documento}, no es dueño de este vehiculo`)
+    }
+    return dueno
 }
 
-export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno}
+async function asociarDueno(id, idCliente){
+    const vehiculo = await buscar(id)
+    const cliente = await clienteServicio.buscar(idCliente)
+    const dueno =  await vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
+    if(dueno){
+        return vehiculosRepository.actualizarDueno(vehiculo.id, cliente.id)
+    }
+    return vehiculosRepository.asociarDueno(vehiculo.id, cliente.id)
+}
+
+async function desasociarDueno(id, idCliente){
+    const vehiculo = await buscar(id)
+    const cliente = await clienteServicio.buscar(idCliente)
+    const dueno = await vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
+    if(!dueno){
+        throw httpError(404, `el cliente con documento ${cliente.documento}, no es dueño de este vehiculo, asi que no se puede desasociar`)
+    }
+    return vehiculosRepository.desasociarDueno(vehiculo.id, cliente.id)
+
+}
+
+export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno}

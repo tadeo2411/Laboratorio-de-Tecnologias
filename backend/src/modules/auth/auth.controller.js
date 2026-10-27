@@ -9,8 +9,8 @@ async function login(req, res) {
     res.json(sesion)
 }
 
-function perfil(req, res) {
-    res.json(authService.obtenerPerfil(req.usuario.id))
+async function perfil(req, res) {
+   res.json(await authService.obtenerPerfil(req.usuario.id))
 }
 
 export default { login, perfil }

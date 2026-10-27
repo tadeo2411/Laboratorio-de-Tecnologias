@@ -37,8 +37,8 @@ async function iniciarSesion(usuario, contrasena) {
     return { token, usuario: usuarioPublico }
 }
 
-function obtenerPerfil(id) {
-    const usuario = authRepository.buscarPorId(id)
+async function obtenerPerfil(id) {
+    const usuario = await authRepository.buscarPorId(id)
 
     if (!usuario || !usuario.activo) {
         throw httpError(401, 'El usuario ya no tiene acceso al sistema')
@@ -47,9 +47,7 @@ function obtenerPerfil(id) {
 }
 
 async function obtenerEmpleadosActivos() {
-    return authRepository.obtenerUsuarios()
-        .filter((usuario) => usuario.activo)
-        .map((usuario) => ({ id: usuario.id, nombre: usuario.nombre }))
+    return authRepository.obtenerEmpleadosActivos();
 }
 
 export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos }

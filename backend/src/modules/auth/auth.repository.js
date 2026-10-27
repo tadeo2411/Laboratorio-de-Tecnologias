@@ -1,21 +1,35 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
 import { pool } from '../../config/db.js';
 
-function obtenerUsuarios() {
-    //return JSON.parse(fs.readFileSync(ruta, 'utf-8'))
+async function obtenerEmpleadosActivos(){
+    const resultado = await pool.query(
+        'SELECT e.id, e.nombre FROM empleados e WHERE e.activo = true'
+    )
+    return resultado.rows;
 }
 
 async function buscarPorUsuario(usuario) {
-    //return obtenerUsuarios().find((u) => u.usuario === usuario)
     const resultado = await pool.query(
-        `SELECT * FROM empleados WHERE usuario=$1`,
+        `SELECT e.id, e.nombre, e.usuario, e.password_hash, e.activo, r.nombre AS rol
+         FROM empleados e
+         JOIN empleados_roles er ON er.empleado_id = e.id
+         JOIN roles r ON r.id = er.rol_id
+         WHERE e.usuario = $1`,
         [usuario]
     );
     return resultado.rows[0];
 }
 
-function buscarPorId(id) {
-    return obtenerUsuarios().find((u) => u.id === id)
+async function buscarPorId(id) {
+    const resultado = await pool.query(
+        `SELECT e.id, e.nombre, e.usuario, e.activo, r.nombre AS rol
+         FROM empleados e
+         JOIN empleados_roles er ON er.empleado_id = e.id
+         JOIN roles r ON r.id = er.rol_id
+         WHERE e.id = $1`,
+        [id]
+    );
+    return resultado.rows[0];
 }
 
-export default { obtenerUsuarios, buscarPorUsuario, buscarPorId }
+export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId }

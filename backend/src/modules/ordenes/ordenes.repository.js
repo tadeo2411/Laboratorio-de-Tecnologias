@@ -118,4 +118,19 @@ async function actualizarEstado(id, estado){
         [estado, id]
     )
 }
-export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado }
+async function crearFicha(ordenId, ficha){
+    const resultado = await pool.query(
+        `INSERT INTO fichas (orden_id, tipo, fecha, kilometraje, conformidad)
+        VALUES ($1, $2, now(), $3, $4)
+        RETURNING id`,
+        [ordenId, ficha.tipo, ficha.kilometraje, ficha.conformidad]
+    )
+    const fichaId = resultado.rows[0].id
+    for (const item of ficha.items) {
+        await pool.query(
+            'INSERT INTO items_ficha (ficha_id, concepto, valor) VALUES ($1, $2, $3)',
+            [fichaId, item.concepto, item.valor]
+        )
+    }
+}
+export default { obtenerOrdenes, guardarOrdenes, listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado, crearFicha }

@@ -95,7 +95,7 @@ function validarDiagnostico(valor) {
 }
 
 async function listarOrdenes(filtros) {
-    let ordenes = ordenesRepository.obtenerOrdenes()
+    let ordenes = await ordenesRepository.listarOrdenes()
 
     if (filtros.estado) {
         ordenes = ordenes.filter((orden) => orden.estado === filtros.estado)
@@ -108,7 +108,12 @@ async function listarOrdenes(filtros) {
 }
 
 async function obtenerOrden(id) {
-    return buscarOrden(ordenesRepository.obtenerOrdenes(), validarId(id, 'id de la orden'))
+    const ordenId = validarId(id, 'id de la orden')
+    const orden = await ordenesRepository.buscarPorId(ordenId)
+    if(!orden){
+        throw httpError(404, `No existe la orden ${ordenId}`)
+    }
+    return orden
 }
 
 async function crearOrden(datos) {
@@ -120,7 +125,7 @@ async function crearOrden(datos) {
     validarBooleano(datos.esUrgencia, 'esUrgencia')
 
     const patente = normalizarPatente(datos.vehiculoPatente)
-    if (!(await vehiculosService.buscarPorPatente(patente))) {
+    if (!(await vehiculosService.crearPatente(patente))) {
         throw httpError(400, `No hay ningún vehículo registrado con la patente ${patente}`)
     }
 

@@ -97,4 +97,14 @@ JOIN "roles" r
 WHERE e."usuario" IN ('admin', 'mecanico', 'ex.mecanico')
 ON CONFLICT ("empleado_id", "rol_id") DO NOTHING;
 
+INSERT INTO clientes (documento, tipo, nombre, telefono) VALUES ('30123456', 'PERSONA', 'Juan Pérez', '2664123456');
+INSERT INTO vehiculos (patente, marca, modelo, anio) VALUES ('AE123BC', 'Toyota', 'Corolla', 2021);
+INSERT INTO ordenes_trabajo (id_cliente, id_vehiculo, diagnostico, es_service, garantia_dias)
+VALUES ((SELECT id FROM clientes WHERE documento = '30123456'),
+        (SELECT id FROM vehiculos WHERE patente = 'AE123BC'),
+        'Cambio de aceite', true, 30);
+INSERT INTO fichas (orden_id, tipo, fecha, kilometraje) VALUES (3, 'INGRESO', now(), 45200);
+INSERT INTO items_ficha (ficha_id, concepto, valor) VALUES
+((SELECT max(id) FROM fichas), 'Nivel de combustible', '1/2'),
+((SELECT max(id) FROM fichas), 'Rayones', 'Paragolpes trasero');
 COMMIT;

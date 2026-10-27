@@ -1,0 +1,18 @@
+$kind: http-request
+description: ""
+url: "{{base_url}}/api/clientes"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"documento\" :\"46702444\" ,\r
+
+    \    \"tipo\": \"PERSONA\",\r
+
+    \    \"nombre\" : \"yo\",\r
+
+    \    \"telefono\" : \"2665298838\"\r
+
+    }"
+order: 10000

@@ -3,7 +3,6 @@ import { tipoCliente } from '../services/clientesServices'
 
 const valoresIniciales = {
     nombre: '',
-    apellido: '',
     telefono: '',
     documento: '',
     tipo: 'PERSONA',
@@ -23,7 +22,6 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
         evento.preventDefault()
         onGuardar({
             nombre: formulario.nombre.trim(),
-            apellido: formulario.apellido.trim(),
             telefono: formulario.telefono.trim(),
             documento: formulario.documento.trim(),
             tipo: formulario.tipo,
@@ -37,12 +35,8 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
             <form onSubmit={manejarEnvio}>
                 <div className="row">
                     <div className="col-12 col-md-6 mb-3">
-                        <label htmlFor="clienteNombre" className="form-label">Nombre / Razón social *</label>
+                        <label htmlFor="clienteNombre" className="form-label">Nombre y Apellido / Razón social *</label>
                         <input id="clienteNombre" name="nombre" type="text" className="form-control" value={formulario.nombre} onChange={actualizarCampo} pattern={'.*\\S.*'} title="Escribí un nombre que no contenga solo espacios." required />
-                    </div>
-                    <div className="col-12 col-md-6 mb-3">
-                        <label htmlFor="clienteApellido" className="form-label">Apellido{formulario.tipo === 'PERSONA' ? ' *' : ''}</label>
-                        <input id="clienteApellido" name="apellido" type="text" className="form-control" value={formulario.apellido} onChange={actualizarCampo} pattern={'.*\\S.*'} title="Escribí un apellido que no contenga solo espacios." required={formulario.tipo === 'PERSONA'} />
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="clienteTelefono" className="form-label">Teléfono *</label>

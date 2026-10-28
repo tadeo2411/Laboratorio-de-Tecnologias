@@ -29,10 +29,18 @@ try {
 
 const modificar = async (req, res, next) => {
 try {
-        res.json(await service.modificar({id : req.params.id, ...req.body}));
+        res.status(201).json(await service.modificar({id : req.params.id, ...req.body}));
     } catch (err) {
         next(err);
     }
 }
 
-export default {listar, eliminar, cargar, modificar}
+const buscar = async (req, res, next) => {
+try {
+        res.json(await service.buscar(req.params.id));
+    } catch (err) {
+        next(err);
+    }
+}
+
+export default {listar, eliminar, cargar, modificar, buscar}

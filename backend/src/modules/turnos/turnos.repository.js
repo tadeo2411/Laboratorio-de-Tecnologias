@@ -48,7 +48,7 @@ async function modificar(datos) {
     return resultado.rows[0];
 }
 
-async function buscarPorId(id) {
+async function buscar(id) {
     const { rows } = await pool.query(
         'SELECT * FROM turnos WHERE id = $1',
         [id]
@@ -56,4 +56,4 @@ async function buscarPorId(id) {
     return rows[0];
 }
 
-export default { listar, cargar, eliminar, modificar, buscarPorId };
+export default { listar, cargar, eliminar, modificar, buscar };

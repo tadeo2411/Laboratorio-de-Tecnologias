@@ -21,7 +21,7 @@ try {
 
 const cargar = async (req, res, next) => {
 try {
-        res.json(await service.cargar(req.body));
+        res.status(201).json(await service.cargar(req.body));
     } catch (err) {
         next(err);
     }
@@ -35,4 +35,12 @@ try {
     }
 }
 
-export default {listar, eliminar, cargar, modificar}
+const buscar = async (req, res, next) => {
+try {
+        res.json(await service.buscar(req.params.id));
+    } catch (err) {
+        next(err);
+    }
+}
+
+export default {listar, eliminar, cargar, modificar, buscar}

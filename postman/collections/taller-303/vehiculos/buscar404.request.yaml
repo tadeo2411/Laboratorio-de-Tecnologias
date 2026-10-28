@@ -1,0 +1,7 @@
+$kind: http-request
+description: "Espera 404."
+url: "{{base_url}}/api/vehiculos/:id"
+method: GET
+pathVariables:
+  id: "99999"
+order: 868

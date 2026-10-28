@@ -1,0 +1,10 @@
+$kind: http-request
+description: Espera 200 con los duenos del vehiculo.
+url: "{{base_url}}/api/vehiculos/:id/duenos"
+method: GET
+pathVariables:
+  id: "1"
+body:
+  type: json
+  content: ""
+order: 14000

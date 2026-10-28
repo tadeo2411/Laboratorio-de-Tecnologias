@@ -1,0 +1,7 @@
+$kind: http-request
+description: "Espera 409 si el vehiculo tiene duenos asociados (FK RESTRICT)."
+url: "{{base_url}}/api/vehiculos/:id"
+method: DELETE
+pathVariables:
+  id: "1"
+order: 21000

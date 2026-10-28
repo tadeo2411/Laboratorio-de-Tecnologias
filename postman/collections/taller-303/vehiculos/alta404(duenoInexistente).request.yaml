@@ -1,0 +1,24 @@
+$kind: http-request
+description: Espera 404. Despues verificar con GET /api/vehiculos que AD789FG NO se creo.
+url: "{{base_url}}/api/vehiculos"
+method: POST
+body:
+  type: json
+  content: "{ \r
+
+    \    \"patente\": \"AD789FG\",\r
+
+    \    \"marca\": \"Ford\",\r
+
+    \    \"modelo\": \"Ranger\",\r
+
+    \    \"anio\": 2020, \r
+
+    \    \"kilometraje\": 68500, \r
+
+    \    \"descripcion\": \"Revisar sistema de frenos\", \r
+
+    \    \"idCliente\": 9999\r
+
+    }"
+order: 4000

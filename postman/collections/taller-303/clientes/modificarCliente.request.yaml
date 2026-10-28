@@ -3,18 +3,20 @@ description: ""
 url: "{{base_url}}/api/clientes/:id"
 method: PATCH
 pathVariables:
-  id: "1"
+  - key: id
+    value: "1"
+    description: ""
 body:
   type: json
   content: "{\r
 
-    \    \"documento\" : \"46333145\",\r
+    \    \"documento\" : \"30123654\",\r
 
     \    \"tipo\" : \"PERSONA\",\r
 
-    \    \"nombre\" : \"lucia fernandez\",\r
+    \    \"nombre\" : \"juan perez\", \r
 
-    \    \"telefono\" : \"26652933839\"\r
+    \    \"telefono\" : \"1122334499\"\r
 
     }"
 order: 11000

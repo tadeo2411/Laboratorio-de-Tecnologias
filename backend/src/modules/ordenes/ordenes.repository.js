@@ -8,7 +8,12 @@ async function listarOrdenes(){
         o.es_urgencia AS "esUrgencia", o.garantia_dias AS "garantiaDias", o.created_at AS "createdAt"
         FROM ordenes_trabajo o 
         JOIN vehiculos v ON v.id = o.id_vehiculo ORDER BY o.id` )
-    return resultado.rows
+    const ordenes = resultado.rows
+    for (const orden of ordenes) {
+        orden.fichas = await buscarFichas(orden.id)
+        orden.trabajos = await buscarTrabajos(orden.id)
+    }
+    return ordenes
 }
 
 async function buscarFichas(ordenId){

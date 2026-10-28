@@ -20,21 +20,29 @@ async function eliminar(id) {
 async function cargar(datos) {
     const { nombre, precio_estandar, activo } = datos;
 
-  const resultado = await pool.query(
-    `INSERT INTO repuestos
+    const resultado = await pool.query(
+        `INSERT INTO repuestos
       (nombre, precio_estandar, activo)
      VALUES ($1, $2, $3)
      RETURNING *`,
-    [nombre, precio_estandar, activo]
-  );
+        [nombre, precio_estandar, activo]
+    );
 
-  return resultado.rows[0];
+    return resultado.rows[0];
 }
 
 async function modificar(datos) {
+    const { id, nombre, precio_estandar, activo } = datos;
+    const resultado = await pool.query(`
+        UPDATE repuestos 
+        SET nombre = $1, precio_estandar = $2, activo = $3 
+        WHERE id = $4 
+        RETURNING *`,
+        [nombre, precio_estandar, activo, id]);
+    return resultado.rows[0];
 }
 
-async function buscarPorId(id) {
+async function buscar(id) {
     const { rows } = await pool.query(
         'SELECT * FROM repuestos WHERE id = $1',
         [id]
@@ -42,4 +50,4 @@ async function buscarPorId(id) {
     return rows[0];
 }
 
-export default { listar, cargar, eliminar, modificar, buscarPorId };
+export default { listar, cargar, eliminar, modificar, buscar };

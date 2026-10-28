@@ -39,4 +39,8 @@ function buscar(id) {
     return repository.buscar(id);
 }
 
-export default { listar, cargar, eliminar, modificar, buscar };
+function buscarTipoTrabajo(id) {
+    return repository.buscarTipoTrabajo(id);
+}
+
+export default { listar, cargar, eliminar, modificar, buscar, buscarTipoTrabajo };

@@ -29,7 +29,7 @@ function modificar(datos) {
 }
 
 function buscar(id) {
-    validarId(datos.id, 'El id del repuesto');
+    validarId(id);
     return repository.buscar(id);
 }
 

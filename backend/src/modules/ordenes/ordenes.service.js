@@ -111,7 +111,7 @@ async function crearOrden(datos) {
     const cliente = await clientesService.buscar(datos.clienteId)
 
     const turnoId = datos.turnoId ?? null
-    if (turnoId !== null && !(await turnosService.buscarPorId(turnoId))) {
+    if (turnoId !== null && !(await turnosService.buscar(turnoId))) {
         throw httpError(400, `No existe el turno ${turnoId}`)
     }
 
@@ -241,7 +241,7 @@ async function armarRepuestosUsados(repuestosPedidos) {
 
     return Promise.all(repuestosPedidos.map(async (pedido) => {
         const repuestoId = validarId(pedido.repuestoId, 'id del repuesto')
-        const repuesto = await repuestosService.buscarPorId(repuestoId)
+        const repuesto = await repuestosService.buscar(repuestoId)
         if (!repuesto) {
             throw httpError(400, `No existe el repuesto ${pedido.repuestoId}`)
         }

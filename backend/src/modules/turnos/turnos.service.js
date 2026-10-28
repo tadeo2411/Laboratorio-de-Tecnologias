@@ -1,6 +1,5 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import  repository  from "./turnos.repository.js";
-import verificarId from "../../utils/validsTexto.js"
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
 function validarId(id){

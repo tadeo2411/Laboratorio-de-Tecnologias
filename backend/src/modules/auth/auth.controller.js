@@ -13,4 +13,12 @@ async function perfil(req, res) {
    res.json(await authService.obtenerPerfil(req.usuario.id))
 }
 
-export default { login, perfil }
+async function listarEmpleados(req,res){
+    res.json(await authService.obtenerEmpleadosActivos())
+}
+
+async function listarTodosLosEmpleados(req,res){
+    res.json(await authService.obtenerTodosLosEmpleados())
+}
+
+export default { login, perfil, listarEmpleados, listarTodosLosEmpleados }

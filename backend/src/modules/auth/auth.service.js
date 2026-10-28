@@ -47,7 +47,11 @@ async function obtenerPerfil(id) {
 }
 
 async function obtenerEmpleadosActivos() {
-    return authRepository.obtenerEmpleadosActivos();
+    return authRepository.obtenerEmpleadosActivos()
 }
 
-export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos }
+async function obtenerTodosLosEmpleados(){
+    return authRepository.obtenerTodosLosEmpleados()
+}
+
+export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos, obtenerTodosLosEmpleados }

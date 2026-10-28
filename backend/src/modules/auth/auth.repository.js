@@ -31,5 +31,15 @@ async function buscarPorId(id) {
     );
     return resultado.rows[0];
 }
+async function obtenerTodosLosEmpleados(){
+    const resultado = await pool.query(
+        `SELECT e.id, e.nombre, e.usuario, e.activo, r.nombre AS rol
+         FROM empleados e
+         JOIN empleados_roles er ON er.empleado_id = e.id
+         JOIN roles r ON r.id = er.rol_id
+         ORDER BY e.id`
+    )
+    return resultado.rows
+}
 
-export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId }
+export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId, obtenerTodosLosEmpleados}

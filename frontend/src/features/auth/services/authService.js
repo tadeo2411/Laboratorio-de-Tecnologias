@@ -82,12 +82,18 @@ export function redirigirSiHaySesion() {
 }
 
 export async function obtenerEmpleados() {
-  const lista = await leerUsuarios()
-  return lista
-    .filter((u) => u.activo)
-    .map((u) => ({ id: u.id, nombre: u.nombre }))
+  let respuesta
+  try{
+    respuesta = await fetch(`${URL}/empleados`,{headers:{Authorization: `Bearer ${obtenerToken()}`}})
+  }catch{
+    throw new Error('No se pudo conectar con el servidor')
+  }
+  const datos = await respuesta.json()
+  if(!respuesta.ok){
+    throw new Error(datos.error || 'No se pudieron cargar los empleados')
+  }
+  return datos
 }
-
 function datosPublicos(usuario) {
   return {
     id: usuario.id,
@@ -145,9 +151,17 @@ function validarEmpleado(lista, datos, idExcluido = null) {
 }
 
 export async function obtenerMiCuenta() {
-  const sesion = obtenerSesion()
-  const lista = await leerUsuarios()
-  return datosPublicos(buscarUsuario(lista, sesion?.id))
+  let respuesta
+  try{
+    respuesta = await fetch(`${URL}/perfil`,{headers:{Authorization: `Bearer ${obtenerToken()}`}})
+  }catch{
+    throw new Error('No se pudo conectar con el servidor')
+  }
+  const datos = await respuesta.json()
+  if(!respuesta.ok){
+    throw new Error(datos.error || 'No se pudo obtener la cuenta')
+  }
+  return datos
 }
 
 export async function obtenerTodosLosEmpleados() {

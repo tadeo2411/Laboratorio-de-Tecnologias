@@ -240,7 +240,8 @@ async function armarRepuestosUsados(repuestosPedidos) {
     }
 
     return Promise.all(repuestosPedidos.map(async (pedido) => {
-        const repuesto = await repuestosService.buscarPorId(pedido.repuestoId)
+        const repuestoId = validarId(pedido.repuestoId, 'id del repuesto')
+        const repuesto = await repuestosService.buscarPorId(repuestoId)
         if (!repuesto) {
             throw httpError(400, `No existe el repuesto ${pedido.repuestoId}`)
         }
@@ -275,7 +276,8 @@ async function agregarTrabajo(idRecibido, datos) {
     const orden = await obtenerOrden(idRecibido)
     exigirTrabajosModificables(orden)
 
-    const tipo = await trabajosService.buscarTipoTrabajo(datos.tipoTrabajoId)
+    const tipoTrabajoId = validarId(datos.tipoTrabajoId, 'id del tipo de trabajo')
+    const tipo = await trabajosService.buscarTipoTrabajo(tipoTrabajoId)
     if (!tipo || !tipo.activo) {
         throw httpError(400, 'Elegí un tipo de trabajo válido')
     }

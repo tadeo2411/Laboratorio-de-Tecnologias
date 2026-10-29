@@ -1,9 +1,12 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}/duenos'
+url: "{{baseUrl}}/vehiculos/:id/duenos"
 method: POST
 headers:
-  - key: Content-Type
-    value: 'application/json'
+  Content-Type: application/json
+pathVariables:
+  - key: id
+    value: "1"
+    description: ""
 body:
   type: json
   content: |-
@@ -12,7 +15,6 @@ body:
     }
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 201', () => pm.response.to.have.status(201))
+    code: pm.test('Responde 201', () => pm.response.to.have.status(201))
     language: text/javascript
 order: 15000

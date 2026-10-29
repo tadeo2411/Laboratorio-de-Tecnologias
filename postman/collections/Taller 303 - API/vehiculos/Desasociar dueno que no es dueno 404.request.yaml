@@ -1,9 +1,15 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}/duenos/2'
+url: "{{baseUrl}}/vehiculos/:id/duenos/:idCliente"
 method: DELETE
+pathVariables:
+  - key: id
+    value: "1"
+    description: ""
+  - key: idCliente
+    value: "2"
+    description: ""
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    code: pm.test('Responde 404', () => pm.response.to.have.status(404))
     language: text/javascript
 order: 20000

@@ -1,9 +1,15 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}/duenos/2'
+url: "{{baseUrl}}/vehiculos/:id/duenos/:idCliente"
 method: GET
+pathVariables:
+  - key: id
+    value: "1"
+    description: ""
+  - key: idCliente
+    value: "6"
+    description: ""
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 200', () => pm.response.to.have.status(200))
+    code: pm.test('Responde 200', () => pm.response.to.have.status(200))
     language: text/javascript
 order: 18000

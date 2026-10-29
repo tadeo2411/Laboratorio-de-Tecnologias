@@ -5,9 +5,9 @@ import { verificarToken } from '../../middlewares/verificarToken.js'
 
 const router = Router();
 
-router.use(verificarToken);
+// router.use(verificarToken);
 
 router.get("/resumen", controller.resumen);
-router.get("/ordenes-por-estado", controller.ordenesPorEstado);
+router.get("/ordenes", controller.ordenesPorEstado);
 
 export default router;

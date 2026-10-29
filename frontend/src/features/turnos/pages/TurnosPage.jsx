@@ -2,7 +2,7 @@ import Turnos from "../components/Turnos"
 import TurnosModal from '../../../shared/components/Modal'
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
-import { obtenerTurnos, obtenerAutos } from '../services/turnosService';
+import { obtenerTurnos, obtenerAutos, crearTurno } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/turnosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
@@ -24,8 +24,8 @@ function TurnosPage() {
 
     //abm
     function handleAgregarTurno(nuevoTurno) { //se llama handle para seguir con la convencion de nombres en props
-        setTurnos(anteriores => [...anteriores,
-        { id: crypto.randomUUID(), ...nuevoTurno }])
+        console.log(nuevoTurno);
+        crearTurno(nuevoTurno);
         cerrarFormulario()
     }
     function handleEliminarTurno(idTurno) {
@@ -58,7 +58,8 @@ function TurnosPage() {
         let activo = true
         async function cargarTurnos() {
             try {
-                const [listTurnos, listVehiculos] = await Promise.all([obtenerTurnos(), obtenerAutos()])
+                const listTurnos = await obtenerTurnos();
+                const listVehiculos = await obtenerAutos();
 
                 if (activo) {
                     setTurnos(listTurnos)
@@ -123,7 +124,7 @@ function TurnosPage() {
                         renderFila={(turno) => (
                             <tr key={turno.id} className="turno-row">
                                 <td className="turno-fecha" data-label="Fecha y hora">
-                                    {turno.fechaHora}
+                                    {turno.fecha_hora}
                                 </td>
 
                                 <td className="turno-motivo" data-label="Motivo">
@@ -150,7 +151,7 @@ function TurnosPage() {
                                 </td>
 
                                 <td className="turno-patente" data-label="Patente">
-                                    {patenteDeVehiculo(turno.vehiculoId)}
+                                    {patenteDeVehiculo(turno.id_vehiculo)}
                                 </td>
 
                                 <td className="turno-acciones" data-label="Acciones">
@@ -169,7 +170,7 @@ function TurnosPage() {
                 </div>
             )}
             {mostrarFormulario && ( //cuando es true monta el modal y el formulario, cuando es false los elimina
-                <Modal titulo={false ? 'Editar vehículo' : 'Registrar vehículo'} onCerrar={cerrarFormulario}>
+                <Modal titulo={false ? 'Editar vehículo' : 'Registrar turno'} onCerrar={cerrarFormulario}>
                     {error && <p role="alert">{error}</p>}
                     {cargando && <p role="status">Cargando vehículos…</p>}
                     <TurnosForm

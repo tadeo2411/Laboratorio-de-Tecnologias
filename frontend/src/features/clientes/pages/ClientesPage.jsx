@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
-import Clientes from '../components/Clientes'
 import ClientesForm from '../components/ClientesForm'
-import ClientesModal from '../components/ClientesModal'
-import { obtenerClientes } from '../services/clientesServices'
+import { obtenerClientes, crearCliente, modificarCliente, eliminarCliente } from '../services/clientesServices'
 import img_list from "../../../assets/icons/clientesIcono.svg"
 import "../clientes.css";
 import "../../estilos.css"
@@ -62,35 +60,32 @@ function ClientesPage() {
         setMostrarFormulario(true)
     }
 
-    function handleGuardarCliente(datos) {
-        // El id identifica al cliente en el sistema; el documento (DNI o CUIT) es un dato
-        // del cliente que igual no se puede repetir.
-        const documento = datos.documento.replace(/[.\s-]/g, '')
-        const repetido = clientes.some(cliente =>
-            cliente.id !== clienteAEditar?.id &&
-            cliente.documento.replace(/[.\s-]/g, '') === documento
-        )
-
-        if (repetido) {
-            setErrorFormulario('Ya existe un cliente con ese DNI / CUIT.')
-            return
-        }
-
-        // Como en turnos, las altas y modificaciones quedan en el estado local.
+    async function handleGuardarCliente(datos) {
+    try {
         if (clienteAEditar) {
+            const modificado = await modificarCliente(clienteAEditar.id, datos)
             setClientes(anteriores => anteriores.map(cliente =>
-                cliente.id === clienteAEditar.id ? { ...cliente, ...datos } : cliente
+                cliente.id === clienteAEditar.id ? modificado : cliente
             ))
         } else {
-            setClientes(anteriores => [...anteriores, { ...datos, id: crypto.randomUUID() }])
+            const creado = await crearCliente(datos)
+            setClientes(anteriores => [...anteriores, creado])
         }
         cerrarFormulario()
+    } catch (err) {
+        setErrorFormulario(err.message)
     }
+}
 
-    function handleEliminarCliente(idCliente) {
-        if (!window.confirm('¿Desea eliminar el cliente?')) return
+async function handleEliminarCliente(idCliente) {
+    if (!window.confirm('¿Desea eliminar el cliente?')) return
+    try {
+        await eliminarCliente(idCliente)
         setClientes(anteriores => anteriores.filter(cliente => cliente.id !== idCliente))
+    } catch (err) {
+        window.alert(err.message)
     }
+}
 
     return (
         <div>

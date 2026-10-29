@@ -1,0 +1,24 @@
+$kind: http-request
+description: "Espera 400: formato de patente."
+url: "{{base_url}}/api/vehiculos"
+method: POST
+body:
+  type: json
+  content: "{ \r
+
+    \    \"patente\": \"12\",\r
+
+    \    \"marca\": \"Ford\",\r
+
+    \    \"modelo\": \"Ranger\",\r
+
+    \    \"anio\": 2020,\r
+
+    \    \"kilometraje\": 68500,\r
+
+    \    \"descripcion\": \"Revisar sistema de frenos\",\r
+
+    \    \"idCliente\": 1 \r
+
+    }"
+order: 5000

@@ -3,10 +3,13 @@ import vehiculosRepository from './vehiculos.repository.js'
 import clienteServicio from '../clientes/clientes.service.js'
 import {httpError} from '../../utils/httpError.js'
 import { validarTexto, validarTextoObligatorio, validarKilometraje } from '../../utils/validsTexto.js'
+
 const CAMPOS_MODIFICABLES =['patente', 'marca', 'modelo', 'anio', 'descripcion', 'kilometraje']
 const maxMarca = 60
 const maxModelo = 60
 const maxDescripcion = 500
+
+const ESTADOS_GESTION_AVISO = [ 'ENVIADO', 'DESCARTADO']
 
 // Le saco todo lo que no sea letra o numero y la paso a mayusculas
 function normalizar(patente){
@@ -56,13 +59,19 @@ async function buscar(id){
 }
 
 async function alta (vehiculo){
-    const { patente, marca, modelo, anio, descripcion, kilometraje } =  vehiculo || {}
+    const { patente, marca, modelo, anio, descripcion, kilometraje, idCliente} =  vehiculo || {}
     const patenteNorm = normalizar(patente)
     validarPatente(patenteNorm)
     validarAnio(anio)
     validarTextoObligatorio(marca, 'marca', maxMarca)
     validarTextoObligatorio(modelo, 'modelo', maxModelo)
     validarKilometraje(kilometraje)
+
+    if(idCliente === undefined){
+        throw httpError(400, 'El vehiculo debe tener un dueño')
+    }
+
+    const cliente = await clienteServicio.buscar(idCliente)
 
     const desc = descripcion ?? null
     if(desc !== null) validarTexto(desc, 'descripcion', maxDescripcion)
@@ -80,7 +89,7 @@ async function alta (vehiculo){
         kilometraje
     }
 
-    return vehiculosRepository.alta(nuevoVehiculo)
+    return vehiculosRepository.alta(nuevoVehiculo, cliente.id)
 }
 
 async function modificar(id, cambios) {
@@ -153,6 +162,9 @@ async function buscarDueno(id, idCliente){
 
 async function asociarDueno(id, idCliente){
     const vehiculo = await buscar(id)
+    if ( idCliente === undefined){
+        throw httpError(400, `Falta el id del Cliente`)
+    }
     const cliente = await clienteServicio.buscar(idCliente)
     const dueno =  await vehiculosRepository.obtenerDueno(vehiculo.id, cliente.id)
     if(dueno){
@@ -172,4 +184,33 @@ async function desasociarDueno(id, idCliente){
 
 }
 
-export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno}
+async function verHistorialService(id){
+    const vehiculo = await buscar(id)
+    return vehiculosRepository.verHistorialService(vehiculo.id)
+}
+
+// async function gestionarAviso(id, datos, idEmpleado){
+//     const estado = datos?.estado
+//     if(!ESTADOS_GESTION_AVISO.includes(estado)){
+//         throw httpError(400, `El estado debe ser ${ESTADOS_GESTION_AVISO.join(' o ')}`)
+//     }
+//     const vehiculo = await buscar(id)
+//     const aviso = await vehiculosRepository.gestionarAviso(vehiculo.id, estado, idEmpleado)
+//     if(!aviso){
+//         throw httpError(409, `El vehiculo ${vehiculo.patente} no tiene un aviso de service pendiente`)
+//     }
+//     return aviso
+// }
+
+
+export default 
+{   listar,
+    buscar,
+    alta,
+    modificar,
+    eliminar, 
+    listarDuenos,
+    buscarDueno,
+    asociarDueno,
+    desasociarDueno,
+    verHistorialService}

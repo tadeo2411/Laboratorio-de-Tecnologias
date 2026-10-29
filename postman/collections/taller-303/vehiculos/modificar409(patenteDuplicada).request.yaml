@@ -1,0 +1,9 @@
+$kind: http-request
+description: Espera 409 si ZZ999ZZ ya existe en OTRO vehiculo; crear uno antes
+  con esa patente.
+url: "{{base_url}}/api/vehiculos/1"
+method: PATCH
+body:
+  type: json
+  content: '{ "patente": "ab123cd" }'
+order: 13000

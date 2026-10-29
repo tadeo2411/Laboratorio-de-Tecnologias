@@ -10,7 +10,7 @@ async function obtenerEmpleadosActivos(){
 
 async function buscarPorUsuario(usuario) {
     const resultado = await pool.query(
-        `SELECT e.id, e.nombre, e.usuario, e.password_hash, e.activo, r.nombre AS rol
+        `SELECT e.id, e.nombre, e.usuario, e.password_hash, e.activo, r.nombre AS rol 
          FROM empleados e
          JOIN empleados_roles er ON er.empleado_id = e.id
          JOIN roles r ON r.id = er.rol_id

@@ -1,0 +1,7 @@
+$kind: http-request
+description: "Espera 200. Usar un id que exista."
+url: "{{base_url}}/api/vehiculos/:id"
+method: GET
+pathVariables:
+  id: "1"
+order: 867

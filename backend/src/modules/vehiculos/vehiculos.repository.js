@@ -24,14 +24,31 @@ async function buscarPorPatente(patente){
     return rows [0]
 }
 
-async function alta(vehiculo){
-    const { rows } = await pool.query(
-        `INSERT INTO vehiculos (patente, marca, modelo, anio, descripcion, kilometraje)
-        VALUES($1, $2, $3, $4, $5, $6)
-        RETURNING id, patente, marca, modelo, anio, descripcion, kilometraje
-        `,[vehiculo.patente, vehiculo.marca, vehiculo.modelo, vehiculo.anio, vehiculo.descripcion, vehiculo.kilometraje]
-    )
-    return rows [0]
+async function alta(vehiculo, idCliente){
+    const conexion = await pool.connect()
+    try{
+        await conexion.query('BEGIN') 
+        const { rows } = await conexion.query(
+            `INSERT INTO vehiculos (patente, marca, modelo, anio, descripcion, kilometraje)
+            VALUES($1, $2, $3, $4, $5, $6)
+            RETURNING id, patente, marca, modelo, anio, descripcion, kilometraje
+            `,[vehiculo.patente, vehiculo.marca, vehiculo.modelo, vehiculo.anio, vehiculo.descripcion, vehiculo.kilometraje]
+        )
+        const creado = rows[0]
+        await conexion.query(
+            `INSERT INTO duenos (id_vehiculo, id_cliente)
+            VALUES($1, $2)`,
+            [creado.id, idCliente]
+        )
+        await conexion.query('COMMIT')// es el que finalmente guarda
+        return creado
+    }catch (err){
+        await conexion.query('ROLLBACK') // esto es lo que hace que se deshaga la transaccion
+        throw err
+    }finally{
+        conexion.release() //devuelve la conexion al pool sea fallido o exitosa la transaccion
+    }
+    
 }
 
 async function modificar(id, cambios){
@@ -112,4 +129,39 @@ async function desasociarDueno(id, idCliente){
     return rows[0]
 }
 
-export default{obtener, buscar, buscarPorPatente, alta, modificar, eliminar, obtenerDuenos, obtenerDueno, actualizarDueno, asociarDueno, desasociarDueno}
+async function verHistorialService(id){
+    const { rows } = await pool.query(
+        `SELECT o.id, f.fecha, f.kilometraje
+        FROM ordenes_trabajo o
+        JOIN fichas f ON f.orden_id = o.id AND f.tipo = 'EGRESO'
+        WHERE o.id_vehiculo = $1 AND o.es_service = true AND o.estado = 'ENTREGADO'
+        ORDER BY f.fecha desc`,
+        [id]
+    )
+    return rows
+}
+
+// async function gestionarAviso(id, estado, idEmpleado){
+//     const { rows } = await pool.query(
+//         `UPDATE avisos_service
+//         SET estado = $2, empleado_id = $3, fecha_gestion = now()
+//         WHERE id_vehiculo = $1 AND estado = 'PENDIENTE'
+//         RETURNING id, id_vehiculo, estado, fecha_prevista::text AS "fechaPrevista", empleado_id, fecha_gestion`,
+//         [id, estado, idEmpleado]
+//     )
+//     return rows[0]
+// }
+export default{
+    obtener,
+    buscar,
+    buscarPorPatente,
+    alta,
+    modificar,
+    eliminar,
+    obtenerDuenos,
+    obtenerDueno,
+    actualizarDueno,
+    asociarDueno,
+    desasociarDueno,
+    verHistorialService
+}

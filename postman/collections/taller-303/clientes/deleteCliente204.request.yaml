@@ -3,5 +3,7 @@ description: ""
 url: "{{base_url}}/api/clientes/:id"
 method: DELETE
 pathVariables:
-  id: ""
+  - key: id
+    value: "5"
+    description: ""
 order: 2000

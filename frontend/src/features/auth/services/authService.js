@@ -65,17 +65,37 @@ export function cerrarSesion() {
   sessionStorage.removeItem(CLAVE_USUARIO)
 }
 
+
+function tokenVencido(token) {
+  if (!token) return true
+  try {
+    const { exp } = JSON.parse(atob(token.split('.')[1]))
+    return typeof exp !== 'number' || exp * 1000 <= Date.now()
+  } catch {
+    return true
+  }
+}
+
+function haySesionVigente() {
+  return Boolean(obtenerSesion()) && !tokenVencido(obtenerToken())
+}
+
+export function manejarSesionVencida(respuesta) {
+  if (respuesta.status !== 401) return
+  cerrarSesion()
+  window.location.assign('/login')
+}
+
 export function protegerRuta() {
-  const sesion = obtenerSesion()
-  if (!sesion || !obtenerToken()) {
+  if (!haySesionVigente()) {
+    cerrarSesion()
     throw redirect('/login')
   }
-  return sesion
+  return obtenerSesion()
 }
 
 export function redirigirSiHaySesion() {
-  const sesion = obtenerSesion()
-  if (sesion && obtenerToken()) {
+  if (haySesionVigente()) {
     throw redirect('/gestor')
   }
   return null

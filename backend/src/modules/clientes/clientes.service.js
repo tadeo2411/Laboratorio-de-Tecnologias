@@ -10,10 +10,9 @@ const maxTelefono = 30
 
 
 function validarDocumento(documento){
-    if (typeof documento !== 'string' || !/^\d{1,11}$/.test(documento)) {
-        throw httpError(400, 'El documento debe ser un texto con solo dígitos (hasta 11)')
+    if (typeof documento !== 'string' || !/^\d{1,11}$/.test(documento) || documento.length < 7) {
+        throw httpError(400, 'El documento debe ser un texto con solo dígitos (minimo 7 hasta 11)')
     }
-
 }
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
@@ -25,6 +24,11 @@ function validarId(id){
     return idNumerico
 }
 
+function validarTelefono(telefono){
+    if (typeof(telefono) !== 'string' || !/^\d+$/.test(telefono) || telefono.length < 8){ //$ era para marcar el final de texto
+        throw httpError(400,'El telefono solo puede contener digitos (minimo 8)')
+    }
+}
 // Con esta funcion yo le saco, espacios y signos de puntuacion
 function normalizar(dato){
     if(typeof(dato) !== 'string') 
@@ -65,6 +69,7 @@ async function alta(datos){
     validarTipo(tipo)
     validarTextoObligatorio(nombre, 'nombre', maxNombre)
     validarTextoObligatorio(telNorm, 'telefono', maxTelefono)
+    validarTelefono(telNorm)
 
     if (await clientesRepository.buscarPorDocumento(docNorm)) {
         throw httpError(409, `Ya existe un cliente con documento ${documento}`)
@@ -104,8 +109,10 @@ async function modificar(id, cambios){
     if (cambios.documento !== undefined) validarDocumento(cambios.documento)
     if (cambios.tipo !== undefined) validarTipo(cambios.tipo)
     if (cambios.nombre !== undefined) validarTextoObligatorio(cambios.nombre, 'nombre', maxNombre)
-    if (cambios.telefono !== undefined) validarTextoObligatorio(cambios.telefono, 'telefono', maxTelefono)
-
+    if (cambios.telefono !== undefined) {
+        validarTextoObligatorio(cambios.telefono, 'telefono', maxTelefono)
+        validarTelefono(cambios.telefono)
+    }
     // Si cambia el documento, no puede ser el de OTRO cliente (si repite el suyo propio, no pasa nada)
     if (cambios.documento !== undefined && cambios.documento !== cliente.documento) {
         if (await clientesRepository.buscarPorDocumento(cambios.documento)) {

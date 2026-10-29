@@ -1,5 +1,5 @@
 export const tipoCliente = ['PERSONA', 'EMPRESA']
-import {obtenerToken} from '../../auth/services/authService'
+import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
 const URL = 'http://localhost:3000/api/clientes'
 
 async function pedir(ruta, opciones = {}) {
@@ -13,6 +13,7 @@ async function pedir(ruta, opciones = {}) {
         throw new Error('No se pudo conectar con el servidor.')
     }
 
+    manejarSesionVencida(respuesta)
     const datos = respuesta.status === 204 ? null : await respuesta.json()
 
     if (!respuesta.ok) {

@@ -4,7 +4,7 @@ import { obtenerRepuestos } from '../../repuestos'
 import { obtenerEmpleados } from '../../auth'
 import { ESTADO_INICIAL, esEstadoFinal, puedeCambiarEstado, obtenerEstado} from '../utils/estados'
 import { buscarFicha } from '../utils/ordenes'
-import {obtenerToken} from '../../auth/services/authService'
+import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
 
 const URL = '/backend/data'
 const URL_API = 'http://localhost:3000/api/ordenes'
@@ -20,6 +20,7 @@ async function pedir(ruta, opciones = {}) {
         throw new Error('No se pudo conectar con el servidor.')
     }
 
+    manejarSesionVencida(respuesta)
     const datos = respuesta.status === 204 ? null : await respuesta.json()
 
     if (!respuesta.ok) {

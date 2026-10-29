@@ -1,9 +1,12 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/99999999/historial'
+url: "{{baseUrl}}/vehiculos/:id/historial"
 method: GET
+pathVariables:
+  - key: id
+    value: "999999999999"
+    description: ""
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    code: pm.test('Responde 404', () => pm.response.to.have.status(404))
     language: text/javascript
 order: 22000

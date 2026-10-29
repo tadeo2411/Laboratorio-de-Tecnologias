@@ -1,9 +1,12 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/1'
+url: "{{baseUrl}}/vehiculos/:id"
 method: DELETE
+pathVariables:
+  - key: id
+    value: "1"
+    description: ""
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 409', () => pm.response.to.have.status(409))
+    code: pm.test('Responde 409', () => pm.response.to.have.status(409))
     language: text/javascript
 order: 23000

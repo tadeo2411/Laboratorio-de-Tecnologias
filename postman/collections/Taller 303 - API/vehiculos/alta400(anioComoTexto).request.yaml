@@ -1,14 +1,13 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos'
+url: "{{baseUrl}}/vehiculos"
 method: POST
 headers:
-  - key: Content-Type
-    value: 'application/json'
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "patente": "{{patenteNueva}}",
+      "patente": "{nlp452",
       "marca": "Volkswagen",
       "modelo": "Amarok",
       "anio": "No entero",
@@ -18,7 +17,6 @@ body:
     }
 scripts:
   - type: afterResponse
-    code: |-
-      pm.test('Responde 400', () => pm.response.to.have.status(400))
+    code: pm.test('Responde 400', () => pm.response.to.have.status(400))
     language: text/javascript
 order: 5000

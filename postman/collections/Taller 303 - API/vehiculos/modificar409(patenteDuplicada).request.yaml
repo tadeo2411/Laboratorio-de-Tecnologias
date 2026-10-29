@@ -1,14 +1,15 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}'
+url: "{{baseUrl}}/vehiculos/:id"
 method: PATCH
 headers:
-  - key: Content-Type
-    value: 'application/json'
+  Content-Type: application/json
+pathVariables:
+  id: ""
 body:
   type: json
   content: |-
     {
-      "patente": "{{patenteExistente}}"
+      "patente": "ag 625 na"
     }
 scripts:
   - type: beforeRequest
@@ -19,7 +20,6 @@ scripts:
       })
     language: text/javascript
   - type: afterResponse
-    code: |-
-      pm.test('Responde 409', () => pm.response.to.have.status(409))
+    code: pm.test('Responde 409', () => pm.response.to.have.status(409))
     language: text/javascript
 order: 13000

@@ -20,6 +20,15 @@ variables:
   - key: token
     secret: true
     disabled: false
+  - key: patenteExistente
+    value: ""
+    disabled: false
+  - key: clienteDocumento
+    value: ""
+    disabled: false
+  - key: clienteNuevoId
+    value: ""
+    disabled: false
 auth:
   - id: b7e6b500-f83a-4cc7-9d9d-46bd490835ad
     type: bearer

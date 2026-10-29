@@ -1,14 +1,13 @@
 $kind: http-request
-url: '{{baseUrl}}/vehiculos'
+url: "{{baseUrl}}/vehiculos"
 method: POST
 headers:
-  - key: Content-Type
-    value: 'application/json'
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "patente": "{{patenteNueva}}",
+      "patente": "nlp 452",
       "marca": "Volkswagen",
       "modelo": "Amarok",
       "anio": 2012,

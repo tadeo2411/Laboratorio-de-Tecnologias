@@ -1,5 +1,6 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import repository from "./trabajos.repository.js";
+import { httpError } from "../../utils/httpError.js";
 
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
@@ -18,25 +19,42 @@ function listar() {
 
 function cargar(datos) {
     if (datos.repuestos !== undefined && !Array.isArray(datos.repuestos)) {
-        throw new Error('Los repuestos deben enviarse como un array');
+        throw new httpError(400,'Los repuestos deben enviarse como un array');
     }
+
+    validarId(datos.id)
 
     return repository.cargar(datos);
 }
 
-function eliminar(id) {
+async function eliminar(id) {
     validarId(id, 'El id del repuesto');
-    return repository.eliminar(id);
+    const trabajo = await repository.eliminar(id);
+
+     if (!trabajo) {
+        throw httpError(404, `El trabajo con id ${id} no esta registrado`)
+    }
+    return trabajo;
 }
 
-function modificar(datos) {
+async function modificar(datos) {
     validarId(datos.id, 'El id del repuesto');
-    return repository.modificar(datos);
+    const trabajo = await repository.modificar(datos);
+
+    if (!trabajo) {
+        throw httpError(404, `El trabajo con id ${datos.id} no esta registrado`)
+    }
+    return trabajo;
 }
 
-function buscar(id) {
+async function buscar(id) {
     validarId(id, 'El id del repuesto');
-    return repository.buscar(id);
+    const trabajo = await repository.buscar(id);
+
+    if (!trabajo) {
+        throw httpError(404, `El trabajo con id ${id} no esta registrado`)
+    }
+    return trabajo;
 }
 
 function buscarTipoTrabajo(id) {

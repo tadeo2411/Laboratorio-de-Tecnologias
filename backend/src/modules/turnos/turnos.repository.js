@@ -14,24 +14,24 @@ async function eliminar(id) {
         "DELETE FROM turnos WHERE id = $1 RETURNING *",
         [id]
     );
-    return resultado;
+    return resultado.rows[0];
 }
 
 async function cargar(datos) {
-    const { cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado } = datos;
+    const { id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
 
     const resultado = await pool.query(
         `INSERT INTO turnos
             (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado)
          VALUES ($1, $2, $3, $4, $5, $6)
          RETURNING *`,
-        [cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado]
+        [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado]
     );
     return resultado.rows[0];
 }
 
 async function modificar(datos) {
-    const { id, cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado } = datos;
+    const { id, id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
     const resultado = await pool.query(
         `UPDATE turnos
          SET id_cliente = $1,
@@ -42,7 +42,7 @@ async function modificar(datos) {
              estado = $6
          WHERE id = $7
          RETURNING *`,
-         [cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado, id]
+         [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado, id]
     );
 
     return resultado.rows[0];

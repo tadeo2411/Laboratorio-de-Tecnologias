@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/empleados"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "Administrador",
+      "usuario": "admin",
+      "contrasena": "12345678",
+      "rol": "ADMINISTRADOR"
+    }
+order: 6000

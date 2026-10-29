@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{baseUrl}}/vehiculos"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "patente": "AC456DE",
+      "marca": "Fiat",
+      "modelo": "Cronos",
+      "anio": 2022,
+      "descripcion": "Sedán blanco",
+      "kilometraje": 30000,
+      "idCliente": {{clienteId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      if (pm.response.code === 200 || pm.response.code === 201) {
+          pm.collectionVariables.set('vehiculoId', pm.response.json().id)
+      }
+    language: text/javascript
+order: 4000

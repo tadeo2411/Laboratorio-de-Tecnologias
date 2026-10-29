@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/auth/empleados/todos"
+method: GET
+order: 4000

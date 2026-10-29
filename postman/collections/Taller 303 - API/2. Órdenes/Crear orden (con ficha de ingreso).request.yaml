@@ -1,0 +1,37 @@
+$kind: http-request
+url: "{{baseUrl}}/ordenes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "vehiculoId": {{vehiculoId}},
+      "clienteId": {{clienteId}},
+      "diagnostico": "Ruido en el tren delantero",
+      "esService": false,
+      "esUrgencia": false,
+      "fichaIngreso": {
+        "kilometraje": 50000,
+        "conformidad": "PENDIENTE",
+        "items": [
+          {
+            "concepto": "Nivel de combustible",
+            "valor": "1/4"
+          },
+          {
+            "concepto": "Rayones",
+            "valor": "Ninguno"
+          }
+        ]
+      }
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      if (pm.response.code === 200 || pm.response.code === 201) {
+          pm.collectionVariables.set('ordenId', pm.response.json().id)
+      }
+    language: text/javascript
+order: 5000

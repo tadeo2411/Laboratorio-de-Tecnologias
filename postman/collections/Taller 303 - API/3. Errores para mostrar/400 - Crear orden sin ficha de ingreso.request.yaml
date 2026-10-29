@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/ordenes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "vehiculoId": {{vehiculoId}},
+      "clienteId": {{clienteId}}
+    }
+order: 5000

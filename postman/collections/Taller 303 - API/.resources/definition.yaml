@@ -1,0 +1,17 @@
+$kind: collection
+description: ""
+variables:
+  baseUrl: http://localhost:3000/api
+  usuario: admin
+  contrasena: Admin303!
+  token: ""
+  ordenId: "3"
+  trabajoId: ""
+  vehiculoId: "3"
+  clienteId: "3"
+auth:
+  - id: b7e6b500-f83a-4cc7-9d9d-46bd490835ad
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"

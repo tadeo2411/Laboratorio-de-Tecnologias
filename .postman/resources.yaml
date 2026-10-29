@@ -2,6 +2,10 @@
 workspace:
   id: e047ea16-2eeb-452b-8b44-7878e37c0b7d
 
+cloudResources:
+  collections:
+    ../postman/collections/Taller 303 - API: f02d5ab9-52e7-437e-8e4d-b6f95aa7b58e
+
 # All resources in the `postman/` folder are automatically registered in Local View.
 # Point to additional files outside the `postman/` folder to register them individually. Example:
 #localResources:

@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/ordenes/{{ordenId}}/estado"
+method: PATCH
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "estado": "ENTREGADO"
+    }
+order: 4000

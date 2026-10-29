@@ -21,7 +21,7 @@ try {
 
 const cargar = async (req, res, next) => {
 try {
-        res.json(await service.cargar(req.body));
+        res.status(201).json(await service.cargar(req.body));
     } catch (err) {
         next(err);
     }
@@ -29,7 +29,7 @@ try {
 
 const modificar = async (req, res, next) => {
 try {
-        res.status(201).json(await service.modificar({id : req.params.id, ...req.body}));
+        res.json(await service.modificar({id : req.params.id, ...req.body}));
     } catch (err) {
         next(err);
     }

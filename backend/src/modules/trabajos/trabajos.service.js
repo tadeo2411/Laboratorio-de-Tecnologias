@@ -4,12 +4,12 @@ import { httpError } from "../../utils/httpError.js";
 
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
-function validarId(id){
+function validarId(id) {
     const idNumerico = Number(id)
     if (!Number.isInteger(idNumerico) || idNumerico <= 0) {
         throw httpError(400, 'El id debe ser un número entero positivo')
     }
-    return idNumerico
+    return id
 }
 
 
@@ -19,11 +19,11 @@ function listar() {
 
 function cargar(datos) {
     if (datos.repuestos !== undefined && !Array.isArray(datos.repuestos)) {
-        throw new httpError(400,'Los repuestos deben enviarse como un array');
+        throw new httpError(400, 'Los repuestos deben enviarse como un array');
     }
 
-    validarId(datos.id)
-
+    validarId(datos.orden_id)
+    validarId(datos.tipo_trabajo_id)
     return repository.cargar(datos);
 }
 
@@ -31,7 +31,7 @@ async function eliminar(id) {
     validarId(id, 'El id del repuesto');
     const trabajo = await repository.eliminar(id);
 
-     if (!trabajo) {
+    if (!trabajo) {
         throw httpError(404, `El trabajo con id ${id} no esta registrado`)
     }
     return trabajo;

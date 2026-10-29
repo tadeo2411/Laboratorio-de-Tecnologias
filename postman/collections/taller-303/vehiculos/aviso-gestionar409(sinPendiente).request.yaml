@@ -1,0 +1,12 @@
+$kind: http-request
+description: Espera 409 si el vehiculo no tiene aviso pendiente (por ejemplo, repetir aviso-gestionar200).
+url: "{{base_url}}/api/vehiculos/:id/aviso"
+method: PATCH
+pathVariables:
+  - key: id
+    value: "1"
+    description: ""
+body:
+  type: json
+  content: '{ "estado": "DESCARTADO" }'
+order: 26000

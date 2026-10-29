@@ -1,5 +1,13 @@
 name: Entorno
 values:
   - key: base_url
-    value: ''
+    value: 'http://localhost:3000'
+  - key: token
+    secret: true
+    source:
+      provider: postman
+      postman:
+        type: local
+        secretId: ab1ec433-38d7-4bab-a8a7-5aed82cc8ba6
+        vaultId: local
 color: 0

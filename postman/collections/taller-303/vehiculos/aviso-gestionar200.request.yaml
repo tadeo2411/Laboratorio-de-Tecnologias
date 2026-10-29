@@ -1,0 +1,12 @@
+$kind: http-request
+description: Espera 200. El vehiculo debe tener un aviso PENDIENTE (se crea al entregar una orden de service).
+url: "{{base_url}}/api/vehiculos/:id/aviso"
+method: PATCH
+pathVariables:
+  - key: id
+    value: "2"
+    description: ""
+body:
+  type: json
+  content: '{ "estado": "ENVIADO" }'
+order: 24000

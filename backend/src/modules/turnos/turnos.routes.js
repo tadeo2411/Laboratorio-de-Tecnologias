@@ -1,8 +1,12 @@
 // mapea cada metodo + url a una funcion de controller
 import {Router} from 'express';
 import controller from "./turnos.controller.js";
+import { verificarToken } from '../../middlewares/verificarToken.js';
 
 const router = Router();
+
+//lo saco cuando verifiquemos todo
+router.use(verificarToken)
 
 router.get("/", controller.listar);
 router.post("/", controller.cargar);

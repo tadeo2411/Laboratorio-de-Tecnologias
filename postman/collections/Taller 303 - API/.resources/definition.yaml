@@ -3,7 +3,7 @@ description: |-
   Backend del taller. Ejecutar la coleccion completa con el Collection Runner: el primer
   request (1. Auth / Login 200) guarda el token en la variable de coleccion {{token}} y
   todos los demas lo usan por herencia. Para repetir la corrida con los mismos datos,
-  volver a cargar database/seed_postman.sql.
+  volver a cargar database/seed.sql.
 variables:
   - key: baseUrl
     value: http://localhost:3000/api
@@ -13,6 +13,9 @@ variables:
     disabled: false
   - key: contrasena
     value: Admin303!
+    disabled: false
+  - key: clienteId
+    value: "1"
     disabled: false
   - key: token
     secret: true

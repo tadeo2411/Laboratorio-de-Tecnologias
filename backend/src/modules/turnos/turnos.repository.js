@@ -22,7 +22,7 @@ async function cargar(datos) {
 
     const resultado = await pool.query(
         `INSERT INTO turnos
-            (cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado)
+            (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado)
          VALUES ($1, $2, $3, $4, $5, $6)
          RETURNING *`,
         [cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado]
@@ -34,8 +34,8 @@ async function modificar(datos) {
     const { id, cliente_documento, vehiculo_patente, fecha_hora, duracion_min, motivo, estado } = datos;
     const resultado = await pool.query(
         `UPDATE turnos
-         SET cliente_documento = $1,
-             vehiculo_patente = $2,
+         SET id_cliente = $1,
+             id_vehiculo = $2,
              fecha_hora = $3,
              duracion_min = $4,
              motivo = $5,

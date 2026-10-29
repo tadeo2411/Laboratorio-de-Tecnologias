@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { estadosTurno } from '../services/turnosService';
+import { estadosTurno, obtenerClientes } from '../services/turnosService';
 import botonMas from '../../../assets/icons/botonMas.png';
 
 const valoresIniciales = {
-    vehiculoId: '',
-    fechaHora: '',
-    duracion: '',
+    id_cliente: '',
+    id_vehiculo: '',
+    fecha_hora: '',
+    duracion_min: '',
     motivo: '',
     estado: 'SOLICITADO',
 }
@@ -16,6 +17,8 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
         ? { ...valoresIniciales, ...turnoInicial }
         : valoresIniciales
     )
+
+    const [clientes, setClientes] = useState([]);
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
@@ -27,8 +30,10 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
         if (cargando || error) return
 
         const nuevoTurno = {
-            vehiculoId: formulario.vehiculoId,
-            fechaHora: formulario.fechaHora,
+            id_cliente: Number(formulario.clienteId),
+            id_vehiculo: Number(formulario.vehiculoId),
+            fecha_hora: formulario.fechaHora,
+            duracion_min: Number(formulario.duracion),
             motivo: formulario.motivo.trim(),
             estado: formulario.estado,
         }
@@ -40,6 +45,14 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
         onGuardar(nuevoTurno)
     }
 
+    useEffect(() => {
+        const obtener = async () => {
+            setClientes(await obtenerClientes());
+        }
+        obtener();
+    }, []);
+
+
     return (
         <div>
             <p className="campos-obligatorios">
@@ -49,6 +62,32 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
             {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
             <form className="form-ordenes" onSubmit={manejarEnvio}>
+                <div>
+                    <div>
+                        <label htmlFor="clienteId">
+                            Dni de cliente <span className="asterisco">*</span>
+                        </label>
+
+                        <div className="campo-icono">
+                            <select
+                                id="clienteId"
+                                name="clienteId"
+                                className="select"
+                                value={formulario.clienteDNI}
+                                onChange={actualizarCampo}
+                                required
+                                disabled={cargando || Boolean(error)}
+                            >
+                                <option value="">--- Elegir ---</option>
+                                {clientes.map(cliente => (
+                                    <option key={cliente.id} value={cliente.id}>
+                                        {cliente.apellido} — {cliente.nombre} {cliente.dni}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <div>
                         <label htmlFor="vehiculoId">

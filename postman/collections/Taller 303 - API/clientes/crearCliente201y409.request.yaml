@@ -1,22 +1,20 @@
 $kind: http-request
-url: '{{baseUrl}}/clientes'
+url: "{{baseUrl}}/clientes"
 method: POST
 headers:
-  - key: Content-Type
-    value: 'application/json'
+  Content-Type: application/json
 body:
   type: json
   content: |-
     {
-      "documento": "{{clienteDocumento}}",
+      "documento": "12341324",
       "tipo": "PERSONA",
       "nombre": "Cliente de prueba",
-      "telefono": "2665298838"
+      "telefono": "123123123"
     }
 scripts:
   - type: beforeRequest
-    code: |-
-      pm.collectionVariables.set('clienteDocumento', String(Date.now()).slice(-8))
+    code: pm.collectionVariables.set('clienteDocumento', String(Date.now()).slice(-8))
     language: text/javascript
   - type: afterResponse
     code: |-

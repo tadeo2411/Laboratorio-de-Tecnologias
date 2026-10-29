@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/clientes/:id"
+method: GET
+pathVariables:
+  - key: id
+    value: "99999999"
+    description: ""
+scripts:
+  - type: afterResponse
+    code: pm.test('Responde 404', () => pm.response.to.have.status(404))
+    language: text/javascript
+order: 7000

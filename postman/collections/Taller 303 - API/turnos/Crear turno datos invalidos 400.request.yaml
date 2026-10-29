@@ -1,0 +1,23 @@
+$kind: http-request
+url: '{{baseUrl}}/turnos'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "id_cliente": "asd",
+      "id_vehiculo": "{{vehiculoId}}",
+      "fecha_hora": "{{turnoFecha}}",
+      "duracion_min": 60,
+      "motivo": "Cambio de aceite y filtros",
+      "estado": "CONFIRMADO"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 400', () => pm.response.to.have.status(400))
+    language: text/javascript
+order: 3000

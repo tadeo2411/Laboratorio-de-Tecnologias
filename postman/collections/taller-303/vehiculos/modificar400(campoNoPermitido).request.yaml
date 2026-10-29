@@ -1,8 +1,0 @@
-$kind: http-request
-description: "Espera 400: campos que no se pueden modificar."
-url: "{{base_url}}/api/vehiculos/1"
-method: PATCH
-body:
-  type: json
-  content: "{ \"idCliente\": 2 }"
-order: 12000

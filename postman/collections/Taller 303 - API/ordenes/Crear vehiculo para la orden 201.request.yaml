@@ -1,0 +1,33 @@
+$kind: http-request
+url: '{{baseUrl}}/vehiculos'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "patente": "{{patenteNueva}}",
+      "marca": "Volkswagen",
+      "modelo": "Amarok",
+      "anio": 2012,
+      "kilometraje": 150000,
+      "descripcion": "Vehiculo de prueba",
+      "idCliente": {{clienteId}}
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      const L = 'ABCDEFGHJKLMNPQRSTUVWXYZ'
+      const l = () => L[Math.floor(Math.random() * L.length)]
+      pm.collectionVariables.set('patenteNueva', l() + l() + l() + String(Math.floor(Math.random() * 900) + 100))
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 201', () => pm.response.to.have.status(201))
+      if (pm.response.code < 300) {
+          pm.collectionVariables.set('vehiculoId', pm.response.json().id)
+      }
+    language: text/javascript
+order: 3000

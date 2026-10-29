@@ -1,5 +1,0 @@
-$kind: http-request
-description: "Espera 200."
-url: "{{base_url}}/api/vehiculos"
-method: GET
-order: 207

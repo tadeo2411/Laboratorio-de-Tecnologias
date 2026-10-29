@@ -1,8 +1,0 @@
-$kind: http-request
-description: "Espera 200 con un arreglo (vacio si no hay services entregados con
-  ficha de egreso)."
-url: "{{base_url}}/api/vehiculos/:id/historial"
-method: GET
-pathVariables:
-  id: "1"
-order: 22000

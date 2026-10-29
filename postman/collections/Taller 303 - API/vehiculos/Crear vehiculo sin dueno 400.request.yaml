@@ -1,0 +1,23 @@
+$kind: http-request
+url: '{{baseUrl}}/vehiculos'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "patente": "{{patenteNueva}}",
+      "marca": "Volkswagen",
+      "modelo": "Amarok",
+      "anio": 2012,
+      "kilometraje": 150000,
+      "descripcion": "Vehiculo de prueba"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 400', () => pm.response.to.have.status(400))
+    language: text/javascript
+order: 6000

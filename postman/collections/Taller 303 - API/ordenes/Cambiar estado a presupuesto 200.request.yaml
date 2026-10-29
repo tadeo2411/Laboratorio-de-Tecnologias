@@ -1,0 +1,18 @@
+$kind: http-request
+url: '{{baseUrl}}/ordenes/{{ordenId}}/estado'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "estado": "ESPERANDO_APROBACION_PRESUPUESTO"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 200', () => pm.response.to.have.status(200))
+    language: text/javascript
+order: 10000

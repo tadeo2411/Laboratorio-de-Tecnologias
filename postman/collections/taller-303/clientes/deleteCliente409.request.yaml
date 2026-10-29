@@ -1,7 +1,0 @@
-$kind: http-request
-description: ""
-url: "{{base_url}}/api/clientes/:id"
-method: DELETE
-pathVariables:
-  id: ""
-order: 1000

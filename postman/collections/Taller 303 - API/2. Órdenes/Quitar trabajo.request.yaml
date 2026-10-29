@@ -1,4 +1,0 @@
-$kind: http-request
-url: "{{baseUrl}}/ordenes/{{ordenId}}/trabajos/{{trabajoId}}"
-method: DELETE
-order: 9000

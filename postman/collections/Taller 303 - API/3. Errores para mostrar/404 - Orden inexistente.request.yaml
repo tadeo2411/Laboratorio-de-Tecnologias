@@ -1,4 +1,0 @@
-$kind: http-request
-url: "{{baseUrl}}/ordenes/999"
-method: GET
-order: 3000

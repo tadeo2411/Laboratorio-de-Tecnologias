@@ -1,0 +1,21 @@
+$kind: http-request
+url: '{{baseUrl}}/trabajos/99999999'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "orden_id": {{ordenId}},
+      "tipo_trabajo_id": 1,
+      "descripcion": "Realizar cambio de aceite y filtros",
+      "mano_de_obra": "22000.00"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    language: text/javascript
+order: 9000

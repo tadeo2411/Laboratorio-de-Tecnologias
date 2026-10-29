@@ -1,0 +1,25 @@
+$kind: http-request
+url: '{{baseUrl}}/ordenes/{{ordenId}}/fichas'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "kilometraje": 50010,
+      "conformidad": "APROBADA",
+      "items": [
+        {
+          "concepto": "Nivel de combustible",
+          "valor": "1/4"
+        }
+      ]
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 201', () => pm.response.to.have.status(201))
+    language: text/javascript
+order: 12000

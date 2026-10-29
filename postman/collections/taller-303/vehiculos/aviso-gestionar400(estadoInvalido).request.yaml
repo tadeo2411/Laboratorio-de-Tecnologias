@@ -1,8 +1,0 @@
-$kind: http-request
-description: "Espera 400: solo ENVIADO o DESCARTADO."
-url: "{{base_url}}/api/vehiculos/1/aviso"
-method: PATCH
-body:
-  type: json
-  content: '{ "estado": "CUALQUIERA" }'
-order: 25000

@@ -1,0 +1,25 @@
+$kind: http-request
+url: '{{baseUrl}}/vehiculos/{{vehiculoNuevoId}}'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "patente": "{{patenteExistente}}"
+    }
+scripts:
+  - type: beforeRequest
+    code: |-
+      // toma la patente de otro vehiculo existente
+      pm.sendRequest({ url: pm.collectionVariables.get('baseUrl') + '/vehiculos/1', method: 'GET', header: { Authorization: 'Bearer ' + pm.collectionVariables.get('token') } }, (err, res) => {
+          if (!err) pm.collectionVariables.set('patenteExistente', res.json().patente)
+      })
+    language: text/javascript
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 409', () => pm.response.to.have.status(409))
+    language: text/javascript
+order: 13000

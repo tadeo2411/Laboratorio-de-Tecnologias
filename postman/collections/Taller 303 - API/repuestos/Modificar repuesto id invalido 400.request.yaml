@@ -1,0 +1,20 @@
+$kind: http-request
+url: '{{baseUrl}}/repuestos/asd'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "{{repuestoNombre}}",
+      "precio_estandar": "99123.00",
+      "activo": true
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 400', () => pm.response.to.have.status(400))
+    language: text/javascript
+order: 8000

@@ -1,5 +1,0 @@
-$kind: http-request
-description: "Espera 200 con { total, estados: [{ estado, cantidad, porcentaje }] }, sin ENTREGADO ni CANCELADO."
-url: "{{base_url}}/api/tableros/ordenes"
-method: GET
-order: 2000

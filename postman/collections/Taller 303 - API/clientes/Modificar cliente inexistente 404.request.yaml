@@ -1,0 +1,18 @@
+$kind: http-request
+url: '{{baseUrl}}/clientes/99999999'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "Nadie"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    language: text/javascript
+order: 9000

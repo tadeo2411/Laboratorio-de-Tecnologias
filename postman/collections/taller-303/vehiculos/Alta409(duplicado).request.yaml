@@ -1,8 +1,0 @@
-$kind: http-request
-description: Espera 409. Correr despues de alta201 (misma patente).
-url: "{{base_url}}/api/vehiculos"
-method: POST
-body:
-  type: json
-  content: '{ "patente": "AB123CD", "marca": "Ford", "modelo": "Ranger", "anio": 2020, "kilometraje": 68500, "descripcion": "Revisar sistema de frenos", "idCliente": 1 }'
-order: 2000

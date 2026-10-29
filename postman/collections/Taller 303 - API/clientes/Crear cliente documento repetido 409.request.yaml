@@ -1,0 +1,21 @@
+$kind: http-request
+url: '{{baseUrl}}/clientes'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "documento": "{{clienteDocumento}}",
+      "tipo": "PERSONA",
+      "nombre": "Cliente de prueba",
+      "telefono": "2665298838"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 409', () => pm.response.to.have.status(409))
+    language: text/javascript
+order: 3000

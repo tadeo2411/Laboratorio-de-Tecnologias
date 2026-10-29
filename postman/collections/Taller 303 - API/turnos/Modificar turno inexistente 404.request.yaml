@@ -1,0 +1,23 @@
+$kind: http-request
+url: '{{baseUrl}}/turnos/99999999'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "id_cliente": {{clienteId}},
+      "id_vehiculo": {{vehiculoId}},
+      "fecha_hora": "{{turnoFecha}}",
+      "duracion_min": 60,
+      "motivo": "Cambio de aceite y filtros",
+      "estado": "CONFIRMADO"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    language: text/javascript
+order: 9000

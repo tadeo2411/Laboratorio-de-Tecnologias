@@ -1,0 +1,19 @@
+$kind: http-request
+url: '{{baseUrl}}/ordenes'
+method: POST
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "vehiculoId": {{vehiculoId}},
+      "clienteId": {{clienteId}}
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 400', () => pm.response.to.have.status(400))
+    language: text/javascript
+order: 13000

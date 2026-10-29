@@ -1,6 +1,0 @@
-$kind: http-request
-url: "{{baseUrl}}/ordenes?estado=RECIBIDO"
-method: GET
-queryParams:
-  estado: RECIBIDO
-order: 2000

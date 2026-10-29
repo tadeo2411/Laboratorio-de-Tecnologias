@@ -1,0 +1,20 @@
+$kind: http-request
+url: '{{baseUrl}}/repuestos/99999999'
+method: PATCH
+headers:
+  - key: Content-Type
+    value: 'application/json'
+body:
+  type: json
+  content: |-
+    {
+      "nombre": "{{repuestoNombre}}",
+      "precio_estandar": "99123.00",
+      "activo": true
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Responde 404', () => pm.response.to.have.status(404))
+    language: text/javascript
+order: 9000

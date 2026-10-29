@@ -1,17 +1,28 @@
 $kind: collection
-description: ""
+name: Taller 303 - API
+description: |-
+  Backend del taller. Ejecutar la coleccion completa con el Collection Runner: el primer
+  request (1. Auth / Login 200) guarda el token en la variable de coleccion {{token}} y
+  todos los demas lo usan por herencia. Para repetir la corrida con los mismos datos,
+  volver a cargar database/seed_postman.sql.
 variables:
-  baseUrl: http://localhost:3000/api
-  usuario: admin
-  contrasena: Admin303!
-  token: ""
-  ordenId: "3"
-  trabajoId: ""
-  vehiculoId: "3"
-  clienteId: "3"
+  - key: baseUrl
+    value: 'http://localhost:3000/api'
+  - key: usuario
+    value: 'admin'
+  - key: contrasena
+    value: 'Admin303!'
+  - key: token
+    value: ''
+  - key: clienteId
+    value: '1'
+  - key: vehiculoId
+    value: '3'
+  - key: ordenId
+    value: '3'
 auth:
   - id: b7e6b500-f83a-4cc7-9d9d-46bd490835ad
     type: bearer
     name: bearer auth
     credentials:
-      token: "{{token}}"
+      token: '{{token}}'

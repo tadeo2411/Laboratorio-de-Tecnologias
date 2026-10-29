@@ -1,5 +1,5 @@
 import { textoRol } from "../../auth";
-import { iniciales, formatearFecha } from "../utils/cuenta";
+import { iniciales } from "../utils/cuenta";
 
 function MiCuenta({ cuenta, usuario, onCerrarSesion }) {
     return (
@@ -16,7 +16,6 @@ function MiCuenta({ cuenta, usuario, onCerrarSesion }) {
             <dl className="mi-cuenta-info">
                 <div><dt>Usuario</dt><dd>{cuenta.usuario}</dd></div>
                 <div><dt>Rol</dt><dd>{textoRol(cuenta.rol)}</dd></div>
-                <div><dt>En el sistema desde</dt><dd>{formatearFecha(cuenta.createdAt)}</dd></div>
             </dl>
             {usuario && (
                                         <div className="usuario-info barra-gestor__sesion">

@@ -61,21 +61,21 @@ INSERT INTO presupuesto_items (presupuesto_id, concepto, descripcion, cantidad, 
 ((SELECT id FROM presupuestos WHERE numero = 1002), 'REPUESTO', 'Pastillas de freno Ford Ranger', 1, 38000.00);
 
 INSERT INTO "empleados" (
-  "id", "nombre", "usuario", "password_hash", 
+  "nombre", "usuario", "password_hash", 
   "activo"
 ) 
 VALUES 
   (
-    1, 'Administrador', 'admin', '$2b$10$ZQ8AAy2ZP7NA26E9iks7buT7T9nQOyKmTMNteE79JnBbJpYdrRgCW', 
+    'Administrador', 'admin', '$2b$10$ZQ8AAy2ZP7NA26E9iks7buT7T9nQOyKmTMNteE79JnBbJpYdrRgCW', 
     TRUE
   ), 
   (
-    2, 'Mecánico de prueba', 'mecanico', 
+    'Mecánico de prueba', 'mecanico', 
     '$2b$10$iZzThdco2k0aW9iB2j4NWOtnVxoGMPS9CK8SWUQhz5tBuWOXD.4O6', 
     TRUE
   ), 
   (
-    3, 'Ex mecánico de prueba', 'ex.mecanico', 
+    'Ex mecánico de prueba', 'ex.mecanico', 
     '$2b$10$yJXrozYvRnTfgLNaL766OuHuJHocJJgTuPqfV/EOZ4gt936D4GiDK', 
     FALSE
   );
@@ -97,14 +97,4 @@ JOIN "roles" r
 WHERE e."usuario" IN ('admin', 'mecanico', 'ex.mecanico')
 ON CONFLICT ("empleado_id", "rol_id") DO NOTHING;
 
-INSERT INTO clientes (documento, tipo, nombre, telefono) VALUES ('30123456', 'PERSONA', 'Juan Pérez', '2664123456');
-INSERT INTO vehiculos (patente, marca, modelo, anio) VALUES ('AE123BC', 'Toyota', 'Corolla', 2021);
-INSERT INTO ordenes_trabajo (id_cliente, id_vehiculo, diagnostico, es_service, garantia_dias)
-VALUES ((SELECT id FROM clientes WHERE documento = '30123456'),
-        (SELECT id FROM vehiculos WHERE patente = 'AE123BC'),
-        'Cambio de aceite', true, 30);
-INSERT INTO fichas (orden_id, tipo, fecha, kilometraje) VALUES (3, 'INGRESO', now(), 45200);
-INSERT INTO items_ficha (ficha_id, concepto, valor) VALUES
-((SELECT max(id) FROM fichas), 'Nivel de combustible', '1/2'),
-((SELECT max(id) FROM fichas), 'Rayones', 'Paragolpes trasero');
 COMMIT;

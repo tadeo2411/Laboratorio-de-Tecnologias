@@ -21,4 +21,8 @@ async function listarTodosLosEmpleados(req,res){
     res.json(await authService.obtenerTodosLosEmpleados())
 }
 
-export default { login, perfil, listarEmpleados, listarTodosLosEmpleados }
+async function crearEmpleado(req,res){
+    res.status(201).json(await authService.crearEmpleado(req.body ?? {}))
+}
+
+export default { login, perfil, listarEmpleados, listarTodosLosEmpleados, crearEmpleado }

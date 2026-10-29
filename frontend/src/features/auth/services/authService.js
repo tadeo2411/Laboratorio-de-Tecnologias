@@ -165,30 +165,35 @@ export async function obtenerMiCuenta() {
 }
 
 export async function obtenerTodosLosEmpleados() {
-  exigirAdministrador()
-  const lista = await leerUsuarios()
-  return lista.map(datosPublicos)
+  let respuesta
+  try {
+    respuesta = await fetch(`${URL}/empleados/todos`, { headers: { Authorization: `Bearer ${obtenerToken()}` } })
+  } catch {
+    throw new Error('No se pudo conectar con el servidor')
+  }
+  const datos = await respuesta.json()
+  if (!respuesta.ok) {
+    throw new Error(datos.error || 'No se pudieron cargar los empleados')
+  }
+  return datos
 }
 
 export async function crearEmpleado(datos) {
-  exigirAdministrador()
-  const lista = await leerUsuarios()
-  const datosValidados = validarEmpleado(lista, datos)
-
-  if (!datos.contrasena || datos.contrasena.length < 8) {
-    throw new Error('La contraseña inicial tiene que tener al menos 8 caracteres.')
+  let respuesta
+  try {
+    respuesta = await fetch(`${URL}/empleados`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${obtenerToken()}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(datos)
+    })
+  } catch {
+    throw new Error('No se pudo conectar con el servidor')
   }
-
-  const nuevoEmpleado = {
-    ...datosValidados,
-    id: Math.max(0, ...lista.map((u) => u.id)) + 1,
-    activo: true,
-    createdAt: new Date().toISOString(),
-    contrasena: datos.contrasena
+  const creado = await respuesta.json()
+  if (!respuesta.ok) {
+    throw new Error(creado.error || 'No se pudo crear el empleado')
   }
-
-  usuarios = [...lista, nuevoEmpleado]
-  return datosPublicos(nuevoEmpleado)
+  return creado
 }
 
 export async function actualizarEmpleado(id, datos) {

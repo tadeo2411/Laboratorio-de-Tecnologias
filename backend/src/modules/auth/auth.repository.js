@@ -42,4 +42,19 @@ async function obtenerTodosLosEmpleados(){
     return resultado.rows
 }
 
-export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId, obtenerTodosLosEmpleados}
+async function crearEmpleado(empleado){
+    const resultado = await pool.query(
+        `INSERT INTO empleados (nombre, usuario, password_hash)
+         VALUES ($1,$2,$3) RETURNING id`,
+         [empleado.nombre, empleado.usuario, empleado.passwordHash]
+    )
+    const id = resultado.rows[0].id
+    await pool.query(
+        `INSERT INTO empleados_roles (empleado_id, rol_id)
+         SELECT $1, id FROM roles WHERE nombre = $2`, 
+         [id,empleado.rol]
+    )
+    return id
+}
+
+export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId, obtenerTodosLosEmpleados, crearEmpleado}

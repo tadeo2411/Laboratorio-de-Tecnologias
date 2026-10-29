@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import authRepository from './auth.repository.js'
 import { env } from '../../config/env.js'
 import { httpError } from '../../utils/httpError.js'
+import {validarTextoObligatorio} from '../../utils/validsTexto.js'
 
 const HASH_DE_RELLENO = bcrypt.hashSync('usuario-inexistente', 10)
 
@@ -54,4 +55,19 @@ async function obtenerTodosLosEmpleados(){
     return authRepository.obtenerTodosLosEmpleados()
 }
 
-export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos, obtenerTodosLosEmpleados }
+async function crearEmpleado(datos){
+    const ROLES = ['ADMINISTRADOR', 'MECANICO']
+    validarTextoObligatorio(datos.nombre, 'nombre', 120)
+    validarTextoObligatorio(datos.usuario, 'usuario', 50)
+    const usuario = datos.usuario.trim().toLowerCase()
+    if(!ROLES.includes(datos.rol)){
+        throw httpError(400, 'El rol tiene que ser Administrador o Mecanico')
+    }else if(typeof datos.contrasena !== 'string' || datos.contrasena.length < 8){
+        throw httpError(400, 'La contraseña tiene que tener al menos 8 caracteres')
+    }
+    const passwordHash = await bcrypt.hash(datos.contrasena, 10)
+    const id = await authRepository.crearEmpleado({nombre:datos.nombre.trim(), usuario, passwordHash, rol:datos.rol})
+    return datosPublicos(await authRepository.buscarPorId(id))
+} 
+
+export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos, obtenerTodosLosEmpleados, crearEmpleado }

@@ -1,13 +1,16 @@
+import { useState } from "react";
 import { useLoaderData } from "react-router";
 import img_cuenta from "../../../assets/icons/cuentaIcono.svg"
 import img_empleado from "../../../assets/icons/clientesIcono.svg"
 import Table from "../../../shared/components/Table";
 import BotonNuevo from "../../../shared/components/BotonNuevo";
 import BotonEditar from "../../../shared/components/BotonEditar";
+import Modal from "../../../shared/components/Modal";
 import MiCuenta from "../components/MiCuenta";
+import EmpleadoForm from "../components/EmpleadoForm";
 import { textoRol } from "../../auth";
-import { iniciales, formatearFecha } from "../utils/cuenta";
-import { cerrarSesion } from "../../auth";
+import { iniciales } from "../utils/cuenta";
+import { cerrarSesion, crearEmpleado } from "../../auth";
 import { useNavigate } from "react-router";
 import "../../estilos.css"
 import "../cuenta.css"
@@ -15,14 +18,33 @@ import "../cuenta.css"
 const columnasEmpleados = [
     { key: "empleado", nombre: "Empleado" },
     { key: "rol", nombre: "Rol" },
-    { key: "alta", nombre: "Alta" },
     { key: "estado", nombre: "Estado" },
     { key: "acciones", nombre: "Acciones" },
 ];
 
 function CuentaPage(usuario, onCerrarSesion) {
-    const { miCuenta, empleados, esAdmin } = useLoaderData();
+    const datos = useLoaderData();
+    const { miCuenta, esAdmin } = datos;
+    const [empleados, setEmpleados] = useState(datos.empleados);
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    const [errorFormulario, setErrorFormulario] = useState(null);
     const navigate = useNavigate()
+
+    function handleNuevoEmpleado() {
+        setErrorFormulario(null);
+        setMostrarFormulario(true);
+    }
+
+    async function handleGuardarEmpleado(datosEmpleado) {
+        try {
+            const creado = await crearEmpleado(datosEmpleado);
+            setEmpleados(anteriores => [...anteriores, { ...creado, activo: true }]);
+            setMostrarFormulario(false);
+        } catch (err) {
+            setErrorFormulario(err.message);
+        }
+    }
+
     function handleCerrarSesion() {
         cerrarSesion()
         navigate('/login', { replace: true })
@@ -50,7 +72,6 @@ function CuentaPage(usuario, onCerrarSesion) {
                         )} 
                 </div>
                 <MiCuenta cuenta={miCuenta} />
-                    /
             </div>
 
             {esAdmin && (
@@ -63,7 +84,7 @@ function CuentaPage(usuario, onCerrarSesion) {
                             <h1>Empleados</h1>
                             <p>Usuarios del taller y sus roles.</p>
                         </div>
-                        <BotonNuevo componente="empleado" />
+                        <BotonNuevo onClick={handleNuevoEmpleado} componente="empleado" />
                     </div>
                     <Table
                         inputPlaceholder="Buscar por nombre o usuario..."
@@ -85,7 +106,6 @@ function CuentaPage(usuario, onCerrarSesion) {
                                 <td data-label="Rol">
                                     <span className={`cuenta-badge cuenta-rol-${empleado.rol.toLowerCase()}`}>{textoRol(empleado.rol)}</span>
                                 </td>
-                                <td data-label="Alta">{formatearFecha(empleado.createdAt)}</td>
                                 <td data-label="Estado">
                                     <span className={`cuenta-badge ${empleado.activo ? "cuenta-activo" : "cuenta-inactivo"}`}>
                                         {empleado.activo ? "Activo" : "Inactivo"}
@@ -105,6 +125,16 @@ function CuentaPage(usuario, onCerrarSesion) {
                         )}
                     />
                 </div>
+            )}
+
+            {mostrarFormulario && (
+                <Modal titulo="Nuevo empleado" onCerrar={() => setMostrarFormulario(false)}>
+                    <EmpleadoForm
+                        onGuardar={handleGuardarEmpleado}
+                        onCancelar={() => setMostrarFormulario(false)}
+                        error={errorFormulario}
+                    />
+                </Modal>
             )}
         </>
     );

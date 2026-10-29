@@ -14,7 +14,7 @@ async function eliminar(id) {
         "DELETE FROM repuestos WHERE id = $1 RETURNING *",
         [id]
     );
-    return resultado;
+    return resultado.rows[0];
 }
 
 async function cargar(datos) {

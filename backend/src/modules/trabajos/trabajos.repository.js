@@ -19,7 +19,7 @@ async function eliminar(id) {
         "DELETE FROM trabajos WHERE id = $1 RETURNING *",
         [id]
     );
-    return resultado;
+    return resultado.rows[0];
 }
 
 async function cargar(datos) {
@@ -61,7 +61,6 @@ async function cargar(datos) {
 
 async function modificar(datos) {
     const { id, orden_id, tipo_trabajo_id, descripcion, mano_de_obra } = datos;
-    console.log(id)
     const resultado = await pool.query(
         `UPDATE trabajos
          SET orden_id = $1,

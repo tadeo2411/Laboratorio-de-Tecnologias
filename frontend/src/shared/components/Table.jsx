@@ -8,11 +8,12 @@ function Table({
     columnas,
     datos,
     mensajeVacio = "No hay datos para mostrar.",
-    renderFila,
+    valorBusqueda = '',
+    alCambiarBusqueda ,
+    renderFila
 }) {
     return (
         <div className="table">
-
             {/* Filtros */}
             <div className="filters">
                 <div className="input-container">
@@ -24,10 +25,9 @@ function Table({
 
                     <input
                         type="text"
-                        placeholder={
-                            inputPlaceholder ||
-                            "Buscar por descripción, orden, trabajo..."
-                        }
+                        placeholder={inputPlaceholder}
+                        value={valorBusqueda}
+                        onChange={(e) => alCambiarBusqueda && alCambiarBusqueda(e.target.value)}
                     />
                 </div>
 

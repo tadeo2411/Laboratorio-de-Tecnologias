@@ -24,6 +24,7 @@ function ClientesPage() {
     const [errorFormulario, setErrorFormulario] = useState(null)
     const [clienteAEditar, setClienteAEditar] = useState(null)
     const [mostrarFormulario, setMostrarFormulario] = useState(false)
+    const [busqueda, setBusqueda] = useState('')
     const cerrarFormulario = useCallback(() => setMostrarFormulario(false), [])
 
     useEffect(() => {
@@ -47,6 +48,13 @@ function ClientesPage() {
         cargarClientes()
         return () => { activo = false }
     }, [])
+
+    const termino = busqueda.toLowerCase().trim()
+    const clientesFiltrados = clientes.filter(
+        cliente =>
+        cliente.nombre.toLowerCase().includes(termino) ||
+        cliente.documento.includes(termino)
+    )
 
     function handleNuevoCliente() {
         setClienteAEditar(null)
@@ -113,8 +121,10 @@ async function handleEliminarCliente(idCliente) {
                     <Table
                         inputPlaceholder="Buscar por nombre, apellido, DNI..."
                         columnas={columnasClientes}
-                        datos={clientes}
+                        datos={clientesFiltrados}
                         mensajeVacio="No hay clientes registrados"
+                        valorBusqueda={busqueda}
+                        alCambiarBusqueda={setBusqueda}
                         renderFila={(cliente) => (
                             <tr key={cliente.id} className="cliente-row">
 

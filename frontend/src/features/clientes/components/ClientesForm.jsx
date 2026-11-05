@@ -8,7 +8,7 @@ const valoresIniciales = {
     tipo: 'PERSONA',
 }
 
-function ClientesForm({ clienteInicial, onGuardar, error }) {
+function ClientesForm({ clienteInicial, onGuardar, error, onCancelar }) {
     const [formulario, setFormulario] = useState(
         clienteInicial ? { ...valoresIniciales, ...clienteInicial } : valoresIniciales
     )
@@ -54,7 +54,7 @@ function ClientesForm({ clienteInicial, onGuardar, error }) {
                     </div>
                 </div>
                 <div className="d-flex justify-content-end gap-2">
-                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" className="btn btn-secondary"  onClick={onCancelar}>Cancelar</button>
                     <button type="submit" className="btn btnGuardar">Guardar</button>
                 </div>
             </form>

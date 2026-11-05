@@ -41,6 +41,8 @@ function VehiculosPage() {
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
   const [vehiculoConAviso, setVehiculoConAviso] = useState(null)
+  const [busqueda, setBusqueda] = useState('')
+
 
   // Carga vehículos y clientes desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -140,6 +142,14 @@ function VehiculosPage() {
     }
   }
 
+  const termino = busqueda.toLowerCase()
+  const vehiculosFiltrados = vehiculos.filter(
+    vehiculo => {
+      const coincidePatente = vehiculo.patente.toLowerCase().includes(termino)
+      const coincideMarca = vehiculo.marca.toLowerCase().includes(termino)
+      return coincideMarca || coincidePatente
+    }
+  )
   return (
 
     <div className="contenedor">
@@ -153,7 +163,10 @@ function VehiculosPage() {
 
           <h1>Vehículos</h1> <p>Listado de vehículos registrados en el sistema.</p>
         </div>
-        <BotonNuevo onClick={() => abrirFormulario()} componente="vehiculo" />
+        <BotonNuevo
+          onClick={() => abrirFormulario()}
+          componente="vehiculo" 
+        />
       </div>
 
       {mensaje && (
@@ -177,8 +190,10 @@ function VehiculosPage() {
         <Table
           inputPlaceholder="Buscar por patente, marca, modelo..."
           columnas={columnasVehiculos}
-          datos={vehiculos}
+          datos={vehiculosFiltrados}
           mensajeVacio="Todavía no hay vehículos cargados."
+          valorBusqueda={busqueda}
+          alCambiarBusqueda={setBusqueda}
           renderFila={(vehiculo) => (
             <tr key={vehiculo.id} className="vehiculo-row">
 

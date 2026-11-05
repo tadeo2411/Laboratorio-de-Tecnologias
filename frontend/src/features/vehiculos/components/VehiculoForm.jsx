@@ -14,6 +14,7 @@ function crearValoresIniciales(vehiculo) {
   }
 }
 
+
 // Si recibe un vehículo, el formulario lo edita; si recibe null, registra uno nuevo.
 function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
   const [formulario, setFormulario] = useState(() => crearValoresIniciales(vehiculo))
@@ -26,8 +27,6 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
     setFormulario((valoresActuales) => ({ ...valoresActuales, [name]: value }))
   }
 
-  // Un vehículo puede tener varios dueños (1..* en el diagrama): el select es múltiple
-  // y guarda la lista de ids de los clientes elegidos.
   function actualizarDuenos(event) {
     const clienteIds = Array.from(event.target.selectedOptions, (opcion) => opcion.value)
     setFormulario((valoresActuales) => ({ ...valoresActuales, clienteIds }))
@@ -64,24 +63,22 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
         <div>
           <div>
             <label htmlFor="vehiculo-duenos">
-              Dueños (Ctrl + clic para elegir más de uno) <span className="asterisco">*</span>
+              Dueño / Conductor <span className="asterisco">*</span>
             </label>
-            <select
+            <input
               id="vehiculo-duenos"
               name="clienteIds"
               className="select"
-              multiple
-              size={Math.min(clientes.length, 4) || 1}
               value={formulario.clienteIds}
               onChange={actualizarDuenos}
               required
-            >
+            />
               {clientes.map((cliente) => (
                 <option key={cliente.id} value={cliente.id}>
                   {cliente.nombre} · {cliente.documento}
                 </option>
               ))}
-            </select>
+            
           </div>
         </div>
 

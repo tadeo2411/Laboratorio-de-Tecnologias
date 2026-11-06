@@ -192,10 +192,12 @@ section {
 }
 
 .page-header {
+    position:relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0;
+    justify-content: space-between;
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 20px;
@@ -220,6 +222,7 @@ section {
 }
 
 .page-header-title {
+    position : relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -228,6 +231,13 @@ section {
     min-width: 0;
     padding-left: 1rem;
     text-align: center;
+}
+
+.page-header-title .btnNuevo {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .page-header-title h1 {
@@ -556,6 +566,11 @@ textarea {
         text-align: center;
         border-top: 1px solid #f0f0f0;
     }
+    .page-header-title .btnNuevo{
+        position: static;
+        transform: none;
+        margin-top: 12px;
+    }
 
     .barra a {
         display: block;
@@ -635,9 +650,7 @@ textarea {
         height: 32px;
     }
 
-    .page-header-title {
-        padding-left: 0;
-    }
+    
 
     .page-header-title h1 {
         font-size: 1.5rem;

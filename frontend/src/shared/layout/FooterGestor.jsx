@@ -12,7 +12,6 @@ import Vehiculos from '../../assets/icons/vehiculosIcono.svg?react'
 import Trabajos from '../../assets/icons/trabajosIcono.svg?react'
 import Repuestos from '../../assets/icons/repuestosIcono.svg?react'
 import Clientes from '../../assets/icons/clientesIcono.svg?react'
-import Presupuestos from '../../assets/icons/presupuestosIcono.svg?react'
 import Cuenta from '../../assets/icons/cuentaIcono.svg?react'
 
 // Clase activa según el estado de la ruta que entrega NavLink.

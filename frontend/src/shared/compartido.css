@@ -1,8 +1,6 @@
 /* duda de separar los estilos de los botones/modales/tablas 
 por que cada vez que reutilizamos no estariamos cargando todas las hojas de estilo?*/
 
-
-
 /* estilos del footer del gestor*/
 .barraInfGestor svg {
     height: 1.7rem;
@@ -572,10 +570,13 @@ thead th {
 }
 
 tbody td {
-    padding: 14px 16px;
+    padding: 10px 14px;
     font-size: 14px;
     color: #495057;
     border-bottom: 1px solid #eeeeee;
+}
+tbody tr:hover {
+    background-color: #f8fafc;
 }
 
 tbody tr:last-child td {
@@ -810,6 +811,7 @@ tbody tr:last-child td {
     .acciones-container {
         display: flex;
         align-items: center;
+        justify-content: flex-end;
         gap: 6px;
     }
 
@@ -915,18 +917,26 @@ tbody tr:last-child td {
 
 .botonEliminar {
     padding: .3rem;
+    border : none;
+    background-color: transparent;
+    cursor : pointer;
 }
-
-.botonEliminar img {
+.botonEliminar svg {
     width: 2rem;
     height: 2rem;
+    color : #b02a37;
+    transition : color 0.2s ease;
 }
+
 
 .botonEditar {
     padding: .3rem;
+    border : none;
+    background-color: transparent;
 }
 
-.botonEditar img {
+.botonEditar svg{
     width: 2rem;
     height: 2rem;
+    color : rgb(0, 110, 255)
 }

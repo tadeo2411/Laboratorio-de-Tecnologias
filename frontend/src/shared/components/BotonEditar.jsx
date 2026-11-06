@@ -1,13 +1,14 @@
-import botonEditar from '../../assets/icons/botonEditar.png'
+import BotonEditarSVG from '../../assets/icons/botonEditar.svg?react'
 import "../compartido.css"
 function BotonEditar({ onClick }) {
     return(
         
         <button type ='button'
-        className="botonEditar btn btn-primary"
+        className="botonEditar"
         onClick={onClick}
         >
-                <img src={botonEditar} alt="Editar datos del cliente"/>
+            <BotonEditarSVG   alt = "eliminar"/>
+            
         </button>
        
     )

@@ -1,12 +1,12 @@
-import botonEliminar from '../../assets/icons/botonEliminar.png'
+import BotonEliminarSVG from '../../assets/icons/botonEliminar.svg?react'
 import "../compartido.css"
 function BotonEliminar({ onClick }) {
     return(
         <button type ='button'
-        className="botonEliminar btn btn-danger"
+        className="botonEliminar"
         onClick={onClick}
         >
-                <img src={botonEliminar} alt="Eliminar cliente"/>
+            <BotonEliminarSVG alt = "modificar"/>
         </button>
     )
 }

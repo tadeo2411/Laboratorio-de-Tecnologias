@@ -7,7 +7,7 @@ import AvisoService from '../components/AvisoService'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
-import botonHistorial from '../../../assets/icons/botonHistorial.png'
+import botonHistorial from '../../../assets/icons/botonHistorial.svg'
 import {
   actualizarEstadoAviso,
   actualizarVehiculo,
@@ -162,11 +162,12 @@ function VehiculosPage() {
         <div className="page-header-title">
 
           <h1>Vehículos</h1> <p>Listado de vehículos registrados en el sistema.</p>
+          <BotonNuevo
+            onClick={() => abrirFormulario()}
+            componente="vehiculo"
+          />
         </div>
-        <BotonNuevo
-          onClick={() => abrirFormulario()}
-          componente="vehiculo" 
-        />
+        
       </div>
 
       {mensaje && (

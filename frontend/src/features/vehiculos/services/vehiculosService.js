@@ -106,6 +106,4 @@ export async function actualizarEstadoAviso(id, estado) {
 
 // Temporal: el selector de dueño necesita los clientes. Cuando la feature de
 // clientes tenga su API, este dato debería venir de ese endpoint.
-export async function obtenerClientes() {
-  return leerJson('clientes.json', 'No se pudieron cargar los clientes.')
-}
+export { obtenerClientes } from '../../clientes'

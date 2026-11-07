@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import Modal from '../../../shared/components/Modal'
+import { BuscadorClientes, ClientesForm, crearCliente } from '../../clientes'
 
 const ANIO_MAXIMO = new Date().getFullYear() + 1
 
@@ -14,27 +16,67 @@ function crearValoresIniciales(vehiculo) {
   }
 }
 
-
 // Si recibe un vehículo, el formulario lo edita; si recibe null, registra uno nuevo.
-function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
+function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCreado }) {
   const [formulario, setFormulario] = useState(() => crearValoresIniciales(vehiculo))
   const [error, setError] = useState('')
   const [guardando, setGuardando] = useState(false)
+  const [mostrarModalCliente, setMostrarModalCliente] = useState(false)
+  const [errorCliente, setErrorCliente] = useState('')
+
   const esEdicion = Boolean(vehiculo)
+  const duenosAsociados = clientes.filter((c) => formulario.clienteIds.includes(c.id))
 
   function actualizarCampo(event) {
     const { name, value } = event.target
     setFormulario((valoresActuales) => ({ ...valoresActuales, [name]: value }))
   }
 
-  function actualizarDuenos(event) {
-    const clienteIds = Array.from(event.target.selectedOptions, (opcion) => opcion.value)
-    setFormulario((valoresActuales) => ({ ...valoresActuales, clienteIds }))
+  function seleccionarDueno(cliente) {
+    setError('')
+    setFormulario((prev) => ({
+      ...prev,
+      clienteIds: [cliente.id],
+    }))
+  }
+
+  function quitarDuenos(idCliente) {
+    if (esEdicion && formulario.clienteIds.length === 1) {
+      setError('No se puede desvincular porque un vehículo debe tener mínimo un dueño.')
+      return
+    }
+    setError('')
+    setFormulario((prev) => ({
+      ...prev,
+      clienteIds: prev.clienteIds.filter((id) => id !== idCliente),
+    }))
+  }
+
+  async function handleGuardarCliente(datosNuevoCliente) {
+    try {
+      setErrorCliente('')
+      const clienteCreado = await crearCliente(datosNuevoCliente)
+
+      if (onClienteCreado) {
+        onClienteCreado(clienteCreado)
+      }
+
+      seleccionarDueno(clienteCreado)
+      setMostrarModalCliente(false)
+    } catch (err) {
+      setErrorCliente(err.message)
+    }
   }
 
   async function manejarEnvio(event) {
     event.preventDefault()
     setError('')
+
+    if (formulario.clienteIds.length === 0) {
+      setError('El vehículo debe tener al menos un dueño asignado.')
+      return
+    }
+
     setGuardando(true)
 
     try {
@@ -60,27 +102,62 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
       {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
       <form className="form-ordenes" onSubmit={manejarEnvio}>
-        <div>
-          <div>
-            <label htmlFor="vehiculo-duenos">
+        {esEdicion ? (
+          // Modificación
+          <div className="mb-3">
+            <label className="fw-bold mb-2">Dueños / Conductores</label>
+            <ul className="list-group">
+              {duenosAsociados.map((dueno) => (
+                <li
+                  key={dueno.id}
+                  className="list-group-item d-flex justify-content-between align-items-center"
+                >
+                  <div>
+                    <strong>{dueno.nombre}</strong> · <span className="text-muted">Doc: {dueno.documento}</span>
+                  </div>
+                  {duenosAsociados.length > 1 && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm"
+                      title="Desasociar dueño"
+                      onClick={() => quitarDuenos(dueno.id)}
+                    >
+                      Desasociar
+                    </button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          // Alta
+          <div className="mb-3">
+            <label htmlFor="vehiculo-duenos" className="form-label">
               Dueño / Conductor <span className="asterisco">*</span>
             </label>
-            <input
-              id="vehiculo-duenos"
-              name="clienteIds"
-              className="select"
-              value={formulario.clienteIds}
-              onChange={actualizarDuenos}
-              required
-            />
-              {clientes.map((cliente) => (
-                <option key={cliente.id} value={cliente.id}>
-                  {cliente.nombre} · {cliente.documento}
-                </option>
-              ))}
-            
+            {duenosAsociados.length > 0 ? (
+              <div className="d-flex justify-content-between align-items-center p-2 bg-light border rounded">
+                <span>
+                  <strong>{duenosAsociados[0].nombre}</strong> ·{' '}
+                  <span className="text-muted">Doc: {duenosAsociados[0].documento}</span>
+                </span>
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => quitarDuenos(duenosAsociados[0].id)}
+                >
+                  Cambiar
+                </button>
+              </div>
+            ) : (
+              <BuscadorClientes
+                clientes={clientes}
+                onSeleccionar={seleccionarDueno}
+                onRegistrarNuevo={() => setMostrarModalCliente(true)}
+              />
+            )}
           </div>
-        </div>
+        )}
 
         <div>
           <div>
@@ -201,6 +278,20 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar }) {
           </button>
         </div>
       </form>
+
+      {mostrarModalCliente && (
+        <Modal
+          titulo="Registrar nuevo cliente"
+          onCerrar={() => setMostrarModalCliente(false)}
+          cerrarAlTocarFondo={true}
+        >
+          <ClientesForm
+            onGuardar={handleGuardarCliente}
+            onCancelar={() => setMostrarModalCliente(false)}
+            error={errorCliente}
+          />
+        </Modal>
+      )}
     </div>
   )
 }

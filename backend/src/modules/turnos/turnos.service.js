@@ -17,7 +17,6 @@ function listar() {
 
 function cargar(datos) {
     validarId(datos.id_vehiculo);
-    validarId(datos.id_cliente);
     return repository.cargar(datos);
 }
 

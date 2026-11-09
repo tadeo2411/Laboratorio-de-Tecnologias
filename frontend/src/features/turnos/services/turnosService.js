@@ -63,3 +63,37 @@ export async function crearTurno(turno) {
 
     return await respuesta.json();
 }
+
+export async function eliminarTurno(idTurno) {
+    const respuesta = await fetch(`${URL}/turnos/${idTurno}`, {
+        method: "DELETE",
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`
+        }
+    });
+
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.message || "Error al eliminar el turno");
+    }
+
+    return await respuesta.json();
+}
+
+export async function modificarTurno(idTurno, datos) {
+    const respuesta = await fetch(`${URL}/turnos/${idTurno}`, {
+        method: "PATCH",
+        headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datos)
+    });
+
+    if (!respuesta.ok) {
+        const error = await respuesta.json();
+        throw new Error(error.message || "No se pudo modificar el turno");
+    }
+
+    return await respuesta.json();
+}

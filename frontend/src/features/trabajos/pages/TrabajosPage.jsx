@@ -66,7 +66,7 @@ function TrabajosPage() {
                 } catch (error) {
                     setNotificacion({
                         tipo: "error",
-                        mensaje: error.message || "No se pudo eliminar el repuesto."
+                        mensaje: error.message || "No se pudo eliminar el trabajo."
                     });
                 }
             }

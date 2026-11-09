@@ -3,9 +3,33 @@ import { pool } from '../../config/db.js';
 
 
 async function listar() {
-    const { rows } = await pool.query(
-        'SELECT * FROM turnos ORDER BY id'
-    );
+    const { rows } = await pool.query(`
+        SELECT
+            t.*,
+
+            -- Datos del cliente
+            c.documento AS cliente_documento,
+
+            -- Datos del vehículo
+            v.patente AS vehiculo_patente,
+
+            -- Orden asociada (si existe)
+            o.id AS orden_id
+
+        FROM turnos t
+
+        LEFT JOIN clientes c
+            ON c.id = t.id_cliente
+
+        LEFT JOIN vehiculos v
+            ON v.id = t.id_vehiculo
+
+        LEFT JOIN ordenes_trabajo o
+            ON o.turno_id = t.id
+
+        ORDER BY t.id;
+    `);
+
     return rows;
 }
 
@@ -18,14 +42,14 @@ async function eliminar(id) {
 }
 
 async function cargar(datos) {
-    const { id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
+    const { id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
 
     const resultado = await pool.query(
         `INSERT INTO turnos
-            (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado)
-         VALUES ($1, $2, $3, $4, $5, $6)
+            (id_vehiculo, fecha_hora, duracion_min, motivo, estado)
+         VALUES ($1, $2, $3, $4, $5)
          RETURNING *`,
-        [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado]
+        [id_vehiculo, fecha_hora, duracion_min, motivo, estado]
     );
     return resultado.rows[0];
 }
@@ -42,7 +66,7 @@ async function modificar(datos) {
              estado = $6
          WHERE id = $7
          RETURNING *`,
-         [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado, id]
+        [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado, id]
     );
 
     return resultado.rows[0];

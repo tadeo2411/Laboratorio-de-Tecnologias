@@ -1,56 +1,114 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
-import { estadosTurno, obtenerClientes } from '../services/turnosService';
+import { crearTurno, estadosTurno, modificarTurno } from '../services/turnosService';
 import botonMas from '../../../assets/icons/botonMas.png';
+import ModalNotificacion from '../../../shared/components/ModalNotification';
 
 const valoresIniciales = {
-    id_cliente: '',
-    id_vehiculo: '',
-    fecha_hora: '',
-    duracion_min: '',
+    vehiculoId: '',
+    fechaHora: '',
+    duracion: '',
     motivo: '',
     estado: 'SOLICITADO',
 }
 
 function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
-    const [formulario, setFormulario] = useState(turnoInicial
-        ? { ...valoresIniciales, ...turnoInicial }
-        : valoresIniciales
-    )
+    const [formulario, setFormulario] = useState(valoresIniciales);
+    const [guardando, setGuardando] = useState(false);
+    const [notificacion, setNotificacion] = useState(null);
 
-    const [clientes, setClientes] = useState([]);
+    useEffect(() => {
+        if (turnoInicial) {
+            setFormulario({
+                clienteId: turnoInicial.cliente_id ?? '',
+                vehiculoId: turnoInicial.vehiculo_id ?? '',
+                fechaHora: turnoInicial.fecha_hora
+                    ? turnoInicial.fecha_hora.replace(' ', 'T').slice(0, 16)
+                    : '',
+                duracion: turnoInicial.duracion_min ?? '',
+                motivo: turnoInicial.motivo ?? '',
+                estado: turnoInicial.estado ?? 'SOLICITADO',
+            });
+        } else {
+            setFormulario(valoresIniciales);
+        }
+    }, [turnoInicial]);
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
         setFormulario(anteriores => ({ ...anteriores, [name]: value }))
     }
 
-    function manejarEnvio(evento) {
-        evento.preventDefault()
-        if (cargando || error) return
+    async function manejarEnvio(e) {
+        e.preventDefault();
 
-        const nuevoTurno = {
-            id_cliente: Number(formulario.clienteId),
-            id_vehiculo: Number(formulario.vehiculoId),
-            fecha_hora: formulario.fechaHora,
-            duracion_min: Number(formulario.duracion),
-            motivo: formulario.motivo.trim(),
-            estado: formulario.estado,
+        if (!formulario.vehiculoId) {
+            setNotificacion({
+                tipo: "advertencia",
+                mensaje: "Debés seleccionar un vehículo.",
+                onCerrar: () => setNotificacion(null)
+            });
+            return;
         }
 
-        if (formulario.duracion !== '') {
-            nuevoTurno.duracion = Number(formulario.duracion)
-        }
+        try {
+            setGuardando(true);
 
-        onGuardar(nuevoTurno)
+            const datos = {
+                id_vehiculo: Number(formulario.vehiculoId),
+                fecha_hora: formulario.fechaHora,
+                duracion_min: formulario.duracion !== ""
+                    ? Number(formulario.duracion)
+                    : null,
+                motivo: formulario.motivo.trim(),
+                estado: formulario.estado
+            };
+
+            let resultado;
+
+            if (turnoInicial) {
+                resultado = await modificarTurno(turnoInicial.id, datos);
+
+                setNotificacion({
+                    tipo: "exito",
+                    mensaje: "Turno actualizado correctamente.",
+                    onCerrar: () => {
+                        onGuardar(resultado);
+                        window.location.reload();
+                        setNotificacion(null);
+                    }
+                });
+
+            } else {
+                resultado = await crearTurno(datos);
+
+                setNotificacion({
+                    tipo: "exito",
+                    mensaje: "Se ha registrado correctamente el turno.",
+                    onCerrar: () => {
+                        onGuardar(resultado);
+                        window.location.reload();
+                        setNotificacion(null);
+                        
+                    }
+                });
+            }
+
+            
+
+        } catch (error) {
+            console.error("Error al guardar el turno:", error);
+
+            setNotificacion({
+                tipo: "advertencia",
+                mensaje: error.message || "No se pudo guardar el turno.",
+                onCerrar: () => {setNotificacion(null);window.location.reload();onGuardar(resultado);}
+            });
+
+        } finally {
+            setGuardando(false);
+        }
     }
-
-    useEffect(() => {
-        const obtener = async () => {
-            setClientes(await obtenerClientes());
-        }
-        obtener();
-    }, []);
 
 
     return (
@@ -62,32 +120,6 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
             {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
             <form className="form-ordenes" onSubmit={manejarEnvio}>
-                <div>
-                    <div>
-                        <label htmlFor="clienteId">
-                            Dni de cliente <span className="asterisco">*</span>
-                        </label>
-
-                        <div className="campo-icono">
-                            <select
-                                id="clienteId"
-                                name="clienteId"
-                                className="select"
-                                value={formulario.clienteDNI}
-                                onChange={actualizarCampo}
-                                required
-                                disabled={cargando || Boolean(error)}
-                            >
-                                <option value="">--- Elegir ---</option>
-                                {clientes.map(cliente => (
-                                    <option key={cliente.id} value={cliente.id}>
-                                        {cliente.apellido} — {cliente.nombre} {cliente.dni}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 <div>
                     <div>
                         <label htmlFor="vehiculoId">
@@ -210,6 +242,12 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                     </button>
                 </div>
             </form>
+            {notificacion && (
+                <ModalNotificacion
+                    {...notificacion}
+                    onCerrar={notificacion.onCerrar}
+                />
+            )}
         </div>
     )
 }

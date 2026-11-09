@@ -131,7 +131,7 @@ async function desasociarDueno(id, idCliente){
 
 async function verHistorialService(id){
     const { rows } = await pool.query(
-        `SELECT o.id, f.fecha, f.kilometraje
+        `SELECT o.id, f.fecha, f.kilometraje, o.diagnostico AS detalle
         FROM ordenes_trabajo o
         JOIN fichas f ON f.orden_id = o.id AND f.tipo = 'EGRESO'
         WHERE o.id_vehiculo = $1 AND o.es_service = true AND o.estado = 'ENTREGADO'
@@ -141,16 +141,16 @@ async function verHistorialService(id){
     return rows
 }
 
-// async function gestionarAviso(id, estado, idEmpleado){
-//     const { rows } = await pool.query(
-//         `UPDATE avisos_service
-//         SET estado = $2, empleado_id = $3, fecha_gestion = now()
-//         WHERE id_vehiculo = $1 AND estado = 'PENDIENTE'
-//         RETURNING id, id_vehiculo, estado, fecha_prevista::text AS "fechaPrevista", empleado_id, fecha_gestion`,
-//         [id, estado, idEmpleado]
-//     )
-//     return rows[0]
-// }
+ async function gestionarAviso(id, estado, idEmpleado){
+     const { rows } = await pool.query(
+         `UPDATE avisos_service
+         SET estado = $2, empleado_id = $3, fecha_gestion = now()
+         WHERE id_vehiculo = $1 AND estado = 'PENDIENTE'
+         RETURNING id, id_vehiculo, estado, fecha_prevista::text AS "fechaPrevista", empleado_id, fecha_gestion`,
+         [id, estado, idEmpleado]
+     )
+     return rows[0]
+ }
 export default{
     obtener,
     buscar,
@@ -163,5 +163,6 @@ export default{
     actualizarDueno,
     asociarDueno,
     desasociarDueno,
-    verHistorialService
+    verHistorialService,
+    gestionarAviso
 }

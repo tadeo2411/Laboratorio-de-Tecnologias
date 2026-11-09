@@ -23,6 +23,7 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
   const [guardando, setGuardando] = useState(false)
   const [mostrarModalCliente, setMostrarModalCliente] = useState(false)
   const [errorCliente, setErrorCliente] = useState('')
+  const [buscandoOtroDueno, setBuscandoOtroDueno] = useState(false)
 
   const esEdicion = Boolean(vehiculo)
   const duenosAsociados = clientes.filter((c) => formulario.clienteIds.includes(c.id))
@@ -50,6 +51,19 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
       ...prev,
       clienteIds: prev.clienteIds.filter((id) => id !== idCliente),
     }))
+  }
+
+  function asociarOtroDueno(cliente){
+    if(formulario.clienteIds.includes(cliente.id)){
+      setError('Este cliente ya esta asociado como dueno.')
+      return
+    }
+    setError('')
+    setFormulario((prev) => ({//suma a los ids de clientes anteriores con el que estamos x agregar
+    ...prev,
+    clienteIds: [...prev.clienteIds, cliente.id],
+  }))
+  setBuscandoOtroDueno(false)
   }
 
   async function handleGuardarCliente(datosNuevoCliente) {
@@ -122,12 +136,38 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
                       title="Desasociar dueño"
                       onClick={() => quitarDuenos(dueno.id)}
                     >
-                      Desasociar
+                      -
                     </button>
                   )}
                 </li>
               ))}
             </ul>
+            { buscandoOtroDueno ? (
+              <div className="border p-2 rounded bg-light">
+                <label className="form-label small fw-bold">Seleccionar cliente a asociar:</label>
+                <BuscadorClientes
+                  clientes={clientes.filter((c) => !formulario.clienteIds.includes(c.id))}
+                  onSeleccionar={asociarOtroDueno}
+                  onRegistrarNuevo={() => setMostrarModalCliente(true)}
+                />
+                <button
+                  type="button"
+                  className="btn btn-link btn-sm text-secondary mt-1 p-0"
+                  onClick={() => setBuscandoOtroDueno(false)}
+                >
+                  Cancelar búsqueda
+                </button>
+              </div>
+            ):(
+              <button
+                type="button"
+                className="btn btn-outline-primary btn-sm"
+                onClick={() => setBuscandoOtroDueno(true)}
+              >
+                + Asociar otro dueño
+              </button>
+            )
+            }
           </div>
         ) : (
           // Alta

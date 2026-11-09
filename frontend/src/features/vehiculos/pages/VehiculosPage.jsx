@@ -8,12 +8,14 @@ import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
 import botonHistorial from '../../../assets/icons/botonHistorial.svg'
 import {
-  actualizarEstadoAviso,
-  actualizarVehiculo,
+  modificarVehiculo,
   crearVehiculo,
   eliminarVehiculo,
   obtenerClientes,
   obtenerVehiculos,
+  obtenerDuenos,
+  asociarDueno,
+  desasociarDueno
 } from '../services/vehiculosService'
 import '../VehiculosPage.css'
 import Spinner from '../../../shared/components/Spinner'
@@ -83,9 +85,21 @@ function VehiculosPage() {
     setError(texto)
   }
 
-  // vehiculo = null abre el formulario para registrar uno nuevo.
-  function abrirFormulario(vehiculo = null) {
-    setVehiculoEnEdicion(vehiculo)
+  async function abrirFormulario(vehiculo = null) {
+    if(vehiculo){
+      try{
+        const duenos = await obtenerDuenos(vehiculo.id)
+        setVehiculoEnEdicion({
+          ...vehiculo,
+          clienteIds: duenos.map((d) => d.id)
+        })
+      }catch(err){
+        mostrarError('No se pudieron obtener los Dueños: ' + err.message )
+        return
+      }
+    }else{
+        setVehiculoEnEdicion(null)
+      }
     setFormularioAbierto(true)
   }
 
@@ -98,12 +112,25 @@ function VehiculosPage() {
   // muestra el motivo y queda abierto para corregirlos.
   async function guardarVehiculo(datos) {
     if (vehiculoEnEdicion) {
-      const vehiculoActualizado = await actualizarVehiculo(vehiculoEnEdicion.id, datos)
+      const vehiculoActualizado = await modificarVehiculo(vehiculoEnEdicion.id, datos)
+      const duenosPrevios = vehiculoEnEdicion.clienteIds || []
+      const duenosNuevos = datos.clienteIds || []
+
+      const aAgregar = duenosNuevos.filter(id => !duenosPrevios.includes(id))
+      const aQuitar = duenosPrevios.filter(id => !duenosNuevos.includes(id))
+
+      for(const idCliente of aAgregar){
+        await asociarDueno(vehiculoEnEdicion.id, idCliente)
+      }
+
+      for(const idCliente of aQuitar){
+        await desasociarDueno(vehiculoEnEdicion.id, idCliente)
+      }
+
       setVehiculos((vehiculosActuales) =>
         vehiculosActuales.map((vehiculo) =>
-          vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo,
-        ),
-      )
+          (vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo)),
+    )
       mostrarMensaje('Vehículo actualizado correctamente.')
     } else {
       const vehiculoCreado = await crearVehiculo(datos)

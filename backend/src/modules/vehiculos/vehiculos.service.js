@@ -189,18 +189,18 @@ async function verHistorialService(id){
     return vehiculosRepository.verHistorialService(vehiculo.id)
 }
 
-// async function gestionarAviso(id, datos, idEmpleado){
-//     const estado = datos?.estado
-//     if(!ESTADOS_GESTION_AVISO.includes(estado)){
-//         throw httpError(400, `El estado debe ser ${ESTADOS_GESTION_AVISO.join(' o ')}`)
-//     }
-//     const vehiculo = await buscar(id)
-//     const aviso = await vehiculosRepository.gestionarAviso(vehiculo.id, estado, idEmpleado)
-//     if(!aviso){
-//         throw httpError(409, `El vehiculo ${vehiculo.patente} no tiene un aviso de service pendiente`)
-//     }
-//     return aviso
-// }
+async function gestionarAviso(id, datos, idEmpleado){
+    const estado = datos?.estado
+    if(!ESTADOS_GESTION_AVISO.includes(estado)){
+        throw httpError(400, `El estado debe ser ${ESTADOS_GESTION_AVISO.join(' o ')}`)
+    }
+    const vehiculo = await buscar(id)
+    const aviso = await vehiculosRepository.gestionarAviso(vehiculo.id, estado, idEmpleado)
+    if(!aviso){
+        throw httpError(409, `El vehiculo ${vehiculo.patente} no tiene un aviso de service pendiente`)
+    }
+    return aviso
+}
 
 
 export default 
@@ -213,4 +213,6 @@ export default
     buscarDueno,
     asociarDueno,
     desasociarDueno,
-    verHistorialService}
+    verHistorialService,
+    gestionarAviso
+}

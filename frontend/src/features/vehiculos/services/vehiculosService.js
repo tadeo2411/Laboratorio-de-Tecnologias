@@ -4,106 +4,78 @@
 // Cada función corresponde a una operación de la futura API
 // (GET, POST, PUT y DELETE sobre /api/vehiculos). Cuando exista el backend,
 // solo se reemplaza el interior de estas funciones; las páginas no cambian.
-const URL = '/backend/data'
 
+import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
+
+const URL = '/backend/data'
+const URLVehiculos = 'http://localhost:3000/api/vehiculos'
 let vehiculos = null
 
-async function leerJson(archivo, mensajeError) {
-  const respuesta = await fetch(`${URL}/${archivo}`)
+async function pedir(ruta, opciones = {}) {
+    const headers = { Authorization: `Bearer ${obtenerToken()}` }
+    if (opciones.body) headers['Content-Type'] = 'application/json'
 
-  if (!respuesta.ok) {
-    throw new Error(mensajeError)
-  }
-  return respuesta.json()
+    let respuesta
+    try {
+        respuesta = await fetch(`${URLVehiculos}${ruta}`, { ...opciones, headers })
+    } catch {
+        throw new Error('No se pudo conectar con el servidor.')
+    }
+
+    manejarSesionVencida(respuesta)
+    const datos = respuesta.status === 204 ? null : await respuesta.json()
+
+    if (!respuesta.ok) {
+        throw new Error(datos?.error || datos?.mensaje || 'Ocurrió un error con los vehiculos.')
+    }
+    return datos
 }
 
-async function cargarVehiculos() {
-  if (vehiculos === null) {
-    vehiculos = await leerJson('vehiculos.json', 'No se pudieron cargar los vehículos.')
-  }
-  return vehiculos
+export function obtenerVehiculos(){
+  return pedir('')
 }
 
-function buscarVehiculo(lista, id) {
-  const vehiculo = lista.find((vehiculoActual) => vehiculoActual.id === id)
-
-  if (!vehiculo) {
-    throw new Error('El vehículo no existe o ya fue eliminado.')
-  }
-  return vehiculo
+export function buscarVehiculo(id){
+  return pedir(`/${id}`)
 }
 
-// La patente identifica al vehículo: se guarda sin espacios y en mayúsculas
-// para que "ab 123 cd" y "AB123CD" se reconozcan como la misma.
+export function crearVehiculo(datos){
+  const {clienteIds, ...resto} = datos
+  return pedir('', { method: 'POST', body: JSON.stringify({...resto, idCliente:clienteIds?.[0],}) })
+}
+
+export function modificarVehiculo(id, datos){
+  const { patente, marca, modelo, anio, descripcion, kilometraje } = datos
+  return pedir(`/${id}`, {method: 'PATCH', body: JSON.stringify({ patente, marca, modelo, anio, descripcion, kilometraje })})
+}
+
+export function eliminarVehiculo(id){
+  return pedir(`/${id}`, {method : 'DELETE'})
+}
+
+export function verHistorialService(id){
+  return pedir(`/${id}/historial`)
+}
+
+export function obtenerDuenos(id){
+  return pedir(`/${id}/duenos`, {method : 'GET'})
+}
+
+export function asociarDueno(id, idCliente){
+  return pedir(`/${id}/duenos/${idCliente}`, {method : 'POST'})
+}
+
+export function desasociarDueno(id, idCliente){
+  return pedir(`/${id}/duenos/${idCliente}`, {method : 'DELETE'})
+}
+
+
+
+// utilizada por otros componentes
 export function normalizarPatente(patente) {
   return patente.replace(/\s+/g, '').toUpperCase()
 }
 
-function validarPatenteUnica(lista, patente, idExcluido = null) {
-  const repetida = lista.some(
-    (vehiculo) => vehiculo.patente === patente && vehiculo.id !== idExcluido,
-  )
 
-  if (repetida) {
-    throw new Error(`Ya existe un vehículo con la patente ${patente}.`)
-  }
-}
 
-export async function obtenerVehiculos() {
-  return cargarVehiculos()
-}
-
-export async function crearVehiculo(datos) {
-  const lista = await cargarVehiculos()
-  const patente = normalizarPatente(datos.patente)
-  validarPatenteUnica(lista, patente)
-
-  // El id, el aviso y el historial los asigna el sistema, no el formulario.
-  const nuevoVehiculo = {
-    ...datos,
-    id: crypto.randomUUID(),
-    patente,
-    proximoService: null,
-    estadoAvisoService: 'sin-aviso',
-    historialServices: [],
-  }
-
-  vehiculos = [...lista, nuevoVehiculo]
-  return nuevoVehiculo
-}
-
-export async function actualizarVehiculo(id, datos) {
-  const lista = await cargarVehiculos()
-  const vehiculoActual = buscarVehiculo(lista, id)
-  const patente = normalizarPatente(datos.patente)
-  validarPatenteUnica(lista, patente, id)
-
-  const vehiculoActualizado = { ...vehiculoActual, ...datos, patente }
-
-  vehiculos = lista.map((vehiculo) => (vehiculo.id === id ? vehiculoActualizado : vehiculo))
-  return vehiculoActualizado
-}
-
-export async function eliminarVehiculo(id) {
-  const lista = await cargarVehiculos()
-  buscarVehiculo(lista, id)
-
-  vehiculos = lista.filter((vehiculo) => vehiculo.id !== id)
-}
-
-// Registra qué hizo el empleado con el aviso de service: enviarlo o descartarlo.
-export async function actualizarEstadoAviso(id, estado) {
-  if (!['enviado', 'descartado'].includes(estado)) {
-    throw new Error('Estado de aviso no válido.')
-  }
-
-  const lista = await cargarVehiculos()
-  const vehiculoActualizado = { ...buscarVehiculo(lista, id), estadoAvisoService: estado }
-
-  vehiculos = lista.map((vehiculo) => (vehiculo.id === id ? vehiculoActualizado : vehiculo))
-  return vehiculoActualizado
-}
-
-// Temporal: el selector de dueño necesita los clientes. Cuando la feature de
-// clientes tenga su API, este dato debería venir de ese endpoint.
 export { obtenerClientes } from '../../clientes'

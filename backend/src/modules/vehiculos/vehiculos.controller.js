@@ -30,6 +30,11 @@ async function eliminar (req, res){
     res.status(204).send()
 }
 
+async function verHistorialService(req, res){
+    const historial = await vehiculosService.verHistorialService(req.params.id)
+    res.json(historial)
+}
+
 // parte de duenios
 
 async function listarDuenos(req, res){
@@ -43,7 +48,7 @@ async function buscarDueno(req, res){
 }
 
 async function asociarDueno(req, res){
-    const dueno = await vehiculosService.asociarDueno(req.params.id, req.body?.idCliente)//el ? es por si el body llega vacio
+    const dueno = await vehiculosService.asociarDueno(req.params.id, req.params.idCliente)//el ? es por si el body llega vacio
     res.status(201).json(dueno)
 }
 
@@ -52,10 +57,6 @@ async function desasociarDueno(req, res) {
     res.status(204).send()
 }
 
-async function verHistorialService(req, res){
-    const historial = await vehiculosService.verHistorialService(req.params.id)
-    res.json(historial)
-}
 
 // async function gestionarAviso(req, res){
 //     // req.usuario lo completa verificarToken: es el empleado que gestiona el aviso

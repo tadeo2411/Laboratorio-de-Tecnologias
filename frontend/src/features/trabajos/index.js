@@ -1,1 +1,1 @@
-export { obtenerTiposTrabajo } from './services/tiposTrabajoService'
+export {obtenerTiposTrabajo}  from './services/trabajos.js'

@@ -1,7 +1,7 @@
 import { redirect } from 'react-router'
 import { ROLES, esAdministrador } from '../utils/roles'
 
-const URL = 'http://localhost:3000/api/auth'
+const URL = 'http://192.168.0.140:3000/api/auth'
 const CLAVE_USUARIO = 'gestorTaller303:usuario'
 const CLAVE_TOKEN = 'gestorTaller303:token'
 const URL_DATOS = '/backend/data'

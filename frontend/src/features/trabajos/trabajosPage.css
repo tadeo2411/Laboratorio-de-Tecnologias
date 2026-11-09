@@ -76,10 +76,22 @@
 }
 
 /* Empleado */
+
 .trabajo-empleado {
-    padding: 14px 16px;
-    color: #495057;
-    font-size: 14px;
+    text-align: left;
+}
+
+.empleados-lista {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px;
+}
+
+.trabajo-empleado .empleado-badge {
+    display: inline-block;
+    margin: 2px 3px;
+    white-space: nowrap;
 }
 
 /* Estado */
@@ -348,6 +360,141 @@ textarea {
     font-size: 20px;
     font-weight: 700;
     color: #15803d;
+}
+
+.btn {
+    margin-top: 1rem;
+}
+
+/* Contenedor de repuestos agregados */
+.repuestos-agregados {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.repuestos-agregados h4 {
+    margin: 0 0 5px;
+    color: #263445;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+/* Tarjeta de cada repuesto */
+.repuesto-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 18px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.repuesto-item:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Información del repuesto */
+.repuesto-item > div:first-child {
+    flex: 1;
+}
+
+.repuesto-item strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #263445;
+    font-size: 15px;
+}
+
+.repuesto-item p {
+    margin: 5px 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+/* Controles */
+.repuesto-item > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 130px;
+    flex-shrink: 0;
+}
+
+.repuesto-item label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.repuesto-item .input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Botón quitar */
+.repuesto-item .btn-danger {
+    width: 100%;
+    padding: 9px 12px;
+    border: none;
+    border-radius: 7px;
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.repuesto-item .btn-danger:hover {
+    background: #fecaca;
+}
+
+/* Total de repuestos */
+.repuestos-agregados > div:last-child {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 18px;
+    background: #eff6ff;
+    border: 1px solid #dbeafe;
+    border-radius: 9px;
+}
+
+.repuestos-agregados > div:last-child strong {
+    color: #1d4ed8;
+    font-size: 16px;
+}
+
+
+/* Responsive */
+@media (max-width: 600px) {
+    .repuesto-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .trabajo-empleado {
+        text-align: right;
+    }
+
+    .repuesto-item > div:last-child {
+        width: 100%;
+    }
+
+    .repuestos-agregados > div:last-child {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .empleados-lista {
+        justify-content: flex-end;
+    }
 }
 
 @media (max-width: 600px) {

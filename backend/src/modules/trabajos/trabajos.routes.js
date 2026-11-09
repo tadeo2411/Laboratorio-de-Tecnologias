@@ -9,8 +9,14 @@ router.use(verificarToken);
 
 router.get("/", controller.listar);
 router.post("/", controller.cargar);
+
+router.get("/tipoTrabajos", controller.listarTipos);
+
+
 router.patch("/:id", controller.modificar);
 router.delete("/:id", controller.eliminar);
 router.get("/:id", controller.buscar);
+
+
 
 export default router;

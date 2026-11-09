@@ -5,7 +5,7 @@ import { verificarToken } from '../../middlewares/verificarToken.js'
 
 const router = express.Router()
 
-router.use(verificarToken)
+router.use(verificarToken)  //Preguntar esto
 
 router.get('/', ordenesController.listar)
 router.get('/:id', ordenesController.obtener)

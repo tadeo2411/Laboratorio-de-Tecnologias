@@ -940,3 +940,95 @@ tbody tr:last-child td {
     height: 2rem;
     color : rgb(0, 110, 255)
 }
+.modal-notificacion-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.60);
+    backdrop-filter: blur(4px);
+}
+
+.modal-notificacion-overlay .modal-notificacion-contenido {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    padding: 35px 28px;
+    background: #ffffff;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+    animation: modalNotificacionEntrada 0.2s ease;
+    box-sizing: border-box;
+}
+
+.modal-notificacion-overlay .modal-notificacion-titulo {
+    margin: 0 0 12px;
+    color: #172033;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.modal-notificacion-overlay .modal-notificacion-mensaje {
+    margin: 0 0 25px;
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.modal-notificacion-overlay button {
+    font-family: inherit;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.modal-notificacion-overlay .modal-notificacion-boton {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 9px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.modal-notificacion-overlay .modal-notificacion-cancelar {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    background: white;
+    color: #172033;
+}
+
+.modal-notificacion-overlay .modal-notificacion-acciones {
+    display: flex;
+    gap: 12px;
+}
+
+.modal-notificacion-overlay .modal-notificacion-icono {
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+@keyframes modalNotificacionEntrada {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

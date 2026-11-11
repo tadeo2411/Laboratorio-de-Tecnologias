@@ -18,7 +18,9 @@ async function eliminar(id) {
 }
 
 async function cargar(datos) {
-    const { nombre, precio_estandar, activo } = datos;
+    const { nombre, precio_estandar } = datos;
+
+    const activo = true;
 
     const resultado = await pool.query(
         `INSERT INTO repuestos
@@ -32,13 +34,13 @@ async function cargar(datos) {
 }
 
 async function modificar(datos) {
-    const { id, nombre, precio_estandar, activo } = datos;
+    const { id, nombre, precio_estandar } = datos;
     const resultado = await pool.query(`
         UPDATE repuestos 
-        SET nombre = $1, precio_estandar = $2, activo = $3 
-        WHERE id = $4 
+        SET nombre = $1, precio_estandar = $2 
+        WHERE id = $3
         RETURNING *`,
-        [nombre, precio_estandar, activo, id]);
+        [nombre, precio_estandar, id]);
     return resultado.rows[0];
 }
 

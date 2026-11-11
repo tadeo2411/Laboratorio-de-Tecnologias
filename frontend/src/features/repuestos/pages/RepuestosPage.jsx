@@ -9,20 +9,20 @@ import '../RepuestosPage.css'
 import '../../estilos.css'
 
 import {
-  actualizarRepuesto,
+  obtenerRepuestos,
   crearRepuesto,
   eliminarRepuesto,
-  obtenerRepuestos,
+  modificarRepuesto
 } from '../services/repuestosService'
 import '../RepuestosPage.css'
 import "../../estilos.css"
 import Table from '../../../shared/components/Table'
+import ModalNotificacion from '../../../shared/components/ModalNotification'
 
 const columnasRepuestos = [
-  { key: "codigo", nombre: "Código" },
+  { key: "id", nombre: "Código" },
   { key: "nombre", nombre: "Nombre" },
-  { key: "precioEstandar", nombre: "Precio de venta" },
-  { key: "stock", nombre: "Stock" },
+  { key: "precio_estandar", nombre: "Precio de venta" },
   { key: "acciones", nombre: "Acciones" }
 ];
 
@@ -34,6 +34,8 @@ function RepuestosPage() {
   const [formularioAbierto, setFormularioAbierto] = useState(false)
   const [repuestoEnEdicion, setRepuestoEnEdicion] = useState(null)
 
+  const [notificacion, setNotificacion] = useState(null);
+
 
   // Carga los repuestos desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -43,6 +45,7 @@ function RepuestosPage() {
     async function cargarRepuestos() {
       try {
         const repuestosGuardados = await obtenerRepuestos()
+        console.log(repuestosGuardados)
         if (activo) setRepuestos(repuestosGuardados)
       } catch (errorCarga) {
         if (activo) setError(errorCarga.message)
@@ -82,44 +85,82 @@ function RepuestosPage() {
   // No captura errores: si el servicio rechaza los datos, el formulario
   // muestra el motivo y queda abierto para corregirlos.
   async function guardarRepuesto(datos) {
-    if (repuestoEnEdicion) {
-      const repuestoActualizado = await actualizarRepuesto(repuestoEnEdicion.id, datos)
-      setRepuestos((repuestosActuales) =>
-        repuestosActuales.map((repuesto) =>
-          repuesto.id === repuestoActualizado.id ? repuestoActualizado : repuesto,
-        ),
-      )
-      mostrarMensaje('Repuesto actualizado correctamente.')
-    } else {
-      const repuestoCreado = await crearRepuesto(datos)
-      setRepuestos((repuestosActuales) => [...repuestosActuales, repuestoCreado])
-      mostrarMensaje('Repuesto agregado correctamente.')
+    try {
+      if (repuestoEnEdicion) {
+        await modificarRepuesto(repuestoEnEdicion.id, datos);
+
+        setNotificacion({
+          tipo: "exito",
+          mensaje: "Repuesto actualizado correctamente.",
+          onCerrar: () => {
+            setNotificacion(null);
+            window.location.reload();
+          }
+        });
+
+      } else {
+        await crearRepuesto(datos);
+
+        setNotificacion({
+          tipo: "exito",
+          mensaje: "Repuesto agregado correctamente.",
+          onCerrar: () => {
+            setNotificacion(null);
+            window.location.reload();
+          }
+        });
+      }
+
+      cerrarFormulario();
+
+    } catch (error) {
+      setNotificacion({
+        tipo: "error",
+        mensaje: error.message || "No se pudo guardar el repuesto."
+      });
     }
-    cerrarFormulario()
   }
 
   async function confirmarEliminacion(repuesto) {
-    if (!window.confirm(`¿Eliminar el repuesto ${repuesto.codigo} · ${repuesto.nombre}? Esta acción no se puede deshacer.`)) return
+    setNotificacion({
+      tipo: "confirmacion",
+      titulo: "Eliminar repuesto",
+      mensaje: `¿Estás seguro de que deseas eliminar el repuesto ${repuesto.codigo} · ${repuesto.nombre}? Esta acción no se puede deshacer.`,
+      onAceptar: async () => {
+        setNotificacion(null);
 
-    try {
-      await eliminarRepuesto(repuesto.id)
-      setRepuestos((repuestosActuales) => repuestosActuales.filter(({ id }) => id !== repuesto.id))
-      mostrarMensaje('Repuesto eliminado correctamente.')
-    } catch (errorEliminacion) {
-      mostrarError(errorEliminacion.message)
-    }
+        try {
+          await eliminarRepuesto(repuesto.id);
+
+          setNotificacion({
+            tipo: "exito",
+            mensaje: "Repuesto eliminado correctamente.",
+            onCerrar: () => {
+              setNotificacion(null);
+              window.location.reload();
+            }
+          });
+
+        } catch (error) {
+          setNotificacion({
+            tipo: "error",
+            mensaje: error.message || "No se pudo eliminar el repuesto."
+          });
+        }
+      }
+    });
   }
 
   return (
 
     <div className="contenedor">
       <div className="page-header">
-      
-              <div className="page-header-image">
-      
-                <img src={img_list} alt="Listado" />
-              </div>
-              <div className="page-header-title">
+
+        <div className="page-header-image">
+
+          <img src={img_list} alt="Listado" />
+        </div>
+        <div className="page-header-title">
           <h1>Repuestos</h1>
           <p>Listado de repuestos registrados en el sistema.</p>
         </div>
@@ -160,7 +201,7 @@ function RepuestosPage() {
                 className="repuesto-codigo"
                 data-label="Código"
               >
-                {repuesto.codigo}
+                {repuesto.id}
               </td>
 
               <td
@@ -174,14 +215,7 @@ function RepuestosPage() {
                 className="repuesto-precio"
                 data-label="Precio de venta"
               >
-                ${repuesto.precioEstandar.toLocaleString("es-AR")}
-              </td>
-
-              <td
-                className="repuesto-stock"
-                data-label="Stock"
-              >
-                {repuesto.stock}
+                ${repuesto.precio_estandar.toLocaleString("es-AR")}
               </td>
 
               <td
@@ -210,6 +244,18 @@ function RepuestosPage() {
         >
           <RepuestoForm repuesto={repuestoEnEdicion} onCancelar={cerrarFormulario} onGuardar={guardarRepuesto} />
         </Modal>
+      )}
+      {notificacion && (
+        <ModalNotificacion
+          {...notificacion}
+          onCerrar={() => {
+            if (notificacion.onCerrar) {
+              notificacion.onCerrar();
+            } else {
+              setNotificacion(null);
+            }
+          }}
+        />
       )}
     </div>
   )

@@ -4,77 +4,76 @@
 // Cada función corresponde a una operación de la futura API
 // (GET, POST, PUT y DELETE sobre /api/repuestos). Cuando exista el backend,
 // solo se reemplaza el interior de estas funciones; las páginas no cambian.
-const URL = '/backend/data'
+const URL = 'http://localhost:3000/api'
+const CLAVE_TOKEN = 'gestorTaller303:token'
 
 let repuestos = null
 
-async function cargarRepuestos() {
-  if (repuestos === null) {
-    const respuesta = await fetch(`${URL}/repuestos.json`)
-
-    if (!respuesta.ok) {
-      throw new Error('No se pudieron cargar los repuestos.')
-    }
-    repuestos = await respuesta.json()
-  }
-  return repuestos
-}
-
-function buscarRepuesto(lista, id) {
-  const repuesto = lista.find((repuestoActual) => repuestoActual.id === id)
-
-  if (!repuesto) {
-    throw new Error('El repuesto no existe o ya fue eliminado.')
-  }
-  return repuesto
-}
-
-// El código identifica al repuesto en el catálogo: se guarda sin espacios
-// en los extremos y en mayúsculas para que "fil-001" y "FIL-001" sean el mismo.
-function normalizarCodigo(codigo) {
-  return codigo.trim().toUpperCase()
-}
-
-function validarCodigoUnico(lista, codigo, idExcluido = null) {
-  const repetido = lista.some(
-    (repuesto) => repuesto.codigo === codigo && repuesto.id !== idExcluido,
-  )
-
-  if (repetido) {
-    throw new Error(`Ya existe un repuesto con el código ${codigo}.`)
-  }
-}
-
 export async function obtenerRepuestos() {
-  return cargarRepuestos()
+  const respuesta = await fetch(URL + '/repuestos', {
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem(CLAVE_TOKEN)}`
+    }
+  });
+
+  if (!respuesta.ok) {
+    throw new Error('No se pudieron cargar los repuestos');
+  }
+
+  return await respuesta.json();
 }
 
-export async function crearRepuesto(datos) {
-  const lista = await cargarRepuestos()
-  const codigo = normalizarCodigo(datos.codigo)
-  validarCodigoUnico(lista, codigo)
+export async function crearRepuesto(repuesto) {
+  const respuesta = await fetch(URL + '/repuestos', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sessionStorage.getItem(CLAVE_TOKEN)}`
+    },
+    body: JSON.stringify(repuesto)
+  });
 
-  const nuevoRepuesto = { ...datos, id: crypto.randomUUID(), codigo }
+  const datos = await respuesta.json();
 
-  repuestos = [...lista, nuevoRepuesto]
-  return nuevoRepuesto
+  if (!respuesta.ok) {
+    throw new Error(
+      datos.message || datos.mensaje || 'No se pudo crear el repuesto'
+    );
+  }
+
+  return datos;
 }
 
-export async function actualizarRepuesto(id, datos) {
-  const lista = await cargarRepuestos()
-  const repuestoActual = buscarRepuesto(lista, id)
-  const codigo = normalizarCodigo(datos.codigo)
-  validarCodigoUnico(lista, codigo, id)
+export async function modificarRepuesto(idRepuesto, datos) {
+  const respuesta = await fetch(`${URL}/repuestos/${idRepuesto}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(datos)
+  });
 
-  const repuestoActualizado = { ...repuestoActual, ...datos, codigo }
+  if (!respuesta.ok) {
+    const error = await respuesta.json();
+    throw new Error(error.message || "No se pudo modificar el repuesto");
+  }
 
-  repuestos = lista.map((repuesto) => (repuesto.id === id ? repuestoActualizado : repuesto))
-  return repuestoActualizado
+  return await respuesta.json();
 }
 
-export async function eliminarRepuesto(id) {
-  const lista = await cargarRepuestos()
-  buscarRepuesto(lista, id)
+export async function eliminarRepuesto(idRepuesto) {
+  const respuesta = await fetch(`${URL}/repuestos/${idRepuesto}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`
+    }
+  });
 
-  repuestos = lista.filter((repuesto) => repuesto.id !== id)
+  if (!respuesta.ok) {
+    const error = await respuesta.json();
+    throw new Error(error.message || "Error al eliminar el repuesto");
+  }
+
+  return await respuesta.json();
 }

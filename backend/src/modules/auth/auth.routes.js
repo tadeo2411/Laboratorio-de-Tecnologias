@@ -12,5 +12,4 @@ router.get('/empleados', verificarToken, authController.listarEmpleados)
 router.get('/empleados/todos', verificarToken, soloAdministrador, authController.listarTodosLosEmpleados)
 router.post('/empleados',verificarToken,soloAdministrador,authController.crearEmpleado)
 
-
 export default router

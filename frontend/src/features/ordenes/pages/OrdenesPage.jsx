@@ -56,7 +56,15 @@ function OrdenesPage() {
             const ordenActualizada = await actualizarOrden(ordenEnEdicion.id, datosFormulario);
             setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
         } else {
-            const nuevaOrden = await crearOrden(datosFormulario);
+            const vehiculo = vehiculos.find(vehiculo => vehiculo.patente === datosFormulario.vehiculoPatente);
+            const nuevaOrden = await crearOrden({
+                vehiculoId: vehiculo.id,
+                clienteId: datosFormulario.clienteId,
+                diagnostico: datosFormulario.diagnostico,
+                esService: datosFormulario.esService,
+                esUrgencia: datosFormulario.esUrgencia,
+                fichaIngreso: fichasNuevas.find(ficha => ficha.tipo === "INGRESO")
+            });
             setOrdenes(anteriores => [...anteriores, nuevaOrden]);
         }
         cerrarFormulario();

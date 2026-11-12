@@ -2,11 +2,10 @@ import { obtenerVehiculos, obtenerClientes } from '../../vehiculos'
 import { obtenerTiposTrabajo } from '../../trabajos'
 import { obtenerRepuestos } from '../../repuestos'
 import { obtenerEmpleados } from '../../auth'
-import { ESTADO_INICIAL, esEstadoFinal, puedeCambiarEstado, obtenerEstado} from '../utils/estados'
+import { esEstadoFinal, puedeCambiarEstado, obtenerEstado} from '../utils/estados'
 import { buscarFicha } from '../utils/ordenes'
 import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
 
-const URL = '/backend/data'
 const URL_API = 'http://localhost:3000/api/ordenes'
 
 async function pedir(ruta, opciones = {}) {
@@ -27,19 +26,6 @@ async function pedir(ruta, opciones = {}) {
         throw new Error(datos?.error || datos?.mensaje || 'Ocurrió un error con las ordenes.')
     }
     return datos
-}
-
-let ordenes = null
-async function cargarOrdenes(){
-    if (ordenes === null){
-        const respuesta = await fetch(`${URL}/ordenes.json`)
-
-        if (!respuesta.ok){
-            throw new Error("No se pudieron cargar las órdenes")
-        }
-        ordenes = await respuesta.json()
-    }
-    return ordenes
 }
 
 export async function obtenerOrdenes(){
@@ -68,21 +54,7 @@ export async function quitarTrabajo(idOrden, idTrabajo){
 }
 
 export async function crearOrden(datos){
-    const lista = await cargarOrdenes()
-    const ultimoId = Math.max(0, ...lista.map(orden => orden.id))
-
-    const nuevaOrden = {
-        ...datos,
-        id: ultimoId + 1,
-        turnoId: null,
-        estado: ESTADO_INICIAL,
-        createdAt: new Date().toISOString(),
-        fichas: [],
-        trabajos: []
-    }
-
-    ordenes = [...lista, nuevaOrden]
-    return nuevaOrden
+    return pedir('', {method: 'POST', body: JSON.stringify(datos)})
 }
 
 export async function actualizarOrden(id, datos){

@@ -1,4 +1,4 @@
-import { DIRECCION } from '../../../../shared/constantes/contacto'
+import { DIRECCION, HORARIO } from '../../../../shared/constantes/contacto'
 
 function Mapa(){
     const MAPA_URL =
@@ -37,7 +37,7 @@ function Mapa(){
 
                         <div className="ubicacion__dato">
                             <span className="ubicacion__dato-nombre">Horarios</span>
-                            <p className="ubicacion__dato-valor">Lunes a viernes de 8:00 a 18:00</p>
+                            <p className="ubicacion__dato-valor">{HORARIO}</p>
                         </div>
                     </address>
 

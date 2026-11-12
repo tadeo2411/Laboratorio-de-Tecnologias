@@ -1,8 +1,8 @@
 import { useEffect } from "react"
+import { urlWhatsApp } from "../../../../../shared/constantes/contacto"
 
 function ServiceModal({ servicio, onClose }) {
     const {id, icono, titulo, destacada, detalle} = servicio;
-    const mensajeWPP = encodeURIComponent(`Hola, estoy interesado en el servicio de ${titulo}. Me gustaría obtener más información al respecto.`);
 
     useEffect(() => {
         const cerrarConEscape = (event) => {
@@ -26,7 +26,7 @@ function ServiceModal({ servicio, onClose }) {
                         <p className="service-modal__detalle">{detalle}</p>
                     </div>
                     <div className="service-modal__pie">
-                        <a href={`https://wa.me/5492664344135?text=${mensajeWPP}`} target="_blank" rel="noopener noreferrer" className="btn-whatsapp">
+                        <a href={urlWhatsApp(`Hola, estoy interesado en el servicio de ${titulo}. Me gustaría obtener más información al respecto.`)} target="_blank" rel="noopener noreferrer" className="btn-whatsapp">
                             📱 Cotizar por WhatsApp
                         </a>
                     </div>

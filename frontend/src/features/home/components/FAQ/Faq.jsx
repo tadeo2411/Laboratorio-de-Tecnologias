@@ -1,3 +1,5 @@
+import { urlWhatsApp } from '../../../../shared/constantes/contacto'
+
 function Faq(){
         return(
     <section className='faq' id='faq'>
@@ -6,8 +8,8 @@ function Faq(){
             <div className='col-12 col-lg-5'>
                 <span className='textosFaq'>ANTES DE TRAER TU AUTO:<br /></span>
                 <h2 className='faq__titulo'>Preguntas Frecuentes</h2>
-                <span className='faq__texto'>Si no encontrás lo que buscás, contactános. Podemos asesorarte, orientandote según el modelo y la falla que tenga tu auto. <br /></span>
-                <a href='https://wa.me/5492664344135?' className='textosFaq faq__enlace' target='_blank' rel='noopener noreferrer'>Hacer una consulta ↗</a>
+                <span className='faq__texto'>Si no encontrás lo que buscás, contactanos. Podemos asesorarte, orientándote según el modelo y la falla que tenga tu auto. <br /></span>
+                <a href={urlWhatsApp('Hola, quisiera hacer una consulta')} className='textosFaq faq__enlace' target='_blank' rel='noopener noreferrer'>Hacer una consulta ↗</a>
             </div>
         <div className='col-12 col-lg-7 mt-4 mt-lg-0'>{/*col-lg hace que las columnas aparezcan una al lado de la otra a partir de los 992px fuente: codex*/ }
                 {/* 1ra faq */} 

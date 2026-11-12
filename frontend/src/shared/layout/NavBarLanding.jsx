@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import "../compartido.css"
+import { urlWhatsApp } from '../constantes/contacto.js'
 
 function NavBarLanding() {
     const [menuAbierto, setMenuAbierto] = useState(false)
@@ -42,7 +43,7 @@ function NavBarLanding() {
                             <li className="navbar-landing__item navbar-landing__item--turno">
                                 <a
                                     className="navbar-landing__boton-turno"
-                                    href="https://wa.me/5492664344135?text=Hola,%20quisiera%20solicitar%20un%20turno"
+                                    href={urlWhatsApp('Hola, quisiera solicitar un turno')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={cerrarMenu}

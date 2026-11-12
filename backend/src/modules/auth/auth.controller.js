@@ -25,4 +25,13 @@ async function crearEmpleado(req,res){
     res.status(201).json(await authService.crearEmpleado(req.body ?? {}))
 }
 
-export default { login, perfil, listarEmpleados, listarTodosLosEmpleados, crearEmpleado }
+async function modificarEmpleado(req,res){
+    res.json(await authService.modificarEmpleado(req.params.id, req.body ?? {}, req.usuario.id))
+}
+
+async function cambiarActivoEmpleado(req,res){
+    const { activo } = req.body ?? {}
+    res.json(await authService.cambiarActivoEmpleado(req.params.id, activo, req.usuario.id))
+}
+
+export default { login, perfil, listarEmpleados, listarTodosLosEmpleados, crearEmpleado, modificarEmpleado, cambiarActivoEmpleado }

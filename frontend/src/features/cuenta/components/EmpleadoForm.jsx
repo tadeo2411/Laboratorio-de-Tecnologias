@@ -8,8 +8,11 @@ const valoresIniciales = {
     rol: 'MECANICO',
 }
 
-function EmpleadoForm({ onGuardar, onCancelar, error }) {
-    const [formulario, setFormulario] = useState(valoresIniciales)
+function EmpleadoForm({ empleado, onGuardar, onCancelar, error }) {
+    const [formulario, setFormulario] = useState(
+        empleado ? { nombre: empleado.nombre, usuario: empleado.usuario, contrasena: '', rol: empleado.rol } : valoresIniciales
+    )
+    const esEdicion = Boolean(empleado)
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
@@ -41,8 +44,8 @@ function EmpleadoForm({ onGuardar, onCancelar, error }) {
                         <input id="empleadoUsuario" name="usuario" type="text" className="form-control" value={formulario.usuario} onChange={actualizarCampo} maxLength={50} required />
                     </div>
                     <div className="col-12 col-md-6 mb-3">
-                        <label htmlFor="empleadoContrasena" className="form-label">Contraseña inicial *</label>
-                        <input id="empleadoContrasena" name="contrasena" type="password" className="form-control" value={formulario.contrasena} onChange={actualizarCampo} minLength={8} required />
+                        <label htmlFor="empleadoContrasena" className="form-label">{esEdicion ? 'Nueva contraseña (dejar vacío para no cambiarla)' : 'Contraseña inicial *'}</label>
+                        <input id="empleadoContrasena" name="contrasena" type="password" className="form-control" value={formulario.contrasena} onChange={actualizarCampo} minLength={8} required={!esEdicion} />
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="empleadoRol" className="form-label">Rol *</label>

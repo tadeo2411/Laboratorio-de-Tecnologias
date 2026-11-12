@@ -10,7 +10,7 @@ import MiCuenta from "../components/MiCuenta";
 import EmpleadoForm from "../components/EmpleadoForm";
 import { textoRol } from "../../auth";
 import { iniciales } from "../utils/cuenta";
-import { cerrarSesion, crearEmpleado } from "../../auth";
+import { cerrarSesion, crearEmpleado, actualizarEmpleado, cambiarActivoEmpleado } from "../../auth";
 import { useNavigate } from "react-router";
 import "../../estilos.css"
 import "../cuenta.css"
@@ -28,20 +28,45 @@ function CuentaPage(usuario, onCerrarSesion) {
     const [empleados, setEmpleados] = useState(datos.empleados);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [errorFormulario, setErrorFormulario] = useState(null);
+    const [empleadoEnEdicion, setEmpleadoEnEdicion] = useState(null);
     const navigate = useNavigate()
 
     function handleNuevoEmpleado() {
         setErrorFormulario(null);
+        setEmpleadoEnEdicion(null);
         setMostrarFormulario(true);
+    }
+
+    function handleEditarEmpleado(empleado) {
+        setErrorFormulario(null);
+        setEmpleadoEnEdicion(empleado);
+        setMostrarFormulario(true);
+    }
+
+    function reemplazarEmpleado(actualizado) {
+        setEmpleados(anteriores => anteriores.map(empleado => empleado.id === actualizado.id ? actualizado : empleado));
     }
 
     async function handleGuardarEmpleado(datosEmpleado) {
         try {
-            const creado = await crearEmpleado(datosEmpleado);
-            setEmpleados(anteriores => [...anteriores, { ...creado, activo: true }]);
+            if (empleadoEnEdicion) {
+                reemplazarEmpleado(await actualizarEmpleado(empleadoEnEdicion.id, datosEmpleado));
+            } else {
+                const creado = await crearEmpleado(datosEmpleado);
+                setEmpleados(anteriores => [...anteriores, { ...creado, activo: true }]);
+            }
             setMostrarFormulario(false);
         } catch (err) {
             setErrorFormulario(err.message);
+        }
+    }
+
+    async function handleCambiarActivo(empleado) {
+        if (empleado.activo && !window.confirm(`¿Seguro que querés dar de baja a ${empleado.nombre}? No va a poder ingresar al sistema.`)) return;
+        try {
+            reemplazarEmpleado(await cambiarActivoEmpleado(empleado.id, !empleado.activo));
+        } catch (err) {
+            window.alert(err.message);
         }
     }
 
@@ -113,9 +138,9 @@ function CuentaPage(usuario, onCerrarSesion) {
                                 </td>
                                 <td data-label="Acciones">
                                     <div className="acciones-container">
-                                        <BotonEditar />
+                                        <BotonEditar onClick={() => handleEditarEmpleado(empleado)} />
                                         {empleado.id !== miCuenta.id && (
-                                            <button type="button" className={`btn btn-sm ${empleado.activo ? "btn-outline-danger" : "btn-outline-success"}`}>
+                                            <button type="button" className={`btn btn-sm ${empleado.activo ? "btn-outline-danger" : "btn-outline-success"}`} onClick={() => handleCambiarActivo(empleado)}>
                                                 {empleado.activo ? "Dar de baja" : "Reactivar"}
                                             </button>
                                         )}
@@ -128,8 +153,9 @@ function CuentaPage(usuario, onCerrarSesion) {
             )}
 
             {mostrarFormulario && (
-                <Modal titulo="Nuevo empleado" onCerrar={() => setMostrarFormulario(false)}>
+                <Modal titulo={empleadoEnEdicion ? `Editar a ${empleadoEnEdicion.nombre}` : "Nuevo empleado"} onCerrar={() => setMostrarFormulario(false)}>
                     <EmpleadoForm
+                        empleado={empleadoEnEdicion}
                         onGuardar={handleGuardarEmpleado}
                         onCancelar={() => setMostrarFormulario(false)}
                         error={errorFormulario}

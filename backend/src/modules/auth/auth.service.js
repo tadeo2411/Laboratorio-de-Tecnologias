@@ -7,6 +7,7 @@ import { httpError } from '../../utils/httpError.js'
 import {validarTextoObligatorio} from '../../utils/validsTexto.js'
 
 const HASH_DE_RELLENO = bcrypt.hashSync('usuario-inexistente', 10)
+const ROLES = ['ADMINISTRADOR', 'MECANICO']
 
 function datosPublicos(usuario) {
     return {
@@ -56,7 +57,6 @@ async function obtenerTodosLosEmpleados(){
 }
 
 async function crearEmpleado(datos){
-    const ROLES = ['ADMINISTRADOR', 'MECANICO']
     validarTextoObligatorio(datos.nombre, 'nombre', 120)
     validarTextoObligatorio(datos.usuario, 'usuario', 50)
     const usuario = datos.usuario.trim().toLowerCase()
@@ -70,4 +70,60 @@ async function crearEmpleado(datos){
     return datosPublicos(await authRepository.buscarPorId(id))
 } 
 
-export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos, obtenerTodosLosEmpleados, crearEmpleado }
+function datosEmpleado(usuario) {
+    return { ...datosPublicos(usuario), activo: usuario.activo }
+}
+
+async function buscarEmpleado(idRecibido) {
+    const id = Number(idRecibido)
+    if (!Number.isInteger(id) || id <= 0) {
+        throw httpError(400, 'El id del empleado tiene que ser un número entero positivo')
+    }
+    const empleado = await authRepository.buscarPorId(id)
+    if (!empleado) {
+        throw httpError(404, `No existe el empleado ${id}`)
+    }
+    return empleado
+}
+
+async function modificarEmpleado(idRecibido, datos, idSesion) {
+    const empleado = await buscarEmpleado(idRecibido)
+    validarTextoObligatorio(datos.nombre, 'nombre', 120)
+    validarTextoObligatorio(datos.usuario, 'usuario', 50)
+    if (!ROLES.includes(datos.rol)) {
+        throw httpError(400, 'El rol tiene que ser Administrador o Mecanico')
+    }
+    if (empleado.id === idSesion && datos.rol !== 'ADMINISTRADOR') {
+        throw httpError(409, 'No podés quitarte a vos mismo el rol de administrador')
+    }
+
+    let passwordHash = null
+    if (datos.contrasena !== undefined && datos.contrasena !== '') {
+        if (typeof datos.contrasena !== 'string' || datos.contrasena.length < 8) {
+            throw httpError(400, 'La contraseña tiene que tener al menos 8 caracteres')
+        }
+        passwordHash = await bcrypt.hash(datos.contrasena, 10)
+    }
+
+    await authRepository.modificarEmpleado(empleado.id, {
+        nombre: datos.nombre.trim(),
+        usuario: datos.usuario.trim().toLowerCase(),
+        rol: datos.rol,
+        passwordHash
+    })
+    return datosEmpleado(await authRepository.buscarPorId(empleado.id))
+}
+
+async function cambiarActivoEmpleado(idRecibido, activo, idSesion) {
+    if (typeof activo !== 'boolean') {
+        throw httpError(400, 'activo tiene que ser true o false')
+    }
+    const empleado = await buscarEmpleado(idRecibido)
+    if (!activo && empleado.id === idSesion) {
+        throw httpError(409, 'No podés darte de baja a vos mismo')
+    }
+    await authRepository.cambiarActivo(empleado.id, activo)
+    return datosEmpleado(await authRepository.buscarPorId(empleado.id))
+}
+
+export default { iniciarSesion, obtenerPerfil, obtenerEmpleadosActivos, obtenerTodosLosEmpleados, crearEmpleado, modificarEmpleado, cambiarActivoEmpleado }

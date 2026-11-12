@@ -11,5 +11,7 @@ router.get('/perfil', verificarToken, authController.perfil)
 router.get('/empleados', verificarToken, authController.listarEmpleados)
 router.get('/empleados/todos', verificarToken, soloAdministrador, authController.listarTodosLosEmpleados)
 router.post('/empleados',verificarToken,soloAdministrador,authController.crearEmpleado)
+router.patch('/empleados/:id', verificarToken, soloAdministrador, authController.modificarEmpleado)
+router.patch('/empleados/:id/activo', verificarToken, soloAdministrador, authController.cambiarActivoEmpleado)
 
 export default router

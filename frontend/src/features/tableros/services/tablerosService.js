@@ -1,4 +1,4 @@
-const URL = '/backend/data'
+const URL = 'http://localhost:3000/api/tableros'
 
 export async function obtenerOrdenes(){
     const respuesta = await fetch(`${URL}/ordenes.json`)

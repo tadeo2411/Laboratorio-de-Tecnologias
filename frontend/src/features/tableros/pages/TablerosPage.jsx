@@ -52,11 +52,14 @@ function TablerosPage() {
         <div className="contenedorMetricas">
             <div className="contenedorTarjetas">
                 <Tarjeta nombre="Vehiculos en el taller" cantidad={ordenes.length} imagen={img_auto} filtro={"brightness(0) saturate(100%) invert(24%) sepia(91%) saturate(1800%) hue-rotate(205deg) brightness(88%) contrast(100%)"} />
-                <Tarjeta nombre="Presupuestos sin respuesta" cantidad={esperandoAprobacion + esperandoRepuesto} imagen={img_presupuesto} filtro={"brightness(0) saturate(100%) invert(78%) sepia(92%) saturate(1065%) hue-rotate(359deg) brightness(93%) contrast(101%)"} />
+                <Tarjeta nombre="Ordenes de trabajo último mes" cantidad={esperandoAprobacion + esperandoRepuesto} imagen={img_presupuesto} filtro={"brightness(0) saturate(100%) invert(78%) sepia(92%) saturate(1065%) hue-rotate(359deg) brightness(93%) contrast(101%)"} />
                 <Tarjeta nombre="Listos para retirar" cantidad={terminado} imagen={img_correcto} filtro={"brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%)"} />
             </div>
             <div className="vehiculosPorEstado">
-                <h2>Vehículos por estado</h2>
+                <h2>Vehículos en el Taller</h2>
+                <BarraDeCantidades nombre={"Recibidos"} cantidad={diagnosticando}
+                    cantidadTotal={ordenes.length}
+                    color="#ff5050" />
                 <BarraDeCantidades nombre={"Diagnosticando"} cantidad={diagnosticando}
                     cantidadTotal={ordenes.length}
                     color="#ff5050" />

@@ -8,9 +8,7 @@
 import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
 import { API_URL } from '../../../shared/config/api'
 
-const URL = '/backend/data'
 const URLVehiculos = `${API_URL}/vehiculos`
-let vehiculos = null
 
 async function pedir(ruta, opciones = {}) {
     const headers = { Authorization: `Bearer ${obtenerToken()}` }

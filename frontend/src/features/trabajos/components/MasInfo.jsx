@@ -163,10 +163,6 @@ function TrabajoInfo({ trabajo }) {
                     {repuestos.length > 0 && (
                         <div className="info-trabajo-repuestos">
                             {repuestos.map((repuesto, index) => {
-                                const subtotal =
-                                    numero(repuesto.precio_unitario) *
-                                    numero(repuesto.cantidad);
-
                                 return (
                                     <div
                                         className="info-trabajo-repuesto"

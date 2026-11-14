@@ -1,6 +1,9 @@
 // aca va la logica de negocio. Genera id y llama a repository
 import  repository  from "./repuestos.repository.js";
 import { httpError } from "../../utils/httpError.js";
+import { validarTextoObligatorio, validarMonto } from "../../utils/validsTexto.js";
+
+const maxNombre = 120;
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
 function validarId(id){
@@ -11,39 +14,44 @@ function validarId(id){
     return idNumerico
 }
 
+function validarDatos(datos) {
+    validarTextoObligatorio(datos.nombre, "nombre", maxNombre);
+    const precio = validarMonto(datos.precio_estandar, "precio_estandar");
+
+    return { nombre: datos.nombre.trim(), precio_estandar: precio };
+}
+
 function listar() {
     return repository.listar();
 }
 
 function cargar(datos) {
-    return repository.cargar(datos);
+    return repository.cargar(validarDatos(datos));
 }
 
 async function eliminar(id) {
-    validarId(id);
-    const repuesto = await repository.eliminar(id);
+    const idValido = validarId(id);
+    const repuesto = await repository.eliminar(idValido);
 
-     if (!repuesto) {
+    if (!repuesto) {
         throw httpError(404, `El repuesto con id ${id} no esta registrado`)
     }
     return repuesto;
 }
 
 async function modificar(datos) {
-    validarId(datos.id, 'El id del repuesto');
-    const repuesto = await repository.modificar(datos);
+    const id = validarId(datos.id);
+    const actual = await buscar(id);
+    const validos = validarDatos({ ...actual, ...datos });
 
-     if (!repuesto) {
-        throw httpError(404, `El repuesto con id ${datos.id} no esta registrado`)
-    }
-    return repuesto;
+    return repository.modificar({ id, ...validos });
 }
 
 async function buscar(id) {
-    validarId(id, 'El id del repuesto');
-    const repuesto = await repository.buscar(id);
+    const idValido = validarId(id);
+    const repuesto = await repository.buscar(idValido);
 
-     if (!repuesto) {
+    if (!repuesto) {
         throw httpError(404, `El repuesto con id ${id} no esta registrado`)
     }
     return repuesto;

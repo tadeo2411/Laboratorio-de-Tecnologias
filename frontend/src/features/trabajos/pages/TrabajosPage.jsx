@@ -32,7 +32,14 @@ function TrabajosPage() {
 
     useEffect(() => {
         const obtenerTrabajos = async () => {
-            setTrabajos(await service.obtenerTrabajos());
+            try {
+                setTrabajos(await service.obtenerTrabajos());
+            } catch (error) {
+                setNotificacion({
+                    tipo: "error",
+                    mensaje: error.message || "No se pudieron cargar los trabajos."
+                });
+            }
         }
         obtenerTrabajos();
 
@@ -96,8 +103,8 @@ function TrabajosPage() {
                                 );
                             } else {
                                 setTrabajos((anteriores) => [
-                                    ...anteriores,
-                                    trabajoActualizado
+                                    trabajoActualizado,
+                                    ...anteriores
                                 ]);
                             }
                         }}
@@ -148,7 +155,7 @@ function TrabajosPage() {
                                     </div>
 
                                     <div className="descripcion-tipo">
-                                        Tipo de trabajo: {trabajo.tipo_trabajo_id}
+                                        Tipo de trabajo: {trabajo.tipo_trabajo}
                                     </div>
                                 </div>
                             </td>
@@ -157,7 +164,7 @@ function TrabajosPage() {
                                 <div className="empleados-lista">
                                     {trabajo.empleados?.length > 0
                                         ? trabajo.empleados.map((empleado) => (
-                                            <span key={empleado.id} className="empleado-badge">
+                                            <span key={empleado.empleado_id} className="empleado-badge">
                                                 {empleado.nombre}
                                             </span>
                                         ))

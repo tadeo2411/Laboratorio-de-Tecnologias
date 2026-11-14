@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 import { crearTurno, estadosTurno, modificarTurno } from '../services/turnosService';
 import botonMas from '../../../assets/icons/botonMas.png';
@@ -12,27 +12,22 @@ const valoresIniciales = {
     estado: 'SOLICITADO',
 }
 
-function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
-    const [formulario, setFormulario] = useState(valoresIniciales);
+function valoresDelTurno(turno) {
+    if (!turno) return valoresIniciales;
+
+    return {
+        vehiculoId: turno.id_vehiculo ?? '',
+        fechaHora: turno.fecha_hora ? turno.fecha_hora.slice(0, 16) : '',
+        duracion: turno.duracion_min ?? '',
+        motivo: turno.motivo ?? '',
+        estado: turno.estado ?? 'SOLICITADO',
+    };
+}
+
+function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehiculos }) {
+    const [formulario, setFormulario] = useState(() => valoresDelTurno(turnoInicial));
     const [guardando, setGuardando] = useState(false);
     const [notificacion, setNotificacion] = useState(null);
-
-    useEffect(() => {
-        if (turnoInicial) {
-            setFormulario({
-                clienteId: turnoInicial.cliente_id ?? '',
-                vehiculoId: turnoInicial.vehiculo_id ?? '',
-                fechaHora: turnoInicial.fecha_hora
-                    ? turnoInicial.fecha_hora.replace(' ', 'T').slice(0, 16)
-                    : '',
-                duracion: turnoInicial.duracion_min ?? '',
-                motivo: turnoInicial.motivo ?? '',
-                estado: turnoInicial.estado ?? 'SOLICITADO',
-            });
-        } else {
-            setFormulario(valoresIniciales);
-        }
-    }, [turnoInicial]);
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
@@ -64,45 +59,28 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                 estado: formulario.estado
             };
 
-            let resultado;
-
             if (turnoInicial) {
-                resultado = await modificarTurno(turnoInicial.id, datos);
-
-                setNotificacion({
-                    tipo: "exito",
-                    mensaje: "Turno actualizado correctamente.",
-                    onCerrar: () => {
-                        onGuardar(resultado);
-                        window.location.reload();
-                        setNotificacion(null);
-                    }
-                });
-
+                await modificarTurno(turnoInicial.id, datos);
             } else {
-                resultado = await crearTurno(datos);
-
-                setNotificacion({
-                    tipo: "exito",
-                    mensaje: "Se ha registrado correctamente el turno.",
-                    onCerrar: () => {
-                        onGuardar(resultado);
-                        window.location.reload();
-                        setNotificacion(null);
-                        
-                    }
-                });
+                await crearTurno(datos);
             }
 
-            
+            setNotificacion({
+                tipo: "exito",
+                mensaje: turnoInicial
+                    ? "Turno actualizado correctamente."
+                    : "Se ha registrado correctamente el turno.",
+                onCerrar: () => {
+                    setNotificacion(null);
+                    onGuardar();
+                }
+            });
 
         } catch (error) {
-            console.error("Error al guardar el turno:", error);
-
             setNotificacion({
                 tipo: "advertencia",
                 mensaje: error.message || "No se pudo guardar el turno.",
-                onCerrar: () => {setNotificacion(null);window.location.reload();onGuardar(resultado);}
+                onCerrar: () => setNotificacion(null)
             });
 
         } finally {
@@ -228,7 +206,7 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                     <button
                         type="button"
                         className="btn btn-secondary"
-                        data-bs-dismiss="modal"
+                        onClick={onCancelar}
                     >
                         Cancelar
                     </button>
@@ -236,7 +214,7 @@ function TurnosForm({ turnoInicial, onGuardar, cargando, error, vehiculos }) {
                     <button
                         type="submit"
                         className="btn btn-success"
-                        disabled={cargando || Boolean(error)}
+                        disabled={cargando || Boolean(error) || guardando}
                     >
                         Guardar
                     </button>

@@ -13,6 +13,9 @@ async function listar() {
             t.estado,
             t.mano_de_obra,
 
+            -- Nombre del tipo de trabajo
+            (SELECT tt.nombre FROM tipos_trabajo tt WHERE tt.id = t.tipo_trabajo_id) AS tipo_trabajo,
+
             -- Total de repuestos
             COALESCE(
                 SUM(ru.precio_unitario * ru.cantidad), 0
@@ -88,7 +91,6 @@ async function eliminar(id) {
 
 // Cargar trabajo
 async function cargar(datos) {
-    console.log(datos);
     const {
         orden_id,
         tipo_trabajo_id,
@@ -351,6 +353,25 @@ async function buscar(id) {
             t.estado,
             t.mano_de_obra,
 
+            -- Nombre del tipo de trabajo
+            (SELECT tt.nombre FROM tipos_trabajo tt WHERE tt.id = t.tipo_trabajo_id) AS tipo_trabajo,
+
+            -- Total de repuestos
+            COALESCE(
+                (SELECT SUM(ru.precio_unitario * ru.cantidad)
+                 FROM repuestos_usados ru
+                 WHERE ru.trabajo_id = t.id),
+                0
+            ) AS total_repuestos,
+
+            -- Total general
+            t.mano_de_obra + COALESCE(
+                (SELECT SUM(ru.precio_unitario * ru.cantidad)
+                 FROM repuestos_usados ru
+                 WHERE ru.trabajo_id = t.id),
+                0
+            ) AS total,
+
             -- Empleados asociados
             COALESCE(
                 (
@@ -377,7 +398,8 @@ async function buscar(id) {
                             'repuesto_id', ru.repuesto_id,
                             'nombre', r.nombre,
                             'precio_unitario', ru.precio_unitario,
-                            'cantidad', ru.cantidad
+                            'cantidad', ru.cantidad,
+                            'subtotal', ru.precio_unitario * ru.cantidad
                         )
                     )
                     FROM repuestos_usados ru

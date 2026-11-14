@@ -5,6 +5,7 @@ export {
   redirigirSiHaySesion,
   obtenerSesion,
   obtenerToken,
+  manejarSesionVencida,
   obtenerEmpleados,
   obtenerMiCuenta,
   obtenerTodosLosEmpleados,

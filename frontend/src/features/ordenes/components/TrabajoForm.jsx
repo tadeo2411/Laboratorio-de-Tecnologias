@@ -19,7 +19,7 @@ function TrabajoForm({ tiposTrabajo, repuestos, empleados, onGuardar, onCancelar
         setFormulario(valoresActuales => ({
             ...valoresActuales,
             tipoTrabajoId: tipoElegido.id,
-            manoDeObra: String(tipoElegido.precioEstandar)
+            manoDeObra: String(Number(tipoElegido.precio_estandar))
         }));
     }
 
@@ -61,7 +61,7 @@ function TrabajoForm({ tiposTrabajo, repuestos, empleados, onGuardar, onCancelar
     }
 
     function buscarRepuesto(repuestoId){
-        return repuestos.find(repuesto => repuesto.id === repuestoId);
+        return repuestos.find(repuesto => repuesto.id === Number(repuestoId));
     }
 
     function validar(){
@@ -113,7 +113,7 @@ function TrabajoForm({ tiposTrabajo, repuestos, empleados, onGuardar, onCancelar
                     repuestoId: repuesto.id,
                     nombre: repuesto.nombre,
                     cantidad: Number(linea.cantidad),
-                    precioUnitario: repuesto.precioEstandar
+                    precioUnitario: Number(repuesto.precio_estandar)
                 };
             })
         };
@@ -232,7 +232,7 @@ function TrabajoForm({ tiposTrabajo, repuestos, empleados, onGuardar, onCancelar
                             />
 
                             <span>
-                                {repuesto ? formatearPrecio(repuesto.precioEstandar * Number(linea.cantidad || 0)) : "-"}
+                                {repuesto ? formatearPrecio(repuesto.precio_estandar *Number(linea.cantidad || 0)) : "-"}
                             </span>
 
                             <button type="button" className="btn btn-secondary" onClick={() => quitarRepuesto(indice)}>

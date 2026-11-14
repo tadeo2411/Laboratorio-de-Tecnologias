@@ -4,7 +4,6 @@
 import authService from './auth.service.js'
 
 async function login(req, res) {
-    console.log(req.body);
     const { usuario, contrasena } = req.body ?? {}
     const sesion = await authService.iniciarSesion(usuario, contrasena)
     res.json(sesion)

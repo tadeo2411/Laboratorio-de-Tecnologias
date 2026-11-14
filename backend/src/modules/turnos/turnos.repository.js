@@ -1,11 +1,16 @@
 //aca es donde leemos y escribimos sobre 'nombreModulo.json'
 import { pool } from '../../config/db.js';
 
+// La fecha vuelve como texto (AAAA-MM-DDTHH:MM:SS), sin zona horaria, para que el navegador
+// muestre la misma hora que se guardó sin importar dónde corra el servidor.
+const COLUMNAS = `t.id, t.id_cliente, t.id_vehiculo,
+    to_char(t.fecha_hora, 'YYYY-MM-DD"T"HH24:MI:SS') AS fecha_hora,
+    t.duracion_min, t.motivo, t.estado, t.created_at`;
 
 async function listar() {
     const { rows } = await pool.query(`
         SELECT
-            t.*,
+            ${COLUMNAS},
 
             -- Datos del cliente
             c.documento AS cliente_documento,
@@ -35,21 +40,21 @@ async function listar() {
 
 async function eliminar(id) {
     const resultado = await pool.query(
-        "DELETE FROM turnos WHERE id = $1 RETURNING *",
+        `DELETE FROM turnos AS t WHERE t.id = $1 RETURNING ${COLUMNAS}`,
         [id]
     );
     return resultado.rows[0];
 }
 
 async function cargar(datos) {
-    const { id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
+    const { id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
 
     const resultado = await pool.query(
-        `INSERT INTO turnos
-            (id_vehiculo, fecha_hora, duracion_min, motivo, estado)
-         VALUES ($1, $2, $3, $4, $5)
-         RETURNING *`,
-        [id_vehiculo, fecha_hora, duracion_min, motivo, estado]
+        `INSERT INTO turnos AS t
+            (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado)
+         VALUES ($1, $2, $3, $4, $5, $6)
+         RETURNING ${COLUMNAS}`,
+        [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado]
     );
     return resultado.rows[0];
 }
@@ -57,15 +62,15 @@ async function cargar(datos) {
 async function modificar(datos) {
     const { id, id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
     const resultado = await pool.query(
-        `UPDATE turnos
+        `UPDATE turnos AS t
          SET id_cliente = $1,
              id_vehiculo = $2,
              fecha_hora = $3,
              duracion_min = $4,
              motivo = $5,
              estado = $6
-         WHERE id = $7
-         RETURNING *`,
+         WHERE t.id = $7
+         RETURNING ${COLUMNAS}`,
         [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado, id]
     );
 
@@ -74,7 +79,7 @@ async function modificar(datos) {
 
 async function buscar(id) {
     const { rows } = await pool.query(
-        'SELECT * FROM turnos WHERE id = $1',
+        `SELECT ${COLUMNAS} FROM turnos t WHERE t.id = $1`,
         [id]
     );
     return rows[0];

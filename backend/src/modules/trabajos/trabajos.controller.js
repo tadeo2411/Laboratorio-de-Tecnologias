@@ -51,12 +51,4 @@ const listarTipos = async (req, res, next) => {
     }
 }
 
-const buscarTipoTrabajos = async (req, res, next) => {
-try {
-        res.json(await service.buscarTipoTrabajos(req.params.id));
-    } catch (err) {
-        next(err);
-    }
-}
-
-export default {listar, eliminar, cargar, modificar, buscar, buscarTipoTrabajos, listarTipos}
+export default {listar, eliminar, cargar, modificar, buscar, listarTipos}

@@ -29,7 +29,6 @@ const columnasRepuestos = [
 function RepuestosPage() {
   const [repuestos, setRepuestos] = useState([])
   const [cargando, setCargando] = useState(true)
-  const [mensaje, setMensaje] = useState('')
   const [error, setError] = useState('')
   const [formularioAbierto, setFormularioAbierto] = useState(false)
   const [repuestoEnEdicion, setRepuestoEnEdicion] = useState(null)
@@ -45,7 +44,6 @@ function RepuestosPage() {
     async function cargarRepuestos() {
       try {
         const repuestosGuardados = await obtenerRepuestos()
-        console.log(repuestosGuardados)
         if (activo) setRepuestos(repuestosGuardados)
       } catch (errorCarga) {
         if (activo) setError(errorCarga.message)
@@ -60,16 +58,6 @@ function RepuestosPage() {
       activo = false
     }
   }, [])
-
-  function mostrarMensaje(texto) {
-    setError('')
-    setMensaje(texto)
-  }
-
-  function mostrarError(texto) {
-    setMensaje('')
-    setError(texto)
-  }
 
   // repuesto = null abre el formulario para registrar uno nuevo.
   function abrirFormulario(repuesto = null) {
@@ -87,27 +75,21 @@ function RepuestosPage() {
   async function guardarRepuesto(datos) {
     try {
       if (repuestoEnEdicion) {
-        await modificarRepuesto(repuestoEnEdicion.id, datos);
+        const modificado = await modificarRepuesto(repuestoEnEdicion.id, datos);
+        setRepuestos(anteriores => anteriores.map(r => r.id === modificado.id ? modificado : r));
 
         setNotificacion({
           tipo: "exito",
-          mensaje: "Repuesto actualizado correctamente.",
-          onCerrar: () => {
-            setNotificacion(null);
-            window.location.reload();
-          }
+          mensaje: "Repuesto actualizado correctamente."
         });
 
       } else {
-        await crearRepuesto(datos);
+        const creado = await crearRepuesto(datos);
+        setRepuestos(anteriores => [...anteriores, creado]);
 
         setNotificacion({
           tipo: "exito",
-          mensaje: "Repuesto agregado correctamente.",
-          onCerrar: () => {
-            setNotificacion(null);
-            window.location.reload();
-          }
+          mensaje: "Repuesto agregado correctamente."
         });
       }
 
@@ -125,20 +107,17 @@ function RepuestosPage() {
     setNotificacion({
       tipo: "confirmacion",
       titulo: "Eliminar repuesto",
-      mensaje: `¿Estás seguro de que deseas eliminar el repuesto ${repuesto.codigo} · ${repuesto.nombre}? Esta acción no se puede deshacer.`,
+      mensaje: `¿Estás seguro de que deseas eliminar el repuesto #${repuesto.id} · ${repuesto.nombre}? Esta acción no se puede deshacer.`,
       onAceptar: async () => {
         setNotificacion(null);
 
         try {
           await eliminarRepuesto(repuesto.id);
+          setRepuestos(anteriores => anteriores.filter(r => r.id !== repuesto.id));
 
           setNotificacion({
             tipo: "exito",
-            mensaje: "Repuesto eliminado correctamente.",
-            onCerrar: () => {
-              setNotificacion(null);
-              window.location.reload();
-            }
+            mensaje: "Repuesto eliminado correctamente."
           });
 
         } catch (error) {
@@ -170,13 +149,6 @@ function RepuestosPage() {
           componente={"repuesto"}
         />
       </div>
-
-      {mensaje && (
-        <div className="alert alert-success alert-dismissible" role="status">
-          {mensaje}
-          <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
-        </div>
-      )}
 
       {error && (
         <div className="alert alert-danger alert-dismissible" role="alert">
@@ -215,7 +187,7 @@ function RepuestosPage() {
                 className="repuesto-precio"
                 data-label="Precio de venta"
               >
-                ${repuesto.precio_estandar.toLocaleString("es-AR")}
+                ${Number(repuesto.precio_estandar).toLocaleString("es-AR")}
               </td>
 
               <td

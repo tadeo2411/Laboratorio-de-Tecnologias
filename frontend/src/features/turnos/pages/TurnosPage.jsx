@@ -1,5 +1,3 @@
-import Turnos from "../components/Turnos"
-import TurnosModal from '../../../shared/components/Modal'
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
 import { obtenerTurnos, obtenerAutos, eliminarTurno } from '../services/turnosService';
@@ -13,6 +11,13 @@ import "../../estilos.css"
 import Modal from "../../../shared/components/Modal";
 import ModalNotificacion from "../../../shared/components/ModalNotification";
 
+function formatearFechaHora(fechaHora) {
+    if (!fechaHora) return "-"
+    const [fecha, hora] = fechaHora.split("T")
+    const [anio, mes, dia] = fecha.split("-")
+    return `${dia}/${mes}/${anio} ${hora.slice(0, 5)}`
+}
+
 function TurnosPage() {
     const [turnos, setTurnos] = useState([])
     const [error, setError] = useState(null)
@@ -25,7 +30,15 @@ function TurnosPage() {
     const [notificacion, setNotificacion] = useState(null);
 
     //abm
-    function handleAgregarTurno() { //se llama handle para seguir con la convencion de nombres en props
+    async function handleGuardarTurno() { //se llama handle para seguir con la convencion de nombres en props
+        try {
+            setTurnos(await obtenerTurnos())
+        } catch (error) {
+            setNotificacion({
+                tipo: "error",
+                mensaje: error.message || "No se pudieron actualizar los turnos."
+            });
+        }
         cerrarFormulario()
     }
     function handleEliminarTurno(idTurno) {
@@ -39,7 +52,7 @@ function TurnosPage() {
 
                 try {
                     await eliminarTurno(idTurno);
-                    window.location.reload();
+                    setTurnos(anteriores => anteriores.filter(turno => turno.id !== idTurno));
 
                 } catch (error) {
                     setNotificacion({
@@ -54,10 +67,6 @@ function TurnosPage() {
     function handleEditarTurno(turno) {
         setTurnoAEditar(turno)
         setMostrarFormulario(true)
-    }
-
-    function handleModificarTurno() {
-        cerrarFormulario()
     }
 
     useEffect(() => {
@@ -85,11 +94,6 @@ function TurnosPage() {
 
     }, [])
 
-
-    // El turno guarda el id del vehículo; la patente se busca para mostrarla.
-    function patenteDeVehiculo(vehiculoId) {
-        return vehiculos.find(vehiculo => vehiculo.id === vehiculoId)?.patente ?? '—'
-    }
 
     const columnasTurnos = [
         { key: "fechaHora", nombre: "Fecha y hora" },
@@ -133,11 +137,11 @@ function TurnosPage() {
                             <tr key={turno.id} className="turno-row">
 
                                 <td className="turno-fecha" data-label="Fecha y hora">
-                                    {turno.fecha_hora}
+                                    {formatearFechaHora(turno.fecha_hora)}
                                 </td>
 
                                 <td className="turno-cliente" data-label="DNI del cliente">
-                                    {turno.cliente_documento}
+                                    {turno.cliente_documento ?? "-"}
                                 </td>
 
                                 <td className="turno-patente" data-label="Patente">
@@ -193,9 +197,8 @@ function TurnosPage() {
                     {cargando && <p role="status">Cargando vehículos…</p>}
                     <TurnosForm
                         turnoInicial={turnoAEditar}
-                        onGuardar={turnoAEditar
-                            ? handleModificarTurno
-                            : handleAgregarTurno}
+                        onGuardar={handleGuardarTurno}
+                        onCancelar={cerrarFormulario}
                         vehiculos={vehiculos}
                         cargando={cargando}
                         error={error}

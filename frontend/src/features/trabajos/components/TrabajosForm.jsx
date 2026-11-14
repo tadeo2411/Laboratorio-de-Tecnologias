@@ -8,6 +8,8 @@ import service from "../services/trabajos";
 import { useEffect, useState } from "react";
 import ModalNotificacion from "../../../shared/components/ModalNotification";
 
+const ESTADOS_CON_TRABAJOS = ["DIAGNOSTICANDO", "ESPERANDO_REPUESTO", "EN_REPARACION"];
+
 function TrabajosForm({ trabajo, onCerrar, onGuardar }) {
 
     const [ordenes, setOrdenes] = useState([]);
@@ -113,7 +115,7 @@ function TrabajosForm({ trabajo, onCerrar, onGuardar }) {
                 if (trabajo) {
                     setOrdenSeleccionada(String(trabajo.orden_id));
                     setTipoSeleccionado(String(trabajo.tipo_trabajo_id));
-                    setDescripcion(trabajo.descripcion);
+                    setDescripcion(trabajo.descripcion ?? "");
                     setManoDeObra(String(trabajo.mano_de_obra));
 
                     setEmpleadosSeleccionados(
@@ -279,7 +281,7 @@ function TrabajosForm({ trabajo, onCerrar, onGuardar }) {
                     mensaje: "Trabajo actualizado correctamente.",
                     onCerrar: () => {
                         setNotificacion(null);
-                        window.location.reload();
+                        onCerrar();
                     }
                 });
 
@@ -291,7 +293,7 @@ function TrabajosForm({ trabajo, onCerrar, onGuardar }) {
                     mensaje: "Se ha cargado correctamente el trabajo.",
                     onCerrar: () => {
                         setNotificacion(null);
-                        window.location.reload();
+                        onCerrar();
                     }
                 });
             }
@@ -337,7 +339,12 @@ function TrabajosForm({ trabajo, onCerrar, onGuardar }) {
                             >
                                 <option value="">Seleccionar orden</option>
 
-                                {ordenes.map((orden) => (
+                                {ordenes
+                                    .filter((orden) =>
+                                        ESTADOS_CON_TRABAJOS.includes(orden.estado) ||
+                                        String(orden.id) === ordenSeleccionada
+                                    )
+                                    .map((orden) => (
                                     <option key={orden.id} value={orden.id}>
                                         Orden #{orden.id} - {orden.estado}
                                     </option>

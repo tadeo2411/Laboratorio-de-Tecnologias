@@ -29,6 +29,14 @@ CREATE TYPE "estado_orden" AS ENUM (
   'CANCELADO'
 );
 
+CREATE TYPE "estado_trabajo" AS ENUM (
+  'PENDIENTE',
+  'EN_PROCESO',
+  'ESPERANDO_APROBACION',
+  'TERMINADO',
+  'CANCELADO'
+);
+
 CREATE TYPE "categoria_trabajo" AS ENUM (
   'MANTENIMIENTO',
   'REPARACION',
@@ -202,7 +210,9 @@ CREATE TABLE "trabajos" (
   "orden_id" integer NOT NULL,
   "tipo_trabajo_id" integer NOT NULL,
   "descripcion" text,
-  "mano_de_obra" decimal(12,2) NOT NULL
+  "mano_de_obra" decimal(12,2) NOT NULL,
+  "fecha" timestamp NOT NULL DEFAULT (now()),
+  "estado" estado_trabajo NOT NULL DEFAULT 'PENDIENTE'
 );
 
 CREATE TABLE "repuestos_usados" (

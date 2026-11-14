@@ -1,161 +1,66 @@
+import { obtenerToken, manejarSesionVencida } from '../../auth';
+
 const URL = 'http://localhost:3000/api'
 
 let tiposTrabajo = null
 
-async function obtenerTrabajos() {
-    const respuesta = await fetch(`${URL}/trabajos`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    if (!respuesta.ok) {
-        throw new Error("No se pudo cargar el catálogo de trabajos")
+async function pedir(ruta, opciones = {}) {
+    const headers = { Authorization: `Bearer ${obtenerToken()}` };
+    if (opciones.body) headers['Content-Type'] = 'application/json';
+
+    let respuesta;
+    try {
+        respuesta = await fetch(`${URL}${ruta}`, { ...opciones, headers });
+    } catch {
+        throw new Error('No se pudo conectar con el servidor.');
     }
-    const trabajos = await respuesta.json()
-    console.log(trabajos);
-    return trabajos
+
+    manejarSesionVencida(respuesta);
+    const datos = respuesta.status === 204 ? null : await respuesta.json();
+
+    if (!respuesta.ok) {
+        throw new Error(datos?.error || 'Ocurrió un error con los trabajos.');
+    }
+    return datos;
+}
+
+async function obtenerTrabajos() {
+    return pedir('/trabajos');
 }
 
 export async function obtenerTiposTrabajo() {
     if (tiposTrabajo === null) {
-        const respuesta = await fetch(`${URL}/trabajos/tipoTrabajos`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!respuesta.ok) {
-            throw new Error("No se pudo cargar el catálogo de trabajos")
-        }
-        tiposTrabajo = await respuesta.json()
-
+        tiposTrabajo = await pedir('/trabajos/tipoTrabajos');
     }
     return tiposTrabajo
 }
 
 async function obtenerEmpleados() {
-    const respuesta = await fetch(`${URL}/auth/empleados`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (!respuesta.ok) {
-        throw new Error("No se pudo cargar el catálogo de empleados");
-    }
-
-    const empleados = await respuesta.json();
-    return empleados;
+    return pedir('/auth/empleados');
 }
 
 async function obtenerOrdenes() {
-    const respuesta = await fetch(`${URL}/ordenes`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (!respuesta.ok) {
-        throw new Error("No se pudo cargar el catálogo de órdenes");
-    }
-
-    const ordenes = await respuesta.json();
-    return ordenes;
+    return pedir('/ordenes');
 }
 
 async function obtenerRepuestos() {
-    const respuesta = await fetch(`${URL}/repuestos`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            'Content-Type': 'application/json'
-        }
-    });
-
-    if (!respuesta.ok) {
-        throw new Error("No se pudo cargar el catálogo de repuestos");
-    }
-
-    const repuestos = await respuesta.json();
-    return repuestos;
+    return pedir('/repuestos');
 }
 
 async function cargarTrabajo(trabajo) {
-    const respuesta = await fetch(`${URL}/trabajos`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(trabajo)
-    });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.message || "No se pudo cargar el trabajo");
-    }
-
-    const datos = await respuesta.json();
-
-    return datos;
+    return pedir('/trabajos', { method: 'POST', body: JSON.stringify(trabajo) });
 }
 
 export async function eliminarTrabajo(idTrabajo) {
-    const respuesta = await fetch(`${URL}/trabajos/${idTrabajo}`, {
-        method: "DELETE",
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`
-        }
-    });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.message || "Error al eliminar el trabajo");
-    }
-
-    return await respuesta.json();
+    return pedir(`/trabajos/${idTrabajo}`, { method: 'DELETE' });
 }
 
 async function obtenerTrabajoPorId(idTrabajo) {
-    const respuesta = await fetch(`${URL}/trabajos/${idTrabajo}`, {
-        method: "GET",
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            "Content-Type": "application/json"
-        }
-    });
-
-    if (!respuesta.ok) {
-        throw new Error("No se pudo obtener el trabajo");
-    }
-
-    return await respuesta.json();
+    return pedir(`/trabajos/${idTrabajo}`);
 }
 
 async function modificarTrabajo(idTrabajo, datos) {
-    const respuesta = await fetch(`${URL}/trabajos/${idTrabajo}`, {
-        method: "PATCH",
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("gestorTaller303:token")}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(datos)
-    });
-
-    if (!respuesta.ok) {
-        const error = await respuesta.json();
-        throw new Error(error.message || "No se pudo modificar el trabajo");
-    }
-
-    return await respuesta.json();
+    return pedir(`/trabajos/${idTrabajo}`, { method: 'PATCH', body: JSON.stringify(datos) });
 }
 
 export default { obtenerTrabajos, obtenerTiposTrabajo, obtenerEmpleados, obtenerOrdenes, obtenerRepuestos, cargarTrabajo, eliminarTrabajo, obtenerTrabajoPorId, modificarTrabajo };

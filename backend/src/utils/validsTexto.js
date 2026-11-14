@@ -31,4 +31,14 @@ function validarKilometraje(valor){
 
 }
 
-export { validarKilometraje, validarTextoObligatorio, validarTexto }
+// Para precios y montos: número (o texto numérico) entre 0 y lo que entra en decimal(12,2)
+function validarMonto(valor, nombreCampo){
+    const esNumero = (typeof valor === 'number' || (typeof valor === 'string' && valor.trim() !== '')) && Number.isFinite(Number(valor))
+
+    if (!esNumero || Number(valor) < 0 || Number(valor) > 9999999999.99) {
+        throw httpError(400, `El campo ${nombreCampo} debe ser un número entre 0 y 9999999999.99`)
+    }
+    return Number(valor)
+}
+
+export { validarKilometraje, validarTextoObligatorio, validarTexto, validarMonto }

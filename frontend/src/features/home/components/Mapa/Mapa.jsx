@@ -1,3 +1,5 @@
+import { DIRECCION, HORARIO } from '../../../../shared/constantes/contacto'
+
 function Mapa(){
     const MAPA_URL =
   "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3334.9611328489304!2d-66.3035062!3d-33.2936798!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95d43f19678983d9%3A0x49964d82776106b9!2s303%20mec%C3%A1nica-inyecci%C3%B3n!5e0!3m2!1ses-419!2sar!4v1788966364859!5m2!1ses-419!2sar";
@@ -30,12 +32,12 @@ function Mapa(){
                     <address className="ubicacion__datos">
                         <div className="ubicacion__dato">
                             <span className="ubicacion__dato-nombre">Dirección</span>
-                            <p className="ubicacion__dato-valor">303 Mecánica e Inyección, San Luis</p>
+                            <p className="ubicacion__dato-valor">{DIRECCION}</p>
                         </div>
 
                         <div className="ubicacion__dato">
                             <span className="ubicacion__dato-nombre">Horarios</span>
-                            <p className="ubicacion__dato-valor">Lunes a viernes de 8:00 a 18:00</p>
+                            <p className="ubicacion__dato-valor">{HORARIO}</p>
                         </div>
                     </address>
 

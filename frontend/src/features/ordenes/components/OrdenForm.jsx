@@ -6,6 +6,7 @@ import img_service from "../../../assets/icons/img_trabajo.svg"
 import FichaForm from "./FichaForm.jsx";
 import BuscadorVehiculo from "./BuscadorVehiculo.jsx";
 import { VehiculoForm } from "../../vehiculos";
+import { BuscadorClientes } from "../../clientes";
 import { ESTADO_INICIAL, obtenerEstado, siguienteEstado } from "../utils/estados";
 import { buscarFicha, formatearFecha, describirVehiculo } from "../utils/ordenes";
 import {
@@ -31,7 +32,8 @@ function valoresIniciales(orden){
 
 function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onCerrar }) {
     const [formulario, setFormulario] = useState(valoresIniciales(orden));
-    const [fichasNuevas, setFichasNuevas] = useState({ INGRESO: null, EGRESO: null });
+    const [fichasNuevas, setFichasNuevas] = useState({ INGRESO: orden ? null : fichaVacia(), EGRESO: null });
+    const [clienteElegido, setClienteElegido] = useState(null);
     const [error, setError] = useState("");
     const [guardando, setGuardando] = useState(false);
     const [registrandoVehiculo, setRegistrandoVehiculo] = useState(false);
@@ -100,6 +102,11 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
             return;
         }
 
+        if (!esEdicion && !clienteElegido){
+            setError("Buscá el cliente por nombre o documento y elegilo.");
+            return;
+        }
+
         const errorFichas = validarFichasNuevas();
         if (errorFichas){
             setError(errorFichas);
@@ -114,6 +121,7 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
         try {
             await onGuardar({
                 ...formulario,
+                clienteId: clienteElegido?.id,
                 diagnostico: formulario.diagnostico.trim() || null
             }, fichasParaGuardar);
         } catch (errorGuardado) {
@@ -168,6 +176,24 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                             />
                         )}
                     </div>
+
+                    {!esEdicion && (
+                        <div>
+                            <label>
+                                Cliente <span className="asterisco">*</span>
+                            </label>
+                            {clienteElegido ? (
+                                <div className="campo-icono">
+                                    <span>{clienteElegido.nombre} - {clienteElegido.documento}</span>
+                                    <button type="button" className="btn btn-link" onClick={() => setClienteElegido(null)}>
+                                        Cambiar
+                                    </button>
+                                </div>
+                            ) : (
+                                <BuscadorClientes clientes={clientes} onSeleccionar={setClienteElegido} />
+                            )}
+                        </div>
+                    )}
 
                     {esEdicion && (
                         <div>
@@ -240,6 +266,16 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                         </label>
                     </div>
                 </div>
+
+                {!esEdicion && (
+                    <div className="fichas-orden">
+                        <FichaForm
+                            tipo="INGRESO"
+                            ficha={fichasNuevas.INGRESO}
+                            onCambiar={(ficha) => cambiarFicha("INGRESO", ficha)}
+                        />
+                    </div>
+                )}
 
                 {esEdicion && (
                     <div className="fichas-orden">

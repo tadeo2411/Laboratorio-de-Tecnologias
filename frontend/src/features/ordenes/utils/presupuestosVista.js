@@ -1,6 +1,5 @@
 // Solo presentación: cómo se muestran los presupuestos en pantalla.
-// Las reglas y cálculos (precios derivados, vencimiento, estados) son del
-// backend; mientras tanto los resuelve services/presupuestosService.js.
+// Las reglas y cálculos (precios derivados, vencimiento, estados) los resuelve el backend.
 
 export const ESTADOS_PRESUPUESTO = {
     BORRADOR: { texto: "Borrador", clase: "presupuesto-borrador" },

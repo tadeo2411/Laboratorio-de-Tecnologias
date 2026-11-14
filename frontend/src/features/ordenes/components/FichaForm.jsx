@@ -75,11 +75,13 @@ function FichaForm({ tipo, ficha, onCambiar, onQuitar }) {
                 El cliente dio su conformidad
             </label>
 
-            <div className="ficha-form-acciones">
-                <button type="button" className="btn btn-secondary" onClick={onQuitar}>
-                    Quitar ficha
-                </button>
-            </div>
+            {onQuitar && (
+                <div className="ficha-form-acciones">
+                    <button type="button" className="btn btn-secondary" onClick={onQuitar}>
+                        Quitar ficha
+                    </button>
+                </div>
+            )}
         </fieldset>
     );
 }

@@ -182,7 +182,7 @@ WHERE o.diagnostico = 'Mantenimiento programado; revisar posibles pérdidas de a
   AND NOT EXISTS (SELECT 1 FROM presupuestos p WHERE p.numero = 1001);
 
 INSERT INTO presupuestos (numero, orden_id, fecha_emision, vigencia_dias, estado)
-SELECT 1002, o.id, CURRENT_DATE, 10, 'BORRADOR'
+SELECT 1002, o.id, NULL::date, 10, 'BORRADOR'
 FROM ordenes_trabajo o
 WHERE o.diagnostico = 'Desgaste de pastillas delanteras; verificar discos.'
   AND NOT EXISTS (SELECT 1 FROM presupuestos p WHERE p.numero = 1002);

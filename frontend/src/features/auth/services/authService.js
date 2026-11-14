@@ -28,9 +28,7 @@ function guardarSesion(usuario) {
 export async function iniciarSesion(usuario, contrasena) {
   let respuesta
   try {
-    respuesta = await fetch(`${URL}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    respuesta = await fetch(`${URL}/login`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, 
       body: JSON.stringify({ usuario, contrasena })
     })
   } catch {

@@ -1,8 +1,9 @@
 //ESTADOS SOLICITADO, CONFIRMADO, CUMPLIDO, CANCELADO, AUSENTE
 import { obtenerToken, manejarSesionVencida } from '../../auth';
+import { API_URL } from '../../../shared/config/api';
 
 export const estadosTurno = ['SOLICITADO', 'CONFIRMADO', 'CUMPLIDO', 'CANCELADO', 'AUSENTE']
-const URL = 'http://localhost:3000/api'
+const URL = API_URL
 
 async function pedir(ruta, opciones = {}) {
     const headers = { Authorization: `Bearer ${obtenerToken()}` };

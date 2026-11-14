@@ -6,9 +6,10 @@
 // solo se reemplaza el interior de estas funciones; las páginas no cambian.
 
 import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
+import { API_URL } from '../../../shared/config/api'
 
 const URL = '/backend/data'
-const URLVehiculos = 'http://localhost:3000/api/vehiculos'
+const URLVehiculos = `${API_URL}/vehiculos`
 let vehiculos = null
 
 async function pedir(ruta, opciones = {}) {

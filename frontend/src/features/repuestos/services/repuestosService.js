@@ -1,6 +1,7 @@
 import { obtenerToken, manejarSesionVencida } from '../../auth';
+import { API_URL } from '../../../shared/config/api';
 
-const URL = 'http://localhost:3000/api/repuestos';
+const URL = `${API_URL}/repuestos`;
 
 async function pedir(ruta, opciones = {}) {
   const headers = { Authorization: `Bearer ${obtenerToken()}` };

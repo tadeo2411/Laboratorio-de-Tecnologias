@@ -22,7 +22,7 @@ const columnasEmpleados = [
     { key: "acciones", nombre: "Acciones" },
 ];
 
-function CuentaPage(usuario, onCerrarSesion) {
+function CuentaPage() {
     const datos = useLoaderData();
     const { miCuenta, esAdmin } = datos;
     const [empleados, setEmpleados] = useState(datos.empleados);
@@ -85,16 +85,12 @@ function CuentaPage(usuario, onCerrarSesion) {
                         <h1>Mi cuenta</h1>
                         <p>Tus datos dentro del sistema del taller.</p>
                     </div>
-                     {usuario && (
-                            <div className="usuario-info barra-gestor__sesion">
-                                <span className="usuario-info__nombre">{usuario.nombre}</span>
-                                <button type="button" className="btn-cerrar-sesion" onClick={() => {
-                                    const onCerrarSesion=handleCerrarSesion()
-                                }}>
-                                    Cerrar sesión
-                                </button>
-                            </div>
-                        )} 
+                     <div className="usuario-info barra-gestor__sesion">
+                        <span className="usuario-info__nombre">{miCuenta.nombre}</span>
+                        <button type="button" className="btn-cerrar-sesion" onClick={handleCerrarSesion}>
+                            Cerrar sesión
+                        </button>
+                    </div>
                 </div>
                 <MiCuenta cuenta={miCuenta} />
             </div>

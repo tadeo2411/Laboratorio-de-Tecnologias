@@ -2,11 +2,10 @@ import { obtenerVehiculos, obtenerClientes } from '../../vehiculos'
 import { obtenerTiposTrabajo } from '../../trabajos'
 import { obtenerRepuestos } from '../../repuestos'
 import { obtenerEmpleados } from '../../auth'
-import { esEstadoFinal, puedeCambiarEstado, obtenerEstado} from '../utils/estados'
-import { buscarFicha } from '../utils/ordenes'
 import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
+import { API_URL } from '../../../shared/config/api'
 
-const URL_API = 'http://localhost:3000/api/ordenes'
+const URL_API = `${API_URL}/ordenes`
 
 async function pedir(ruta, opciones = {}) {
     const headers = { Authorization: `Bearer ${obtenerToken()}` }

@@ -57,4 +57,21 @@ async function crearEmpleado(empleado){
     return id
 }
 
-export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId, obtenerTodosLosEmpleados, crearEmpleado}
+async function modificarEmpleado(id, empleado){
+    await pool.query(
+        `UPDATE empleados SET nombre = $1, usuario = $2, password_hash = COALESCE($3, password_hash)
+         WHERE id = $4`,
+        [empleado.nombre, empleado.usuario, empleado.passwordHash, id]
+    )
+    await pool.query(
+        `UPDATE empleados_roles SET rol_id = (SELECT id FROM roles WHERE nombre = $1)
+         WHERE empleado_id = $2`,
+        [empleado.rol, id]
+    )
+}
+
+async function cambiarActivo(id, activo){
+    await pool.query('UPDATE empleados SET activo = $1 WHERE id = $2', [activo, id])
+}
+
+export default { obtenerEmpleadosActivos, buscarPorUsuario, buscarPorId, obtenerTodosLosEmpleados, crearEmpleado, modificarEmpleado, cambiarActivo }

@@ -149,6 +149,13 @@ async function actualizarOrden(idRecibido, datos) {
     if (datos.esService !== undefined) cambios.esService = datos.esService
     if (datos.esUrgencia !== undefined) cambios.esUrgencia = datos.esUrgencia
 
+    // Cambiar el cliente lo deja también como dueño del vehículo, igual que al crear la orden.
+    if (datos.clienteId !== undefined && datos.clienteId !== orden.clienteId) {
+        const cliente = await clientesService.buscar(datos.clienteId)
+        await vehiculosService.asociarDueno(orden.vehiculoId, cliente.id)
+        cambios.clienteId = cliente.id
+    }
+
     await ordenesRepository.actualizar(orden.id, {...orden,...cambios})
     return ordenesRepository.buscarPorId(orden.id)
 }

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import '../clientes.css'
 
 function BuscadorClientes({
+  id,
   clientes = [],
   onSeleccionar,
   excluirIds = [],
@@ -30,10 +31,17 @@ function BuscadorClientes({
   return (
     <div className="position-relative">
       <input
+        id={id}
         type="search"
         className="form-control"
         value={busqueda}
         onChange={(e) => setBusqueda(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape' && busqueda) {
+            e.stopPropagation()
+            setBusqueda('')
+          }
+        }}
         autoComplete="off"
         placeholder={placeholder}
       />

@@ -4,9 +4,12 @@ import { formatearPrecio } from "../utils/presupuestosVista";
 
 const DIAS_VALIDEZ_SUGERIDOS = "15";
 
+let ultimaClave = 0;
+
 function crearDescuentoVacio() {
     // "clave" solo identifica la fila en pantalla; no se guarda.
-    return { clave: crypto.randomUUID(), motivo: "", monto: "" };
+    ultimaClave += 1;
+    return { clave: ultimaClave, motivo: "", monto: "" };
 }
 
 // --- Cálculos de la vista previa ---------------------------------------------

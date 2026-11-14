@@ -663,6 +663,16 @@ textarea {
     .page-header> :last-child {
         margin-left: auto;
     }
+
+    /* El título no se achica letra por letra: el botón "Nuevo" baja a su propia fila */
+    .page-header-title {
+        min-width: 160px;
+    }
+
+    .page-header > .btnNuevo {
+        flex: 1 1 100%;
+        justify-content: center;
+    }
 }
 
 @media (max-width: 380px) {

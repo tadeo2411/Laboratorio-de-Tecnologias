@@ -19,12 +19,20 @@ import "../../estilos.css"
 const columnasOrdenes = [
     { key: "numero", nombre: "N°" },
     { key: "vehiculo", nombre: "Vehículo" },
+    { key: "cliente", nombre: "Cliente" },
     { key: "ingreso", nombre: "Ingreso" },
     { key: "estado", nombre: "Estado" },
     { key: "esService", nombre: "Service" },
     { key: "esUrgencia", nombre: "Urgencia" },
     { key: "acciones", nombre: "Acciones" },
 ];
+
+// La búsqueda compara contra el número, la patente y el cliente (nombre o documento).
+function coincideBusqueda(orden, texto) {
+    if (!texto) return true;
+    return [numeroOrden(orden.id), String(orden.id), orden.vehiculoPatente, orden.clienteNombre, orden.clienteDocumento]
+        .some(valor => valor?.toLowerCase().includes(texto));
+}
 
 function OrdenesPage() {
     const datos = useLoaderData();
@@ -33,6 +41,7 @@ function OrdenesPage() {
     const [modalAbierto, setModalAbierto] = useState(false);
     const [modalMasInfoAbierto, setModalMasInfoAbierto] = useState(false);
     const [ordenSeleccionado, setOrdenSeleccionado] = useState(null);
+    const [busqueda, setBusqueda] = useState("");
     const [ordenEnEdicion, setOrdenEnEdicion] = useState(null);
 
     function abrirFormulario(orden = null) {
@@ -51,7 +60,9 @@ function OrdenesPage() {
             if (seCancela && !window.confirm('¿Seguro que querés cancelar la orden? Después no se va a poder modificar.')) return;
 
             for (const ficha of fichasNuevas) {
-                await agregarFicha(ordenEnEdicion.id, ficha);
+                const ordenConFicha = await agregarFicha(ordenEnEdicion.id, ficha);
+                setOrdenEnEdicion(ordenConFicha);
+                setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenConFicha.id ? ordenConFicha : orden));
             }
             const ordenActualizada = await actualizarOrden(ordenEnEdicion.id, datosFormulario);
             setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
@@ -98,11 +109,13 @@ function OrdenesPage() {
                 <Modal
                     titulo={ordenEnEdicion ? `Orden #${ordenEnEdicion.id} · ${ordenEnEdicion.vehiculoPatente}` : "Nueva orden"}
                     onCerrar={cerrarFormulario}
+                    cerrarAlTocarFondo={false}
                 >
                     {ordenEnEdicion ? (
                         <EditarOrden
                             orden={ordenEnEdicion}
                             vehiculos={vehiculos}
+                            clientes={datos.clientes}
                             onGuardar={handleGuardarOrden}
                             onCerrar={cerrarFormulario}
                         />
@@ -143,17 +156,19 @@ function OrdenesPage() {
                           <img src={img_list} alt="Listado" />
                         </div>
                         <div className="page-header-title">
-                        <h1>Ordenes</h1>
-                        <p>Listado de ordenes registradas en el sistema.</p>
+                        <h1>Órdenes</h1>
+                        <p>Listado de órdenes registradas en el sistema.</p>
                     </div>
 
                     <BotonNuevo onClick={() => abrirFormulario()} componente={"orden"} esFemenino />
                 </div>
                 <Table
-                    inputPlaceholder="Buscar por patente o numero de orden..."
+                    inputPlaceholder="Buscar por patente, número de orden o cliente..."
                     columnas={columnasOrdenes}
-                    datos={ordenes}
-                    mensajeVacio="Todavía no hay ordenes cargadas."
+                    datos={ordenes.filter(orden => coincideBusqueda(orden, busqueda.trim().toLowerCase()))}
+                    valorBusqueda={busqueda}
+                    alCambiarBusqueda={setBusqueda}
+                    mensajeVacio={busqueda ? "No hay órdenes que coincidan con la búsqueda." : "Todavía no hay órdenes cargadas."}
                     renderFila={(orden) => (
                         <tr key={orden.id} className="orden-row">
                             
@@ -166,6 +181,11 @@ function OrdenesPage() {
                                 <div>
                                     {describirVehiculo(vehiculos, orden.vehiculoPatente)}
                                 </div>
+                            </td>
+
+                            <td className="orden-cliente" data-label="Cliente">
+                                {orden.clienteNombre ?? "-"}
+                                {orden.clienteDocumento && <div>{orden.clienteDocumento}</div>}
                             </td>
 
                             <td className="orden-ingreso" data-label="Ingreso">
@@ -188,15 +208,17 @@ function OrdenesPage() {
                                 <div className="acciones-container">
 
                                     <button
+                                        type="button"
                                         className="accion-button accion-info"
                                         title="Más información"
+                                        aria-label={`Más información de la orden ${numeroOrden(orden.id)}`}
                                         onClick={() => {
                                             setOrdenSeleccionado(orden);
                                             setModalMasInfoAbierto(true)
                                         }
                                         }
                                     >
-                                        ⓘ
+                                        <span aria-hidden="true">ⓘ</span>
                                     </button>
 
                                     {!esEstadoFinal(orden.estado) && (

@@ -21,7 +21,13 @@ function BuscadorVehiculo({ vehiculos, patenteSeleccionada, onSeleccionar, onReg
     }
 
     // Enter no envía la orden: si hay una sola coincidencia, la elige.
+    // Escape borra la búsqueda sin cerrar el modal de la orden.
     function manejarTecla(event){
+        if (event.key === "Escape" && busqueda) {
+            event.stopPropagation();
+            setBusqueda("");
+            return;
+        }
         if (event.key !== "Enter") return;
         event.preventDefault();
         if (resultados.length === 1) elegir(resultados[0]);

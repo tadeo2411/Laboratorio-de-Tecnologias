@@ -5,9 +5,11 @@ async function listarOrdenes(){
     const resultado = await pool.query(
         `SELECT o.id, o.id_cliente AS "clienteId", o.id_vehiculo AS "vehiculoId", v.patente AS "vehiculoPatente", 
         o.turno_id AS "turnoId", o.estado, o.diagnostico, o.es_service AS "esService", 
-        o.es_urgencia AS "esUrgencia", o.garantia_dias AS "garantiaDias", o.created_at AS "createdAt"
+        o.es_urgencia AS "esUrgencia", o.garantia_dias AS "garantiaDias", o.created_at AS "createdAt",
+        c.nombre AS "clienteNombre", c.documento AS "clienteDocumento"
         FROM ordenes_trabajo o 
-        JOIN vehiculos v ON v.id = o.id_vehiculo ORDER BY o.id` )
+        JOIN vehiculos v ON v.id = o.id_vehiculo
+        LEFT JOIN clientes c ON c.id = o.id_cliente ORDER BY o.id` )
     const ordenes = resultado.rows
     for (const orden of ordenes) {
         orden.fichas = await buscarFichas(orden.id)
@@ -66,9 +68,11 @@ async function buscarPorId(id){
     const resultado = await pool.query(
         `SELECT o.id, o.id_cliente AS "clienteId", o.id_vehiculo AS "vehiculoId", v.patente AS "vehiculoPatente", 
         o.turno_id AS "turnoId", o.estado, o.diagnostico, o.es_service AS "esService", 
-        o.es_urgencia AS "esUrgencia", o.garantia_dias AS "garantiaDias", o.created_at AS "createdAt"
+        o.es_urgencia AS "esUrgencia", o.garantia_dias AS "garantiaDias", o.created_at AS "createdAt",
+        c.nombre AS "clienteNombre", c.documento AS "clienteDocumento"
         FROM ordenes_trabajo o 
-        JOIN vehiculos v ON v.id = o.id_vehiculo WHERE o.id = $1`, [id]
+        JOIN vehiculos v ON v.id = o.id_vehiculo
+        LEFT JOIN clientes c ON c.id = o.id_cliente WHERE o.id = $1`, [id]
     )
     const orden = resultado.rows[0]
     if (!orden) return undefined
@@ -97,9 +101,9 @@ async function crear(orden){
 }
 async function actualizar(id, orden){
     await pool.query(
-        `UPDATE ordenes_trabajo SET diagnostico = $1, es_service = $2, es_urgencia = $3
-        WHERE id = $4`,
-        [orden.diagnostico, orden.esService, orden.esUrgencia, id]
+        `UPDATE ordenes_trabajo SET diagnostico = $1, es_service = $2, es_urgencia = $3, id_cliente = $4
+        WHERE id = $5`,
+        [orden.diagnostico, orden.esService, orden.esUrgencia, orden.clienteId, id]
     )
 }
 

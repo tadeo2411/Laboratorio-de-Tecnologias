@@ -4,14 +4,17 @@ import { ESTADOS_PRESUPUESTO, TIPOS_ITEM, formatearPrecio } from "../utils/presu
 // Estados que se pueden elegir a mano. VENCIDO lo asigna el sistema.
 const ESTADOS_ELEGIBLES = ["ENVIADO", "APROBADO", "CANCELADO"];
 
+let ultimaClave = 0;
+const nuevaClave = () => ++ultimaClave;
+
 function crearItemVacio() {
-    return { clave: crypto.randomUUID(), tipo: "MANO_DE_OBRA", descripcion: "", cantidad: 1, precioUnitario: "" };
+    return { clave: nuevaClave(), tipo: "MANO_DE_OBRA", descripcion: "", cantidad: 1, precioUnitario: "" };
 }
 
 // "clave" solo identifica la fila en pantalla; no se guarda.
 function crearItemsIniciales(presupuesto) {
     if (!presupuesto) return [crearItemVacio()];
-    return presupuesto.items.map((item) => ({ ...item, clave: crypto.randomUUID() }));
+    return presupuesto.items.map((item) => ({ ...item, clave: nuevaClave() }));
 }
 
 // Vista previa mientras se escribe; el precio que vale es el que calcula el backend al guardar.

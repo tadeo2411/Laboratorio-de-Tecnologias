@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import img_auto from "../../../assets/icons/img_auto.png";
 import img_estado from "../../../assets/icons/img_estado.svg";
 import img_urgencia from "../../../assets/icons/img_urgencia.svg"
 import img_service from "../../../assets/icons/img_trabajo.svg"
 import FichaForm from "./FichaForm.jsx";
 import BuscadorVehiculo from "./BuscadorVehiculo.jsx";
-import { VehiculoForm } from "../../vehiculos";
+import { VehiculoForm, obtenerDuenos } from "../../vehiculos";
 import { BuscadorClientes } from "../../clientes";
 import { ESTADO_INICIAL, obtenerEstado, siguienteEstado } from "../utils/estados";
 import { buscarFicha, formatearFecha, describirVehiculo } from "../utils/ordenes";
@@ -30,10 +30,16 @@ function valoresIniciales(orden){
     };
 }
 
+function clienteDeLaOrden(orden){
+    if (!orden?.clienteId) return null;
+    return { id: orden.clienteId, nombre: orden.clienteNombre, documento: orden.clienteDocumento };
+}
+
 function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onCerrar }) {
     const [formulario, setFormulario] = useState(valoresIniciales(orden));
     const [fichasNuevas, setFichasNuevas] = useState({ INGRESO: orden ? null : fichaVacia(), EGRESO: null });
-    const [clienteElegido, setClienteElegido] = useState(null);
+    const [clienteElegido, setClienteElegido] = useState(clienteDeLaOrden(orden));
+    const [duenos, setDuenos] = useState([]);
     const [error, setError] = useState("");
     const [guardando, setGuardando] = useState(false);
     const [registrandoVehiculo, setRegistrandoVehiculo] = useState(false);
@@ -52,14 +58,40 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
         }));
     }
 
-    function elegirVehiculo(patente){
+    // Al editar se muestran los dueños del vehículo para poder cambiar el cliente rápido.
+    useEffect(() => {
+        if (!orden) return;
+        let activo = true;
+        obtenerDuenos(orden.vehiculoId)
+            .then(lista => { if (activo) setDuenos(lista); })
+            .catch(() => {});
+        return () => { activo = false; };
+    }, [orden]);
+
+    // Al elegir el vehículo se sugiere como cliente a su último dueño (si no se eligió otro a mano).
+    async function elegirVehiculo(patente, vehiculoNuevo = null){
         setFormulario(valoresActuales => ({ ...valoresActuales, vehiculoPatente: patente }));
+        setDuenos([]);
+        setClienteElegido(actual => actual?.sugerido ? null : actual);
+
+        const vehiculo = vehiculoNuevo ?? vehiculos.find(v => v.patente === patente);
+        if (!vehiculo) return;
+
+        try {
+            const lista = await obtenerDuenos(vehiculo.id);
+            setDuenos(lista);
+            if (lista.length > 0) {
+                setClienteElegido(actual => actual ?? { ...lista[0], sugerido: true });
+            }
+        } catch {
+            // Si no se pueden traer los dueños, el cliente se busca a mano.
+        }
     }
 
     // No captura errores: si el vehículo no se puede crear, VehiculoForm muestra el motivo.
     async function guardarVehiculoNuevo(datos){
         const vehiculoCreado = await onCrearVehiculo(datos);
-        elegirVehiculo(vehiculoCreado.patente);
+        elegirVehiculo(vehiculoCreado.patente, vehiculoCreado);
         setRegistrandoVehiculo(false);
     }
 
@@ -102,7 +134,7 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
             return;
         }
 
-        if (!esEdicion && !clienteElegido){
+        if (!clienteElegido){
             setError("Buscá el cliente por nombre o documento y elegilo.");
             return;
         }
@@ -114,7 +146,7 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
         }
 
         const fichasParaGuardar = TIPOS_FICHA
-            .filter(tipo => fichasNuevas[tipo])
+            .filter(tipo => fichasNuevas[tipo] && !(esEdicion && buscarFicha(orden, tipo)))
             .map(tipo => armarFicha(tipo, fichasNuevas[tipo]));
 
         setGuardando(true);
@@ -177,23 +209,40 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                         )}
                     </div>
 
-                    {!esEdicion && (
-                        <div>
-                            <label>
-                                Cliente <span className="asterisco">*</span>
-                            </label>
-                            {clienteElegido ? (
-                                <div className="campo-icono">
-                                    <span>{clienteElegido.nombre} - {clienteElegido.documento}</span>
-                                    <button type="button" className="btn btn-link" onClick={() => setClienteElegido(null)}>
-                                        Cambiar
+                    <div>
+                        <label htmlFor="orden-cliente">
+                            Cliente <span className="asterisco">*</span>
+                        </label>
+                        {clienteElegido ? (
+                            <div className="campo-icono orden-cliente-elegido">
+                                <span id="orden-cliente">
+                                    {clienteElegido.nombre} - {clienteElegido.documento}
+                                    {clienteElegido.sugerido && <small className="orden-cliente-nota"> (dueño del vehículo)</small>}
+                                </span>
+                                <button type="button" className="btn btn-link" onClick={() => setClienteElegido(null)}>
+                                    Cambiar
+                                </button>
+                            </div>
+                        ) : (
+                            <BuscadorClientes id="orden-cliente" clientes={clientes} onSeleccionar={setClienteElegido} />
+                        )}
+                        {duenos.some(dueno => dueno.id !== clienteElegido?.id) && (
+                            <div className="orden-duenos">
+                                <span>Dueños del vehículo:</span>
+                                {duenos.map(dueno => (
+                                    <button
+                                        key={dueno.id}
+                                        type="button"
+                                        className="btn btn-outline-secondary btn-sm"
+                                        aria-pressed={clienteElegido?.id === dueno.id}
+                                        onClick={() => setClienteElegido(dueno)}
+                                    >
+                                        {dueno.nombre}
                                     </button>
-                                </div>
-                            ) : (
-                                <BuscadorClientes clientes={clientes} onSeleccionar={setClienteElegido} />
-                            )}
-                        </div>
-                    )}
+                                ))}
+                            </div>
+                        )}
+                    </div>
 
                     {esEdicion && (
                         <div>
@@ -239,10 +288,12 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                 <div>
                     <div className="check-container">
                         <img src={img_service} alt="" className="check-icon" />
-                        <span>Es service</span>
+                        <span id="orden-service-texto">Es service</span>
                         <label className="switch">
                             <input
                                 type="checkbox"
+                                role="switch"
+                                aria-labelledby="orden-service-texto"
                                 id="orden-service"
                                 name="esService"
                                 checked={formulario.esService}
@@ -253,10 +304,12 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                     </div>
                     <div className="check-container">
                         <img src={img_urgencia} alt="" className="check-icon" />
-                        <span>Es urgencia</span>
+                        <span id="orden-urgencia-texto">Es urgencia</span>
                         <label className="switch">
                             <input
                                 type="checkbox"
+                                role="switch"
+                                aria-labelledby="orden-urgencia-texto"
                                 id="orden-urgencia"
                                 name="esUrgencia"
                                 checked={formulario.esUrgencia}

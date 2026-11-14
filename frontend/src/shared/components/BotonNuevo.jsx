@@ -6,9 +6,8 @@ function BotonNuevo({ onClick,  componente, esFemenino = false }) {
         <button
         type="button"
         onClick={onClick}
-        className="btnNuevo"
-        aria-label={` ${palabraNuevo} ${componente}`}>
-            <img src={botonMas} />
+        className="btnNuevo">
+            <img src={botonMas} alt="" />
             <span> {palabraNuevo} {componente} </span>
         </button>
     )

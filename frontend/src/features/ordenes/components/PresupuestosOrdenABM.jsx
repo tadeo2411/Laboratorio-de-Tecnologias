@@ -155,7 +155,7 @@ function PresupuestosOrdenABM({ ordenId }) {
 
             {cargando ? (
                 <div className="info-orden-vacio">Cargando presupuestos...</div>
-            ) : presupuestos.length === 0 ? (
+            ) : error && presupuestos.length === 0 ? null : presupuestos.length === 0 ? (
                 <div className="info-orden-vacio">
                     No hay presupuestos generados para esta orden.
                 </div>

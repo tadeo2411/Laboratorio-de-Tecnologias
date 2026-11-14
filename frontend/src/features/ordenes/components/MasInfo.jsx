@@ -93,6 +93,20 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
                         </div>
                     </div>
 
+                    {/* Cliente */}
+                    <div className="info-orden-item">
+                        <span className="info-orden-label">
+                            Cliente
+                        </span>
+
+                        <div className="info-orden-dato">
+                            <img src={img_empleado} alt="" />
+                            <span>
+                                {orden.clienteNombre ? `${orden.clienteNombre} - ${orden.clienteDocumento}` : "Sin cliente"}
+                            </span>
+                        </div>
+                    </div>
+
                     {/* Estado */}
                     <div className="info-orden-item">
                         <span className="info-orden-label">

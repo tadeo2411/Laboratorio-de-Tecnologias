@@ -6,7 +6,8 @@ async function obtenerOrdenes(req, res) {
 }
 
 async function obtenerOrdenesUltimosMeses(req, res){
-    const resumen = await tablerosService.obtenerOrdenesUltimosMeses(req.params.meses)
+    const meses = req.query.meses || 3
+    const resumen = await tablerosService.obtenerOrdenesUltimosMeses(meses)
     return res.json(resumen)
 }
 

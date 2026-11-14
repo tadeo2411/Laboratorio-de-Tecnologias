@@ -7,6 +7,7 @@ function validarMeses(cantMeses){
         throw httpError(400, 'Ingrese una cantidad de meses validos')
     if(meses > 120)//maximo 10 anios para ver cuantas ordenes puede calcular
         throw httpError(400, 'Puede ver como maximo desde hace 120 meses (10 años)')
+    return meses
 }
 
 async function obtenerOrdenes(){

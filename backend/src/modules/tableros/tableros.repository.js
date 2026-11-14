@@ -29,7 +29,7 @@ async function obtenerOrdenesUltimosMeses(cantMeses){
 
 async function obtenerProximosTurnos(){
     const { rows } = await pool.query(
-        `SELECT t.fecha_hora, c.nombre, v.patente
+        `SELECT t.id, t.fecha_hora, t.motivo, t.estado, c.nombre, v.patente, v.marca, v.modelo
         FROM turnos t
         JOIN clientes c ON t.id_cliente = c.id
         JOIN vehiculos v ON t.id_vehiculo = v.id

@@ -1,82 +1,644 @@
-.contenedorMetricas {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 30px;
-}
+/* ==========================================================================
+   TABLERO DE CONTROL - MOBILE FIRST
+   ========================================================================== */
 
-.contenedorTarjetas {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: stretch;
-    gap: 10px;
-}
-
-.Tarjeta {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border: 1px solid rgb(194, 192, 192);
-    border-radius: 10px;
-    padding: 10px;
-    width: 250px;
-    min-height: 140px;
-    box-sizing: border-box;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.10);
-}
-
-.tarjetaTitulo {
-    font-size: 15px;
-}
-
-.tarjetaCantidad {
-    font-weight: bold;
-    font-size: 25px;
-}
-
-.vehiculosPorEstado {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: baseline;
-    background-color: white;
-    border: 1px solid rgb(194, 192, 192);
-    border-radius: 10px;
-    padding: 20px;
+.tablero-pagina {
     width: 100%;
-    max-width: 900px;
+    max-width: 1240px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.vehiculosPorEstado>h2 {
-    font-weight: bold;
+/* Estados de carga y error */
+.tablero-estado-pantalla {
+    width: 100%;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    text-align: center;
+    color: #475569;
+}
+
+.tablero-estado-pantalla--error {
+    background-color: #ffffff;
+    border: 1px solid #fecaca;
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.tablero-error-texto {
+    margin: 0;
+    color: #b91c1c;
+    font-weight: 500;
+}
+
+.tablero-btn-accion {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #16a34a;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Encabezado */
+.tablero-encabezado {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.tablero-titulo {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.tablero-subtitulo {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: #64748b;
+}
+
+.tablero-btn-refrescar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #334155;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.tablero-btn-refrescar:hover {
+    background-color: #f8fafc;
+    border-color: #94a3b8;
+}
+
+/* Tarjetas KPI */
+.tablero-kpis {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    background: transparent;
+    border: none;
+}
+
+.tablero-kpi {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 16px;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 4px solid #3b82f6;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.tablero-kpi--primario {
+    border-left-color: #2563eb;
+}
+
+.tablero-kpi--exito {
+    border-left-color: #16a34a;
+}
+
+.tablero-kpi--alerta {
+    border-left-color: #f59e0b;
+}
+
+.tablero-kpi--financiero {
+    border-left-color: #0d9488;
+}
+
+.tablero-kpi__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tablero-kpi__titulo {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+.tablero-kpi__icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background-color: #f1f5f9;
+    color: #334155;
+    flex-shrink: 0;
+}
+
+.tablero-kpi--primario .tablero-kpi__icono {
+    background-color: #eff6ff;
+    color: #2563eb;
+}
+
+.tablero-kpi--exito .tablero-kpi__icono {
+    background-color: #f0fdf4;
+    color: #16a34a;
+}
+
+.tablero-kpi--alerta .tablero-kpi__icono {
+    background-color: #fffbeb;
+    color: #d97706;
+}
+
+.tablero-kpi--financiero .tablero-kpi__icono {
+    background-color: #f0fdfa;
+    color: #0d9488;
+}
+
+.tablero-kpi__valor {
+    font-size: 1.65rem;
+    line-height: 1.15;
+    font-weight: 700;
+    color: #0f172a;
+    word-break: break-word;
+}
+
+.tablero-kpi__subtitulo {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+/* Paneles centrales */
+.tablero-grid-central {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.tablero-columna-secundaria {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.tablero-panel {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+}
+
+.tablero-panel__cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tablero-panel__cabecera--wrap {
+    flex-wrap: wrap;
+}
+
+.tablero-panel__titulo {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.tablero-panel__subtitulo {
+    margin: 3px 0 0;
+    font-size: 0.825rem;
+    color: #64748b;
+}
+
+.tablero-badge-neutro,
+.tablero-badge-verde {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.tablero-badge-neutro {
+    background-color: #f1f5f9;
+    color: #334155;
+}
+
+.tablero-badge-verde {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+/* Barras de estado */
+.tablero-lista-barras {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
 }
 
 .barra-cantidad {
     width: 100%;
-    margin-bottom: 15px;
 }
 
 .barra-cantidad-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 5px;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+}
+
+.barra-cantidad-nombre {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #334155;
+    font-weight: 500;
+}
+
+.barra-cantidad-punto {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.barra-cantidad-cifras {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    color: #0f172a;
+}
+
+.barra-cantidad-porcentaje {
+    font-size: 0.78rem;
+    color: #64748b;
 }
 
 .barra-cantidad-fondo {
     width: 100%;
-    height: 10px;
-    background-color: #e9ecef;
-    border-radius: 10px;
+    height: 9px;
+    background-color: #e2e8f0;
+    border-radius: 999px;
     overflow: hidden;
 }
 
 .barra-cantidad-progreso {
     height: 100%;
-    border-radius: 10px;
+    border-radius: 999px;
     transition: width 0.3s ease;
+}
+
+/* Balance financiero */
+.finanzas-resumen-total {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 12px;
+}
+
+.finanzas-resumen-label {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.finanzas-resumen-valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.finanzas-barra-compuesta {
+    display: flex;
+    width: 100%;
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: #e2e8f0;
+    margin-bottom: 14px;
+}
+
+.finanzas-barra-mano {
+    height: 100%;
+    background-color: #0d9488;
+    transition: width 0.3s ease;
+}
+
+.finanzas-barra-repuestos {
+    height: 100%;
+    background-color: #38bdf8;
+    transition: width 0.3s ease;
+}
+
+.finanzas-desglose {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.finanzas-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+}
+
+.finanzas-item__etiqueta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #475569;
+}
+
+.finanzas-punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+}
+
+.finanzas-punto--mano {
+    background-color: #0d9488;
+}
+
+.finanzas-punto--repuestos {
+    background-color: #38bdf8;
+}
+
+.finanzas-item__monto {
+    color: #0f172a;
+}
+
+/* Selector de meses y rendimiento */
+.tablero-selector-meses {
+    display: inline-flex;
+    gap: 4px;
+    padding: 3px;
+    background-color: #f1f5f9;
+    border-radius: 8px;
+}
+
+.tablero-mes-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 11px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.tablero-mes-btn:hover:not(:disabled) {
+    color: #0f172a;
+}
+
+.tablero-mes-btn--activo {
+    background-color: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+.rendimiento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    transition: opacity 0.15s ease;
+}
+
+.rendimiento-grid--cargando {
+    opacity: 0.55;
+}
+
+.rendimiento-caja {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    padding: 12px 8px;
+    border-radius: 10px;
+}
+
+.rendimiento-caja--exito {
+    background-color: #f0fdf4;
+    color: #166534;
+}
+
+.rendimiento-caja--baja {
+    background-color: #fef2f2;
+    color: #991b1b;
+}
+
+.rendimiento-caja--neutro {
+    background-color: #f8fafc;
+    color: #334155;
+}
+
+.rendimiento-caja__label {
+    font-size: 0.78rem;
+    font-weight: 500;
+}
+
+.rendimiento-caja__valor {
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+/* Próximos turnos */
+.tablero-vacio {
+    padding: 24px 16px;
+    text-align: center;
+    color: #64748b;
+    background-color: #f8fafc;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.turnos-lista {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.turno-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background-color: #f8fafc;
+}
+
+.turno-card__fecha {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.turno-card__dia {
+    font-size: 0.85rem;
+    color: #475569;
+    text-transform: capitalize;
+}
+
+.turno-card__hora {
+    font-size: 0.95rem;
+    color: #0f172a;
+}
+
+.turno-card__detalle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.turno-card__cliente-fila {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.turno-card__cliente {
+    font-size: 0.95rem;
+    color: #0f172a;
+}
+
+.turno-card__patente {
+    padding: 2px 8px;
+    border-radius: 6px;
+    background-color: #e2e8f0;
+    color: #1e293b;
+    font-family: monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.turno-card__vehiculo {
+    font-size: 0.825rem;
+    color: #475569;
+}
+
+.turno-card__motivo {
+    margin: 2px 0 0;
+    font-size: 0.825rem;
+    color: #64748b;
+}
+
+.turno-card__estado-wrap {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.turno-card__estado {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+
+.turno-card__estado--confirmado {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.turno-card__estado--solicitado {
+    background-color: #fef3c7;
+    color: #b45309;
+}
+
+/* ==========================================================================
+   BREAKPOINTS MOBILE-FIRST
+   ========================================================================== */
+
+@media (min-width: 640px) {
+    .tablero-encabezado {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .tablero-kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .turno-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .turno-card__fecha {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        min-width: 90px;
+        padding-bottom: 0;
+        padding-right: 14px;
+        border-bottom: none;
+        border-right: 1px solid #e2e8f0;
+    }
+
+    .turno-card__detalle {
+        flex: 1;
+    }
+}
+
+@media (min-width: 1024px) {
+    .tablero-pagina {
+        gap: 20px;
+    }
+
+    .tablero-titulo {
+        font-size: 1.75rem;
+    }
+
+    .tablero-kpis {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
+
+    .tablero-grid-central {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: stretch;
+    }
+
+    .tablero-panel {
+        padding: 22px;
+    }
+
+    .turnos-lista {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
 }

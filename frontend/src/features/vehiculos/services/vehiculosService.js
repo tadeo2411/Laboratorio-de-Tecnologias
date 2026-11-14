@@ -7,9 +7,8 @@
 
 import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
 
-const URL = '/backend/data'
 const URLVehiculos = 'http://localhost:3000/api/vehiculos'
-let vehiculos = null
+
 
 async function pedir(ruta, opciones = {}) {
     const headers = { Authorization: `Bearer ${obtenerToken()}` }

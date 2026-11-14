@@ -9,6 +9,7 @@ import ordenesRoutes from './modules/ordenes/ordenes.routes.js'
 import vehiculosRoutes from './modules/vehiculos/vehiculos.routes.js'
 import trabajosRoutes from "./modules/trabajos/trabajos.routes.js"
 import turnosRouter from "./modules/turnos/turnos.routes.js"
+import tablerosRouter from "./modules/tableros/tableros.routes.js"
 import { corsOptions } from './config/cors.js';
 
 const app = express()
@@ -23,6 +24,7 @@ app.use('/api/ordenes', ordenesRoutes)
 app.use('/api/vehiculos', vehiculosRoutes)
 app.use('/api/trabajos', trabajosRoutes)
 app.use('/api/turnos', turnosRouter)
+app.use('/api/tableros', tablerosRouter)
 
 app.get('/api/health', (req, res) => {
   res.json({"estado":"ok"})

@@ -1,7 +1,7 @@
 
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
-import { obtenerTurnos, obtenerAutos, eliminarTurno, obtenerClientes, modificarTurno } from '../services/turnosService';
+import { obtenerTurnos, obtenerAutos, obtenerClientes, modificarTurno } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/turnosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
@@ -48,7 +48,7 @@ function TurnosPage() {
         setNotificacion({
             tipo: "confirmacion",
             titulo: "Eliminar turno",
-            mensaje: `¿Estás seguro de que deseas eliminar el turno? Esta acción no se puede deshacer.`,
+            mensaje: `¿Estás seguro de que deseas cancelar el turno? Esta acción no se puede deshacer.`,
             onAceptar: async () => {
                 setNotificacion(null);
 
@@ -169,18 +169,17 @@ function TurnosPage() {
 
                                 <td className="turno-estado" data-label="Estado">
                                     <span
-                                        className={`estado-badge ${turno.estado === "SOLICITADO"
-                                            ? "estado-solicitado"
-                                            : turno.estado === "CONFIRMADO"
-                                                ? "estado-confirmado"
-                                                : turno.estado === "CUMPLIDO"
-                                                    ? "estado-cumplido"
-                                                    : turno.estado === "CANCELADO"
-                                                        ? "estado-cancelado"
-                                                        : turno.estado === "AUSENTE"
-                                                            ? "estado-ausente"
-                                                            : "estado-pendiente"
-                                            }`}
+                                        className={`estado-badge ${
+                                            turno.estado === "CONFIRMADO"
+                                            ? "estado-confirmado"
+                                            : turno.estado === "CUMPLIDO"
+                                                ? "estado-cumplido"
+                                                : turno.estado === "CANCELADO"
+                                                    ? "estado-cancelado"
+                                                    : turno.estado === "AUSENTE"
+                                                        ? "estado-ausente"
+                                                        : "estado-pendiente"
+                                        }`}
                                     >
                                         {turno.estado}
                                     </span>
@@ -224,6 +223,9 @@ function TurnosPage() {
                         cargando={cargando}
                         error={error}
                         clientes={clientes}
+                        onClienteCreado={(nuevoCliente) =>
+                            setClientes((actuales) => [...actuales, nuevoCliente])
+                        }
                     />
                 </Modal>
             )}

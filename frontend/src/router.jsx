@@ -6,7 +6,7 @@ import { OrdenesPage, cargarPaginaOrdenes } from './features/ordenes'
 import TurnosPage from './features/turnos/pages/TurnosPage'
 import { VehiculosPage } from './features/vehiculos'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
-import TablerosPage from './features/tableros/pages/TablerosPage';
+import { TablerosPage } from './features/tableros'
 import TrabajosPage from './features/trabajos/pages/TrabajosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
 import { ClientesPage } from './features/clientes'

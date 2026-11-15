@@ -58,7 +58,7 @@ async function validarDatos(datos) {
 
     validarTextoObligatorio(datos.motivo, "motivo", maxMotivo);
 
-    const estado = datos.estado ?? "SOLICITADO";
+    const estado = datos.estado ?? "CONFIRMADO";
 
     if (!ESTADOS.includes(estado)) {
         throw httpError(400, `El estado debe ser uno de: ${ESTADOS.join(", ")}`);

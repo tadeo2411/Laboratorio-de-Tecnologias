@@ -1,7 +1,8 @@
 
 import { useState } from 'react';
-import { Link } from 'react-router';
 import { crearTurno, estadosTurno, modificarTurno } from '../services/turnosService';
+import { BuscadorClientes, ClientesForm, crearCliente } from '../../clientes';
+import Modal from '../../../shared/components/Modal';
 import botonMas from '../../../assets/icons/botonMas.png';
 import ModalNotificacion from '../../../shared/components/ModalNotification';
 
@@ -10,7 +11,7 @@ const valoresIniciales = {
     fechaHora: '',
     duracion: '',
     motivo: '',
-    estado: 'SOLICITADO',
+    estado: 'CONFIRMADO',
 }
 
 function valoresDelTurno(turno) {
@@ -21,16 +22,54 @@ function valoresDelTurno(turno) {
         fechaHora: turno.fecha_hora ? turno.fecha_hora.slice(0, 16) : '',
         duracion: turno.duracion_min ?? '',
         motivo: turno.motivo ?? '',
-        estado: turno.estado ?? 'SOLICITADO',
+        estado: turno.estado ?? 'CONFIRMADO',
     };
 }
 
-function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clientes = [] }) {
+function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clientes = [], onClienteCreado }) {
     const [formulario, setFormulario] = useState(() => valoresDelTurno(turnoInicial));
+    const [clienteSeleccionado, setClienteSeleccionado] = useState(() => {
+        if (!turnoInicial?.cliente_id) return null;
+        return (
+            clientes.find((c) => c.id === Number(turnoInicial.cliente_id)) || {
+                id: turnoInicial.cliente_id,
+                nombre: turnoInicial.cliente_nombre || 'Cliente seleccionado',
+                documento: turnoInicial.cliente_documento ?? ''
+            }
+        );
+    });
     const [guardando, setGuardando] = useState(false);
     const [notificacion, setNotificacion] = useState(null);
+    const [mostrarModalCliente, setMostrarModalCliente] = useState(false);
+    const [errorCliente, setErrorCliente] = useState('');
 
     const esEdicion = Boolean(turnoInicial);
+
+    function seleccionarCliente(cliente) {
+        setClienteSeleccionado(cliente);
+        setFormulario((anteriores) => ({ ...anteriores, clienteId: cliente.id }));
+    }
+
+    function cambiarCliente() {
+        setClienteSeleccionado(null);
+        setFormulario((anteriores) => ({ ...anteriores, clienteId: '' }));
+    }
+
+    async function handleGuardarCliente(datosNuevoCliente) {
+        try {
+            setErrorCliente('');
+            const clienteCreado = await crearCliente(datosNuevoCliente);
+
+            if (onClienteCreado) {
+                onClienteCreado(clienteCreado);
+            }
+
+            seleccionarCliente(clienteCreado);
+            setMostrarModalCliente(false);
+        } catch (err) {
+            setErrorCliente(err.message || 'No se pudo registrar el cliente.');
+        }
+    }
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
@@ -59,12 +98,10 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clie
                     ? Number(formulario.duracion)
                     : null,
                 motivo: formulario.motivo.trim(),
+                estado: formulario.estado || 'CONFIRMADO',
             };
 
-            // El estado solamente se envía al modificar.
             if (esEdicion) {
-                datos.estado = formulario.estado;
-
                 await modificarTurno(turnoInicial.id, datos);
             } else {
                 await crearTurno(datos);
@@ -108,34 +145,36 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clie
                             Cliente <span className="asterisco">*</span>
                         </label>
 
-                        <div className="campo-icono">
-                            <select
-                                id="clienteId"
-                                name="clienteId"
-                                className="select"
-                                value={formulario.clienteId}
-                                onChange={actualizarCampo}
-                                required
-                                disabled={cargando || Boolean(error)}
-                            >
-                                <option value="">--- Elegir cliente ---</option>
-
-                                {(clientes ?? []).map(cliente => (
-                                    <option key={cliente.id} value={cliente.id}>
-                                        {cliente.nombre}
-                                        {cliente.apellido ? ` ${cliente.apellido}` : ''}
-                                    </option>
-                                ))}
-                            </select>
-
-                            <Link to="/gestor/clientes">
-                                <img
-                                    src={botonMas}
-                                    alt="Agregar cliente"
-                                    className="botonAgregar"
-                                />
-                            </Link>
-                        </div>
+                        {clienteSeleccionado ? (
+                            <div className="d-flex justify-content-between align-items-center p-2 bg-light border rounded mt-1">
+                                <span>
+                                    <strong>{clienteSeleccionado.nombre}</strong>
+                                    {clienteSeleccionado.apellido ? ` ${clienteSeleccionado.apellido}` : ''}
+                                    {clienteSeleccionado.documento && (
+                                        <span className="text-muted ms-2">· Doc: {clienteSeleccionado.documento}</span>
+                                    )}
+                                </span>
+                                <button
+                                    type="button"
+                                    className="btn btn-outline-secondary btn-sm"
+                                    onClick={cambiarCliente}
+                                >
+                                    Cambiar
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="d-flex align-items-start gap-2 mt-1">
+                                <div className="flex-grow-1">
+                                    <BuscadorClientes
+                                        id="clienteId"
+                                        clientes={clientes}
+                                        onSeleccionar={seleccionarCliente}
+                                        onRegistrarNuevo={() => setMostrarModalCliente(true)}
+                                        placeholder="Buscar por nombre o DNI/CUIT..."
+                                    />
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -235,6 +274,26 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clie
                     {...notificacion}
                     onCerrar={notificacion.onCerrar}
                 />
+            )}
+
+            {mostrarModalCliente && (
+                <Modal
+                    titulo="Registrar nuevo cliente"
+                    onCerrar={() => {
+                        setMostrarModalCliente(false);
+                        setErrorCliente('');
+                    }}
+                    cerrarAlTocarFondo={true}
+                >
+                    <ClientesForm
+                        onGuardar={handleGuardarCliente}
+                        onCancelar={() => {
+                            setMostrarModalCliente(false);
+                            setErrorCliente('');
+                        }}
+                        error={errorCliente}
+                    />
+                </Modal>
             )}
         </div>
     )

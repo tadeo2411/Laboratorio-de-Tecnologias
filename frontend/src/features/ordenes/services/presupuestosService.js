@@ -51,8 +51,7 @@ const sumarTotales = (renglones) => renglones.reduce((total, renglon) => total +
 
 // Junta los ítems de los presupuestos aprobados de la orden: es lo que el cliente
 // autorizó hacer. Separa trabajos, repuestos y descuentos; el total resta los descuentos.
-export async function obtenerResumenAprobado(ordenId) {
-    const presupuestosDeLaOrden = await obtenerPresupuestosPorOrden(ordenId)
+export function resumirAprobados(presupuestosDeLaOrden) {
     const renglonesAprobados = presupuestosDeLaOrden
         .filter((presupuesto) => presupuesto.estadoPresupuesto === 'APROBADO')
         .flatMap((presupuesto) =>

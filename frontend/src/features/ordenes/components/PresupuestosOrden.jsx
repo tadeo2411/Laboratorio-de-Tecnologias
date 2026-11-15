@@ -1,33 +1,7 @@
-import { useEffect, useState } from "react";
-import { obtenerPresupuestosPorOrden } from "../services/presupuestosService";
 import PresupuestoCard from "./PresupuestoCard.jsx";
 
 // Vista de solo lectura de los presupuestos de una orden (detalle "Más información").
-function PresupuestosOrden({ ordenId }) {
-    const [presupuestos, setPresupuestos] = useState([]);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        let activo = true;
-
-        async function cargarPresupuestos() {
-            try {
-                const encontrados = await obtenerPresupuestosPorOrden(ordenId);
-                if (activo) setPresupuestos(encontrados);
-            } catch (errorCarga) {
-                if (activo) setError(errorCarga.message);
-            } finally {
-                if (activo) setCargando(false);
-            }
-        }
-        cargarPresupuestos();
-
-        return () => {
-            activo = false;
-        };
-    }, [ordenId]);
-
+function PresupuestosOrden({ presupuestos, cargando, error }) {
     // Se abre el aprobado (el que rige la orden); si no hay, el más reciente.
     const idAbierto =
         presupuestos.find((p) => p.estadoPresupuesto === "APROBADO")?.id ?? presupuestos[0]?.id;

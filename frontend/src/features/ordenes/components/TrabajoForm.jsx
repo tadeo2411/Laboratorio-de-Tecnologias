@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatearPrecio } from "../utils/ordenes";
+import { formatearPrecio } from "../utils/presupuestosVista";
 
 function TrabajoForm({ tiposTrabajo, repuestos, empleados, onGuardar, onCancelar }) {
     const [formulario, setFormulario] = useState({

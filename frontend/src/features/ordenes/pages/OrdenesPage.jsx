@@ -5,6 +5,7 @@ import Table from '../../../shared/components/Table.jsx';
 import BotonNuevo from '../../../shared/components/BotonNuevo.jsx';
 import BotonEditar from '../../../shared/components/BotonEditar.jsx';
 import Modal from '../../../shared/components/Modal.jsx';
+import ModalNotificacion from '../../../shared/components/ModalNotification.jsx';
 import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import EditarOrden from "../components/EditarOrden.jsx";
@@ -43,6 +44,7 @@ function OrdenesPage() {
     const [ordenSeleccionado, setOrdenSeleccionado] = useState(null);
     const [busqueda, setBusqueda] = useState("");
     const [ordenEnEdicion, setOrdenEnEdicion] = useState(null);
+    const [mensajeExito, setMensajeExito] = useState("");
 
     function abrirFormulario(orden = null) {
         setOrdenEnEdicion(orden);
@@ -66,6 +68,7 @@ function OrdenesPage() {
             }
             const ordenActualizada = await actualizarOrden(ordenEnEdicion.id, datosFormulario);
             setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
+            setMensajeExito(`La orden ${numeroOrden(ordenActualizada.id)} se guardó correctamente.`);
         } else {
             const vehiculo = vehiculos.find(vehiculo => vehiculo.patente === datosFormulario.vehiculoPatente);
             const nuevaOrden = await crearOrden({
@@ -77,6 +80,7 @@ function OrdenesPage() {
                 fichaIngreso: fichasNuevas.find(ficha => ficha.tipo === "INGRESO")
             });
             setOrdenes(anteriores => [...anteriores, nuevaOrden]);
+            setMensajeExito(`La orden ${numeroOrden(nuevaOrden.id)} se creó correctamente.`);
         }
         cerrarFormulario();
     }
@@ -231,6 +235,12 @@ function OrdenesPage() {
                     )}
                 />
             </div>
+
+            <ModalNotificacion
+                tipo="exito"
+                mensaje={mensajeExito}
+                onCerrar={() => setMensajeExito("")}
+            />
         </>
 
     );

@@ -2,23 +2,23 @@ import img_auto from "../../../assets/icons/img_auto.png";
 import img_estado from "../../../assets/icons/img_estado.svg";
 import img_diagnostico from "../../../assets/icons/img_diagnostico.svg";
 import img_garantia from "../../../assets/icons/img_garantia.svg";
-import img_service from "../../../assets/icons/img_trabajo.svg";
 import img_urgencia from "../../../assets/icons/img_urgencia.svg";
 import img_trabajo from "../../../assets/icons/img_trabajo.svg";
 import img_empleado from "../../../assets/icons/img_empleado.svg";
 import img_repuestos from "../../../assets/icons/img_repuestos.svg";
 import img_orden from "../../../assets/icons/img_orden.svg";
 import img_calender from "../../../assets/icons/img_calender.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EtiquetaEstado from "./EtiquetaEstado.jsx";
 import TrabajoForm from "./TrabajoForm.jsx";
 import PresupuestosOrden from "./PresupuestosOrden.jsx";
 import AprobadoOrden from "./AprobadoOrden.jsx";
+import { obtenerPresupuestosPorOrden } from "../services/presupuestosService";
 import { permiteModificarTrabajos } from "../utils/estados";
+import { formatearPrecio } from "../utils/presupuestosVista";
 import {
     numeroOrden,
     formatearFecha,
-    formatearPrecio,
     fechaIngreso,
     fechaEgreso,
     textoGarantia,
@@ -34,6 +34,29 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
     const [errorTrabajos, setErrorTrabajos] = useState("");
     const repuestosUsados = repuestosDeLaOrden(orden);
     const sePuedenModificarTrabajos = permiteModificarTrabajos(orden.estado);
+    const [presupuestos, setPresupuestos] = useState([]);
+    const [cargandoPresupuestos, setCargandoPresupuestos] = useState(true);
+    const [errorPresupuestos, setErrorPresupuestos] = useState("");
+
+    useEffect(() => {
+        let activo = true;
+
+        async function cargarPresupuestos() {
+            try {
+                const encontrados = await obtenerPresupuestosPorOrden(orden.id);
+                if (activo) setPresupuestos(encontrados);
+            } catch (errorCarga) {
+                if (activo) setErrorPresupuestos(errorCarga.message);
+            } finally {
+                if (activo) setCargandoPresupuestos(false);
+            }
+        }
+        cargarPresupuestos();
+
+        return () => {
+            activo = false;
+        };
+    }, [orden.id]);
 
     async function guardarTrabajo(trabajo){
         await onAgregarTrabajo(orden.id, trabajo);
@@ -182,7 +205,7 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
                         </span>
 
                         <div className="info-orden-dato">
-                            <img src={img_service} alt="" />
+                            <img src={img_trabajo} alt="" />
                             <span>
                                 {orden.esService ? "Sí" : "No"}
                             </span>
@@ -331,14 +354,22 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
                 APROBADO POR EL CLIENTE
             ========================= */}
 
-            <AprobadoOrden ordenId={orden.id} />
+            <AprobadoOrden
+                presupuestos={presupuestos}
+                cargando={cargandoPresupuestos}
+                error={errorPresupuestos}
+            />
 
 
             {/* =========================
                 PRESUPUESTOS
             ========================= */}
 
-            <PresupuestosOrden ordenId={orden.id} />
+            <PresupuestosOrden
+                presupuestos={presupuestos}
+                cargando={cargandoPresupuestos}
+                error={errorPresupuestos}
+            />
 
 
             {/* =========================

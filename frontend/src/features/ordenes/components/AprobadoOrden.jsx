@@ -1,36 +1,13 @@
-import { useEffect, useState } from "react";
-import { obtenerResumenAprobado } from "../services/presupuestosService";
+import { resumirAprobados } from "../services/presupuestosService";
 import { TIPOS_ITEM, formatearPrecio, formatearTotalDelRenglon } from "../utils/presupuestosVista";
 
 // Resumen para el taller de lo que el cliente aprobó en la orden
 // (ítems de todos los presupuestos aprobados), en la vista "Más información".
-function AprobadoOrden({ ordenId }) {
-    const [resumen, setResumen] = useState(null);
-    const [cargando, setCargando] = useState(true);
-    const [error, setError] = useState("");
-
-    useEffect(() => {
-        let activo = true;
-
-        async function cargarResumen() {
-            try {
-                const encontrado = await obtenerResumenAprobado(ordenId);
-                if (activo) setResumen(encontrado);
-            } catch (errorCarga) {
-                if (activo) setError(errorCarga.message);
-            } finally {
-                if (activo) setCargando(false);
-            }
-        }
-        cargarResumen();
-
-        return () => {
-            activo = false;
-        };
-    }, [ordenId]);
+function AprobadoOrden({ presupuestos, cargando, error }) {
+    const resumen = resumirAprobados(presupuestos);
 
     // Primero los trabajos, después los repuestos y al final los descuentos, como se leen en el taller.
-    const items = resumen ? [...resumen.trabajos, ...resumen.repuestos, ...resumen.descuentos] : [];
+    const items = [...resumen.trabajos, ...resumen.repuestos, ...resumen.descuentos];
 
     return (
         <div className="info-orden-seccion">

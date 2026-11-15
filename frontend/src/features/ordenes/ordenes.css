@@ -286,6 +286,16 @@
     transform: translateX(18px);
 }
 
+.estado-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .estado-recibido {
     background-color: #e0f2fe;
     color: #0369a1;

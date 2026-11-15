@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import BotonNuevo from "../../../shared/components/BotonNuevo.jsx";
 import BotonEditar from "../../../shared/components/BotonEditar.jsx";
 import BotonEliminar from "../../../shared/components/BotonEliminar.jsx";
+import ModalNotificacion from "../../../shared/components/ModalNotification.jsx";
 import {
     actualizarPresupuesto,
     crearPresupuesto,
@@ -27,6 +28,7 @@ function PresupuestosOrdenABM({ ordenId }) {
     const [formularioAbierto, setFormularioAbierto] = useState(false);
     const [presupuestoEnEdicion, setPresupuestoEnEdicion] = useState(null);
     const refMensaje = useRef(null);
+    const [presupuestoAEliminar, setPresupuestoAEliminar] = useState(null);
 
     // Al volver a la lista, el aviso puede quedar fuera de la vista del modal.
     useEffect(() => {
@@ -94,8 +96,7 @@ function PresupuestosOrdenABM({ ordenId }) {
     }
 
     async function handleEliminar(presupuesto) {
-        if (!window.confirm(`¿Seguro que querés eliminar el presupuesto ${presupuesto.numero}?`)) return;
-
+        setPresupuestoAEliminar(null);
         try {
             await eliminarPresupuesto(presupuesto.id);
             await recargarPresupuestos();
@@ -128,7 +129,7 @@ function PresupuestosOrdenABM({ ordenId }) {
                 />
                 {estado === "BORRADOR" && (
                     <BotonEliminar
-                        onClick={() => handleEliminar(presupuesto)}
+                        onClick={() => setPresupuestoAEliminar(presupuesto)}
                         aria-label={`Eliminar presupuesto ${presupuesto.numero}`}
                         title={`Eliminar presupuesto ${presupuesto.numero}`}
                     />
@@ -185,6 +186,18 @@ function PresupuestosOrdenABM({ ordenId }) {
                         />
                     ))}
                 </div>
+            )}
+
+            {presupuestoAEliminar && (
+                <ModalNotificacion
+                    tipo="confirmacion"
+                    titulo="Eliminar presupuesto"
+                    mensaje={`¿Seguro que querés eliminar el presupuesto ${presupuestoAEliminar.numero}?`}
+                    textoAceptar="Sí, eliminar"
+                    textoCancelar="Volver"
+                    onAceptar={() => handleEliminar(presupuestoAEliminar)}
+                    onCerrar={() => setPresupuestoAEliminar(null)}
+                />
             )}
         </div>
     );

@@ -45,6 +45,8 @@ function OrdenesPage() {
     const [busqueda, setBusqueda] = useState("");
     const [ordenEnEdicion, setOrdenEnEdicion] = useState(null);
     const [mensajeExito, setMensajeExito] = useState("");
+    const [mensajeError, setMensajeError] = useState("");
+    const [confirmacion, setConfirmacion] = useState(null);
 
     function abrirFormulario(orden = null) {
         setOrdenEnEdicion(orden);
@@ -56,11 +58,28 @@ function OrdenesPage() {
         setOrdenEnEdicion(null);
     }
 
-    async function handleGuardarOrden(datosFormulario, fichasNuevas = []) {
-        if (ordenEnEdicion) {
-            const seCancela = datosFormulario.estado === "CANCELADO" && ordenEnEdicion.estado !== "CANCELADO";
-            if (seCancela && !window.confirm('¿Seguro que querés cancelar la orden? Después no se va a poder modificar.')) return;
+    function handleGuardarOrden(datosFormulario, fichasNuevas = []) {
+        const seCancela = ordenEnEdicion && datosFormulario.estado === "CANCELADO" && ordenEnEdicion.estado !== "CANCELADO";
+        if (!seCancela) return guardarOrden(datosFormulario, fichasNuevas);
 
+        setConfirmacion({
+            titulo: "Cancelar orden",
+            mensaje: "¿Seguro que querés cancelar la orden? Después no se va a poder modificar.",
+            textoAceptar: "Sí, cancelar orden",
+            textoCancelar: "Volver",
+            onAceptar: async () => {
+                setConfirmacion(null);
+                try {
+                    await guardarOrden(datosFormulario, fichasNuevas);
+                } catch (errorGuardado) {
+                    setMensajeError(errorGuardado.message);
+                }
+            }
+        });
+    }
+
+    async function guardarOrden(datosFormulario, fichasNuevas) {
+        if (ordenEnEdicion) {
             for (const ficha of fichasNuevas) {
                 const ordenConFicha = await agregarFicha(ordenEnEdicion.id, ficha);
                 setOrdenEnEdicion(ordenConFicha);
@@ -244,6 +263,18 @@ function OrdenesPage() {
                 mensaje={mensajeExito}
                 onCerrar={() => setMensajeExito("")}
             />
+            <ModalNotificacion
+                tipo="error"
+                mensaje={mensajeError}
+                onCerrar={() => setMensajeError("")}
+            />
+            {confirmacion && (
+                <ModalNotificacion
+                    tipo="confirmacion"
+                    {...confirmacion}
+                    onCerrar={() => setConfirmacion(null)}
+                />
+            )}
         </>
 
     );

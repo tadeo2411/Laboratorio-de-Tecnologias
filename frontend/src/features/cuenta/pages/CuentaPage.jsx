@@ -6,6 +6,7 @@ import Table from "../../../shared/components/Table";
 import BotonNuevo from "../../../shared/components/BotonNuevo";
 import BotonEditar from "../../../shared/components/BotonEditar";
 import Modal from "../../../shared/components/Modal";
+import ModalNotificacion from "../../../shared/components/ModalNotification";
 import MiCuenta from "../components/MiCuenta";
 import EmpleadoForm from "../components/EmpleadoForm";
 import { textoRol } from "../../auth";
@@ -28,6 +29,8 @@ function CuentaPage() {
     const [empleados, setEmpleados] = useState(datos.empleados);
     const [mostrarFormulario, setMostrarFormulario] = useState(false);
     const [errorFormulario, setErrorFormulario] = useState(null);
+    const [confirmacion, setConfirmacion] = useState(null);
+    const [mensajeError, setMensajeError] = useState("");
     const [empleadoEnEdicion, setEmpleadoEnEdicion] = useState(null);
     const navigate = useNavigate()
 
@@ -61,13 +64,29 @@ function CuentaPage() {
         }
     }
 
-    async function handleCambiarActivo(empleado) {
-        if (empleado.activo && !window.confirm(`¿Seguro que querés dar de baja a ${empleado.nombre}? No va a poder ingresar al sistema.`)) return;
+    async function cambiarActivo(empleado) {
         try {
             reemplazarEmpleado(await cambiarActivoEmpleado(empleado.id, !empleado.activo));
         } catch (err) {
-            window.alert(err.message);
+            setMensajeError(err.message);
         }
+    }
+
+    function handleCambiarActivo(empleado) {
+        if (!empleado.activo) {
+            cambiarActivo(empleado);
+            return;
+        }
+        setConfirmacion({
+            titulo: "Dar de baja",
+            mensaje: `¿Seguro que querés dar de baja a ${empleado.nombre}? No va a poder ingresar al sistema.`,
+            textoAceptar: "Sí, dar de baja",
+            textoCancelar: "Volver",
+            onAceptar: () => {
+                setConfirmacion(null);
+                cambiarActivo(empleado);
+            }
+        });
     }
 
     function handleCerrarSesion() {
@@ -157,6 +176,19 @@ function CuentaPage() {
                         error={errorFormulario}
                     />
                 </Modal>
+            )}
+
+            <ModalNotificacion
+                tipo="error"
+                mensaje={mensajeError}
+                onCerrar={() => setMensajeError("")}
+            />
+            {confirmacion && (
+                <ModalNotificacion
+                    tipo="confirmacion"
+                    {...confirmacion}
+                    onCerrar={() => setConfirmacion(null)}
+                />
             )}
         </>
     );

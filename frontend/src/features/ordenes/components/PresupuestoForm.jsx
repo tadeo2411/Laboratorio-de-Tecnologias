@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import ModalNotificacion from "../../../shared/components/ModalNotification.jsx";
 import { ESTADOS_PRESUPUESTO, TIPOS_ITEM, formatearPrecio } from "../utils/presupuestosVista";
 
 // Estados que se pueden elegir a mano. VENCIDO lo asigna el sistema.
@@ -35,6 +36,7 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
     const [estado, setEstado] = useState(presupuesto?.estadoPresupuesto ?? "BORRADOR");
     const [error, setError] = useState("");
     const [guardando, setGuardando] = useState(false);
+    const [confirmando, setConfirmando] = useState(false);
     const refError = useRef(null);
 
     // El botón de guardar queda abajo: si hay error se acerca a la vista.
@@ -66,14 +68,22 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
         setItems((actuales) => actuales.filter((item) => item.clave !== clave));
     }
 
-    async function manejarEnvio(event) {
+    const cambiaDeEstado = esEdicion && estado !== presupuesto.estadoPresupuesto;
+    const pideConfirmacion = cambiaDeEstado && Boolean(AVISO_DEFINITIVO[estado]);
+
+    function manejarEnvio(event) {
         event.preventDefault();
         setError("");
 
-        const cambiaDeEstado = esEdicion && estado !== presupuesto.estadoPresupuesto;
-        if (cambiaDeEstado && AVISO_DEFINITIVO[estado] && !window.confirm(AVISO_DEFINITIVO[estado](presupuesto.numero))) {
+        if (pideConfirmacion) {
+            setConfirmando(true);
             return;
         }
+        guardar();
+    }
+
+    async function guardar() {
+        setConfirmando(false);
         setGuardando(true);
 
         // Los inputs entregan texto: cantidad y precio se convierten antes de guardar.
@@ -242,6 +252,18 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
                                 : "Guardar cambios"}
                 </button>
             </div>
+
+            {confirmando && (
+                <ModalNotificacion
+                    tipo="confirmacion"
+                    titulo={estado === "APROBADO" ? "Aprobar presupuesto" : "Cancelar presupuesto"}
+                    mensaje={AVISO_DEFINITIVO[estado]?.(presupuesto.numero)}
+                    textoAceptar={estado === "APROBADO" ? "Sí, aprobar" : "Sí, cancelar"}
+                    textoCancelar="Volver"
+                    onAceptar={guardar}
+                    onCerrar={() => setConfirmando(false)}
+                />
+            )}
         </form>
     );
 }

@@ -9,6 +9,7 @@ import img_repuestos from "../../../assets/icons/img_repuestos.svg";
 import img_orden from "../../../assets/icons/img_orden.svg";
 import img_calender from "../../../assets/icons/img_calender.svg";
 import { useEffect, useState } from "react";
+import ModalNotificacion from "../../../shared/components/ModalNotification.jsx";
 import EtiquetaEstado from "./EtiquetaEstado.jsx";
 import TrabajoForm from "./TrabajoForm.jsx";
 import PresupuestosOrden from "./PresupuestosOrden.jsx";
@@ -32,6 +33,7 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
 
     const [agregandoTrabajo, setAgregandoTrabajo] = useState(false);
     const [errorTrabajos, setErrorTrabajos] = useState("");
+    const [trabajoAQuitar, setTrabajoAQuitar] = useState(null);
     const repuestosUsados = repuestosDeLaOrden(orden);
     const sePuedenModificarTrabajos = permiteModificarTrabajos(orden.estado);
     const [presupuestos, setPresupuestos] = useState([]);
@@ -64,8 +66,7 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
     }
 
     async function quitarTrabajo(trabajo){
-        if (!window.confirm(`¿Quitar el trabajo "${trabajo.tipoTrabajo}"?`)) return;
-
+        setTrabajoAQuitar(null);
         setErrorTrabajos("");
         try {
             await onQuitarTrabajo(orden.id, trabajo.id);
@@ -494,7 +495,7 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
                                         <button
                                             type="button"
                                             className="btn btn-outline-danger btn-sm"
-                                            onClick={() => quitarTrabajo(trabajo)}
+                                            onClick={() => setTrabajoAQuitar(trabajo)}
                                         >
                                             Quitar trabajo
                                         </button>
@@ -660,6 +661,18 @@ function MasInfo({ orden, vehiculos, tiposTrabajo, repuestos, empleados, onAgreg
                 </div>
 
             </div>
+
+            {trabajoAQuitar && (
+                <ModalNotificacion
+                    tipo="confirmacion"
+                    titulo="Quitar trabajo"
+                    mensaje={`¿Quitar el trabajo "${trabajoAQuitar.tipoTrabajo}" de la orden?`}
+                    textoAceptar="Sí, quitar"
+                    textoCancelar="Volver"
+                    onAceptar={() => quitarTrabajo(trabajoAQuitar)}
+                    onCerrar={() => setTrabajoAQuitar(null)}
+                />
+            )}
 
         </div>
     );

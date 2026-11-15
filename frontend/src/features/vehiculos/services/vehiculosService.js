@@ -1,12 +1,5 @@
-// Simula la API de vehículos mientras no exista el backend.
-// Los registros iniciales se leen del JSON que sirve Vite y los cambios quedan
-// en memoria: se pierden al recargar la página.
-// Cada función corresponde a una operación de la futura API
-// (GET, POST, PUT y DELETE sobre /api/vehiculos). Cuando exista el backend,
-// solo se reemplaza el interior de estas funciones; las páginas no cambian.
-
-import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
-import { API_URL } from '../../../shared/config/api'
+// Servicio para gestionar vehículos contra la API de Taller 303 (Express 5 + PostgreSQL).
+import { obtenerToken, manejarSesionVencida } from '../../auth'
 
 const URLVehiculos = `${API_URL}/vehiculos`
 
@@ -68,7 +61,17 @@ export function desasociarDueno(id, idCliente){
   return pedir(`/${id}/duenos/${idCliente}`, {method : 'DELETE'})
 }
 
+export async function sincronizarDuenos(idVehiculo, duenosPreviosIds = [], duenosNuevosIds = []) {
+  const aAgregar = duenosNuevosIds.filter((id) => !duenosPreviosIds.includes(id))
+  const aQuitar = duenosPreviosIds.filter((id) => !duenosNuevosIds.includes(id))
 
+  for (const idCliente of aAgregar) {
+    await asociarDueno(idVehiculo, idCliente)
+  }
+  for (const idCliente of aQuitar) {
+    await desasociarDueno(idVehiculo, idCliente)
+  }
+}
 
 // utilizada por otros componentes
 export function normalizarPatente(patente) {

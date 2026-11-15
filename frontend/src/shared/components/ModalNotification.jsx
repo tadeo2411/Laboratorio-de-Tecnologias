@@ -52,6 +52,14 @@ function ModalNotificacion({
                 </p>
 
                 <div className="modal-notificacion-acciones">
+                    
+
+                    <button
+                        className="modal-notificacion-boton"
+                        onClick={esConfirmacion ? onAceptar : onCerrar}
+                    >
+                        {esConfirmacion ? textoAceptar : "Entendido"}
+                    </button>
                     {esConfirmacion && (
                         <button
                             className="modal-notificacion-cancelar"
@@ -60,13 +68,6 @@ function ModalNotificacion({
                             {textoCancelar}
                         </button>
                     )}
-
-                    <button
-                        className="modal-notificacion-boton"
-                        onClick={esConfirmacion ? onAceptar : onCerrar}
-                    >
-                        {esConfirmacion ? textoAceptar : "Entendido"}
-                    </button>
                 </div>
             </div>
         </div>,

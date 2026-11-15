@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Modal from '../../../shared/components/Modal'
 import { BuscadorClientes, ClientesForm, crearCliente } from '../../clientes'
+import { normalizarPatente } from '../services/vehiculosService'
 
 const ANIO_MAXIMO = new Date().getFullYear() + 1
 
@@ -53,17 +54,17 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
     }))
   }
 
-  function asociarOtroDueno(cliente){
-    if(formulario.clienteIds.includes(cliente.id)){
-      setError('Este cliente ya esta asociado como dueno.')
+  function asociarOtroDueno(cliente) {
+    if (formulario.clienteIds.includes(cliente.id)) {
+      setError('Este cliente ya está asociado como dueño.')
       return
     }
     setError('')
-    setFormulario((prev) => ({//suma a los ids de clientes anteriores con el que estamos x agregar
-    ...prev,
-    clienteIds: [...prev.clienteIds, cliente.id],
-  }))
-  setBuscandoOtroDueno(false)
+    setFormulario((prev) => ({
+      ...prev,
+      clienteIds: [...prev.clienteIds, cliente.id],
+    }))
+    setBuscandoOtroDueno(false)
   }
 
   async function handleGuardarCliente(datosNuevoCliente) {
@@ -109,18 +110,24 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
 
   return (
     <div>
-      <p className="campos-obligatorios">
-        Los campos con <span className="asterisco">*</span> son obligatorios.
+      <p className="campos-obligatorios mb-3">
+        Los campos con <span className="text-danger" aria-hidden="true">*</span> son obligatorios.
       </p>
 
-      {error && <p className="alert alert-danger" role="alert">{error}</p>}
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          {error}
+        </div>
+      )}
 
-      <form className="form-ordenes" onSubmit={manejarEnvio}>
+      <form onSubmit={manejarEnvio} noValidate>
         {esEdicion ? (
           // Modificación
           <div className="mb-3">
-            <label className="fw-bold mb-2">Dueños / Conductores</label>
-            <ul className="list-group">
+            <span className="form-label fw-bold d-block mb-2">
+              Dueños / Conductores asignados <span className="text-danger" aria-hidden="true">*</span>
+            </span>
+            <ul className="list-group mb-2">
               {duenosAsociados.map((dueno) => (
                 <li
                   key={dueno.id}
@@ -132,8 +139,9 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
                   {duenosAsociados.length > 1 && (
                     <button
                       type="button"
-                      className="btn btn-outline-danger btn-sm"
-                      title="Desasociar dueño"
+                      className="btn btn-outline-danger btn-sm px-2"
+                      aria-label={`Desasociar a ${dueno.nombre}`}
+                      title={`Desasociar a ${dueno.nombre}`}
                       onClick={() => quitarDuenos(dueno.id)}
                     >
                       -
@@ -142,9 +150,9 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
                 </li>
               ))}
             </ul>
-            { buscandoOtroDueno ? (
-              <div className="border p-2 rounded bg-light">
-                <label className="form-label small fw-bold">Seleccionar cliente a asociar:</label>
+            {buscandoOtroDueno ? (
+              <div className="border p-2 rounded bg-light mt-2">
+                <span className="form-label small fw-bold d-block mb-1">Seleccionar cliente a asociar:</span>
                 <BuscadorClientes
                   clientes={clientes.filter((c) => !formulario.clienteIds.includes(c.id))}
                   onSeleccionar={asociarOtroDueno}
@@ -158,7 +166,7 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
                   Cancelar búsqueda
                 </button>
               </div>
-            ):(
+            ) : (
               <button
                 type="button"
                 className="btn btn-outline-primary btn-sm"
@@ -166,15 +174,14 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
               >
                 + Asociar otro dueño
               </button>
-            )
-            }
+            )}
           </div>
         ) : (
           // Alta
           <div className="mb-3">
-            <label htmlFor="vehiculo-duenos" className="form-label">
-              Dueño / Conductor <span className="asterisco">*</span>
-            </label>
+            <span className="form-label fw-bold d-block mb-2">
+              Dueño / Conductor <span className="text-danger" aria-hidden="true">*</span>
+            </span>
             {duenosAsociados.length > 0 ? (
               <div className="d-flex justify-content-between align-items-center p-2 bg-light border rounded">
                 <span>
@@ -199,60 +206,72 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
           </div>
         )}
 
-        <div>
-          <div>
-            <label htmlFor="vehiculo-patente">
-              Patente <span className="asterisco">*</span>
+        <div className="row g-3">
+          <div className="col-12 col-md-6">
+            <label htmlFor="vehiculo-patente" className="form-label fw-semibold">
+              Patente <span className="text-danger" aria-hidden="true">*</span>
             </label>
             <input
               id="vehiculo-patente"
               name="patente"
               type="text"
-              placeholder="AA000AA"
+              className="form-control text-uppercase"
+              placeholder="ABC123 o AB123CD"
               value={formulario.patente}
-              onChange={actualizarCampo}
+              onChange={(e) => {
+                const valor = normalizarPatente(e.target.value)
+                setFormulario((prev) => ({ ...prev, patente: valor }))
+              }}
+              maxLength={7}
+              autoCapitalize="characters"
+              autoComplete="off"
+              spellCheck={false}
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="vehiculo-marca">
-              Marca <span className="asterisco">*</span>
+          <div className="col-12 col-md-6">
+            <label htmlFor="vehiculo-marca" className="form-label fw-semibold">
+              Marca <span className="text-danger" aria-hidden="true">*</span>
             </label>
             <input
               id="vehiculo-marca"
               name="marca"
               type="text"
+              className="form-control"
+              placeholder="Ej: Ford, Toyota..."
               value={formulario.marca}
               onChange={actualizarCampo}
               required
             />
           </div>
-        </div>
 
-        <div>
-          <div>
-            <label htmlFor="vehiculo-modelo">
-              Modelo <span className="asterisco">*</span>
+          <div className="col-12 col-md-6">
+            <label htmlFor="vehiculo-modelo" className="form-label fw-semibold">
+              Modelo <span className="text-danger" aria-hidden="true">*</span>
             </label>
             <input
               id="vehiculo-modelo"
               name="modelo"
               type="text"
+              className="form-control"
+              placeholder="Ej: Focus, Corolla..."
               value={formulario.modelo}
               onChange={actualizarCampo}
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="vehiculo-anio">
-              Año <span className="asterisco">*</span>
+          <div className="col-12 col-md-3">
+            <label htmlFor="vehiculo-anio" className="form-label fw-semibold">
+              Año <span className="text-danger" aria-hidden="true">*</span>
             </label>
             <input
               id="vehiculo-anio"
               name="anio"
               type="number"
+              inputMode="numeric"
+              className="form-control"
               min="1900"
               max={ANIO_MAXIMO}
               value={formulario.anio}
@@ -260,17 +279,17 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
               required
             />
           </div>
-        </div>
 
-        <div>
-          <div>
-            <label htmlFor="vehiculo-kilometraje">
-              Kilometraje <span className="asterisco">*</span>
+          <div className="col-12 col-md-3">
+            <label htmlFor="vehiculo-kilometraje" className="form-label fw-semibold">
+              Kilometraje <span className="text-danger" aria-hidden="true">*</span>
             </label>
             <input
               id="vehiculo-kilometraje"
               name="kilometraje"
               type="number"
+              inputMode="numeric"
+              className="form-control"
               min="0"
               step="1"
               value={formulario.kilometraje}
@@ -278,28 +297,27 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
               required
             />
           </div>
-        </div>
 
-        <div>
-          <div>
-            <label htmlFor="vehiculo-descripcion">Descripción</label>
-            <div>
-              <textarea
-                id="vehiculo-descripcion"
-                name="descripcion"
-                rows="3"
-                placeholder="Describí el vehículo..."
-                value={formulario.descripcion}
-                onChange={actualizarCampo}
-              />
-            </div>
+          <div className="col-12">
+            <label htmlFor="vehiculo-descripcion" className="form-label fw-semibold">
+              Descripción / Observaciones
+            </label>
+            <textarea
+              id="vehiculo-descripcion"
+              name="descripcion"
+              rows="3"
+              className="form-control"
+              placeholder="Detalles particulares del estado del vehículo..."
+              value={formulario.descripcion}
+              onChange={actualizarCampo}
+            />
           </div>
         </div>
 
-        <div className="d-flex justify-content-end gap-2">
+        <div className="d-flex justify-content-end gap-2 mt-4">
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn btn-secondary px-4"
             onClick={onCancelar}
           >
             Cancelar
@@ -307,7 +325,7 @@ function VehiculoForm({ vehiculo, clientes, onCancelar, onGuardar, onClienteCrea
 
           <button
             type="submit"
-            className="btn btn-success"
+            className="btn btn-success px-4"
             disabled={guardando}
           >
             {guardando

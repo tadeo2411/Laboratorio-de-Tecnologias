@@ -42,7 +42,7 @@ async function obtenerProximosTurnos(){
 
 async function obtenerInfoFinanciera() {
     const { rows } = await pool.query(
-        `SELECT 
+        `SELECT
             COUNT(DISTINCT o.id)::int AS ordenes_finalizadas,
             COALESCE(SUM(t.mano_de_obra), 0)::float AS total_mano_de_obra,
             COALESCE(SUM(rep.total_repuestos), 0)::float AS total_repuestos,
@@ -58,6 +58,12 @@ async function obtenerInfoFinanciera() {
     )
 
     return rows[0]
+}
+
+async function obtenerAvisosService(){
+    const { rows } = await pool.query(
+        `SELECT`
+    )
 }
 
 export default { obtenerOrdenesUltimosMeses, obtenerOrdenesVivas, obtenerProximosTurnos, obtenerInfoFinanciera }

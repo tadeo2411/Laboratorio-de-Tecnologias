@@ -1,59 +1,24 @@
-.clientes-page {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-bottom: 20px;
-}
+/* ========================================================================== */
+/* BUSCADOR DE CLIENTES (DROPDOWN / COMBOBOX)                                 */
+/* ========================================================================== */
 
-.clientes-page > div {
-    display: flex;
-    flex-direction: column;
-}
-
-.img-container {
-    width: 70px;
-    height: 70px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: #e8f5e9;
-    border-radius: 12px;
-}
-
-.img-container img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    filter: brightness(0) saturate(100%) invert(49%) sepia(87%) saturate(550%) hue-rotate(92deg) brightness(92%) contrast(101%);
-}
-
-.title-container {
-    display: flex;
-    gap: .2rem;
-    flex: 1;
-    padding-left: 1rem;
-}
-
-.title-container h1 {
-    font-size: 2rem;
-    margin: 0;
-}
-
-.title-container p {
-    font-size: 1rem;
-    color: #585858;
-    margin: 0;
-}
-
-/* Buscador de clientes */
 .buscador-cliente-lista {
-    z-index: 1050;
-    max-height: 200px;
+    z-index: 1055;
+    max-height: 220px;
     overflow-y: auto;
+    border-radius: 6px;
 }
 
 .buscador-cliente-vacio {
-    z-index: 1050;
+    z-index: 1055;
+    font-size: 0.9rem;
+}
+
+/* Área táctil mínima accesible para botones de acción en filas */
+.cliente-acciones .acciones-container button {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }

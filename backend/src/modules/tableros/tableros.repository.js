@@ -29,10 +29,9 @@ async function obtenerOrdenesUltimosMeses(cantMeses){
 
 async function obtenerProximosTurnos(){
     const { rows } = await pool.query(
-        `SELECT t.id, t.fecha_hora, t.motivo, t.estado, c.nombre, v.patente, v.marca, v.modelo
+        `SELECT t.id, t.fecha_hora, c.nombre
         FROM turnos t
         JOIN clientes c ON t.id_cliente = c.id
-        JOIN vehiculos v ON t.id_vehiculo = v.id
         WHERE (t.fecha_hora BETWEEN NOW() AND NOW() + INTERVAL '15 days')
         AND
         (t.estado = 'CONFIRMADO')`
@@ -58,12 +57,6 @@ async function obtenerInfoFinanciera() {
     )
 
     return rows[0]
-}
-
-async function obtenerAvisosService(){
-    const { rows } = await pool.query(
-        `SELECT`
-    )
 }
 
 export default { obtenerOrdenesUltimosMeses, obtenerOrdenesVivas, obtenerProximosTurnos, obtenerInfoFinanciera }

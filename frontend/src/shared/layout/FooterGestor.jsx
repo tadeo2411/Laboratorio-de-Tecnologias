@@ -19,6 +19,12 @@ const claseItem = ({ isActive }) => isActive ? 'itemActivo' : '';
 
 function FooterGestor() {
     return (
+
+    <aside className="barra-lateral-gestor">
+        {/* Logo visible solo en escritorio */}
+        <div className="barra-lateral-gestor__logo">
+            <img src="/images/logo-303mei.jpg" alt="Logo Taller 303" />
+        </div>
         <ul className='barraInfGestor'>
             {/* "end" evita que Tableros (ruta raíz) figure activo en todas las subrutas */}
             <li><NavLink to="" end className={claseItem}><Inicio />Tableros</NavLink></li>
@@ -30,6 +36,8 @@ function FooterGestor() {
             <li><NavLink to="repuestos" className={claseItem}><Repuestos />Repuestos</NavLink></li>
             <li><NavLink to="cuenta" className={claseItem}><Cuenta />Cuenta</NavLink></li>
         </ul>
+
+        </aside>
     );
 }
 

@@ -1,6 +1,7 @@
+
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
-import { obtenerTurnos, obtenerAutos, eliminarTurno } from '../services/turnosService';
+import { obtenerTurnos, obtenerAutos, obtenerClientes, modificarTurno } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/turnosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
@@ -26,11 +27,12 @@ function TurnosPage() {
     const [turnoAEditar, setTurnoAEditar] = useState(null)
     const [mostrarFormulario, setMostrarFormulario] = useState(false)
     const cerrarFormulario = useCallback(() => setMostrarFormulario(false), [])
+    const [clientes, setClientes] = useState([]);
 
     const [notificacion, setNotificacion] = useState(null);
 
-    //abm
-    async function handleGuardarTurno() { //se llama handle para seguir con la convencion de nombres en props
+    // ABM
+    async function handleGuardarTurno() {
         try {
             setTurnos(await obtenerTurnos())
         } catch (error) {
@@ -41,24 +43,33 @@ function TurnosPage() {
         }
         cerrarFormulario()
     }
-    function handleEliminarTurno(idTurno) {
 
+    function handleEliminarTurno(turno) {
         setNotificacion({
             tipo: "confirmacion",
             titulo: "Eliminar turno",
-            mensaje: `¿Estás seguro de que deseas eliminar el turno? Esta acción no se puede deshacer.`,
+            mensaje: `¿Estás seguro de que deseas cancelar el turno? Esta acción no se puede deshacer.`,
             onAceptar: async () => {
                 setNotificacion(null);
 
                 try {
-                    await eliminarTurno(idTurno);
-                    setTurnos(anteriores => anteriores.filter(turno => turno.id !== idTurno));
+                    const { id, ...datosTurno } = turno;
+
+                    await modificarTurno(id, {
+                        ...datosTurno,
+                        estado: 'CANCELADO'
+                    });
+
+                    setTurnos(prev =>
+                        prev.map(t =>
+                            t.id === id
+                                ? { ...t, estado: 'CANCELADO' }
+                                : t
+                        )
+                    );
 
                 } catch (error) {
-                    setNotificacion({
-                        tipo: "error",
-                        mensaje: error.message || "No se pudo eliminar el turno."
-                    });
+                    console.error('Error al cancelar el turno:', error);
                 }
             }
         });
@@ -71,10 +82,17 @@ function TurnosPage() {
 
     useEffect(() => {
         let activo = true
+
         async function cargarTurnos() {
             try {
                 const listTurnos = await obtenerTurnos();
                 const listVehiculos = await obtenerAutos();
+                const listClientes = await obtenerClientes();
+
+                if (activo) {
+                    setTurnos(listTurnos);
+                    setClientes(listClientes);
+                }
 
                 if (activo) {
                     setTurnos(listTurnos)
@@ -87,49 +105,50 @@ function TurnosPage() {
                 if (activo)
                     setCargando(false)
             }
-
         }
+
         cargarTurnos()
         return () => activo = false
 
     }, [])
 
-
     const columnasTurnos = [
         { key: "fechaHora", nombre: "Fecha y hora" },
-        { key: "clienteDocumento", nombre: "DNI del dueño" },
-        { key: "vehiculoPatente", nombre: "Patente" },
+        { key: "clienteNombre", nombre: "Cliente" },
         { key: "motivo", nombre: "Motivo" },
         { key: "estado", nombre: "Estado" },
         { key: "ordenId", nombre: "Orden asociada" },
         { key: "acciones", nombre: "Acciones" }
     ];
 
-
-    return (// camino de esta page: muestra los turnos traidos por el json, al tocar el botón de nuevo turno, se abre el modal con el formulario
+    return (
         <>
             {error && <p role="alert">{error}</p>}
             {cargando && <p role="status">Cargando turnos…</p>}
+
             {!cargando && !error && (
                 <div className="contenedor">
                     <div className="page-header">
-
                         <div className="page-header-image">
-
                             <img src={img_list} alt="Listado" />
                         </div>
+
                         <div className="page-header-title">
                             <h1>Turnos</h1>
                             <p>Listado de turnos registrados en el sistema.</p>
                         </div>
 
                         <BotonNuevo
-                            onClick={() => { setTurnoAEditar(null); setMostrarFormulario(true) }}
+                            onClick={() => {
+                                setTurnoAEditar(null);
+                                setMostrarFormulario(true);
+                            }}
                             componente={"turno"}
                         />
                     </div>
+
                     <Table
-                        inputPlaceholder="Buscar por descripción, orden, trabajo..."
+                        inputPlaceholder="Buscar por cliente, motivo u orden..."
                         columnas={columnasTurnos}
                         datos={turnos}
                         mensajeVacio="No hay turnos registrados"
@@ -140,12 +159,8 @@ function TurnosPage() {
                                     {formatearFechaHora(turno.fecha_hora)}
                                 </td>
 
-                                <td className="turno-cliente" data-label="DNI del cliente">
-                                    {turno.cliente_documento ?? "-"}
-                                </td>
-
-                                <td className="turno-patente" data-label="Patente">
-                                    {turno.vehiculo_patente}
+                                <td className="turno-cliente" data-label="Cliente">
+                                    {turno.cliente_nombre ?? "-"}
                                 </td>
 
                                 <td className="turno-motivo" data-label="Motivo">
@@ -154,18 +169,17 @@ function TurnosPage() {
 
                                 <td className="turno-estado" data-label="Estado">
                                     <span
-                                        className={`estado-badge ${turno.estado === "SOLICITADO"
-                                            ? "estado-solicitado"
-                                            : turno.estado === "CONFIRMADO"
-                                                ? "estado-confirmado"
-                                                : turno.estado === "CUMPLIDO"
-                                                    ? "estado-cumplido"
-                                                    : turno.estado === "CANCELADO"
-                                                        ? "estado-cancelado"
-                                                        : turno.estado === "AUSENTE"
-                                                            ? "estado-ausente"
-                                                            : "estado-pendiente"
-                                            }`}
+                                        className={`estado-badge ${
+                                            turno.estado === "CONFIRMADO"
+                                            ? "estado-confirmado"
+                                            : turno.estado === "CUMPLIDO"
+                                                ? "estado-cumplido"
+                                                : turno.estado === "CANCELADO"
+                                                    ? "estado-cancelado"
+                                                    : turno.estado === "AUSENTE"
+                                                        ? "estado-ausente"
+                                                        : "estado-pendiente"
+                                        }`}
                                     >
                                         {turno.estado}
                                     </span>
@@ -177,9 +191,13 @@ function TurnosPage() {
 
                                 <td className="turno-acciones" data-label="Acciones">
                                     <div className="acciones-container">
-                                        <BotonEditar onClick={() => handleEditarTurno(turno)} />
+                                        {!["CONFIRMADO", "CANCELADO", "AUSENTE"].includes(turno.estado) && (
+                                            <BotonEditar onClick={() => handleEditarTurno(turno)} />
+                                        )}
 
-                                        <BotonEliminar onClick={() => handleEliminarTurno(turno.id)} />
+                                        {["CONFIRMADO"].includes(turno.estado) && (
+                                            <BotonEliminar onClick={() => handleEliminarTurno(turno)} />
+                                        )}
                                     </div>
                                 </td>
 
@@ -188,13 +206,15 @@ function TurnosPage() {
                     />
                 </div>
             )}
-            {mostrarFormulario && ( //cuando es true monta el modal y el formulario, cuando es false los elimina
+
+            {mostrarFormulario && (
                 <Modal
                     titulo={turnoAEditar ? 'Modificar turno' : 'Registrar turno'}
                     onCerrar={cerrarFormulario}
                 >
                     {error && <p role="alert">{error}</p>}
                     {cargando && <p role="status">Cargando vehículos…</p>}
+
                     <TurnosForm
                         turnoInicial={turnoAEditar}
                         onGuardar={handleGuardarTurno}
@@ -202,6 +222,10 @@ function TurnosPage() {
                         vehiculos={vehiculos}
                         cargando={cargando}
                         error={error}
+                        clientes={clientes}
+                        onClienteCreado={(nuevoCliente) =>
+                            setClientes((actuales) => [...actuales, nuevoCliente])
+                        }
                     />
                 </Modal>
             )}

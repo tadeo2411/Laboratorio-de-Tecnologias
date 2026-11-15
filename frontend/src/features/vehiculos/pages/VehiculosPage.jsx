@@ -107,36 +107,32 @@ function VehiculosPage() {
   // Si el servicio rechaza los datos, se propaga el error para que el
   // formulario lo muestre inline y quede abierto para corregirlo.
   async function guardarVehiculo(datos) {
-    try {
-      if (vehiculoEnEdicion) {
-        const vehiculoActualizado = await modificarVehiculo(vehiculoEnEdicion.id, datos)
-        await sincronizarDuenos(
-          vehiculoEnEdicion.id,
-          vehiculoEnEdicion.clienteIds || [],
-          datos.clienteIds || []
-        )
+    if (vehiculoEnEdicion) {
+      const vehiculoActualizado = await modificarVehiculo(vehiculoEnEdicion.id, datos)
+      await sincronizarDuenos(
+        vehiculoEnEdicion.id,
+        vehiculoEnEdicion.clienteIds || [],
+        datos.clienteIds || []
+      )
 
-        setVehiculos((vehiculosActuales) =>
-          vehiculosActuales.map((vehiculo) =>
-            vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo
-          )
+      setVehiculos((vehiculosActuales) =>
+        vehiculosActuales.map((vehiculo) =>
+          vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo
         )
-        setNotificacion({
-          tipo: 'exito',
-          mensaje: 'Vehículo actualizado correctamente.'
-        })
-      } else {
-        const vehiculoCreado = await crearVehiculo(datos)
-        setVehiculos((vehiculosActuales) => [...vehiculosActuales, vehiculoCreado])
-        setNotificacion({
-          tipo: 'exito',
-          mensaje: 'Vehículo registrado correctamente.'
-        })
-      }
-      cerrarFormulario()
-    } catch (err) {
-      throw err
+      )
+      setNotificacion({
+        tipo: 'exito',
+        mensaje: 'Vehículo actualizado correctamente.'
+      })
+    } else {
+      const vehiculoCreado = await crearVehiculo(datos)
+      setVehiculos((vehiculosActuales) => [...vehiculosActuales, vehiculoCreado])
+      setNotificacion({
+        tipo: 'exito',
+        mensaje: 'Vehículo registrado correctamente.'
+      })
     }
+    cerrarFormulario()
   }
 
   function confirmarEliminacion(vehiculo) {

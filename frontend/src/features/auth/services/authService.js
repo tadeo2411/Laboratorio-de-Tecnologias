@@ -1,7 +1,7 @@
 import { redirect } from 'react-router'
-import { API_URL } from '../../../shared/config/api'
+import { env } from '../../../config/env'
 
-const URL = `${API_URL}/auth`
+const URL = `${env.API_URL}/auth`
 const CLAVE_USUARIO = 'gestorTaller303:usuario'
 const CLAVE_TOKEN = 'gestorTaller303:token'
 function guardarSesion(usuario) {

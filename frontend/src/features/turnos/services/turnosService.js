@@ -2,7 +2,7 @@
 import { obtenerToken, manejarSesionVencida } from '../../auth';
 import { API_URL } from '../../../shared/config/api';
 
-export const estadosTurno = ['SOLICITADO', 'CONFIRMADO', 'CUMPLIDO', 'CANCELADO', 'AUSENTE']
+export const estadosTurno = [ 'CONFIRMADO', 'CUMPLIDO', 'CANCELADO', 'AUSENTE' ]
 const URL = API_URL
 
 async function pedir(ruta, opciones = {}) {

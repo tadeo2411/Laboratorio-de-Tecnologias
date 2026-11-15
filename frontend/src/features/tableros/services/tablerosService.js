@@ -1,4 +1,4 @@
-import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
+import { obtenerToken, manejarSesionVencida } from '../../auth'
 
 import { API_URL } from '../../../shared/config/api'
 const URL = `${API_URL}/tableros`

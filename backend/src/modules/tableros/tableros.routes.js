@@ -7,7 +7,7 @@ const router = Router()
 router.use(verificarToken)
 
 router.get('/ordenes', tablerosController.obtenerOrdenes)
-router.get('/resumen', tablerosController.obtenerOrdenesUltimosMeses)
+router.get('/resumen', soloAdministrador, tablerosController.obtenerOrdenesUltimosMeses)
 router.get('/turnos', tablerosController.obtenerProximosTurnos)
 router.get('/info', soloAdministrador, tablerosController.obtenerInfoFinanciera)
 

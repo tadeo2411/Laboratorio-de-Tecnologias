@@ -1,5 +1,6 @@
 // Servicio para gestionar vehículos contra la API de Taller 303 (Express 5 + PostgreSQL).
 import { obtenerToken, manejarSesionVencida } from '../../auth'
+import { API_URL } from '../../../shared/config/api'
 
 const URLVehiculos = `${API_URL}/vehiculos`
 

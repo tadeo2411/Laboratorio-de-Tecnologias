@@ -1,4 +1,4 @@
-export { default as VehiculosPage , obtenerDuenos} from './pages/VehiculosPage'
+export { default as VehiculosPage} from './pages/VehiculosPage'
 export { default as VehiculoForm } from './components/VehiculoForm'
 export {
   obtenerVehiculos,

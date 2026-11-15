@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import Tarjeta from "../components/Tarjeta";
 import BarraDeCantidades from "../components/BarraDeCantidades";
 import Spinner from "../../../shared/components/Spinner";
+import { esAdministrador, obtenerSesion } from "../../auth";
 import {
     ordenesActivas,
     ordenesXMeses,
@@ -46,6 +46,10 @@ const formatearFechaTurno = (fechaIso) => {
 };
 
 function TablerosPage() {
+
+    const sesion = obtenerSesion()
+    const esAdmin = esAdministrador(sesion)
+
     const [activas, setActivas] = useState({
         recibidos: 0,
         diagnosticando: 0,
@@ -71,28 +75,25 @@ function TablerosPage() {
     const [cargandoMeses, setCargandoMeses] = useState(false);
     const [error, setError] = useState(null);
 
-    const aplicarDatosTablero = useCallback(
-        ([datosActivas, datosResumen, datosFinanzas, datosTurnos]) => {
-            if (datosActivas) setActivas(datosActivas);
-            if (datosResumen) setResumenMeses(datosResumen);
-            if (datosFinanzas) setFinanzas(datosFinanzas);
-            setTurnos(Array.isArray(datosTurnos) ? datosTurnos : []);
-        },
-        []
-    );
+    
 
     const cargarTablero = useCallback(
         async (meses = 3) => {
             setCargando(true);
             setError(null);
             try {
-                const resultados = await Promise.all([
+                const [datosActivas, datosTurnos, datosResumen, datosFinanzas] = await Promise.all([
                     ordenesActivas(),
-                    ordenesXMeses(meses),
-                    infoFinanciera(),
                     proximosTurnos(),
+                    esAdmin ? ordenesXMeses(meses) : Promise.resolve(null),
+                    esAdmin ? infoFinanciera() : Promise.resolve(null),
+                    
                 ]);
-                aplicarDatosTablero(resultados);
+                if (datosActivas) setActivas(datosActivas);
+                if (datosTurnos) setTurnos(Array.isArray(datosTurnos) ? datosTurnos : []);
+                if (datosResumen) setResumenMeses(datosResumen);
+                if (datosFinanzas) setFinanzas(datosFinanzas);
+                
             } catch (err) {
                 setError(
                     err instanceof Error
@@ -103,20 +104,26 @@ function TablerosPage() {
                 setCargando(false);
             }
         },
-        [aplicarDatosTablero]
+        [esAdmin]
     );
 
     useEffect(() => {
         let activo = true;
         async function cargarInicial() {
             try {
-                const resultados = await Promise.all([
+                const [datosActivas, datosTurnos, datosResumen, datosFinanzas] = await Promise.all([
                     ordenesActivas(),
-                    ordenesXMeses(3),
-                    infoFinanciera(),
                     proximosTurnos(),
+                    esAdmin ? ordenesXMeses(3) : Promise.resolve(null),
+                    esAdmin ? infoFinanciera() : Promise.resolve(null),
                 ]);
-                if (activo) aplicarDatosTablero(resultados);
+
+                if (activo) {
+                    if (datosActivas) setActivas(datosActivas);
+                    if (datosTurnos) setTurnos(Array.isArray(datosTurnos) ? datosTurnos : []);
+                    if (datosResumen) setResumenMeses(datosResumen);
+                    if (datosFinanzas) setFinanzas(datosFinanzas);
+                }
             } catch (err) {
                 if (activo) {
                     setError(
@@ -133,10 +140,10 @@ function TablerosPage() {
         return () => {
             activo = false;
         };
-    }, [aplicarDatosTablero]);
+    }, [esAdmin]);
 
     async function handleCambiarMeses(nuevoMes) {
-        if (nuevoMes === mesesFiltro || cargandoMeses) return;
+        if (!esAdmin || nuevoMes === mesesFiltro || cargandoMeses) return;
         setMesesFiltro(nuevoMes);
         setCargandoMeses(true);
         try {
@@ -153,6 +160,8 @@ function TablerosPage() {
         }
     }
 
+    
+
     const totalEnTaller =
         (activas.recibidos ?? 0) +
         (activas.diagnosticando ?? 0) +
@@ -160,9 +169,6 @@ function TablerosPage() {
         (activas.esperandoR ?? 0) +
         (activas.reparando ?? 0) +
         (activas.terminados ?? 0);
-
-    const enEspera = (activas.esperandoP ?? 0) + (activas.esperandoR ?? 0);
-    const listosRetirar = activas.terminados ?? 0;
 
     const totalManoObra = Number(finanzas.total_mano_de_obra) || 0;
     const totalRepuestos = Number(finanzas.total_repuestos) || 0;
@@ -217,7 +223,7 @@ function TablerosPage() {
             </header>
 
             {/* 2. Paneles centrales */}
-            <div className="tablero-grid-central">
+            <div className={`tablero-grid-central ${!esAdmin ? "tablero-grid-central--completo" : ""}`}>
                 {/* Estado del Taller */}
                 <section className="tablero-panel">
                     <div className="tablero-panel__cabecera">
@@ -268,79 +274,80 @@ function TablerosPage() {
                 </section>
 
                 {/* Columna derecha: Finanzas + Rendimiento */}
-                <div className="tablero-columna-secundaria">
-                    {/* Balance Financiero */}
-                    <section className="tablero-panel">
-                        <div className="tablero-panel__cabecera">
-                            <h2 className="tablero-panel__titulo">Balance financiero</h2>
-                            <span className="tablero-badge-verde">
-                                Ticket prom. {formatearMoneda(ticketPromedio)}
-                            </span>
-                        </div>
-
-                        <div className="finanzas-resumen-total">
-                            <span className="finanzas-resumen-label">Total facturado</span>
-                            <strong className="finanzas-resumen-valor">
-                                {formatearMoneda(totalIngresos)}
-                            </strong>
-                        </div>
-
-                        {/* Barra comparativa */}
-                        <div className="finanzas-barra-compuesta" aria-hidden="true">
-                            <div
-                                className="finanzas-barra-mano"
-                                style={{ width: `${porcentajeManoObra}%` }}
-                            />
-                            <div
-                                className="finanzas-barra-repuestos"
-                                style={{ width: `${porcentajeRepuestos}%` }}
-                            />
-                        </div>
-
-                        <div className="finanzas-desglose">
-                            <div className="finanzas-item">
-                                <span className="finanzas-item__etiqueta">
-                                    <span className="finanzas-punto finanzas-punto--mano" />
-                                    Mano de obra ({porcentajeManoObra}%)
+                {esAdmin &&(
+                    <div className="tablero-columna-secundaria">
+                        {/* Balance Financiero */}
+                        <section className="tablero-panel">
+                            <div className="tablero-panel__cabecera">
+                                <h2 className="tablero-panel__titulo">Balance financiero</h2>
+                                <span className="tablero-badge-verde">
+                                    Ticket prom. {formatearMoneda(ticketPromedio)}
                                 </span>
-                                <strong className="finanzas-item__monto">
-                                    {formatearMoneda(totalManoObra)}
+                            </div>
+
+                            <div className="finanzas-resumen-total">
+                                <span className="finanzas-resumen-label">Total facturado</span>
+                                <strong className="finanzas-resumen-valor">
+                                    {formatearMoneda(totalIngresos)}
                                 </strong>
                             </div>
-                            <div className="finanzas-item">
-                                <span className="finanzas-item__etiqueta">
-                                    <span className="finanzas-punto finanzas-punto--repuestos" />
-                                    Repuestos ({porcentajeRepuestos}%)
-                                </span>
-                                <strong className="finanzas-item__monto">
-                                    {formatearMoneda(totalRepuestos)}
-                                </strong>
-                            </div>
-                        </div>
-                    </section>
 
-                    {/* Rendimiento por Período */}
-                    <section className="tablero-panel">
-                        <div className="tablero-panel__cabecera tablero-panel__cabecera--wrap">
-                            <h2 className="tablero-panel__titulo">Rendimiento</h2>
-                            <div className="tablero-selector-meses" role="group" aria-label="Filtrar por meses">
-                                {OPCIONES_MESES.map((opcion) => (
-                                    <button
-                                        key={opcion.valor}
-                                        type="button"
-                                        disabled={cargandoMeses}
-                                        className={`tablero-mes-btn ${
-                                            mesesFiltro === opcion.valor
-                                                ? "tablero-mes-btn--activo"
-                                                : ""
-                                        }`}
-                                        onClick={() => handleCambiarMeses(opcion.valor)}
-                                    >
-                                        {opcion.etiqueta}
-                                    </button>
-                                ))}
+                            {/* Barra comparativa */}
+                            <div className="finanzas-barra-compuesta" aria-hidden="true">
+                                <div
+                                    className="finanzas-barra-mano"
+                                    style={{ width: `${porcentajeManoObra}%` }}
+                                />
+                                <div
+                                    className="finanzas-barra-repuestos"
+                                    style={{ width: `${porcentajeRepuestos}%` }}
+                                />
                             </div>
-                        </div>
+
+                            <div className="finanzas-desglose">
+                                <div className="finanzas-item">
+                                    <span className="finanzas-item__etiqueta">
+                                        <span className="finanzas-punto finanzas-punto--mano" />
+                                        Mano de obra ({porcentajeManoObra}%)
+                                    </span>
+                                    <strong className="finanzas-item__monto">
+                                        {formatearMoneda(totalManoObra)}
+                                    </strong>
+                                </div>
+                                <div className="finanzas-item">
+                                    <span className="finanzas-item__etiqueta">
+                                        <span className="finanzas-punto finanzas-punto--repuestos" />
+                                        Repuestos ({porcentajeRepuestos}%)
+                                    </span>
+                                    <strong className="finanzas-item__monto">
+                                        {formatearMoneda(totalRepuestos)}
+                                    </strong>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* Rendimiento por Período */}
+                        <section className="tablero-panel">
+                            <div className="tablero-panel__cabecera tablero-panel__cabecera--wrap">
+                                <h2 className="tablero-panel__titulo">Rendimiento</h2>
+                                <div className="tablero-selector-meses" role="group" aria-label="Filtrar por meses">
+                                    {OPCIONES_MESES.map((opcion) => (
+                                        <button
+                                            key={opcion.valor}
+                                            type="button"
+                                            disabled={cargandoMeses}
+                                            className={`tablero-mes-btn ${
+                                                mesesFiltro === opcion.valor
+                                                    ? "tablero-mes-btn--activo"
+                                                    : ""
+                                            }`}
+                                            onClick={() => handleCambiarMeses(opcion.valor)}
+                                        >
+                                            {opcion.etiqueta}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
                         <div className={`rendimiento-grid ${cargandoMeses ? "rendimiento-grid--cargando" : ""}`}>
                             <div className="rendimiento-caja rendimiento-caja--exito">
@@ -358,8 +365,9 @@ function TablerosPage() {
                         </div>
                     </section>
                 </div>
+                )}
             </div>
-
+                                                           
             {/* 3. Próximos Turnos */}
             <section className="tablero-panel">
                 <div className="tablero-panel__cabecera">

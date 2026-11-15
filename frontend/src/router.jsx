@@ -4,7 +4,7 @@ import PaginaInicial from './features/home/pages/PaginaInicial'
 import { OrdenesPage, cargarPaginaOrdenes } from './features/ordenes'
 // import Presupuestos from './features/presupuestos/pages/PresupuestosPage'
 import TurnosPage from './features/turnos/pages/TurnosPage'
-import VehiculosPage from './features/vehiculos/pages/VehiculosPage'
+import { VehiculosPage } from './features/vehiculos'
 import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
 import TrabajosPage from './features/trabajos/pages/TrabajosPage';

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import img_auto from "../../../assets/icons/img_auto.png";
-import { normalizarPatente } from "../../vehiculos/services/vehiculosService";
+import { normalizarPatente } from "../../vehiculos";
 
 // Con muchos vehículos un select se vuelve inmanejable: se busca por patente
 // y solo se muestran las primeras coincidencias.

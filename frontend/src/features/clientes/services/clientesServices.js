@@ -1,7 +1,7 @@
 import { obtenerToken, manejarSesionVencida } from '../../auth/services/authService'
 
 export const tipoCliente = ['PERSONA', 'EMPRESA']
-const URL = 'http://localhost:3000/api/clientes'
+import { API_URL } from '../../../shared/config/api'
 
 async function pedir(ruta, opciones = {}) {
   const headers = { Authorization: `Bearer ${obtenerToken()}` }
@@ -9,7 +9,7 @@ async function pedir(ruta, opciones = {}) {
 
   let respuesta
   try {
-    respuesta = await fetch(`${URL}${ruta}`, { ...opciones, headers })
+    respuesta = await fetch(`${API_URL}${ruta}`, { ...opciones, headers })
   } catch {
     throw new Error('No se pudo conectar con el servidor.')
   }

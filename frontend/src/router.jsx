@@ -9,7 +9,7 @@ import RepuestoPage from './features/repuestos/pages/RepuestosPage'
 import TablerosPage from './features/tableros/pages/TablerosPage';
 import TrabajosPage from './features/trabajos/pages/TrabajosPage';
 import NoEncontradaPage from './shared/pages/NoEncontradaPage'
-import ClientesPage from './features/clientes/pages/ClientesPage'
+import { ClientesPage } from './features/clientes'
 import { CuentaPage, cargarPaginaCuenta } from './features/cuenta'
 import Spinner from './shared/components/Spinner'
 import {LoginPage, GestorConSesion, protegerRuta, redirigirSiHaySesion} from './features/auth'

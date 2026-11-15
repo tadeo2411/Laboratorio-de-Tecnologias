@@ -1,7 +1,9 @@
 import { obtenerToken, manejarSesionVencida } from '../../auth/services/authService'
 
 export const tipoCliente = ['PERSONA', 'EMPRESA']
-const URL = 'http://localhost:3000/api/clientes'
+import { env } from '../../../config/env'
+
+const URL = `${env.API_URL}/clientes`
 
 async function pedir(ruta, opciones = {}) {
   const headers = { Authorization: `Bearer ${obtenerToken()}` }

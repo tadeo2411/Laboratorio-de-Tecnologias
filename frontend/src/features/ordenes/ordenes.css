@@ -718,6 +718,13 @@
     gap: 8px;
 }
 
+.ficha-form-conformidad input[type="checkbox"],
+.trabajo-form-empleado input[type="checkbox"] {
+    flex-shrink: 0;
+    width: auto;
+    padding: 0;
+}
+
 .ficha-form-acciones {
     display: flex;
     justify-content: flex-end;

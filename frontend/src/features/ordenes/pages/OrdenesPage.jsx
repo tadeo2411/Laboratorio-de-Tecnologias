@@ -226,7 +226,10 @@ function OrdenesPage() {
                                     </button>
 
                                     {!esEstadoFinal(orden.estado) && (
-                                        <BotonEditar onClick={() => abrirFormulario(orden)} />
+                                        <BotonEditar
+                                            onClick={() => abrirFormulario(orden)}
+                                            etiqueta={`Editar orden ${numeroOrden(orden.id)}`}
+                                        />
                                     )}
 
                                 </div>

@@ -5,8 +5,8 @@ async function obtenerOrdenesVivas(){
         `SELECT
         COUNT(*) FILTER (WHERE estado = 'RECIBIDO')::int as recibidos,
         COUNT(*) FILTER (WHERE estado = 'DIAGNOSTICANDO')::int as diagnosticando,
-        COUNT(*) FILTER (WHERE estado = 'ESPERANDO_APROBACION_PRESUPUESTO')::int as esperandoP,
-        COUNT(*) FILTER (WHERE estado = 'ESPERANDO_REPUESTO')::int as esperandoR,
+        COUNT(*) FILTER (WHERE estado = 'ESPERANDO_APROBACION_PRESUPUESTO')::int as "esperandoP",
+        COUNT(*) FILTER (WHERE estado = 'ESPERANDO_REPUESTO')::int as "esperandoR",
         COUNT(*) FILTER (WHERE estado = 'EN_REPARACION')::int as reparando
         FROM ordenes_trabajo
         `
@@ -18,8 +18,8 @@ async function obtenerOrdenesVivas(){
 async function obtenerOrdenesUltimosMeses(cantMeses){
     const { rows } = await pool.query(
         `SELECT
-        COUNT(*) FILTER(WHERE estado = 'CANCELADO') ::int AS cantCancelados,
-        COUNT(*) FILTER(WHERE estado = 'ENTREGADO') ::int AS cantEntregados
+        COUNT(*) FILTER(WHERE estado = 'CANCELADO') ::int AS "cantCancelados",
+        COUNT(*) FILTER(WHERE estado = 'ENTREGADO') ::int AS "cantEntregados"
         FROM ordenes_trabajo AS o
         WHERE o.created_at >= NOW() - $1 * INTERVAL '1 month'`
     , [cantMeses]

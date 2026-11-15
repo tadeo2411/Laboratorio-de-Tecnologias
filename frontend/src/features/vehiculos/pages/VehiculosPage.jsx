@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Modal from '../../../shared/components/Modal'
 import VehiculoForm from '../components/VehiculoForm'
 import HistorialVehiculo from '../components/HistorialVehiculo'
+import AvisoService from '../components/AvisoService'
 import BotonNuevo from '../../../shared/components/BotonNuevo'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
@@ -38,6 +39,7 @@ function VehiculosPage() {
   const [formularioAbierto, setFormularioAbierto] = useState(false)
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
+  const [vehiculoConAviso, setVehiculoConAviso] = useState(null)
   const [busqueda, setBusqueda] = useState('')
   const [notificacion, setNotificacion] = useState(null)
 
@@ -165,6 +167,19 @@ function VehiculosPage() {
     })
   }
 
+  function avisoGestionado(idVehiculo, estado) {
+    setVehiculos((vehiculosActuales) =>
+      vehiculosActuales.map((vehiculo) =>
+        vehiculo.id === idVehiculo ? { ...vehiculo, proximoService: null } : vehiculo
+      )
+    )
+    setVehiculoConAviso(null)
+    setNotificacion({
+      tipo: 'exito',
+      mensaje: estado === 'ENVIADO' ? 'Aviso de service marcado como enviado.' : 'Aviso de service descartado.'
+    })
+  }
+
   const termino = busqueda.toLowerCase().trim()
   const vehiculosFiltrados = vehiculos.filter((vehiculo) => {
     if (!termino) return true
@@ -236,6 +251,20 @@ function VehiculosPage() {
 
                   <BotonEditar onClick={() => abrirFormulario(vehiculo)} />
                   <BotonEliminar onClick={() => confirmarEliminacion(vehiculo)} />
+                  {vehiculo.proximoService && (
+                    <button
+                      type="button"
+                      className="botonAviso"
+                      onClick={() => setVehiculoConAviso(vehiculo)}
+                      aria-label={`Aviso de service pendiente de ${vehiculo.patente}`}
+                      title="Aviso de service pendiente"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                      </svg>
+                    </button>
+                  )}
                 </div>
               </td>
             </tr>
@@ -265,6 +294,14 @@ function VehiculosPage() {
         <HistorialVehiculo
           vehiculo={vehiculoConHistorial}
           onCerrar={() => setVehiculoConHistorial(null)}
+        />
+      )}
+
+      {vehiculoConAviso && (
+        <AvisoService
+          vehiculo={vehiculoConAviso}
+          onCerrar={() => setVehiculoConAviso(null)}
+          onGestionado={avisoGestionado}
         />
       )}
 

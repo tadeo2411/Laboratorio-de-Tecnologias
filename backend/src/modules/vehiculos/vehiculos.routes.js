@@ -17,7 +17,7 @@ router.post('/', vehiculosController.alta)
 router.patch('/:id', vehiculosController.modificar)
 router.delete('/:id', vehiculosController.eliminar)
 router.get('/:id/historial', vehiculosController.verHistorialService)
-//router.patch('/:id/aviso', vehiculosController.gestionarAviso)
+router.patch('/:id/aviso', vehiculosController.gestionarAviso)
 
 
 

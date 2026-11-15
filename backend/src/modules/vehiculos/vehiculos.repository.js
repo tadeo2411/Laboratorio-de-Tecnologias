@@ -3,7 +3,11 @@ import { pool } from '../../config/db.js'
 
 async function obtener() {
     const { rows }= await pool.query(
-        'SELECT id, patente, marca, modelo, anio, descripcion, kilometraje FROM vehiculos ORDER BY id'
+        `SELECT v.id, v.patente, v.marca, v.modelo, v.anio, v.descripcion, v.kilometraje,
+        a.fecha_prevista::text AS "proximoService"
+        FROM vehiculos v
+        LEFT JOIN avisos_service a ON a.id_vehiculo = v.id AND a.estado = 'PENDIENTE'
+        ORDER BY v.id`
     ) ;
     return rows
 }
@@ -151,6 +155,26 @@ async function verHistorialService(id){
      )
      return rows[0]
  }
+async function programarAviso(id, meses){
+    const actualizado = await pool.query(
+        `UPDATE avisos_service
+        SET fecha_prevista = CURRENT_DATE + ($2 * INTERVAL '1 month')
+        WHERE id_vehiculo = $1 AND estado = 'PENDIENTE'
+        RETURNING id`,
+        [id, meses]
+    )
+    if(actualizado.rows.length > 0){
+        return actualizado.rows[0]
+    }
+    const creado = await pool.query(
+        `INSERT INTO avisos_service (id_vehiculo, fecha_prevista)
+        VALUES ($1, CURRENT_DATE + ($2 * INTERVAL '1 month'))
+        RETURNING id`,
+        [id, meses]
+    )
+    return creado.rows[0]
+}
+
 export default{
     obtener,
     buscar,
@@ -164,5 +188,6 @@ export default{
     asociarDueno,
     desasociarDueno,
     verHistorialService,
-    gestionarAviso
+    gestionarAviso,
+    programarAviso
 }

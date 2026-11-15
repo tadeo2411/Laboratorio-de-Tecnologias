@@ -7,6 +7,7 @@ import trabajosService from '../trabajos/trabajos.service.js'
 import authService from '../auth/auth.service.js'
 import { httpError } from '../../utils/httpError.js'
 import clientesService from '../clientes/clientes.service.js'
+import presupuestosService from '../presupuestos/presupuestos.service.js'
 
 const TRANSICIONES = {
     RECIBIDO: ['DIAGNOSTICANDO', 'CANCELADO'],
@@ -20,6 +21,8 @@ const TRANSICIONES = {
 }
 
 const ESTADOS_CON_TRABAJOS = ['DIAGNOSTICANDO', 'ESPERANDO_REPUESTO', 'EN_REPARACION']
+const ESTADOS_QUE_EXIGEN_PRESUPUESTO = ['ESPERANDO_REPUESTO', 'EN_REPARACION']
+const MESES_HASTA_PROXIMO_SERVICE = 6
 const CONFORMIDADES = ['PENDIENTE', 'APROBADA']
 
 function validarId(valor, nombre) {
@@ -173,8 +176,19 @@ async function cambiarEstado(idRecibido, estadoNuevo) {
     if (estadoNuevo === 'ENTREGADO' && !orden.fichas.some((ficha) => ficha.tipo === 'EGRESO')) {
         throw httpError(409, 'Para entregar el vehículo primero hay que cargar la ficha de egreso')
     }
+    const saleDeLaAprobacion = orden.estado === 'ESPERANDO_APROBACION_PRESUPUESTO'
+    if (saleDeLaAprobacion && ESTADOS_QUE_EXIGEN_PRESUPUESTO.includes(estadoNuevo)
+        && !(await presupuestosService.tieneAprobado(orden.id))) {
+        throw httpError(409, 'Para empezar la reparación primero hace falta un presupuesto aprobado por el cliente')
+    }
 
     await ordenesRepository.actualizarEstado(orden.id, estadoNuevo)
+    if (estadoNuevo === 'CANCELADO') {
+        await presupuestosService.cancelarPendientes(orden.id)
+    }
+    if (estadoNuevo === 'ENTREGADO' && orden.esService) {
+        await vehiculosService.programarAviso(orden.vehiculoId, MESES_HASTA_PROXIMO_SERVICE)
+    }
     return ordenesRepository.buscarPorId(orden.id)
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import BotonNuevo from "../../../shared/components/BotonNuevo.jsx";
 import BotonEditar from "../../../shared/components/BotonEditar.jsx";
 import BotonEliminar from "../../../shared/components/BotonEliminar.jsx";
@@ -8,6 +8,7 @@ import {
     eliminarPresupuesto,
     obtenerPresupuestosPorOrden,
 } from "../services/presupuestosService";
+import { ESTADOS_PRESUPUESTO } from "../utils/presupuestosVista";
 import PresupuestoCard from "./PresupuestoCard.jsx";
 import PresupuestoForm from "./PresupuestoForm.jsx";
 import PresupuestoAltaForm from "./PresupuestoAltaForm.jsx";
@@ -25,6 +26,12 @@ function PresupuestosOrdenABM({ ordenId }) {
     const [mensaje, setMensaje] = useState("");
     const [formularioAbierto, setFormularioAbierto] = useState(false);
     const [presupuestoEnEdicion, setPresupuestoEnEdicion] = useState(null);
+    const refMensaje = useRef(null);
+
+    // Al volver a la lista, el aviso puede quedar fuera de la vista del modal.
+    useEffect(() => {
+        if (mensaje) refMensaje.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }, [mensaje]);
 
     useEffect(() => {
         let activo = true;
@@ -75,19 +82,19 @@ function PresupuestosOrdenABM({ ordenId }) {
     async function handleCrear(datosDelAlta) {
         const nuevo = await crearPresupuesto({ ...datosDelAlta, ordenId });
         await recargarPresupuestos();
-        mostrarMensaje(`Presupuesto ${nuevo.numero} creado como borrador.`);
+        mostrarMensaje(`Presupuesto ${nuevo.numero} creado como borrador. Editalo para enviarlo al cliente.`);
         cerrarFormulario();
     }
 
     async function handleGuardarEdicion(datosEditados) {
         const actualizado = await actualizarPresupuesto(presupuestoEnEdicion.id, datosEditados);
         await recargarPresupuestos();
-        mostrarMensaje(`Presupuesto ${actualizado.numero} actualizado.`);
+        mostrarMensaje(`Presupuesto ${actualizado.numero} actualizado: ${ESTADOS_PRESUPUESTO[actualizado.estadoPresupuesto]?.texto ?? actualizado.estadoPresupuesto}.`);
         cerrarFormulario();
     }
 
     async function handleEliminar(presupuesto) {
-        if (!window.confirm(`¿Desea eliminar el presupuesto ${presupuesto.numero}?`)) return;
+        if (!window.confirm(`¿Seguro que querés eliminar el presupuesto ${presupuesto.numero}?`)) return;
 
         try {
             await eliminarPresupuesto(presupuesto.id);
@@ -115,8 +122,17 @@ function PresupuestosOrdenABM({ ordenId }) {
 
         return (
             <>
-                <BotonEditar onClick={() => abrirFormulario(presupuesto)} />
-                {estado === "BORRADOR" && <BotonEliminar onClick={() => handleEliminar(presupuesto)} />}
+                <BotonEditar
+                    onClick={() => abrirFormulario(presupuesto)}
+                    etiqueta={`Editar presupuesto ${presupuesto.numero}`}
+                />
+                {estado === "BORRADOR" && (
+                    <BotonEliminar
+                        onClick={() => handleEliminar(presupuesto)}
+                        aria-label={`Eliminar presupuesto ${presupuesto.numero}`}
+                        title={`Eliminar presupuesto ${presupuesto.numero}`}
+                    />
+                )}
             </>
         );
     }
@@ -150,7 +166,7 @@ function PresupuestosOrdenABM({ ordenId }) {
                 <BotonNuevo onClick={() => abrirFormulario()} componente="presupuesto" />
             </div>
 
-            {mensaje && <p className="alert alert-success" role="status">{mensaje}</p>}
+            {mensaje && <p ref={refMensaje} className="alert alert-success" role="status">{mensaje}</p>}
             {error && <p className="alert alert-danger" role="alert">{error}</p>}
 
             {cargando ? (

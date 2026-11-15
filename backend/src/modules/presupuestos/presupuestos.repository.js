@@ -7,8 +7,11 @@ const SELECT_PRESUPUESTO = `
     to_char(p.fecha_emision + p.vigencia_dias, 'YYYY-MM-DD') AS "fechaVencimiento",
     COALESCE(p.observaciones, '') AS observaciones,
     CASE WHEN p.estado = 'ENVIADO' AND p.fecha_emision + p.vigencia_dias < CURRENT_DATE
-        THEN 'VENCIDO' ELSE p.estado::text END AS "estadoPresupuesto"
-    FROM presupuestos p`
+        THEN 'VENCIDO' ELSE p.estado::text END AS "estadoPresupuesto",
+    c.nombre AS "clienteNombre", c.documento AS "clienteDocumento"
+    FROM presupuestos p
+    JOIN ordenes_trabajo o ON o.id = p.orden_id
+    LEFT JOIN clientes c ON c.id = o.id_cliente`
 
 const ORDENAR = `ORDER BY (p.estado = 'BORRADOR') DESC, p.fecha_emision DESC NULLS LAST, p.numero DESC`
 
@@ -96,8 +99,19 @@ async function actualizar(id, cambios) {
     })
 }
 
+// Los borradores y los enviados sin vencer esperaban una respuesta que ya no va a llegar.
+async function cancelarPendientes(ordenId) {
+    await pool.query(
+        `UPDATE presupuestos SET estado = 'CANCELADO',
+        fecha_respuesta = CASE WHEN estado = 'ENVIADO' THEN CURRENT_DATE ELSE fecha_respuesta END
+        WHERE orden_id = $1
+        AND (estado = 'BORRADOR' OR (estado = 'ENVIADO' AND fecha_emision + vigencia_dias >= CURRENT_DATE))`,
+        [ordenId]
+    )
+}
+
 async function eliminar(id) {
     await pool.query('DELETE FROM presupuestos WHERE id = $1', [id])
 }
 
-export default { listar, buscarPorId, crear, actualizar, eliminar }
+export default { listar, buscarPorId, crear, actualizar, cancelarPendientes, eliminar }

@@ -250,10 +250,14 @@ async function actualizarPresupuesto(idRecibido, datos) {
         throw httpError(409, 'Los ítems solo se pueden modificar mientras el presupuesto es un borrador')
     }
 
+    const orden = await ordenesService.obtenerOrden(presupuesto.ordenId)
+    if (estaCerrada(orden)) {
+        throw httpError(409, 'La orden está cerrada y sus presupuestos ya no se pueden modificar')
+    }
+
     let items = null
     if (datos.items !== undefined) {
         items = validarItems(datos.items)
-        const orden = await ordenesService.obtenerOrden(presupuesto.ordenId)
         const reservados = await buscarTrabajosReservados(orden.id, presupuesto.id)
         const trabajoIds = [...new Set(items.filter((item) => item.trabajoId !== null).map((item) => item.trabajoId))]
         validarTrabajosDeLaOrden(orden, trabajoIds, reservados)
@@ -270,6 +274,17 @@ async function actualizarPresupuesto(idRecibido, datos) {
     return obtenerPresupuesto(presupuesto.id)
 }
 
+// Lo usa ordenes para saber si el cliente ya autorizó el trabajo antes de empezar la reparación.
+async function tieneAprobado(ordenId) {
+    const presupuestos = await presupuestosRepository.listar(ordenId)
+    return presupuestos.some((presupuesto) => presupuesto.estadoPresupuesto === 'APROBADO')
+}
+
+// Lo usa ordenes al cancelarse: los presupuestos que esperaban respuesta quedan cancelados.
+async function cancelarPendientes(ordenId) {
+    await presupuestosRepository.cancelarPendientes(ordenId)
+}
+
 async function eliminarPresupuesto(idRecibido) {
     const presupuesto = await obtenerPresupuesto(idRecibido)
     if (presupuesto.estadoPresupuesto !== 'BORRADOR') {
@@ -284,5 +299,7 @@ export default {
     obtenerTrabajosPresupuestables,
     crearPresupuesto,
     actualizarPresupuesto,
+    tieneAprobado,
+    cancelarPendientes,
     eliminarPresupuesto
 }

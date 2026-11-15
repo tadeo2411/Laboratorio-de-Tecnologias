@@ -202,6 +202,11 @@ async function gestionarAviso(id, datos, idEmpleado){
     return aviso
 }
 
+async function programarAviso(id, meses){
+    const vehiculo = await buscar(id)
+    return vehiculosRepository.programarAviso(vehiculo.id, meses)
+}
+
 
 export default 
 {   listar,
@@ -214,5 +219,6 @@ export default
     asociarDueno,
     desasociarDueno,
     verHistorialService,
-    gestionarAviso
+    gestionarAviso,
+    programarAviso
 }

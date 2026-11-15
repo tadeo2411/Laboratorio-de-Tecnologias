@@ -58,11 +58,11 @@ async function desasociarDueno(req, res) {
 }
 
 
-// async function gestionarAviso(req, res){
-//     // req.usuario lo completa verificarToken: es el empleado que gestiona el aviso
-//     const aviso = await vehiculosService.gestionarAviso(req.params.id, req.body, req.usuario.id)
-//     res.json(aviso)
-// }
+async function gestionarAviso(req, res){
+    // req.usuario lo completa verificarToken: es el empleado que gestiona el aviso
+    const aviso = await vehiculosService.gestionarAviso(req.params.id, req.body, req.usuario.id)
+    res.json(aviso)
+}
 
 
-export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno, verHistorialService}
+export default {listar, buscar, alta, modificar, eliminar, listarDuenos, buscarDueno, asociarDueno, desasociarDueno, verHistorialService, gestionarAviso}

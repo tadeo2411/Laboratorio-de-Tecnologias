@@ -16,7 +16,11 @@ export const TIPOS_ITEM = {
     DESCUENTO: "Descuento",
 };
 
-export const formatearPrecio = (valor) => `$${Number(valor || 0).toLocaleString("es-AR")}`;
+export const formatearPrecio = (valor) => {
+    const numero = Number(valor || 0);
+    const decimales = Number.isInteger(numero) ? 0 : 2;
+    return `$${numero.toLocaleString("es-AR", { minimumFractionDigits: decimales, maximumFractionDigits: decimales })}`;
+};
 
 // El total de un renglón viene positivo; si es un descuento se muestra con signo menos.
 export const formatearTotalDelRenglon = (renglon) =>

@@ -359,6 +359,16 @@
     }
 }
 
+.info-orden-card-datos > .presupuesto-cliente {
+    grid-column: 1 / -1;
+}
+
+.orden-estado-ayuda {
+    margin: 6px 0 0;
+    color: #6c757d;
+    font-size: 13px;
+}
+
 /* Cliente de la orden */
 .orden-cliente-nota {
     color: #6c757d;
@@ -397,7 +407,7 @@
 }
 
 .presupuesto-summary::after {
-    content: "▸";
+    content: "▸" / "";
     color: #6c757d;
     transition: transform 0.2s ease;
 }
@@ -408,6 +418,17 @@
 
 .presupuesto-card[open] > .presupuesto-summary::after {
     transform: rotate(90deg);
+}
+
+@media (max-width: 400px) {
+    .presupuesto-summary {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .presupuesto-summary .info-orden-card-titulo {
+        flex-wrap: wrap;
+    }
 }
 
 /* El png del ícono es blanco: se oscurece igual que el ícono del vehículo. */
@@ -424,7 +445,7 @@
     align-items: center;
     padding: 3px 9px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
 }
@@ -441,17 +462,17 @@
 
 .presupuesto-aprobado {
     background-color: #dcfce7;
-    color: #15803d;
+    color: #166534;
 }
 
 .presupuesto-cancelado {
     background-color: #fee2e2;
-    color: #dc2626;
+    color: #b91c1c;
 }
 
 .presupuesto-vencido {
     background-color: #ffedd5;
-    color: #c2410c;
+    color: #9a3412;
 }
 
 .presupuesto-items {
@@ -606,8 +627,8 @@
 }
 
 .presupuesto-form-quitar {
-    width: 32px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border: 0;
     border-radius: 6px;
     background: transparent;
@@ -624,18 +645,19 @@
     margin-top: 0;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .presupuesto-form-item {
-            grid-template-columns: 1fr 1fr;
-        }
+        grid-template-columns: 1fr 1fr;
+    }
 
+    .presupuesto-form-item > :first-child,
     .presupuesto-form-descripcion {
-            grid-column: 1 / -1;
-        }
+        grid-column: 1 / -1;
+    }
 
     .presupuesto-form-quitar {
-            justify-self: end;
-        }
+        justify-self: end;
+    }
 }
 
 .form-ordenes>.fichas-orden {
@@ -973,6 +995,9 @@
 }
 
 .presupuesto-alta-trabajo-fila .form-check-label {
+    flex: 1;
+    padding: 8px 0;
+    cursor: pointer;
     margin: 0;
     color: #343a40;
     font-size: 14px;
@@ -1036,12 +1061,12 @@
 
 .presupuesto-alta-negativo,
 .presupuesto-alta-negativo strong {
-    color: #dc3545 !important;
+    color: #b02a37 !important;
 }
 
 .presupuesto-alta-aviso-negativo {
     margin: 6px 0 0;
-    color: #dc3545;
+    color: #b02a37;
     font-size: 13px;
 }
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { obtenerTrabajosPresupuestables } from "../services/presupuestosService";
 import { formatearPrecio } from "../utils/presupuestosVista";
 
@@ -50,6 +50,12 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
 
     const [error, setError] = useState("");
     const [guardando, setGuardando] = useState(false);
+    const refError = useRef(null);
+
+    // El botón de crear queda abajo: si hay error se acerca a la vista.
+    useEffect(() => {
+        if (error) refError.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }, [error]);
 
     useEffect(() => {
         let activo = true;
@@ -116,6 +122,7 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
     const totalDescuentos = sumarDescuentos(descuentos);
     const precioFinal = totalManoDeObra + totalRepuestos - totalDescuentos;
     const descuentosSuperanElTotal = precioFinal < 0;
+    const sinTrabajos = idsDeTrabajosElegidos.length === 0;
 
     // --- Envío ---
 
@@ -193,7 +200,7 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
         <form className="presupuesto-form" onSubmit={manejarEnvio}>
             {titulo}
 
-            {error && <p className="alert alert-danger" role="alert">{error}</p>}
+            {error && <p ref={refError} className="alert alert-danger" role="alert">{error}</p>}
 
             {/* 1. Trabajos */}
             <fieldset className="presupuesto-alta-seccion">
@@ -245,13 +252,14 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
                         type="number"
                         min="1"
                         step="1"
+                        required
                         className="form-control"
                         value={diasValidez}
                         onChange={(event) => setDiasValidez(event.target.value)}
                         aria-describedby="presupuesto-dias-validez-ayuda"
                     />
                     <small id="presupuesto-dias-validez-ayuda" className="text-secondary">
-                        Corre desde el envío al cliente
+                        Se cuenta desde que se envía al cliente
                     </small>
                 </div>
 
@@ -326,10 +334,12 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
                     <span>Repuestos</span>
                     <strong>{formatearPrecio(totalRepuestos)}</strong>
                 </div>
-                <div className="info-orden-resumen-item">
-                    <span>Descuentos</span>
-                    <strong>−{formatearPrecio(totalDescuentos)}</strong>
-                </div>
+                {totalDescuentos > 0 && (
+                    <div className="info-orden-resumen-item">
+                        <span>Descuentos</span>
+                        <strong>−{formatearPrecio(totalDescuentos)}</strong>
+                    </div>
+                )}
                 <div className={`info-orden-resumen-total ${descuentosSuperanElTotal ? "presupuesto-alta-negativo" : ""}`}>
                     <span>Precio final</span>
                     <strong>{precioFinal < 0 ? `−${formatearPrecio(-precioFinal)}` : formatearPrecio(precioFinal)}</strong>
@@ -337,6 +347,11 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
                 {descuentosSuperanElTotal && (
                     <p className="presupuesto-alta-aviso-negativo" role="alert">
                         Los descuentos superan el total: así no se puede crear.
+                    </p>
+                )}
+                {sinTrabajos && (
+                    <p className="presupuesto-alta-aviso-negativo" role="status">
+                        Elegí al menos un trabajo.
                     </p>
                 )}
             </div>
@@ -348,7 +363,7 @@ function PresupuestoAltaForm({ ordenId, onCancelar, onCrear }) {
                     <button type="button" className="btn btn-secondary" onClick={onCancelar}>
                         Cancelar
                     </button>
-                    <button type="submit" className="btn btn-success" disabled={guardando || descuentosSuperanElTotal}>
+                    <button type="submit" className="btn btn-success" disabled={guardando || descuentosSuperanElTotal || sinTrabajos}>
                         {guardando ? "Creando..." : "Crear presupuesto"}
                     </button>
                 </div>

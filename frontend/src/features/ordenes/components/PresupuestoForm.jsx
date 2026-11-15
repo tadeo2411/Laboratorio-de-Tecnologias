@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ESTADOS_PRESUPUESTO, TIPOS_ITEM, formatearPrecio } from "../utils/presupuestosVista";
 
 // Estados que se pueden elegir a mano. VENCIDO lo asigna el sistema.
@@ -17,6 +17,12 @@ function crearItemsIniciales(presupuesto) {
     return presupuesto.items.map((item) => ({ ...item, clave: nuevaClave() }));
 }
 
+// Aprobar y cancelar son definitivos: antes de guardar se pide confirmación.
+const AVISO_DEFINITIVO = {
+    APROBADO: (numero) => `¿Confirmás que el cliente aprobó el presupuesto ${numero}? Después no se va a poder modificar.`,
+    CANCELADO: (numero) => `¿Seguro que querés cancelar el presupuesto ${numero}? Después no se va a poder modificar.`,
+};
+
 // Vista previa mientras se escribe; el precio que vale es el que calcula el backend al guardar.
 const totalItem = (item) => Number(item.cantidad) * Number(item.precioUnitario);
 // Para el precio final, los descuentos restan.
@@ -29,6 +35,12 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
     const [estado, setEstado] = useState(presupuesto?.estadoPresupuesto ?? "BORRADOR");
     const [error, setError] = useState("");
     const [guardando, setGuardando] = useState(false);
+    const refError = useRef(null);
+
+    // El botón de guardar queda abajo: si hay error se acerca a la vista.
+    useEffect(() => {
+        if (error) refError.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }, [error]);
     const esEdicion = Boolean(presupuesto);
 
     // Una vez enviado, los ítems quedan fijos: el cliente ya tiene esos precios.
@@ -57,6 +69,11 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
     async function manejarEnvio(event) {
         event.preventDefault();
         setError("");
+
+        const cambiaDeEstado = esEdicion && estado !== presupuesto.estadoPresupuesto;
+        if (cambiaDeEstado && AVISO_DEFINITIVO[estado] && !window.confirm(AVISO_DEFINITIVO[estado](presupuesto.numero))) {
+            return;
+        }
         setGuardando(true);
 
         // Los inputs entregan texto: cantidad y precio se convierten antes de guardar.
@@ -90,7 +107,7 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
                 </h3>
             </div>
 
-            {error && <p className="alert alert-danger" role="alert">{error}</p>}
+            {error && <p ref={refError} className="alert alert-danger" role="alert">{error}</p>}
 
             {esEdicion && (
                 <div className="presupuesto-form-campo presupuesto-form-estado">
@@ -100,11 +117,15 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
                         className="form-select"
                         value={estado}
                         onChange={(event) => setEstado(event.target.value)}
+                        aria-describedby="presupuesto-estado-ayuda"
                     >
                         {opcionesEstado.map((valor) => (
                             <option key={valor} value={valor}>{ESTADOS_PRESUPUESTO[valor].texto}</option>
                         ))}
                     </select>
+                    <small id="presupuesto-estado-ayuda" className="text-secondary">
+                        Borrador, Enviado, y después Aprobado o Cancelado. Aprobar y cancelar son definitivos.
+                    </small>
                 </div>
             )}
 
@@ -212,7 +233,13 @@ function PresupuestoForm({ presupuesto, onCancelar, onGuardar }) {
                     Cancelar
                 </button>
                 <button type="submit" className="btn btn-success" disabled={guardando}>
-                    {guardando ? "Guardando..." : esEdicion ? "Guardar cambios" : "Crear presupuesto"}
+                    {guardando
+                        ? "Guardando..."
+                        : !esEdicion
+                            ? "Crear presupuesto"
+                            : estado !== presupuesto.estadoPresupuesto
+                                ? `Guardar y pasar a ${ESTADOS_PRESUPUESTO[estado].texto}`
+                                : "Guardar cambios"}
                 </button>
             </div>
         </form>

@@ -257,6 +257,7 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                                     className="select"
                                     value={formulario.estado}
                                     onChange={actualizarCampo}
+                                    aria-describedby={orden.estado === "ESPERANDO_APROBACION_PRESUPUESTO" ? "orden-estado-ayuda" : undefined}
                                 >
                                     {estadosPosibles.map(estado => (
                                         <option key={estado} value={estado}>
@@ -265,6 +266,11 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                                     ))}
                                 </select>
                             </div>
+                            {orden.estado === "ESPERANDO_APROBACION_PRESUPUESTO" && (
+                                <p className="orden-estado-ayuda" id="orden-estado-ayuda">
+                                    Para empezar la reparación hace falta un presupuesto aprobado (pestaña Presupuestos).
+                                </p>
+                            )}
                         </div>
                     )}
                 </div>

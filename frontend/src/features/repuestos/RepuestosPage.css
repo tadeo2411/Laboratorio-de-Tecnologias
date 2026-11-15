@@ -182,14 +182,10 @@
 /*           ACCIONES            */
 /* ============================= */
 
-.repuesto-acciones {
-    text-align: center;
-}
-
 .repuesto-acciones .acciones-container {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 8px;
 }
 

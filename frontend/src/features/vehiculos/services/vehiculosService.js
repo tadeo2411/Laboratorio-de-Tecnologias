@@ -50,6 +50,10 @@ export function verHistorialService(id){
   return pedir(`/${id}/historial`)
 }
 
+export function gestionarAviso(id, estado){
+  return pedir(`/${id}/aviso`, {method : 'PATCH', body: JSON.stringify({ estado })})
+}
+
 export function obtenerDuenos(id){
   return pedir(`/${id}/duenos`, {method : 'GET'})
 }

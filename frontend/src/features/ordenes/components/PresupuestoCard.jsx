@@ -15,13 +15,13 @@ function PresupuestoCard({ presupuesto, abierto = false, acciones = null }) {
     return (
         <details className="info-orden-card presupuesto-card" open={abierto}>
             <summary className="info-orden-card-header presupuesto-summary">
-                <div className="info-orden-card-titulo">
+                <span className="info-orden-card-titulo">
                     <img src={img_presupuesto} alt="" />
                     <span>{presupuesto.numero}</span>
                     <span className={`presupuesto-estado ${estado?.clase ?? ""}`}>
                         {estado?.texto ?? presupuesto.estadoPresupuesto}
                     </span>
-                </div>
+                </span>
 
                 <span className="info-orden-card-precio">
                     {formatearPrecio(presupuesto.precioFinal)}
@@ -29,6 +29,15 @@ function PresupuestoCard({ presupuesto, abierto = false, acciones = null }) {
             </summary>
 
             <div className="info-orden-card-datos">
+                {presupuesto.clienteNombre && (
+                    <div className="presupuesto-cliente">
+                        <span className="info-orden-label">Cliente</span>
+                        <span>
+                            {presupuesto.clienteNombre}
+                            {presupuesto.clienteDocumento && ` · ${presupuesto.clienteDocumento}`}
+                        </span>
+                    </div>
+                )}
                 <div>
                     <span className="info-orden-label">Emisión</span>
                     <span>{formatearFecha(presupuesto.fechaEmision)}</span>

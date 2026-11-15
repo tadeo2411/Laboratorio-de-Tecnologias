@@ -14,7 +14,8 @@ function BuscadorClientes({
   const [indiceFoco, setIndiceFoco] = useState(-1)
   const contenedorRef = useRef(null)
   const idLista = useId()
-  const idInput = useId()
+  const idGenerado = useId()
+  const idInput = id ?? idGenerado
 
   const texto = busqueda.toLowerCase().trim()
 
@@ -47,6 +48,14 @@ function BuscadorClientes({
   }
 
   function manejarTeclado(e) {
+    if (e.key === 'Escape' && busqueda) {
+      e.stopPropagation()
+      setBusqueda('')
+      setAbierto(false)
+      setIndiceFoco(-1)
+      return
+    }
+
     if (!filtrados.length) return
 
     if (e.key === 'ArrowDown') {
@@ -59,9 +68,6 @@ function BuscadorClientes({
     } else if (e.key === 'Enter' && indiceFoco >= 0) {
       e.preventDefault()
       elegir(filtrados[indiceFoco])
-    } else if (e.key === 'Escape') {
-      setAbierto(false)
-      setIndiceFoco(-1)
     }
   }
 

@@ -1,8 +1,8 @@
-import { obtenerVehiculos, obtenerClientes } from '../../vehiculos'
+import { obtenerVehiculos } from '../../vehiculos'
+import { obtenerClientes } from '../../clientes'
 import { obtenerTiposTrabajo } from '../../trabajos'
 import { obtenerRepuestos } from '../../repuestos'
-import { obtenerEmpleados } from '../../auth'
-import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
+import { obtenerEmpleados, obtenerToken, manejarSesionVencida } from '../../auth'
 import { API_URL } from '../../../shared/config/api'
 
 const URL_API = `${API_URL}/ordenes`

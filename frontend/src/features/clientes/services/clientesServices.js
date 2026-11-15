@@ -1,42 +1,48 @@
+import { obtenerToken, manejarSesionVencida } from '../../auth/services/authService'
+
 export const tipoCliente = ['PERSONA', 'EMPRESA']
-import {obtenerToken, manejarSesionVencida} from '../../auth/services/authService'
-import { API_URL } from '../../../shared/config/api'
-const URL = `${API_URL}/clientes`
+const URL = 'http://localhost:3000/api/clientes'
 
 async function pedir(ruta, opciones = {}) {
-    const headers = { Authorization: `Bearer ${obtenerToken()}` }
-    if (opciones.body) headers['Content-Type'] = 'application/json'
+  const headers = { Authorization: `Bearer ${obtenerToken()}` }
+  if (opciones.body) headers['Content-Type'] = 'application/json'
 
-    let respuesta
+  let respuesta
+  try {
+    respuesta = await fetch(`${URL}${ruta}`, { ...opciones, headers })
+  } catch {
+    throw new Error('No se pudo conectar con el servidor.')
+  }
+
+  manejarSesionVencida(respuesta)
+
+  let datos = null
+  if (respuesta.status !== 204) {
     try {
-        respuesta = await fetch(`${URL}${ruta}`, { ...opciones, headers })
+      datos = await respuesta.json()
     } catch {
-        throw new Error('No se pudo conectar con el servidor.')
+      datos = null
     }
+  }
 
-    manejarSesionVencida(respuesta)
-    const datos = respuesta.status === 204 ? null : await respuesta.json()
-
-    if (!respuesta.ok) {
-        throw new Error(datos?.error || datos?.mensaje || 'Ocurrió un error con los clientes.')
-    }
-    return datos
+  if (!respuesta.ok) {
+    throw new Error(datos?.error || datos?.mensaje || 'Ocurrió un error con los clientes.')
+  }
+  return datos
 }
 
 export function obtenerClientes() {
-    return pedir('')
+  return pedir('')
 }
 
 export function crearCliente(datos) {
-    return pedir('', { method: 'POST', body: JSON.stringify(datos) })
+  return pedir('', { method: 'POST', body: JSON.stringify(datos) })
 }
 
 export function modificarCliente(id, cambios) {
-    return pedir(`/${id}`, { method: 'PATCH', body: JSON.stringify(cambios) })
+  return pedir(`/${id}`, { method: 'PATCH', body: JSON.stringify(cambios) })
 }
 
 export function eliminarCliente(id) {
-    return pedir(`/${id}`, { method: 'DELETE' })
+  return pedir(`/${id}`, { method: 'DELETE' })
 }
-
-

@@ -608,13 +608,17 @@ por que cada vez que reutilizamos no estariamos cargando todas las hojas de esti
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .buttons p {
     flex: 1;
     font-size: .9rem;
     margin: 0;
-    color: #4b4b4b
+    color: #4b4b4b;
+    min-width: 200px;
 }
 
 .input-container {
@@ -766,6 +770,23 @@ tbody tr:last-child td {
 
 .button-list:active {
     background-color: #e9ecef;
+}
+
+.button-list:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+    color: #6c757d;
+}
+
+.pagina-indicador {
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
+    padding: 0 8px;
+    user-select: none;
+    white-space: nowrap;
 }
 
 

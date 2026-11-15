@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { crearTurno, estadosTurno, modificarTurno } from '../services/turnosService';
+import { crearTurno, estadosPosibles, modificarTurno } from '../services/turnosService';
 import { BuscadorClientes, ClientesForm, crearCliente } from '../../clientes';
 import Modal from '../../../shared/components/Modal';
 import ModalNotificacion from '../../../shared/components/ModalNotification';
@@ -238,7 +238,7 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clie
                                     onChange={actualizarCampo}
                                     required
                                 >
-                                    {estadosTurno.map(estado => (
+                                    {estadosPosibles(turnoInicial.estado).map(estado => (
                                         <option key={estado} value={estado}>
                                             {estado}
                                         </option>

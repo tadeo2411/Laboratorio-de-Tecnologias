@@ -113,10 +113,7 @@ async function crearOrden(datos) {
     const vehiculo = await vehiculosService.buscar(datos.vehiculoId)
     const cliente = await clientesService.buscar(datos.clienteId)
 
-    const turnoId = datos.turnoId ?? null
-    if (turnoId !== null && !(await turnosService.buscar(turnoId))) {
-        throw httpError(400, `No existe el turno ${turnoId}`)
-    }
+    const turno = await turnosService.buscarParaOrden(cliente.id, datos.turnoId)
 
     const ordenAbierta = await ordenesRepository.buscarAbiertaPorVehiculo(vehiculo.id)
     if (ordenAbierta) {
@@ -128,12 +125,15 @@ async function crearOrden(datos) {
     const id = await ordenesRepository.crear({
         idCliente: cliente.id,
         idVehiculo: vehiculo.id,
-        turnoId,
+        turnoId: turno?.id ?? null,
         diagnostico: datos.diagnostico?.trim() || null,
         esService: datos.esService ?? false,
         esUrgencia: datos.esUrgencia ?? false
     })
     await ordenesRepository.crearFicha(id, fichaIngreso)
+    if (turno) {
+        await turnosService.marcarCumplido(turno.id)
+    }
     return ordenesRepository.buscarPorId(id)
 }
 

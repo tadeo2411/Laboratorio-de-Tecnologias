@@ -3,6 +3,22 @@ import { obtenerToken, manejarSesionVencida } from '../../auth';
 import { API_URL } from '../../../shared/config/api';
 
 export const estadosTurno = [ 'CONFIRMADO', 'CUMPLIDO', 'CANCELADO', 'AUSENTE' ]
+
+const TRANSICIONES = {
+    SOLICITADO: ['CONFIRMADO', 'CANCELADO'],
+    CONFIRMADO: ['CUMPLIDO', 'CANCELADO', 'AUSENTE'],
+    AUSENTE: ['CUMPLIDO'],
+    CUMPLIDO: [],
+    CANCELADO: []
+}
+
+export function estadosPosibles(estado) {
+    return [estado, ...(TRANSICIONES[estado] ?? [])]
+}
+
+export function sePuedeModificar(estado) {
+    return (TRANSICIONES[estado] ?? []).length > 0
+}
 const URL = API_URL
 
 async function pedir(ruta, opciones = {}) {

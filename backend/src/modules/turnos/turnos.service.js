@@ -7,7 +7,11 @@ import { validarTextoObligatorio } from "../../utils/validsTexto.js";
 
 const ESTADOS = ["CONFIRMADO", "CUMPLIDO", "CANCELADO", "AUSENTE"];
 const TRANSICIONES = {
-    "CONFIRMADO": ["CUMPLIDO", "CANCELADO", "AUSENTE"]
+    "SOLICITADO": ["CONFIRMADO", "CANCELADO"],
+    "CONFIRMADO": ["CUMPLIDO", "CANCELADO", "AUSENTE"],
+    "AUSENTE": ["CUMPLIDO"],
+    "CUMPLIDO": [],
+    "CANCELADO": []
 }
 const DURACION_POR_DEFECTO = 60;
 const DURACION_MAXIMA = 1440;
@@ -94,6 +98,12 @@ async function modificar(datos) {
     const id = validarId(datos.id);
     const actual = await buscar(id);
 
+    const nuevoEstado = datos.estado ?? actual.estado;
+    if (ESTADOS.includes(nuevoEstado) && nuevoEstado !== actual.estado
+        && !(TRANSICIONES[actual.estado] ?? []).includes(nuevoEstado)) {
+        throw httpError(409, `No se puede pasar un turno de ${actual.estado} a ${nuevoEstado}`);
+    }
+
     // Si cambia el vehículo, el cliente se vuelve a buscar en sus dueños.
     const base = { ...actual };
     if (datos.id_vehiculo !== undefined && Number(datos.id_vehiculo) !== actual.id_vehiculo) {
@@ -116,4 +126,20 @@ async function buscar(id) {
     return turno;
 }
 
-export default { listar, cargar, eliminar, modificar, buscar };
+async function buscarParaOrden(idCliente, idTurno) {
+    if (idTurno === undefined || idTurno === null) {
+        return (await repository.buscarConfirmadoDeHoy(idCliente)) ?? null;
+    }
+
+    const turno = await exigirExistente(() => buscar(idTurno), `No existe el turno ${idTurno}`);
+    if (!["CONFIRMADO", "AUSENTE"].includes(turno.estado)) {
+        throw httpError(409, `El turno está ${turno.estado} y no se puede usar para una orden`);
+    }
+    return turno;
+}
+
+async function marcarCumplido(id) {
+    await repository.cambiarEstado(id, "CUMPLIDO");
+}
+
+export default { listar, cargar, eliminar, modificar, buscar, buscarParaOrden, marcarCumplido };

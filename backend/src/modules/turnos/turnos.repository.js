@@ -13,6 +13,8 @@ async function listar() {
             ${COLUMNAS},
 
             -- Datos del cliente
+            t.id_cliente AS cliente_id,
+            c.nombre AS cliente_nombre,
             c.documento AS cliente_documento,
 
             -- Datos del vehículo
@@ -86,4 +88,19 @@ async function buscar(id) {
     return rows[0];
 }
 
-export default { listar, cargar, eliminar, modificar, buscar };
+async function buscarConfirmadoDeHoy(idCliente) {
+    const { rows } = await pool.query(
+        `SELECT ${COLUMNAS} FROM turnos t
+         WHERE t.id_cliente = $1 AND t.estado = 'CONFIRMADO' AND t.fecha_hora::date = CURRENT_DATE
+         ORDER BY t.fecha_hora
+         LIMIT 1`,
+        [idCliente]
+    );
+    return rows[0];
+}
+
+async function cambiarEstado(id, estado) {
+    await pool.query(`UPDATE turnos SET estado = $2 WHERE id = $1`, [id, estado]);
+}
+
+export default { listar, cargar, eliminar, modificar, buscar, buscarConfirmadoDeHoy, cambiarEstado };

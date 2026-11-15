@@ -1,7 +1,7 @@
 
 import TurnosForm from '../components/TurnosForm'
 import { useCallback, useEffect, useState } from 'react';
-import { obtenerTurnos, obtenerAutos, obtenerClientes, modificarTurno } from '../services/turnosService';
+import { obtenerTurnos, obtenerAutos, obtenerClientes, modificarTurno, sePuedeModificar } from '../services/turnosService';
 import Table from "../../../shared/components/Table";
 import img_list from "../../../assets/icons/turnosIcono.svg"
 import BotonNuevo from "../../../shared/components/BotonNuevo";
@@ -191,7 +191,7 @@ function TurnosPage() {
 
                                 <td className="turno-acciones" data-label="Acciones">
                                     <div className="acciones-container">
-                                        {!["CONFIRMADO", "CANCELADO", "AUSENTE"].includes(turno.estado) && (
+                                        {sePuedeModificar(turno.estado) && (
                                             <BotonEditar onClick={() => handleEditarTurno(turno)} />
                                         )}
 

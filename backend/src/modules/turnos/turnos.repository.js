@@ -47,15 +47,16 @@ async function eliminar(id) {
 }
 
 async function cargar(datos) {
-    const { id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado } = datos;
+    const { id_cliente, fecha_hora, duracion_min, motivo } = datos;
 
     const resultado = await pool.query(
         `INSERT INTO turnos AS t
-            (id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado)
-         VALUES ($1, $2, $3, $4, $5, $6)
+            (id_cliente, fecha_hora, duracion_min, motivo, estado)
+         VALUES ($1, $2, $3, $4, $5)
          RETURNING ${COLUMNAS}`,
-        [id_cliente, id_vehiculo, fecha_hora, duracion_min, motivo, estado]
+        [id_cliente, fecha_hora, duracion_min, motivo, "CONFIRMADO"]
     );
+
     return resultado.rows[0];
 }
 

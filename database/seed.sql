@@ -1,6 +1,6 @@
--- Datos de prueba para Taller 303
--- Ejecutar dentro de la base de datos "taller-303"
--- Ejemplo: sudo -u postgres psql -d "taller-303" -f database/datos_prueba.sql
+-- Datos de prueba compatibles con database/schema.sql (version 1)
+-- Ejecutar DESPUES de crear la base y aplicar schema.sql.
+-- Ejemplo: sudo -u postgres psql -d "taller-303" -v ON_ERROR_STOP=1 -f database/seed.sql
 
 BEGIN;
 
@@ -120,8 +120,10 @@ AND NOT EXISTS (
 );
 
 -- Trabajos asociados a cada orden.
-INSERT INTO trabajos (orden_id, tipo_trabajo_id, descripcion, mano_de_obra)
-SELECT o.id, tt.id, 'Realizar cambio de aceite y filtros', 22000.00
+INSERT INTO trabajos
+    (orden_id, tipo_trabajo_id, descripcion, mano_de_obra, fecha, estado)
+SELECT o.id, tt.id, 'Realizar cambio de aceite y filtros',
+       22000.00, CURRENT_TIMESTAMP, 'PENDIENTE'
 FROM ordenes_trabajo o
 JOIN tipos_trabajo tt ON tt.nombre = 'Cambio de aceite y filtros'
 WHERE o.diagnostico = 'Mantenimiento programado; revisar posibles pérdidas de aceite.'
@@ -130,8 +132,10 @@ WHERE o.diagnostico = 'Mantenimiento programado; revisar posibles pérdidas de a
       WHERE t.orden_id = o.id AND t.tipo_trabajo_id = tt.id
   );
 
-INSERT INTO trabajos (orden_id, tipo_trabajo_id, descripcion, mano_de_obra)
-SELECT o.id, tt.id, 'Revisar y reemplazar pastillas delanteras', 35000.00
+INSERT INTO trabajos
+    (orden_id, tipo_trabajo_id, descripcion, mano_de_obra, fecha, estado)
+SELECT o.id, tt.id, 'Revisar y reemplazar pastillas delanteras',
+       35000.00, CURRENT_TIMESTAMP, 'EN_PROCESO'
 FROM ordenes_trabajo o
 JOIN tipos_trabajo tt ON tt.nombre = 'Reparación de frenos'
 WHERE o.diagnostico = 'Desgaste de pastillas delanteras; verificar discos.'
@@ -188,20 +192,31 @@ WHERE o.diagnostico = 'Desgaste de pastillas delanteras; verificar discos.'
   AND NOT EXISTS (SELECT 1 FROM presupuestos p WHERE p.numero = 1002);
 
 -- Renglones de presupuesto; evita duplicarlos al reejecutar.
-INSERT INTO presupuesto_items (presupuesto_id, concepto, descripcion, cantidad, precio_unitario)
-SELECT p.id, x.concepto::concepto_item, x.descripcion, x.cantidad, x.precio_unitario
+INSERT INTO presupuesto_items
+    (presupuesto_id, concepto, descripcion, cantidad, precio_unitario, trabajo_id)
+SELECT
+    p.id,
+    x.concepto::concepto_item,
+    x.descripcion,
+    x.cantidad,
+    x.precio_unitario,
+    t.id
 FROM presupuestos p
-JOIN (VALUES
-    (1001, 'MANO_DE_OBRA', 'Cambio de aceite y filtros', 1::numeric, 22000.00::numeric),
-    (1001, 'REPUESTO', 'Filtro de aceite Toyota Corolla', 1::numeric, 12000.00::numeric),
-    (1001, 'REPUESTO', 'Aceite sintético 5W-30 (litro)', 4.5::numeric, 9500.00::numeric),
-    (1002, 'MANO_DE_OBRA', 'Reparación de frenos', 1::numeric, 35000.00::numeric),
-    (1002, 'REPUESTO', 'Pastillas de freno Ford Ranger', 1::numeric, 38000.00::numeric)
+JOIN (
+    VALUES
+        (1001, 'MANO_DE_OBRA', 'Cambio de aceite y filtros', 1::numeric, 22000.00::numeric),
+        (1001, 'REPUESTO', 'Filtro de aceite Toyota Corolla', 1::numeric, 12000.00::numeric),
+        (1001, 'REPUESTO', 'Aceite sintético 5W-30 (litro)', 4.5::numeric, 9500.00::numeric),
+        (1002, 'MANO_DE_OBRA', 'Reparación de frenos', 1::numeric, 35000.00::numeric),
+        (1002, 'REPUESTO', 'Pastillas de freno Ford Ranger', 1::numeric, 38000.00::numeric)
 ) AS x(numero_presupuesto, concepto, descripcion, cantidad, precio_unitario)
-  ON TRUE
+    ON TRUE
+LEFT JOIN trabajos t
+    ON t.orden_id = p.orden_id
 WHERE p.numero = x.numero_presupuesto
   AND NOT EXISTS (
-      SELECT 1 FROM presupuesto_items pi
+      SELECT 1
+      FROM presupuesto_items pi
       WHERE pi.presupuesto_id = p.id
         AND pi.concepto = x.concepto::concepto_item
         AND pi.descripcion = x.descripcion

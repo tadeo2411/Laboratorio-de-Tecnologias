@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { crearTurno, estadosTurno, modificarTurno } from '../services/turnosService';
@@ -5,7 +6,7 @@ import botonMas from '../../../assets/icons/botonMas.png';
 import ModalNotificacion from '../../../shared/components/ModalNotification';
 
 const valoresIniciales = {
-    vehiculoId: '',
+    clienteId: '',
     fechaHora: '',
     duracion: '',
     motivo: '',
@@ -16,7 +17,7 @@ function valoresDelTurno(turno) {
     if (!turno) return valoresIniciales;
 
     return {
-        vehiculoId: turno.id_vehiculo ?? '',
+        clienteId: turno.cliente_id ?? '',
         fechaHora: turno.fecha_hora ? turno.fecha_hora.slice(0, 16) : '',
         duracion: turno.duracion_min ?? '',
         motivo: turno.motivo ?? '',
@@ -24,10 +25,12 @@ function valoresDelTurno(turno) {
     };
 }
 
-function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehiculos }) {
+function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, clientes = [] }) {
     const [formulario, setFormulario] = useState(() => valoresDelTurno(turnoInicial));
     const [guardando, setGuardando] = useState(false);
     const [notificacion, setNotificacion] = useState(null);
+
+    const esEdicion = Boolean(turnoInicial);
 
     function actualizarCampo(evento) {
         const { name, value } = evento.target
@@ -37,10 +40,10 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
     async function manejarEnvio(e) {
         e.preventDefault();
 
-        if (!formulario.vehiculoId) {
+        if (!formulario.clienteId) {
             setNotificacion({
                 tipo: "advertencia",
-                mensaje: "Debés seleccionar un vehículo.",
+                mensaje: "Debés seleccionar un cliente.",
                 onCerrar: () => setNotificacion(null)
             });
             return;
@@ -50,16 +53,18 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
             setGuardando(true);
 
             const datos = {
-                id_vehiculo: Number(formulario.vehiculoId),
+                id_cliente: Number(formulario.clienteId),
                 fecha_hora: formulario.fechaHora,
                 duracion_min: formulario.duracion !== ""
                     ? Number(formulario.duracion)
                     : null,
                 motivo: formulario.motivo.trim(),
-                estado: formulario.estado
             };
 
-            if (turnoInicial) {
+            // El estado solamente se envía al modificar.
+            if (esEdicion) {
+                datos.estado = formulario.estado;
+
                 await modificarTurno(turnoInicial.id, datos);
             } else {
                 await crearTurno(datos);
@@ -67,7 +72,7 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
 
             setNotificacion({
                 tipo: "exito",
-                mensaje: turnoInicial
+                mensaje: esEdicion
                     ? "Turno actualizado correctamente."
                     : "Se ha registrado correctamente el turno.",
                 onCerrar: () => {
@@ -88,7 +93,6 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
         }
     }
 
-
     return (
         <div>
             <p className="campos-obligatorios">
@@ -100,32 +104,34 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
             <form className="form-ordenes" onSubmit={manejarEnvio}>
                 <div>
                     <div>
-                        <label htmlFor="vehiculoId">
-                            Vehículo <span className="asterisco">*</span>
+                        <label htmlFor="clienteId">
+                            Cliente <span className="asterisco">*</span>
                         </label>
 
                         <div className="campo-icono">
                             <select
-                                id="vehiculoId"
-                                name="vehiculoId"
+                                id="clienteId"
+                                name="clienteId"
                                 className="select"
-                                value={formulario.vehiculoId}
+                                value={formulario.clienteId}
                                 onChange={actualizarCampo}
                                 required
                                 disabled={cargando || Boolean(error)}
                             >
-                                <option value="">--- Elegir ---</option>
-                                {vehiculos.map(vehiculo => (
-                                    <option key={vehiculo.id} value={vehiculo.id}>
-                                        {vehiculo.patente} — {vehiculo.marca} {vehiculo.modelo}
+                                <option value="">--- Elegir cliente ---</option>
+
+                                {(clientes ?? []).map(cliente => (
+                                    <option key={cliente.id} value={cliente.id}>
+                                        {cliente.nombre}
+                                        {cliente.apellido ? ` ${cliente.apellido}` : ''}
                                     </option>
                                 ))}
                             </select>
 
-                            <Link to="/gestor/vehiculos">
+                            <Link to="/gestor/clientes">
                                 <img
                                     src={botonMas}
-                                    alt="Agregar vehículo"
+                                    alt="Agregar cliente"
                                     className="botonAgregar"
                                 />
                             </Link>
@@ -179,27 +185,30 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="estado">
-                            Estado <span className="asterisco">*</span>
-                        </label>
-                        <div className="campo-icono">
-                            <select
-                                id="estado"
-                                name="estado"
-                                className="select"
-                                value={formulario.estado}
-                                onChange={actualizarCampo}
-                                required
-                            >
-                                {estadosTurno.map(estado => (
-                                    <option key={estado} value={estado}>
-                                        {estado}
-                                    </option>
-                                ))}
-                            </select>
+                    {esEdicion && (
+                        <div>
+                            <label htmlFor="estado">
+                                Estado <span className="asterisco">*</span>
+                            </label>
+
+                            <div className="campo-icono">
+                                <select
+                                    id="estado"
+                                    name="estado"
+                                    className="select"
+                                    value={formulario.estado}
+                                    onChange={actualizarCampo}
+                                    required
+                                >
+                                    {estadosTurno.map(estado => (
+                                        <option key={estado} value={estado}>
+                                            {estado}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 <div className="d-flex justify-content-end gap-2">
@@ -220,6 +229,7 @@ function TurnosForm({ turnoInicial, onGuardar, onCancelar, cargando, error, vehi
                     </button>
                 </div>
             </form>
+
             {notificacion && (
                 <ModalNotificacion
                     {...notificacion}

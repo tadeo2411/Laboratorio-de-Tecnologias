@@ -1,5 +1,5 @@
 // aca va la logica de negocio. Genera id y llama a repository
-import  repository  from "./turnos.repository.js";
+import repository from "./turnos.repository.js";
 import vehiculosService from "../vehiculos/vehiculos.service.js";
 import clientesService from "../clientes/clientes.service.js";
 import { httpError } from "../../utils/httpError.js";
@@ -14,7 +14,7 @@ const DURACION_MAXIMA = 1440;
 const maxMotivo = 500;
 
 // El id llega como texto desde la URL (/:id). Devuelve el número ya convertido.
-function validarId(id, nombre = "El id"){
+function validarId(id, nombre = "El id") {
     const idNumerico = Number(id)
     if (!Number.isInteger(idNumerico) || idNumerico <= 0) {
         throw httpError(400, `${nombre} debe ser un número entero positivo`)
@@ -35,27 +35,23 @@ async function exigirExistente(buscarRegistro, mensaje) {
 }
 
 async function validarDatos(datos) {
-    if (datos.id_vehiculo === undefined || datos.id_vehiculo === null) {
-        throw httpError(400, "Tenés que elegir un vehículo");
+    if (datos.id_cliente === undefined || datos.id_cliente === null) {
+        throw httpError(400, "Tenés que elegir un cliente");
     }
-    const idVehiculo = validarId(datos.id_vehiculo, "El vehículo");
-    await exigirExistente(() => vehiculosService.buscar(idVehiculo), "El vehículo elegido no existe");
 
-    // El cliente es el último dueño del vehículo, salvo que se indique otro.
-    let idCliente = null;
-    if (datos.id_cliente !== undefined && datos.id_cliente !== null) {
-        idCliente = validarId(datos.id_cliente, "El cliente");
-        await exigirExistente(() => clientesService.buscar(idCliente), "El cliente elegido no existe");
-    } else {
-        const duenos = await vehiculosService.listarDuenos(idVehiculo);
-        idCliente = duenos[0]?.id ?? null;
-    }
+    const idCliente = validarId(datos.id_cliente, "El cliente");
+
+    await exigirExistente(
+        () => clientesService.buscar(idCliente),
+        "El cliente elegido no existe"
+    );
 
     if (typeof datos.fecha_hora !== "string" || Number.isNaN(Date.parse(datos.fecha_hora))) {
         throw httpError(400, "La fecha y hora no son válidas");
     }
 
     const duracion = datos.duracion_min ?? DURACION_POR_DEFECTO;
+
     if (!Number.isInteger(duracion) || duracion <= 0 || duracion > DURACION_MAXIMA) {
         throw httpError(400, `La duración debe ser un número entero de minutos entre 1 y ${DURACION_MAXIMA}`);
     }
@@ -63,13 +59,13 @@ async function validarDatos(datos) {
     validarTextoObligatorio(datos.motivo, "motivo", maxMotivo);
 
     const estado = datos.estado ?? "SOLICITADO";
+
     if (!ESTADOS.includes(estado)) {
         throw httpError(400, `El estado debe ser uno de: ${ESTADOS.join(", ")}`);
     }
 
     return {
         id_cliente: idCliente,
-        id_vehiculo: idVehiculo,
         fecha_hora: datos.fecha_hora,
         duracion_min: duracion,
         motivo: datos.motivo.trim(),

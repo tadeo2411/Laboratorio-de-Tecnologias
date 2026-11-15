@@ -135,7 +135,7 @@ async function eliminar(id){
     await clientesRepository.eliminar(clienteBuscado)
     }catch (err){
         if(err.code === '23503' || err.code === '23001'){
-            throw httpError(409, `Un cliente no puede eliminarse si esta asociado a otro elemento`)
+            throw httpError(409, `Un cliente no puede eliminarse si esta asociado a un vehiculo`)
         }
         else throw err
     }

@@ -20,6 +20,7 @@ import '../VehiculosPage.css'
 import Spinner from '../../../shared/components/Spinner'
 import Table from '../../../shared/components/Table'
 import '../../estilos.css'
+import ModalNotificacion from '../../../shared/components/ModalNotification'
 
 const columnasVehiculos = [
   { key: 'patente', nombre: 'Patente' },
@@ -34,12 +35,11 @@ function VehiculosPage() {
   const [vehiculos, setVehiculos] = useState([])
   const [clientes, setClientes] = useState([])
   const [cargando, setCargando] = useState(true)
-  const [mensaje, setMensaje] = useState('')
-  const [error, setError] = useState('')
   const [formularioAbierto, setFormularioAbierto] = useState(false)
   const [vehiculoEnEdicion, setVehiculoEnEdicion] = useState(null)
   const [vehiculoConHistorial, setVehiculoConHistorial] = useState(null)
   const [busqueda, setBusqueda] = useState('')
+  const [notificacion, setNotificacion] = useState(null)
 
   // Carga vehículos y clientes desde el servicio al entrar a la página.
   // "activo" evita actualizar el estado si la página se cerró antes de recibir los datos.
@@ -58,7 +58,12 @@ function VehiculosPage() {
           setClientes(clientesGuardados)
         }
       } catch (errorCarga) {
-        if (activo) setError(errorCarga.message)
+        if (activo) {
+          setNotificacion({
+            tipo: 'error',
+            mensaje: errorCarga.message || 'No se pudieron cargar los vehículos.'
+          })
+        }
       } finally {
         if (activo) setCargando(false)
       }
@@ -71,16 +76,6 @@ function VehiculosPage() {
     }
   }, [])
 
-  function mostrarMensaje(texto) {
-    setError('')
-    setMensaje(texto)
-  }
-
-  function mostrarError(texto) {
-    setMensaje('')
-    setError(texto)
-  }
-
   async function abrirFormulario(vehiculo = null) {
     if (vehiculo) {
       try {
@@ -90,7 +85,10 @@ function VehiculosPage() {
           clienteIds: duenos.map((d) => d.id)
         })
       } catch (err) {
-        mostrarError('No se pudieron obtener los dueños: ' + err.message)
+        setNotificacion({
+          tipo: 'error',
+          mensaje: 'No se pudieron obtener los dueños: ' + err.message
+        })
         return
       }
     } else {
@@ -104,41 +102,67 @@ function VehiculosPage() {
     setVehiculoEnEdicion(null)
   }
 
-  // No captura errores: si el servicio rechaza los datos, el formulario
-  // muestra el motivo y queda abierto para corregirlos.
+  // Si el servicio rechaza los datos, se propaga el error para que el
+  // formulario lo muestre inline y quede abierto para corregirlo.
   async function guardarVehiculo(datos) {
-    if (vehiculoEnEdicion) {
-      const vehiculoActualizado = await modificarVehiculo(vehiculoEnEdicion.id, datos)
-      await sincronizarDuenos(
-        vehiculoEnEdicion.id,
-        vehiculoEnEdicion.clienteIds || [],
-        datos.clienteIds || []
-      )
-
-      setVehiculos((vehiculosActuales) =>
-        vehiculosActuales.map((vehiculo) =>
-          vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo
+    try {
+      if (vehiculoEnEdicion) {
+        const vehiculoActualizado = await modificarVehiculo(vehiculoEnEdicion.id, datos)
+        await sincronizarDuenos(
+          vehiculoEnEdicion.id,
+          vehiculoEnEdicion.clienteIds || [],
+          datos.clienteIds || []
         )
-      )
-      mostrarMensaje('Vehículo actualizado correctamente.')
-    } else {
-      const vehiculoCreado = await crearVehiculo(datos)
-      setVehiculos((vehiculosActuales) => [...vehiculosActuales, vehiculoCreado])
-      mostrarMensaje('Vehículo agregado correctamente.')
+
+        setVehiculos((vehiculosActuales) =>
+          vehiculosActuales.map((vehiculo) =>
+            vehiculo.id === vehiculoActualizado.id ? vehiculoActualizado : vehiculo
+          )
+        )
+        setNotificacion({
+          tipo: 'exito',
+          mensaje: 'Vehículo actualizado correctamente.'
+        })
+      } else {
+        const vehiculoCreado = await crearVehiculo(datos)
+        setVehiculos((vehiculosActuales) => [...vehiculosActuales, vehiculoCreado])
+        setNotificacion({
+          tipo: 'exito',
+          mensaje: 'Vehículo registrado correctamente.'
+        })
+      }
+      cerrarFormulario()
+    } catch (err) {
+      throw err
     }
-    cerrarFormulario()
   }
 
-  async function confirmarEliminacion(vehiculo) {
-    if (!window.confirm(`¿Eliminar el vehículo ${vehiculo.patente}? Esta acción no se puede deshacer.`)) return
-
-    try {
-      await eliminarVehiculo(vehiculo.id)
-      setVehiculos((vehiculosActuales) => vehiculosActuales.filter(({ id }) => id !== vehiculo.id))
-      mostrarMensaje('Vehículo eliminado correctamente.')
-    } catch (errorEliminacion) {
-      mostrarError(errorEliminacion.message)
-    }
+  function confirmarEliminacion(vehiculo) {
+    setNotificacion({
+      tipo: 'confirmacion',
+      titulo: 'Eliminar vehículo',
+      mensaje: `¿Desea eliminar el vehículo ${vehiculo.patente} (${vehiculo.marca} ${vehiculo.modelo})? Esta acción no se puede deshacer.`,
+      textoAceptar: 'Eliminar',
+      textoCancelar: 'Cancelar',
+      onAceptar: async () => {
+        setNotificacion(null)
+        try {
+          await eliminarVehiculo(vehiculo.id)
+          setVehiculos((vehiculosActuales) =>
+            vehiculosActuales.filter(({ id }) => id !== vehiculo.id)
+          )
+          setNotificacion({
+            tipo: 'exito',
+            mensaje: 'Vehículo eliminado correctamente.'
+          })
+        } catch (errorEliminacion) {
+          setNotificacion({
+            tipo: 'error',
+            mensaje: errorEliminacion.message || 'No se pudo eliminar el vehículo.'
+          })
+        }
+      }
+    })
   }
 
   const termino = busqueda.toLowerCase().trim()
@@ -165,20 +189,6 @@ function VehiculosPage() {
           componente="vehiculo"
         />
       </div>
-
-      {mensaje && (
-        <div className="alert alert-success alert-dismissible" role="status">
-          {mensaje}
-          <button type="button" className="btn-close" aria-label="Cerrar mensaje" onClick={() => setMensaje('')} />
-        </div>
-      )}
-
-      {error && (
-        <div className="alert alert-danger alert-dismissible" role="alert">
-          {error}
-          <button type="button" className="btn-close" aria-label="Cerrar error" onClick={() => setError('')} />
-        </div>
-      )}
 
       {cargando ? (
         <Spinner />
@@ -255,6 +265,19 @@ function VehiculosPage() {
         <HistorialVehiculo
           vehiculo={vehiculoConHistorial}
           onCerrar={() => setVehiculoConHistorial(null)}
+        />
+      )}
+
+      {notificacion && (
+        <ModalNotificacion
+          {...notificacion}
+          onCerrar={() => {
+            if (notificacion.onCerrar) {
+              notificacion.onCerrar()
+            } else {
+              setNotificacion(null)
+            }
+          }}
         />
       )}
     </div>

@@ -14,6 +14,8 @@ import Table from '../../../shared/components/Table'
 import BotonEditar from '../../../shared/components/BotonEditar'
 import BotonEliminar from '../../../shared/components/BotonEliminar'
 import Modal from '../../../shared/components/Modal'
+import ModalNotificacion from "../../../shared/components/ModalNotification";
+import Spinner from '../../../shared/components/Spinner'
 
 const columnasClientes = [
   { key: 'nombre', nombre: 'Nombre' },
@@ -30,12 +32,14 @@ function ClientesPage() {
   const [clienteAEditar, setClienteAEditar] = useState(null)
   const [mostrarFormulario, setMostrarFormulario] = useState(false)
   const [busqueda, setBusqueda] = useState('')
+  const [notificacion, setNotificacion] = useState(null);
 
   const busquedaDiferida = useDeferredValue(busqueda)
 
   const cerrarFormulario = useCallback(() => {
     setMostrarFormulario(false)
     setErrorFormulario(null)
+    setClienteAEditar(null)
   }, [])
 
   const cargarClientes = useCallback(async () => {
@@ -45,15 +49,38 @@ function ClientesPage() {
       const listaClientes = await obtenerClientes()
       setClientes(listaClientes)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'No se pudieron cargar los clientes')
+      setNotificacion({
+        tipo: "error",
+        mensaje : err.message || 'No se pudieron cargar los clientes'})
     } finally {
       setCargando(false)
     }
   }, [])
 
+
   useEffect(() => {
-    cargarClientes()
-  }, [cargarClientes])
+    let activo = true
+
+    async function inicializar() {
+      try {
+        const listaClientes = await obtenerClientes()
+        if (activo) setClientes(listaClientes)
+      } catch (err) {
+        if (activo)
+          setNotificacion({
+            tipo: "error",
+            mensaje: err.message || 'No se pudieron cargar los clientes',
+          })
+      } finally {
+        if (activo) setCargando(false)
+      }
+    }
+
+    inicializar()
+    return () => {
+      activo = false
+    }
+  }, [])
 
   const termino = busquedaDiferida.toLowerCase().trim()
   const clientesFiltrados = clientes.filter((cliente) => {
@@ -78,7 +105,9 @@ function ClientesPage() {
 
   async function handleGuardarCliente(datos) {
     try {
-      if (clienteAEditar) {
+      const esEdicion = Boolean(clienteAEditar)
+
+      if (esEdicion) {
         const modificado = await modificarCliente(clienteAEditar.id, datos)
         setClientes((anteriores) =>
           anteriores.map((cliente) =>
@@ -89,7 +118,15 @@ function ClientesPage() {
         const creado = await crearCliente(datos)
         setClientes((anteriores) => [...anteriores, creado])
       }
+
       cerrarFormulario()
+
+      setNotificacion({
+        tipo: 'exito',
+        mensaje: esEdicion
+          ? 'Cliente modificado correctamente.'
+          : 'Cliente registrado correctamente.',
+      })
     } catch (err) {
       setErrorFormulario(err.message)
       throw err
@@ -97,15 +134,32 @@ function ClientesPage() {
   }
 
   async function handleEliminarCliente(idCliente, nombreCliente) {
-    const confirmacion = window.confirm(`¿Desea eliminar el cliente "${nombreCliente}"?`)
-    if (!confirmacion) return
+    setNotificacion({
+      tipo: "confirmacion",
+      titulo: "Eliminar Cliente",
+      mensaje : `¿Desea eliminar el cliente "${nombreCliente}"?`,
+      textoAceptar : 'Eliminar',
+      textoCancelar : 'Cancelar',
 
-    try {
-      await eliminarCliente(idCliente)
-      setClientes((anteriores) => anteriores.filter((cliente) => cliente.id !== idCliente))
-    } catch (err) {
-      window.alert(err.message || 'No se pudo eliminar el cliente.')
-    }
+      onAceptar: async () =>{
+        setNotificacion(null)
+        try {
+          await eliminarCliente(idCliente)
+          setClientes((anteriores) => anteriores.filter((c) => c.id !== idCliente))
+          
+          setNotificacion({
+          tipo: 'exito',
+          mensaje: 'Cliente eliminado correctamente.',
+          })
+        
+        } catch (err) {
+          setNotificacion({
+            tipo: "error",
+            mensaje : err.message || 'No se pudo eliminar el cliente.'
+          })
+        }
+      }
+    })
   }
 
   return (
@@ -141,10 +195,8 @@ function ClientesPage() {
       )}
 
       {cargando && (
-        <div className="text-center py-5" role="status">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Cargando clientes…</span>
-          </div>
+        <div className="text-center py-5">
+          <Spinner />
           <p className="mt-2 text-muted">Cargando clientes…</p>
         </div>
       )}
@@ -201,6 +253,12 @@ function ClientesPage() {
             error={errorFormulario}
           />
         </Modal>
+      )}
+      {notificacion && (
+        <ModalNotificacion
+          {...notificacion}
+          onCerrar={() => setNotificacion(null)}
+        />
       )}
     </div>
   )

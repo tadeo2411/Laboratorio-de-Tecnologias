@@ -9,9 +9,10 @@ const valoresIniciales = {
 }
 
 function ClientesForm({ clienteInicial, onGuardar, error, onCancelar }) {
-    const [formulario, setFormulario] = useState(
-        clienteInicial ? { ...valoresIniciales, ...clienteInicial } : valoresIniciales
-    )
+  const [formulario, setFormulario] = useState(
+    clienteInicial ? { ...valoresIniciales, ...clienteInicial } : valoresIniciales
+  )
+  const [enviando, setEnviando] = useState(false)
 
   const idNombre = useId()
   const idTelefono = useId()

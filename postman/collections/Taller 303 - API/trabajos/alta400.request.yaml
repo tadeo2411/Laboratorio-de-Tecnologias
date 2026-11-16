@@ -8,10 +8,9 @@ body:
   type: json
   content: |-
     {
-      "orden_id": "asd",
-      "tipo_trabajo_id": 1,
-      "descripcion": "Realizar cambio de aceite y filtros",
-      "mano_de_obra": "22000.00"
+      "nombre": "Trabajo de prueba",
+      "categoria": "NO_EXISTE",
+      "precio_estandar": "22000.00"
     }
 scripts:
   - type: afterResponse

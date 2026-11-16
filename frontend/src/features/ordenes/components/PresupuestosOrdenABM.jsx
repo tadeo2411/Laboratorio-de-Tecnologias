@@ -20,7 +20,7 @@ const ESTADOS_FINALES = ["APROBADO", "CANCELADO", "VENCIDO"];
 // El formulario reemplaza a la lista en la misma pestaña para no abrir un modal sobre otro.
 // El alta se arma eligiendo trabajos (PresupuestoAltaForm); la edición de uno
 // existente sigue con los renglones a mano (PresupuestoForm).
-function PresupuestosOrdenABM({ ordenId }) {
+function PresupuestosOrdenABM({ ordenId, estadoOrden, onPresupuestoActualizado }) {
     const [presupuestos, setPresupuestos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [error, setError] = useState("");
@@ -91,7 +91,12 @@ function PresupuestosOrdenABM({ ordenId }) {
     async function handleGuardarEdicion(datosEditados) {
         const actualizado = await actualizarPresupuesto(presupuestoEnEdicion.id, datosEditados);
         await recargarPresupuestos();
-        mostrarMensaje(`Presupuesto ${actualizado.numero} actualizado: ${ESTADOS_PRESUPUESTO[actualizado.estadoPresupuesto]?.texto ?? actualizado.estadoPresupuesto}.`);
+        const ordenActualizada = await onPresupuestoActualizado?.(ordenId);
+        const ordenAvanzo = ordenActualizada && ordenActualizada.estado !== estadoOrden;
+        mostrarMensaje(
+            `Presupuesto ${actualizado.numero} actualizado: ${ESTADOS_PRESUPUESTO[actualizado.estadoPresupuesto]?.texto ?? actualizado.estadoPresupuesto}.`
+            + (ordenAvanzo ? " La orden pasó a esperando aprobación del presupuesto." : "")
+        );
         cerrarFormulario();
     }
 

@@ -43,12 +43,4 @@ try {
     }
 }
 
-const listarTipos = async (req, res, next) => {
-    try {
-        res.json(await service.listarTipos());
-    } catch (err) {
-        next(err);
-    }
-}
-
-export default {listar, eliminar, cargar, modificar, buscar, listarTipos}
+export default {listar, eliminar, cargar, modificar, buscar}

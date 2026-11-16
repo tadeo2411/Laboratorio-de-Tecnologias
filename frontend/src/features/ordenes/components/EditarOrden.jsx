@@ -11,7 +11,7 @@ const PESTANAS = [
 
 // Las pestañas inactivas se ocultan en vez de desmontarse,
 // así no se pierde lo cargado al pasar de una a otra.
-function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar }) {
+function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar, onPresupuestoActualizado }) {
     const [pestanaActiva, setPestanaActiva] = useState("datos");
 
     return (
@@ -44,7 +44,7 @@ function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar }) {
                 aria-labelledby="pestana-presupuestos"
                 hidden={pestanaActiva !== "presupuestos"}
             >
-                <PresupuestosOrdenABM ordenId={orden.id} />
+                <PresupuestosOrdenABM ordenId={orden.id} estadoOrden={orden.estado} onPresupuestoActualizado={onPresupuestoActualizado} />
             </div>
         </>
     );

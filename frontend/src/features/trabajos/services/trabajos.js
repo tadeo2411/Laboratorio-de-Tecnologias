@@ -1,9 +1,7 @@
 import { obtenerToken, manejarSesionVencida } from '../../auth';
 import { API_URL } from '../../../shared/config/api';
 
-const URL = API_URL
-
-let tiposTrabajo = null
+const URL = `${API_URL}/trabajos`;
 
 async function pedir(ruta, opciones = {}) {
     const headers = { Authorization: `Bearer ${obtenerToken()}` };
@@ -25,43 +23,18 @@ async function pedir(ruta, opciones = {}) {
     return datos;
 }
 
-async function obtenerTrabajos() {
-    return pedir('/trabajos');
-}
-
 export async function obtenerTiposTrabajo() {
-    if (tiposTrabajo === null) {
-        tiposTrabajo = await pedir('/trabajos/tipoTrabajos');
-    }
-    return tiposTrabajo
+    return pedir('');
 }
 
-async function obtenerEmpleados() {
-    return pedir('/auth/empleados');
+export async function crearTipoTrabajo(tipo) {
+    return pedir('', { method: 'POST', body: JSON.stringify(tipo) });
 }
 
-async function obtenerOrdenes() {
-    return pedir('/ordenes');
+export async function modificarTipoTrabajo(idTipo, datos) {
+    return pedir(`/${idTipo}`, { method: 'PATCH', body: JSON.stringify(datos) });
 }
 
-async function obtenerRepuestos() {
-    return pedir('/repuestos');
+export async function eliminarTipoTrabajo(idTipo) {
+    return pedir(`/${idTipo}`, { method: 'DELETE' });
 }
-
-async function cargarTrabajo(trabajo) {
-    return pedir('/trabajos', { method: 'POST', body: JSON.stringify(trabajo) });
-}
-
-export async function eliminarTrabajo(idTrabajo) {
-    return pedir(`/trabajos/${idTrabajo}`, { method: 'DELETE' });
-}
-
-async function obtenerTrabajoPorId(idTrabajo) {
-    return pedir(`/trabajos/${idTrabajo}`);
-}
-
-async function modificarTrabajo(idTrabajo, datos) {
-    return pedir(`/trabajos/${idTrabajo}`, { method: 'PATCH', body: JSON.stringify(datos) });
-}
-
-export default { obtenerTrabajos, obtenerTiposTrabajo, obtenerEmpleados, obtenerOrdenes, obtenerRepuestos, cargarTrabajo, eliminarTrabajo, obtenerTrabajoPorId, modificarTrabajo };

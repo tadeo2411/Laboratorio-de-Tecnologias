@@ -37,6 +37,13 @@ function clienteDeLaOrden(orden){
 
 function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onCerrar }) {
     const [formulario, setFormulario] = useState(valoresIniciales(orden));
+    const [estadoPrevio, setEstadoPrevio] = useState(orden?.estado);
+
+    // Si el estado cambia desde afuera (por ejemplo al enviar un presupuesto), el formulario lo sigue.
+    if (orden && orden.estado !== estadoPrevio) {
+        setEstadoPrevio(orden.estado);
+        setFormulario(valoresActuales => ({ ...valoresActuales, estado: orden.estado }));
+    }
     const [fichasNuevas, setFichasNuevas] = useState({ INGRESO: orden ? null : fichaVacia(), EGRESO: null });
     const [clienteElegido, setClienteElegido] = useState(clienteDeLaOrden(orden));
     const [duenos, setDuenos] = useState([]);

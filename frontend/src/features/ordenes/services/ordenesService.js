@@ -43,6 +43,10 @@ export async function cargarPaginaOrdenes(){
     return { ordenes: listaOrdenes, vehiculos, tiposTrabajo, repuestos, empleados, clientes }
 }
 
+export async function obtenerOrden(id){
+    return pedir(`/${id}`)
+}
+
 export async function agregarTrabajo(idOrden, datosTrabajo){
     const datos = { ...datosTrabajo, empleadoIds: datosTrabajo.empleados.map( empleado => empleado.id)}
     return pedir(`/${idOrden}/trabajos`,{method: 'POST', body: JSON.stringify(datos)})

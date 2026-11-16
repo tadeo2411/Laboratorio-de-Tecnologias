@@ -271,6 +271,9 @@ async function actualizarPresupuesto(idRecibido, datos) {
         responder: cambiaDeEstado && ESTADOS_DE_RESPUESTA.includes(nuevoEstado),
         items
     })
+    if (cambiaDeEstado && ESTADOS_QUE_EMITEN.includes(nuevoEstado) && orden.estado === 'DIAGNOSTICANDO') {
+        await ordenesService.cambiarEstado(orden.id, 'ESPERANDO_APROBACION_PRESUPUESTO')
+    }
     return obtenerPresupuesto(presupuesto.id)
 }
 

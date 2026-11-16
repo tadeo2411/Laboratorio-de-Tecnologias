@@ -10,7 +10,7 @@ import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import EditarOrden from "../components/EditarOrden.jsx";
 import { numeroOrden, formatearFecha, fechaIngreso, describirVehiculo } from "../utils/ordenes";
-import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabajo } from "../services/ordenesService";
+import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabajo, obtenerOrden } from "../services/ordenesService";
 import { esEstadoFinal } from "../utils/estados";
 import { crearVehiculo } from "../../vehiculos";
 import img_list from "../../../assets/icons/img_presupuesto.png"
@@ -116,6 +116,14 @@ function OrdenesPage() {
         setOrdenSeleccionado(ordenActualizada);
     }
 
+    // Enviar o aprobar un presupuesto puede mover la orden de estado: se vuelve a pedir para mostrarla al día.
+    async function handlePresupuestoActualizado(idOrden) {
+        const ordenActualizada = await obtenerOrden(idOrden);
+        setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
+        setOrdenEnEdicion(ordenActualizada);
+        return ordenActualizada;
+    }
+
     async function handleAgregarTrabajo(idOrden, trabajo) {
         const ordenActualizada = await agregarTrabajo(idOrden, trabajo);
         mostrarOrdenActualizada(ordenActualizada);
@@ -141,6 +149,7 @@ function OrdenesPage() {
                             clientes={datos.clientes}
                             onGuardar={handleGuardarOrden}
                             onCerrar={cerrarFormulario}
+                            onPresupuestoActualizado={handlePresupuestoActualizado}
                         />
                     ) : (
                         <OrdenForm

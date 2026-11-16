@@ -251,12 +251,6 @@ function exigirTrabajosModificables(orden) {
     }
 }
 
-async function validarOrdenParaTrabajos(id) {
-    const orden = await obtenerOrden(id)
-    exigirTrabajosModificables(orden)
-    return orden
-}
-
 async function armarRepuestosUsados(repuestosPedidos) {
     if (!Array.isArray(repuestosPedidos)) {
         throw httpError(400, 'repuestos tiene que ser una lista')
@@ -351,6 +345,5 @@ export default {
     cambiarEstado,
     agregarFicha,
     agregarTrabajo,
-    quitarTrabajo,
-    validarOrdenParaTrabajos
+    quitarTrabajo
 }

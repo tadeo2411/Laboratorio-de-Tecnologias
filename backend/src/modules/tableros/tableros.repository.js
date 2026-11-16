@@ -7,7 +7,8 @@ async function obtenerOrdenesVivas(){
         COUNT(*) FILTER (WHERE estado = 'DIAGNOSTICANDO')::int as diagnosticando,
         COUNT(*) FILTER (WHERE estado = 'ESPERANDO_APROBACION_PRESUPUESTO')::int as "esperandoP",
         COUNT(*) FILTER (WHERE estado = 'ESPERANDO_REPUESTO')::int as "esperandoR",
-        COUNT(*) FILTER (WHERE estado = 'EN_REPARACION')::int as reparando
+        COUNT(*) FILTER (WHERE estado = 'EN_REPARACION')::int as reparando,
+        COUNT(*) FILTER (WHERE estado = 'TERMINADO')::int as terminados
         FROM ordenes_trabajo
         `
     )

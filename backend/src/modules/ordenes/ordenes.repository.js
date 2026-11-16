@@ -151,7 +151,11 @@ async function crearTrabajo(ordenId, trabajo){
     }
 }
 
+async function actualizarConformidadFicha(fichaId, conformidad){
+    await pool.query('UPDATE fichas SET conformidad = $1 WHERE id = $2', [conformidad, fichaId])
+}
+
 async function eliminarTrabajo(id){
     await pool.query('DELETE FROM trabajos WHERE id = $1', [id])
 }
-export default { listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado, crearFicha, crearTrabajo, eliminarTrabajo }
+export default { listarOrdenes, buscarPorId, buscarAbiertaPorVehiculo, crear, actualizar, actualizarEstado, crearFicha, actualizarConformidadFicha, crearTrabajo, eliminarTrabajo }

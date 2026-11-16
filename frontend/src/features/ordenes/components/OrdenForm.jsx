@@ -7,7 +7,7 @@ import FichaForm from "./FichaForm.jsx";
 import BuscadorVehiculo from "./BuscadorVehiculo.jsx";
 import { VehiculoForm, obtenerDuenos } from "../../vehiculos";
 import { BuscadorClientes } from "../../clientes";
-import { ESTADO_INICIAL, obtenerEstado, siguienteEstado } from "../utils/estados";
+import { ESTADO_INICIAL, obtenerEstado, siguienteEstado, esEstadoFinal } from "../utils/estados";
 import { buscarFicha, formatearFecha, describirVehiculo } from "../utils/ordenes";
 import {
     TEXTO_TIPO_FICHA,
@@ -35,7 +35,7 @@ function clienteDeLaOrden(orden){
     return { id: orden.clienteId, nombre: orden.clienteNombre, documento: orden.clienteDocumento };
 }
 
-function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onCerrar }) {
+function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onCerrar, onActualizarConformidad }) {
     const [formulario, setFormulario] = useState(valoresIniciales(orden));
     const [estadoPrevio, setEstadoPrevio] = useState(orden?.estado);
 
@@ -56,6 +56,15 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
     const puedeCargarFicha = esEdicion
         ? { INGRESO: puedeCargarIngreso(orden), EGRESO: puedeCargarEgreso(orden) }
         : { INGRESO: false, EGRESO: false };
+
+    async function marcarConformidad(ficha){
+        setError("");
+        try {
+            await onActualizarConformidad(orden.id, ficha.id, "APROBADA");
+        } catch (errorConformidad) {
+            setError(errorConformidad.message);
+        }
+    }
 
     function actualizarCampo(event){
         const { name, value, type, checked } = event.target;
@@ -351,10 +360,26 @@ function OrdenForm({ orden, vehiculos, clientes, onGuardar, onCrearVehiculo, onC
                             const fichaGuardada = buscarFicha(orden, tipo);
 
                             if (fichaGuardada){
+                                const conformidadAprobada = fichaGuardada.conformidad === "APROBADA";
+
                                 return (
-                                    <p key={tipo} className="ficha-cargada">
-                                        ✔ {TEXTO_TIPO_FICHA[tipo]} cargada el {formatearFecha(fichaGuardada.fecha)}
-                                    </p>
+                                    <div key={tipo} className="ficha-cargada-bloque">
+                                        <p className="ficha-cargada">
+                                            ✔ {TEXTO_TIPO_FICHA[tipo]} cargada el {formatearFecha(fichaGuardada.fecha)}
+                                        </p>
+                                        <p className={conformidadAprobada ? "ficha-cargada" : "ficha-conformidad-pendiente"}>
+                                            Conformidad del cliente: {conformidadAprobada ? "aprobada" : "pendiente"}
+                                        </p>
+                                        {!conformidadAprobada && !esEstadoFinal(orden.estado) && (
+                                            <button
+                                                type="button"
+                                                className="btn btn-outline-success btn-sm mt-0"
+                                                onClick={() => marcarConformidad(fichaGuardada)}
+                                            >
+                                                El cliente dio su conformidad
+                                            </button>
+                                        )}
+                                    </div>
                                 );
                             }
 

@@ -13,6 +13,7 @@ router.post('/', ordenesController.crear)
 router.patch('/:id', ordenesController.actualizar)
 router.patch('/:id/estado', ordenesController.cambiarEstado)
 router.post('/:id/fichas', ordenesController.agregarFicha)
+router.patch('/:id/fichas/:idFicha', ordenesController.actualizarFicha)
 router.post('/:id/trabajos', ordenesController.agregarTrabajo)
 router.delete('/:id/trabajos/:idTrabajo', ordenesController.quitarTrabajo)
 

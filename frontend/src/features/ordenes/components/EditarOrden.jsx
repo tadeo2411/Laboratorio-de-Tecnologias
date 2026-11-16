@@ -11,7 +11,7 @@ const PESTANAS = [
 
 // Las pestañas inactivas se ocultan en vez de desmontarse,
 // así no se pierde lo cargado al pasar de una a otra.
-function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar, onPresupuestoActualizado }) {
+function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar, onPresupuestoActualizado, onActualizarConformidad }) {
     const [pestanaActiva, setPestanaActiva] = useState("datos");
 
     return (
@@ -35,7 +35,7 @@ function EditarOrden({ orden, vehiculos, clientes, onGuardar, onCerrar, onPresup
             </ul>
 
             <div role="tabpanel" id="panel-datos" aria-labelledby="pestana-datos" hidden={pestanaActiva !== "datos"}>
-                <OrdenForm orden={orden} vehiculos={vehiculos} clientes={clientes} onGuardar={onGuardar} onCerrar={onCerrar} />
+                <OrdenForm orden={orden} vehiculos={vehiculos} clientes={clientes} onGuardar={onGuardar} onCerrar={onCerrar} onActualizarConformidad={onActualizarConformidad} />
             </div>
 
             <div

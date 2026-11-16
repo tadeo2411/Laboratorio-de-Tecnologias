@@ -293,6 +293,22 @@ async function armarEmpleados(empleadoIds) {
     })
 }
 
+async function actualizarFicha(idRecibido, idFichaRecibido, datos) {
+    const idFicha = validarId(idFichaRecibido, 'id de la ficha')
+    if (!CONFORMIDADES.includes(datos.conformidad)) {
+        throw httpError(400, 'La conformidad tiene que ser PENDIENTE o APROBADA')
+    }
+    const orden = await obtenerOrden(idRecibido)
+    exigirOrdenAbierta(orden)
+
+    if (!orden.fichas.some((ficha) => ficha.id === idFicha)) {
+        throw httpError(404, `La orden ${orden.id} no tiene la ficha ${idFicha}`)
+    }
+
+    await ordenesRepository.actualizarConformidadFicha(idFicha, datos.conformidad)
+    return ordenesRepository.buscarPorId(orden.id)
+}
+
 async function agregarTrabajo(idRecibido, datos) {
     const orden = await obtenerOrden(idRecibido)
     exigirTrabajosModificables(orden)
@@ -344,6 +360,7 @@ export default {
     actualizarOrden,
     cambiarEstado,
     agregarFicha,
+    actualizarFicha,
     agregarTrabajo,
     quitarTrabajo
 }

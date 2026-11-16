@@ -69,6 +69,10 @@ export async function actualizarOrden(id, datos){
     return orden
 }
 
+export async function actualizarFicha(idOrden, idFicha, datos){
+    return pedir(`/${idOrden}/fichas/${idFicha}`, {method: 'PATCH', body: JSON.stringify(datos)})
+}
+
 export async function agregarFicha(idOrden, datosFicha){
     return pedir(`/${idOrden}/fichas`, {method: 'POST', body: JSON.stringify(datosFicha)})
 }

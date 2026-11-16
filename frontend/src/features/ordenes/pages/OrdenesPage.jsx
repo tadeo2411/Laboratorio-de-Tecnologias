@@ -10,7 +10,7 @@ import MasInfo from "../components/MasInfo.jsx"
 import OrdenForm from "../components/OrdenForm.jsx";
 import EditarOrden from "../components/EditarOrden.jsx";
 import { numeroOrden, formatearFecha, fechaIngreso, describirVehiculo } from "../utils/ordenes";
-import { crearOrden, actualizarOrden, agregarFicha, agregarTrabajo, quitarTrabajo, obtenerOrden } from "../services/ordenesService";
+import { crearOrden, actualizarOrden, agregarFicha, actualizarFicha, agregarTrabajo, quitarTrabajo, obtenerOrden } from "../services/ordenesService";
 import { esEstadoFinal } from "../utils/estados";
 import { crearVehiculo } from "../../vehiculos";
 import img_list from "../../../assets/icons/img_presupuesto.png"
@@ -124,6 +124,12 @@ function OrdenesPage() {
         return ordenActualizada;
     }
 
+    async function handleActualizarConformidad(idOrden, idFicha, conformidad) {
+        const ordenActualizada = await actualizarFicha(idOrden, idFicha, { conformidad });
+        setOrdenes(anteriores => anteriores.map(orden => orden.id === ordenActualizada.id ? ordenActualizada : orden));
+        setOrdenEnEdicion(ordenActualizada);
+    }
+
     async function handleAgregarTrabajo(idOrden, trabajo) {
         const ordenActualizada = await agregarTrabajo(idOrden, trabajo);
         mostrarOrdenActualizada(ordenActualizada);
@@ -150,6 +156,7 @@ function OrdenesPage() {
                             onGuardar={handleGuardarOrden}
                             onCerrar={cerrarFormulario}
                             onPresupuestoActualizado={handlePresupuestoActualizado}
+                            onActualizarConformidad={handleActualizarConformidad}
                         />
                     ) : (
                         <OrdenForm

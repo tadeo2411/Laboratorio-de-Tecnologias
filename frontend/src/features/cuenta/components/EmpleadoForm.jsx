@@ -12,6 +12,7 @@ function EmpleadoForm({ empleado, onGuardar, onCancelar, error }) {
     const [formulario, setFormulario] = useState(
         empleado ? { nombre: empleado.nombre, usuario: empleado.usuario, contrasena: '', rol: empleado.rol } : valoresIniciales
     )
+    const [mostrarContrasena, setMostrarContrasena] = useState(false)
     const esEdicion = Boolean(empleado)
 
     function actualizarCampo(evento) {
@@ -45,7 +46,12 @@ function EmpleadoForm({ empleado, onGuardar, onCancelar, error }) {
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="empleadoContrasena" className="form-label">{esEdicion ? 'Nueva contraseña (dejar vacío para no cambiarla)' : 'Contraseña inicial *'}</label>
-                        <input id="empleadoContrasena" name="contrasena" type="password" className="form-control" value={formulario.contrasena} onChange={actualizarCampo} minLength={8} required={!esEdicion} />
+                        <div className="input-group">
+                            <input id="empleadoContrasena" name="contrasena" type={mostrarContrasena ? 'text' : 'password'} autoComplete="new-password" className="form-control" value={formulario.contrasena} onChange={actualizarCampo} minLength={8} required={!esEdicion} />
+                            <button type="button" className="btn btn-outline-secondary mt-0" onClick={() => setMostrarContrasena(!mostrarContrasena)} aria-pressed={mostrarContrasena}>
+                                {mostrarContrasena ? 'Ocultar' : 'Mostrar'}
+                            </button>
+                        </div>
                     </div>
                     <div className="col-12 col-md-6 mb-3">
                         <label htmlFor="empleadoRol" className="form-label">Rol *</label>

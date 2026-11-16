@@ -676,6 +676,19 @@
     font-size: 14px;
 }
 
+.ficha-cargada-bloque {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.ficha-conformidad-pendiente {
+    margin: 0;
+    color: #a16207;
+    font-size: 14px;
+}
+
 .ficha-no-disponible {
     margin: 0;
     color: #6c757d;

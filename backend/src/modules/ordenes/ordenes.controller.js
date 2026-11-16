@@ -30,6 +30,10 @@ async function agregarFicha(req, res) {
     res.status(201).json(orden)
 }
 
+async function actualizarFicha(req, res) {
+    res.json(await ordenesService.actualizarFicha(req.params.id, req.params.idFicha, req.body ?? {}))
+}
+
 async function agregarTrabajo(req, res) {
     const orden = await ordenesService.agregarTrabajo(req.params.id, req.body ?? {})
     res.status(201).json(orden)
@@ -39,4 +43,4 @@ async function quitarTrabajo(req, res) {
     res.json(await ordenesService.quitarTrabajo(req.params.id, req.params.idTrabajo))
 }
 
-export default { listar, obtener, crear, actualizar, cambiarEstado, agregarFicha, agregarTrabajo, quitarTrabajo }
+export default { listar, obtener, crear, actualizar, cambiarEstado, agregarFicha, actualizarFicha, agregarTrabajo, quitarTrabajo }

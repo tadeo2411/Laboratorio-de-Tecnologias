@@ -202,9 +202,10 @@ async function gestionarAviso(id, datos, idEmpleado){
     return aviso
 }
 
-async function programarAviso(id, meses){
+async function programarAviso(id, meses = 6){
     const vehiculo = await buscar(id)
-    return vehiculosRepository.programarAviso(vehiculo.id, meses)
+    const mesesValidos = Number.isInteger(meses) && meses > 0 ? meses : 6
+    return vehiculosRepository.programarAviso(vehiculo.id, mesesValidos)
 }
 
 

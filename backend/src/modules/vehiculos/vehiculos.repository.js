@@ -6,7 +6,9 @@ async function obtener() {
         `SELECT v.id, v.patente, v.marca, v.modelo, v.anio, v.descripcion, v.kilometraje,
         a.fecha_prevista::text AS "proximoService"
         FROM vehiculos v
-        LEFT JOIN avisos_service a ON a.id_vehiculo = v.id AND a.estado = 'PENDIENTE'
+        LEFT JOIN avisos_service a ON a.id_vehiculo = v.id
+            AND a.estado = 'PENDIENTE'
+            AND a.fecha_prevista <= CURRENT_DATE
         ORDER BY v.id`
     ) ;
     return rows
@@ -14,7 +16,13 @@ async function obtener() {
 
 async function buscar(id){
     const { rows } = await pool.query(
-        'SELECT id, patente, marca, modelo, anio, descripcion, kilometraje FROM vehiculos WHERE id = $1',
+        `SELECT v.id, v.patente, v.marca, v.modelo, v.anio, v.descripcion, v.kilometraje,
+        a.fecha_prevista::text AS "proximoService"
+        FROM vehiculos v
+        LEFT JOIN avisos_service a ON a.id_vehiculo = v.id
+            AND a.estado = 'PENDIENTE'
+            AND a.fecha_prevista <= CURRENT_DATE
+        WHERE v.id = $1`,
         [id]
     )
     return rows [0]
@@ -58,15 +66,14 @@ async function alta(vehiculo, idCliente){
 async function modificar(id, cambios){
     const campos = Object.keys(cambios)
     const numerados = campos.map((campo, i) => `${campo} = $${i+1}` )
-    const valores = campos.map(campo =>cambios[campo])
+    const valores = campos.map(campo => cambios[campo])
     valores.push(id)
-    const { rows } = await pool.query(
+    await pool.query(
         `UPDATE vehiculos SET ${numerados.join(', ')}
-        WHERE id = $${valores.length}
-        RETURNING id, patente, marca, modelo, anio, descripcion, kilometraje`,
+        WHERE id = $${valores.length}`,
         valores
     )
-    return rows[0]
+    return buscar(id)
 }
 
 async function eliminar (vehiculo){
@@ -155,10 +162,10 @@ async function verHistorialService(id){
      )
      return rows[0]
  }
-async function programarAviso(id, meses){
+async function programarAviso(id, meses = 6){
     const actualizado = await pool.query(
         `UPDATE avisos_service
-        SET fecha_prevista = CURRENT_DATE + ($2 * INTERVAL '1 month')
+        SET fecha_prevista = (CURRENT_DATE + make_interval(months => $2))::date
         WHERE id_vehiculo = $1 AND estado = 'PENDIENTE'
         RETURNING id`,
         [id, meses]
@@ -168,7 +175,7 @@ async function programarAviso(id, meses){
     }
     const creado = await pool.query(
         `INSERT INTO avisos_service (id_vehiculo, fecha_prevista)
-        VALUES ($1, CURRENT_DATE + ($2 * INTERVAL '1 month'))
+        VALUES ($1, (CURRENT_DATE + make_interval(months => $2))::date)
         RETURNING id`,
         [id, meses]
     )

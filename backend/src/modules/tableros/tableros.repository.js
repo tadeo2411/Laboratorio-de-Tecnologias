@@ -1,7 +1,7 @@
-import  { pool } from '../../config/db.js'
+import { pool } from '../../config/db.js'
 
-async function obtenerOrdenesVivas(){
-    const  { rows } = await pool.query(
+async function obtenerOrdenesVivas() {
+    const { rows } = await pool.query(
         `SELECT
         COUNT(*) FILTER (WHERE estado = 'RECIBIDO')::int as recibidos,
         COUNT(*) FILTER (WHERE estado = 'DIAGNOSTICANDO')::int as diagnosticando,
@@ -14,21 +14,44 @@ async function obtenerOrdenesVivas(){
     )
     return rows[0]
 }
+
+async function obtenerOrdenesVivasPorEmpleado(idEmpleado) {
+    const { rows } = await pool.query(
+        `SELECT
+            COUNT(*) FILTER (WHERE o.estado = 'RECIBIDO')::int AS recibidos,
+            COUNT(*) FILTER (WHERE o.estado = 'DIAGNOSTICANDO')::int AS diagnosticando,
+            COUNT(*) FILTER (WHERE o.estado = 'ESPERANDO_APROBACION_PRESUPUESTO')::int AS "esperandoP",
+            COUNT(*) FILTER (WHERE o.estado = 'ESPERANDO_REPUESTO')::int AS "esperandoR",
+            COUNT(*) FILTER (WHERE o.estado = 'EN_REPARACION')::int AS reparando,
+            COUNT(*) FILTER (WHERE o.estado = 'TERMINADO')::int AS terminados
+        FROM ordenes_trabajo o
+        WHERE EXISTS (
+            SELECT 1
+            FROM trabajos t
+            JOIN trabajos_empleados te ON te.trabajo_id = t.id
+            WHERE t.orden_id = o.id
+            AND te.empleado_id = $1
+        )`,
+        [idEmpleado]
+    )
+    return rows[0]
+}
+
 //OBTIENE LAS ORDENES FINALIZADAS EN LOS ULTIMOS MESES, TIENE COMO OBJETIVO
 //VER CUANTAS FUERON CANCELADAS Y CUANTAS ENTREGADAS
-async function obtenerOrdenesUltimosMeses(cantMeses){
+async function obtenerOrdenesUltimosMeses(cantMeses) {
     const { rows } = await pool.query(
         `SELECT
         COUNT(*) FILTER(WHERE estado = 'CANCELADO') ::int AS "cantCancelados",
         COUNT(*) FILTER(WHERE estado = 'ENTREGADO') ::int AS "cantEntregados"
         FROM ordenes_trabajo AS o
         WHERE o.created_at >= NOW() - $1 * INTERVAL '1 month'`
-    , [cantMeses]
+        , [cantMeses]
     )
     return rows[0] //si no hay nada devuelve 0
 }
 
-async function obtenerProximosTurnos(){
+async function obtenerProximosTurnos() {
     const { rows } = await pool.query(
         `SELECT t.id, t.fecha_hora, c.nombre
         FROM turnos t
@@ -60,4 +83,10 @@ async function obtenerInfoFinanciera() {
     return rows[0]
 }
 
-export default { obtenerOrdenesUltimosMeses, obtenerOrdenesVivas, obtenerProximosTurnos, obtenerInfoFinanciera }
+export default {
+    obtenerOrdenesUltimosMeses,
+    obtenerOrdenesVivas,
+    obtenerOrdenesVivasPorEmpleado,
+    obtenerProximosTurnos,
+    obtenerInfoFinanciera
+}

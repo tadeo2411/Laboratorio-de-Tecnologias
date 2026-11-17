@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import { Router } from 'express';
 import { verificarToken } from '../../middlewares/verificarToken.js';
 import { soloAdministrador } from '../../middlewares/soloAdministrador.js'
 import tablerosController from './tableros.controller.js'

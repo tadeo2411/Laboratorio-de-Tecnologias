@@ -1,11 +1,11 @@
 import tablerosService from './tableros.service.js'
 
 async function obtenerOrdenes(req, res) {
-    const ordenesVivas = await tablerosService.obtenerOrdenes()
+    const ordenesVivas = await tablerosService.obtenerOrdenes(req.usuario)
     return res.json(ordenesVivas)
 }
 
-async function obtenerOrdenesUltimosMeses(req, res){
+async function obtenerOrdenesUltimosMeses(req, res) {
     const meses = req.query.meses || 3
     const resumen = await tablerosService.obtenerOrdenesUltimosMeses(meses)
     return res.json(resumen)

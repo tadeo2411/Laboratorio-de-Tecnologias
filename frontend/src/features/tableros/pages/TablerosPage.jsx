@@ -19,6 +19,20 @@ const OPCIONES_MESES = [
     { valor: 24, etiqueta: "24M" },
 ];
 
+const OPCIONES_ALCANCE = [
+    { valor: "taller", etiqueta: "Todo el taller" },
+    { valor: "propias", etiqueta: "Mis trabajos" },
+];
+
+const ORDENES_VACIAS = {
+    recibidos: 0,
+    diagnosticando: 0,
+    esperandoP: 0,
+    esperandoR: 0,
+    reparando: 0,
+    terminados: 0,
+};
+
 const formatearMoneda = (monto) =>
     new Intl.NumberFormat("es-AR", {
         style: "currency",
@@ -50,14 +64,11 @@ function TablerosPage() {
     const sesion = obtenerSesion()
     const esAdmin = esAdministrador(sesion)
 
-    const [activas, setActivas] = useState({
-        recibidos: 0,
-        diagnosticando: 0,
-        esperandoP: 0,
-        esperandoR: 0,
-        reparando: 0,
-        terminados: 0,
+    const [ordenes, setOrdenes] = useState({
+        taller: null,
+        propias: ORDENES_VACIAS,
     });
+    const [alcanceOrdenes, setAlcanceOrdenes] = useState("taller");
     const [resumenMeses, setResumenMeses] = useState({
         cantEntregados: 0,
         cantCancelados: 0,
@@ -75,7 +86,7 @@ function TablerosPage() {
     const [cargandoMeses, setCargandoMeses] = useState(false);
     const [error, setError] = useState(null);
 
-    
+
 
     const cargarTablero = useCallback(
         async (meses = 3) => {
@@ -87,13 +98,18 @@ function TablerosPage() {
                     proximosTurnos(),
                     esAdmin ? ordenesXMeses(meses) : Promise.resolve(null),
                     esAdmin ? infoFinanciera() : Promise.resolve(null),
-                    
+
                 ]);
-                if (datosActivas) setActivas(datosActivas);
+                if (datosActivas) {
+                    setOrdenes({
+                        taller: datosActivas.taller ?? null,
+                        propias: datosActivas.propias ?? ORDENES_VACIAS,
+                    });
+                }
                 if (datosTurnos) setTurnos(Array.isArray(datosTurnos) ? datosTurnos : []);
                 if (datosResumen) setResumenMeses(datosResumen);
                 if (datosFinanzas) setFinanzas(datosFinanzas);
-                
+
             } catch (err) {
                 setError(
                     err instanceof Error
@@ -119,7 +135,12 @@ function TablerosPage() {
                 ]);
 
                 if (activo) {
-                    if (datosActivas) setActivas(datosActivas);
+                    if (datosActivas) {
+                        setOrdenes({
+                            taller: datosActivas.taller ?? null,
+                            propias: datosActivas.propias ?? ORDENES_VACIAS,
+                        });
+                    }
                     if (datosTurnos) setTurnos(Array.isArray(datosTurnos) ? datosTurnos : []);
                     if (datosResumen) setResumenMeses(datosResumen);
                     if (datosFinanzas) setFinanzas(datosFinanzas);
@@ -160,7 +181,11 @@ function TablerosPage() {
         }
     }
 
-    
+
+
+    const activas = esAdmin && alcanceOrdenes === "taller"
+        ? (ordenes.taller ?? ORDENES_VACIAS)
+        : (ordenes.propias ?? ORDENES_VACIAS);
 
     const totalEnTaller =
         (activas.recibidos ?? 0) +
@@ -217,20 +242,52 @@ function TablerosPage() {
             {/* 1. Encabezado */}
             <header className="tablero-encabezado">
                 <div>
-                    <h1 className="tablero-titulo">Tablero</h1>
+                    <h1 className="tablero-titulo">Hola, {sesion.nombre}</h1>
                 </div>
-                
+
             </header>
 
             {/* 2. Paneles centrales */}
             <div className={`tablero-grid-central ${!esAdmin ? "tablero-grid-central--completo" : ""}`}>
                 {/* Estado del Taller */}
                 <section className="tablero-panel">
-                    <div className="tablero-panel__cabecera">
-                        <h2 className="tablero-panel__titulo">Estado del taller</h2>
-                        <span className="tablero-badge-neutro">
-                            {totalEnTaller} activos
-                        </span>
+                    <div className="tablero-panel__cabecera tablero-panel__cabecera--wrap">
+                        <div>
+                            <h2 className="tablero-panel__titulo">
+                                {esAdmin ? "Estado del taller" : "Mis órdenes asignadas"}
+                            </h2>
+                            {!esAdmin && (
+                                <p className="tablero-panel__subtitulo">
+                                    Órdenes activas en las que tenés trabajos asignados
+                                </p>
+                            )}
+                        </div>
+                        <div className="tablero-panel__acciones">
+                            {esAdmin && (
+                                <div
+                                    className="tablero-selector-meses"
+                                    role="group"
+                                    aria-label="Filtrar órdenes por alcance"
+                                >
+                                    {OPCIONES_ALCANCE.map((opcion) => (
+                                        <button
+                                            key={opcion.valor}
+                                            type="button"
+                                            className={`tablero-mes-btn ${alcanceOrdenes === opcion.valor
+                                                ? "tablero-mes-btn--activo"
+                                                : ""
+                                                }`}
+                                            onClick={() => setAlcanceOrdenes(opcion.valor)}
+                                        >
+                                            {opcion.etiqueta}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                            <span className="tablero-badge-neutro">
+                                {totalEnTaller} {totalEnTaller === 1 ? "activo" : "activos"}
+                            </span>
+                        </div>
                     </div>
 
                     <div className="tablero-lista-barras">
@@ -274,7 +331,7 @@ function TablerosPage() {
                 </section>
 
                 {/* Columna derecha: Finanzas + Rendimiento */}
-                {esAdmin &&(
+                {esAdmin && (
                     <div className="tablero-columna-secundaria">
                         {/* Balance Financiero */}
                         <section className="tablero-panel">
@@ -336,11 +393,10 @@ function TablerosPage() {
                                             key={opcion.valor}
                                             type="button"
                                             disabled={cargandoMeses}
-                                            className={`tablero-mes-btn ${
-                                                mesesFiltro === opcion.valor
-                                                    ? "tablero-mes-btn--activo"
-                                                    : ""
-                                            }`}
+                                            className={`tablero-mes-btn ${mesesFiltro === opcion.valor
+                                                ? "tablero-mes-btn--activo"
+                                                : ""
+                                                }`}
                                             onClick={() => handleCambiarMeses(opcion.valor)}
                                         >
                                             {opcion.etiqueta}
@@ -349,25 +405,25 @@ function TablerosPage() {
                                 </div>
                             </div>
 
-                        <div className={`rendimiento-grid ${cargandoMeses ? "rendimiento-grid--cargando" : ""}`}>
-                            <div className="rendimiento-caja rendimiento-caja--exito">
-                                <span className="rendimiento-caja__label">Entregadas</span>
-                                <strong className="rendimiento-caja__valor">{cantEntregados}</strong>
+                            <div className={`rendimiento-grid ${cargandoMeses ? "rendimiento-grid--cargando" : ""}`}>
+                                <div className="rendimiento-caja rendimiento-caja--exito">
+                                    <span className="rendimiento-caja__label">Entregadas</span>
+                                    <strong className="rendimiento-caja__valor">{cantEntregados}</strong>
+                                </div>
+                                <div className="rendimiento-caja rendimiento-caja--baja">
+                                    <span className="rendimiento-caja__label">Canceladas</span>
+                                    <strong className="rendimiento-caja__valor">{cantCancelados}</strong>
+                                </div>
+                                <div className="rendimiento-caja rendimiento-caja--neutro">
+                                    <span className="rendimiento-caja__label">Efectividad</span>
+                                    <strong className="rendimiento-caja__valor">{efectividad}%</strong>
+                                </div>
                             </div>
-                            <div className="rendimiento-caja rendimiento-caja--baja">
-                                <span className="rendimiento-caja__label">Canceladas</span>
-                                <strong className="rendimiento-caja__valor">{cantCancelados}</strong>
-                            </div>
-                            <div className="rendimiento-caja rendimiento-caja--neutro">
-                                <span className="rendimiento-caja__label">Efectividad</span>
-                                <strong className="rendimiento-caja__valor">{efectividad}%</strong>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+                        </section>
+                    </div>
                 )}
             </div>
-                                                           
+
             {/* 3. Próximos Turnos */}
             <section className="tablero-panel">
                 <div className="tablero-panel__cabecera">
@@ -430,11 +486,10 @@ function TablerosPage() {
 
                                     <div className="turno-card__estado-wrap">
                                         <span
-                                            className={`turno-card__estado ${
-                                                esConfirmado
-                                                    ? "turno-card__estado--confirmado"
-                                                    : "turno-card__estado--solicitado"
-                                            }`}
+                                            className={`turno-card__estado ${esConfirmado
+                                                ? "turno-card__estado--confirmado"
+                                                : "turno-card__estado--solicitado"
+                                                }`}
                                         >
                                             {turno.estado || "CONFIRMADO"}
                                         </span>

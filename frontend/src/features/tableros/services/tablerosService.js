@@ -23,19 +23,19 @@ async function pedir(ruta, opciones = {}) {
     return datos
 }
 
-export async function ordenesActivas(){
+export async function ordenesActivas() {
     return pedir('/ordenes')
 }
 
-export async function ordenesXMeses(meses){
+export async function ordenesXMeses(meses) {
     const ruta = meses ? `/resumen?meses=${meses}` : '/resumen'
     return pedir(ruta)
 }
 
-export async function infoFinanciera(){
+export async function infoFinanciera() {
     return pedir('/info')
 }
 
-export async function proximosTurnos(){
+export async function proximosTurnos() {
     return pedir('/turnos')
 }

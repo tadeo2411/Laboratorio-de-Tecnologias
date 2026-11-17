@@ -95,6 +95,13 @@
     flex-wrap: wrap;
 }
 
+.tablero-panel__acciones {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .tablero-panel__titulo {
     margin: 0;
     font-size: 1.1rem;

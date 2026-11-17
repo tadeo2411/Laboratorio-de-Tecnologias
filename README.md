@@ -20,8 +20,10 @@ cd Laboratorio-de-Tecnologias
 El script `schema.sql` crea la base `taller-303` y sus tablas. El script `seed.sql` carga los datos de prueba.
 
 ```bash
+# 1. Crear la base "taller-303" y todas sus tablas (si ya existía, borrarla antes)
 psql -U postgres -f database/schema.sql
-psql -U postgres -d taller-303 -f database/seed.sql
+# 2. Cargar los datos de precarga (seed)
+psql -U postgres -d taller-303 -v ON_ERROR_STOP=1 -f seed.sql
 ```
 
 Si la base ya existía, borrarla antes con `DROP DATABASE "taller-303";`.
@@ -70,5 +72,5 @@ La aplicación queda en `http://localhost:5173`. El panel de gestión está en `
 | Usuario | Contraseña | Rol |
 |---|---|---|
 | `admin` | `Admin303!` | Administrador |
-| `mecanico` | `Mecanico303!` | Mecánico |
-| `ex.mecanico` | `ExMecanico303!` | Mecánico dado de baja (no puede ingresar) |
+
+ Una vez ingresado puede crear mas usuarios con rol de mecánico 
